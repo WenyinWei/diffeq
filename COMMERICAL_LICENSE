@@ -1,0 +1,82 @@
+Commercial License Agreement
+
+Effective Date: [Date]  
+Licensee: [Company Name]  
+Software: [Scientific Computing Software]  
+
+1. Grant of License
+Licensor grants Licensee non-exclusive rights to:
+1. Deploy and use software in commercial environments
+2. Access complete source code and technical documentation
+3. Conduct secondary development for scientific research
+4. Share computational results with third-party research institutions
+5. Remove MIT license notices (commercial use only)
+
+2. Scope of License
+This license applies when:
+1. Annual R&D budget exceeds $150,000 (or equivalent)
+2. User base includes academic researchers
+3. Computational results support commercial decisions
+4. Code integration into enterprise data analysis systems
+
+3. Key Terms
+3.1 Licensed Rights
+✅ Unlimited commercial use  
+✅ Source code access  
+✅ Enterprise support (≤4hr response)  
+✅ Annual validation services  
+✅ Ethical review assistance
+
+3.2 Restrictions
+❌ Prohibition of military use  
+❌ Restriction on resale of computational results  
+❌ Modification of core algorithms  
+❌ Circumvention of usage monitoring
+
+4. Pricing Model
+4.1 Fee Structure
+| License Type | Pricing (USD) | Currency Options |  
+|--------------|---------------|------------------|  
+| Individual   | $50/month    | USD/EUR/GBP      |  
+| Institutional| $1,000/month  | USD/EUR          |  
+| Enterprise   | Negotiable    | Local currency   |  
+
+*Annual price adjustment based on CPI (≤15%)*
+
+4.2 Compliance Requirements
+1. Data Management:
+   - Store research data in China (GDPR Art.45)
+   - Cross-border transfers require security assessment
+
+2. Export Controls:
+   - Comply with China's Dual-Use List ([Regulation No. 48])
+   - Cryptographic components require license ([Password Law])
+
+## 5. Legal Compliance
+1. Jurisdiction: China (Shanghai)  
+2. Governing Laws:
+   - Copyright Law of PRC (Art.11)
+   - Cybersecurity Law (Art.41)
+   - Personal Information Protection Law (Art.54)
+
+3. Dispute Resolution:
+   - First instance: Shanghai International Arbitration Centre
+   - Second instance: Singapore International Arbitration Centre
+
+6. Special Provisions
+6.1 Ethical Compliance
+- Maintain computational result validation logs
+- Report major findings to licensors
+- Comply with WHO AI Ethics Guidelines
+
+6.2 Technical Support
+- GPU-accelerated computation optimization
+- Monthly system health diagnostics
+- Annual precision validation reports
+
+---
+
+Authorization
+Company Name: ________________________  
+Authorized Signatory: __________________  
+Date: ________________________________  
