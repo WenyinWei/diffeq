@@ -1,38 +1,17 @@
-Non-Commercial MIT License
+MIT License
 
-Copyright (c) 2025 Wei Wenyin
+Copyright (c) 2025 Wenyin Wei
 
-Based on the MIT License with modifications under the authority of the Copyright Law of the People's Republic of China and the Regulations on the Protection of Computer Software.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software strictly for non-commercial purposes, including without limitation the rights to use, copy, modify, merge, and/or study the Software, provided that:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-2. Any derivative work must be marked with:
-   "[Modified under Non-Commercial MIT License - Prohibited for Commercial Use]"
-
-3. The Software shall not be used for any of the following commercial activities:
-   - Sale of software products (physical/digital)
-   - Integration into commercial service offerings
-   - Provision of technical support services
-   - Cloud-based API deployment
-
-This License is governed by and construed in accordance with the laws of the People's Republic of China, specifically:
-
-1. Copyright Law of the PRC (Art. 11)
-2. Cybersecurity Law (Art. 41)
-3. Personal Information Protection Law (Art. 54)
-
-Any disputes arising under this License shall be resolved through arbitration at the Shanghai International Arbitration Centre in accordance with its Arbitration Rules.
-
-Dual Licensing Notice:
-This software is dual-licensed under:
-1. Non-Commercial MIT License (this document)
-2. Commercial License (COMMERCIAL_LICENSE)
-   Terms available at: https://github.com/WenyinWei/diffeq/blob/main/COMMERICAL_LICENSE
-
-
-WARRANTY DISCLAIMERS
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
