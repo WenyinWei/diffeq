@@ -5,11 +5,11 @@
 
 // Time type concept - supports both integer and floating point time
 template<typename T>
-concept TimeType = std::is_arithmetic_v<T>;
+concept can_be_time = std::is_arithmetic_v<T>;
 
 // 状态概念 - 支持向量、矩阵、多维张量等类型
 template<typename T>
-concept State = requires(T state) {
+concept system_state = requires(T state) {
     typename T::value_type;
     requires std::is_arithmetic_v<typename T::value_type>;
     requires !std::same_as<T, std::string>; // Exclude string types

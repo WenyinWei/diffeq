@@ -9,7 +9,7 @@
 #include <core/abstract_integrator.hpp>
 
 // Helper trait to create state objects (shared with RK4)
-template<State S>
+template<system_state S>
 struct StateCreator {
     static S create(const S& template_state) {
         if constexpr (requires { S(template_state.size()); }) {
@@ -27,7 +27,7 @@ struct StateCreator {
 };
 
 // Simple Euler integrator: y_{n+1} = y_n + h * f(t_n, y_n)
-template<State S, TimeType T = double>
+template<system_state S, can_be_time T = double>
 class EulerIntegrator : public AbstractIntegrator<S, T> {
 public:
     using base_type = AbstractIntegrator<S, T>;
@@ -60,7 +60,7 @@ public:
 
 // Improved Euler (Heun's method): y_{n+1} = y_n + h/2 * (k1 + k2)
 // where k1 = f(t_n, y_n) and k2 = f(t_n + h, y_n + h*k1)
-template<State S, TimeType T = double>
+template<system_state S, can_be_time T = double>
 class ImprovedEulerIntegrator : public AbstractIntegrator<S, T> {
 public:
     using base_type = AbstractIntegrator<S, T>;

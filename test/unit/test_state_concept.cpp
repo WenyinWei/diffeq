@@ -60,58 +60,59 @@ public:
 
 // Test functions
 bool test_time_type_concept() {
-    std::cout << "\n=== Testing TimeType Concept ===" << std::endl;
+    std::cout << "\n=== Testing can_be_time Concept ===" << std::endl;
     
     // Valid time types
-    TEST_ASSERT(TimeType<int>, "int should satisfy TimeType");
-    TEST_ASSERT(TimeType<float>, "float should satisfy TimeType");
-    TEST_ASSERT(TimeType<double>, "double should satisfy TimeType");
-    TEST_ASSERT(TimeType<long>, "long should satisfy TimeType");
-    TEST_ASSERT(TimeType<short>, "short should satisfy TimeType");
-    TEST_ASSERT(TimeType<unsigned int>, "unsigned int should satisfy TimeType");
-    TEST_ASSERT(TimeType<bool>, "bool should satisfy TimeType");
-    TEST_ASSERT(TimeType<char>, "char should satisfy TimeType");
-    TEST_ASSERT(TimeType<long double>, "long double should satisfy TimeType");
+    TEST_ASSERT(can_be_time<int>, "int should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<float>, "float should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<double>, "double should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<long>, "long should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<short>, "short should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<unsigned int>, "unsigned int should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<bool>, "bool should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<char>, "char should satisfy can_be_time");
+    TEST_ASSERT(can_be_time<long double>, "long double should satisfy can_be_time");
     
     // Invalid time types
-    TEST_ASSERT(!TimeType<std::string>, "std::string should NOT satisfy TimeType");
-    TEST_ASSERT(!TimeType<std::vector<int>>, "std::vector<int> should NOT satisfy TimeType");
-    TEST_ASSERT(!TimeType<void*>, "void* should NOT satisfy TimeType");
-    TEST_ASSERT(!TimeType<int*>, "int* should NOT satisfy TimeType");
+    TEST_ASSERT(!can_be_time<std::string>, "std::string should NOT satisfy can_be_time");
+    TEST_ASSERT(!can_be_time<std::vector<int>>, "std::vector<int> should NOT satisfy can_be_time");
+    TEST_ASSERT(!can_be_time<void*>, "void* should NOT satisfy can_be_time");
+    TEST_ASSERT(!can_be_time<int*>, "int* should NOT satisfy can_be_time");
     
     return true;
 }
 
 bool test_state_concept() {
-    std::cout << "=== Testing State Concept ===" << std::endl;
+    std::cout << "\n=== Testing system_state Concept ===" << std::endl;
+    std::cout << "=== Testing system_state Concept ===" << std::endl;
     
     // Valid state types
-    TEST_ASSERT(State<ValidState>, "ValidState should satisfy State");
-    TEST_ASSERT(State<std::vector<double>>, "std::vector<double> should satisfy State");
-    TEST_ASSERT(State<std::vector<float>>, "std::vector<float> should satisfy State");
-    TEST_ASSERT(State<std::vector<int>>, "std::vector<int> should satisfy State");
-    TEST_ASSERT((State<std::array<double, 10>>), "std::array<double, 10> should satisfy State");
-    TEST_ASSERT(State<std::deque<float>>, "std::deque<float> should satisfy State");
+    TEST_ASSERT(system_state<ValidState>, "ValidState should satisfy system_state");
+    TEST_ASSERT(system_state<std::vector<double>>, "std::vector<double> should satisfy system_state");
+    TEST_ASSERT(system_state<std::vector<float>>, "std::vector<float> should satisfy system_state");
+    TEST_ASSERT(system_state<std::vector<int>>, "std::vector<int> should satisfy system_state");
+    TEST_ASSERT((system_state<std::array<double, 10>>), "std::array<double, 10> should satisfy system_state");
+    TEST_ASSERT(system_state<std::deque<float>>, "std::deque<float> should satisfy system_state");
     
     // Invalid state types
-    TEST_ASSERT(!State<InvalidStateNoValueType>, 
-               "InvalidStateNoValueType should NOT satisfy State");
-    TEST_ASSERT(!State<InvalidStateNonArithmeticValueType>, 
-               "InvalidStateNonArithmeticValueType should NOT satisfy State");
-    TEST_ASSERT(!State<InvalidStateNoRandomAccessIterator>, 
-               "InvalidStateNoRandomAccessIterator should NOT satisfy State");
-    TEST_ASSERT(!State<int>, "int should NOT satisfy State");
-    TEST_ASSERT(!State<std::string>, "std::string should NOT satisfy State");
-    TEST_ASSERT(!State<std::vector<std::string>>, 
-               "std::vector<std::string> should NOT satisfy State");
-    TEST_ASSERT(!State<std::list<double>>, 
-               "std::list<double> should NOT satisfy State");
+    TEST_ASSERT(!system_state<InvalidStateNoValueType>, 
+               "InvalidStateNoValueType should NOT satisfy system_state");
+    TEST_ASSERT(!system_state<InvalidStateNonArithmeticValueType>, 
+               "InvalidStateNonArithmeticValueType should NOT satisfy system_state");
+    TEST_ASSERT(!system_state<InvalidStateNoRandomAccessIterator>, 
+               "InvalidStateNoRandomAccessIterator should NOT satisfy system_state");
+    TEST_ASSERT(!system_state<int>, "int should NOT satisfy system_state");
+    TEST_ASSERT(!system_state<std::string>, "std::string should NOT satisfy system_state");
+    TEST_ASSERT(!system_state<std::vector<std::string>>, 
+               "std::vector<std::string> should NOT satisfy system_state");
+    TEST_ASSERT(!system_state<std::list<double>>, 
+               "std::list<double> should NOT satisfy system_state");
     
     return true;
 }
 
-// Template function using State concept
-template<State S>
+// Template function using system_state concept
+template<system_state S>
 void process_state(S& state) {
     for (std::size_t i = 0; i < state.size(); ++i) {
         auto it = state.begin();
@@ -120,7 +121,7 @@ void process_state(S& state) {
 }
 
 bool test_concept_usage() {
-    std::cout << "\n=== Testing State Concept Usage in Templates ===" << std::endl;
+    std::cout << "\n=== Testing system_state Concept Usage in Templates ===" << std::endl;
     
     // Test State concept in template
     ValidState state(5);
@@ -160,22 +161,24 @@ bool test_concept_usage() {
 }
 
 bool test_compile_time_checks() {
-    std::cout << "\n=== Testing Compile-time State Concept Checks ===" << std::endl;
+    std::cout << "\n=== Testing Compile-time system_state Concept Checks ===" << std::endl;
     
     // These are compile-time checks using static_assert
-    static_assert(State<std::vector<double>>, 
-                  "std::vector<double> should satisfy State at compile time");
-    static_assert(State<ValidState>, 
-                  "ValidState should satisfy State at compile time");
-    static_assert((State<std::array<float, 5>>),
-                  "std::array<float, 5> should satisfy State at compile time");
+    static_assert(system_state<std::vector<double>>, 
+                  "std::vector<double> should satisfy system_state at compile time");
+    static_assert(system_state<ValidState>, 
+                  "ValidState should satisfy system_state at compile time");
+    static_assert((system_state<std::array<float, 5>>),
+                  "std::array<float, 5> should satisfy system_state at compile time");
+    static_assert(can_be_time<double>, 
+                  "double should satisfy can_be_time at compile time");
     
     // Runtime checks for negative cases (some may not be well-formed for static_assert)
-    constexpr bool string_not_state = !State<std::string>;
-    TEST_ASSERT(string_not_state, "std::string should NOT satisfy State");
+    constexpr bool string_not_state = !system_state<std::string>;
+    TEST_ASSERT(string_not_state, "std::string should NOT satisfy system_state");
     
-    constexpr bool list_not_state = !State<std::list<double>>;
-    TEST_ASSERT(list_not_state, "std::list<double> should NOT satisfy State");
+    constexpr bool list_not_state = !system_state<std::list<double>>;
+    TEST_ASSERT(list_not_state, "std::list<double> should NOT satisfy system_state");
     
     std::cout << "PASS: All compile-time concept checks passed" << std::endl;
     return true;

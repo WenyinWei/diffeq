@@ -4,8 +4,8 @@
 #include <deque>
 #include "core/concepts.hpp"
 
-// Example function that works with any State-satisfying type
-template<State S>
+// Example function that works with any system_state-satisfying type
+template<system_state S>
 void print_state_info(const S& state) {
     std::cout << "State type: " << typeid(S).name() << std::endl;
     std::cout << "Size: " << state.size() << std::endl;
@@ -17,7 +17,7 @@ void print_state_info(const S& state) {
 }
 
 // Example function that modifies a state
-template<State S>
+template<system_state S>
 void initialize_state(S& state, typename S::value_type initial_value = {}) {
     for (std::size_t i = 0; i < state.size(); ++i) {
         auto it = state.begin();

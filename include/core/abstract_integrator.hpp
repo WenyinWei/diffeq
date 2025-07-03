@@ -5,7 +5,7 @@
 #include "concepts.hpp"
 
 // Abstract integrator base class
-template<State S, TimeType T = double>
+template<system_state S, can_be_time T = double>
 class AbstractIntegrator {
 public:
     using state_type = S;

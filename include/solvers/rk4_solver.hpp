@@ -9,7 +9,7 @@
 #include <core/abstract_integrator.hpp>
 
 // Helper trait to create state objects
-template<State S>
+template<system_state S>
 struct StateCreator {
     static S create(const S& template_state) {
         if constexpr (requires { S(template_state.size()); }) {
@@ -26,7 +26,7 @@ struct StateCreator {
     }
 };
 
-template<State S, TimeType T = double>
+template<system_state S, can_be_time T = double>
 class RK4Integrator : public AbstractIntegrator<S, T> {
 public:
     using base_type = AbstractIntegrator<S, T>;
