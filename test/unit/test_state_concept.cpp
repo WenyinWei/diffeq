@@ -59,6 +59,29 @@ public:
 };
 
 // Test functions
+bool test_time_type_concept() {
+    std::cout << "\n=== Testing TimeType Concept ===" << std::endl;
+    
+    // Valid time types
+    TEST_ASSERT(TimeType<int>, "int should satisfy TimeType");
+    TEST_ASSERT(TimeType<float>, "float should satisfy TimeType");
+    TEST_ASSERT(TimeType<double>, "double should satisfy TimeType");
+    TEST_ASSERT(TimeType<long>, "long should satisfy TimeType");
+    TEST_ASSERT(TimeType<short>, "short should satisfy TimeType");
+    TEST_ASSERT(TimeType<unsigned int>, "unsigned int should satisfy TimeType");
+    TEST_ASSERT(TimeType<bool>, "bool should satisfy TimeType");
+    TEST_ASSERT(TimeType<char>, "char should satisfy TimeType");
+    TEST_ASSERT(TimeType<long double>, "long double should satisfy TimeType");
+    
+    // Invalid time types
+    TEST_ASSERT(!TimeType<std::string>, "std::string should NOT satisfy TimeType");
+    TEST_ASSERT(!TimeType<std::vector<int>>, "std::vector<int> should NOT satisfy TimeType");
+    TEST_ASSERT(!TimeType<void*>, "void* should NOT satisfy TimeType");
+    TEST_ASSERT(!TimeType<int*>, "int* should NOT satisfy TimeType");
+    
+    return true;
+}
+
 bool test_state_concept() {
     std::cout << "=== Testing State Concept ===" << std::endl;
     
@@ -159,12 +182,13 @@ bool test_compile_time_checks() {
 }
 
 int main() {
-    std::cout << "Running Simplified State Concept Test Suite" << std::endl;
-    std::cout << "===========================================" << std::endl;
+    std::cout << "Running Concepts Test Suite" << std::endl;
+    std::cout << "============================" << std::endl;
     
     bool all_passed = true;
     
     try {
+        all_passed &= test_time_type_concept();
         all_passed &= test_state_concept();
         all_passed &= test_concept_usage();
         all_passed &= test_compile_time_checks();

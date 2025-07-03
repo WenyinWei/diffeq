@@ -3,6 +3,10 @@
 #include <type_traits>
 #include <iterator>
 
+// Time type concept - supports both integer and floating point time
+template<typename T>
+concept TimeType = std::is_arithmetic_v<T>;
+
 // 状态概念 - 支持向量、矩阵、多维张量等类型
 template<typename T>
 concept State = requires(T state) {

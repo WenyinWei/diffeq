@@ -4,10 +4,6 @@
 #include <type_traits>
 #include "concepts.hpp"
 
-// Time type concept - supports both integer and floating point time
-template<typename T>
-concept TimeType = std::is_arithmetic_v<T>;
-
 // Abstract integrator base class
 template<State S, TimeType T = double>
 class AbstractIntegrator {
