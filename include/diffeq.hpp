@@ -36,6 +36,13 @@
 #include <signal/signal_processor.hpp>   // Generic signal processing
 #include <interfaces/integration_interface.hpp>  // Unified interface for all domains
 
+// Enhanced parallelism capabilities with modern C++ features
+#include <execution/parallelism_facade.hpp>      // Unified parallelism interface (Facade pattern)
+#include <execution/parallelism_facade_impl.hpp> // Implementation details
+#include <execution/parallel_builder.hpp>        // Fluent interface for configuration (Builder pattern)
+#include <execution/modern_executor.hpp>         // Modern C++ executor support with coroutines
+#include <execution/hardware_support.hpp>        // Hardware-specific execution (CUDA, OpenCL, FPGA, MPI)
+
 /**
  * @file diffeq.hpp
  * @brief Modern C++ ODE Integration Library with Real-time Signal Processing
