@@ -37,7 +37,8 @@
 #include <interfaces/integration_interface.hpp>  // Unified interface for all domains
 
 // Enhanced parallelism capabilities with modern C++ features
-#include <execution/parallelism_facade_clean.hpp> // Unified parallelism interface (Facade pattern)
+#include <execution/parallel.hpp>                 // Simplified parallel execution interface
+#include <execution/parallelism_facade_clean.hpp> // Advanced parallelism interface (Facade pattern)
 #include <execution/parallel_builder.hpp>         // Fluent interface for configuration (Builder pattern)
 #include <execution/modern_executor.hpp>          // Modern C++ executor support with coroutines
 #include <execution/hardware_support.hpp>         // Hardware-specific execution (CUDA, OpenCL, FPGA, MPI)

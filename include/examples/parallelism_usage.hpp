@@ -9,6 +9,48 @@
 namespace diffeq::examples::parallelism {
 
 /**
+ * @brief Quick Start Example - Simplified Parallel Interface
+ * 
+ * This shows the easiest way to add parallelism to your diffeq computations.
+ * No complex configuration needed!
+ */
+void quick_start_example() {
+    std::cout << "\n=== Quick Start: Simplified Parallel Interface ===\n";
+    
+    // Example: Parallel ODE integration for multiple initial conditions
+    std::vector<std::vector<double>> initial_conditions;
+    for (int i = 0; i < 100; ++i) {
+        initial_conditions.push_back({static_cast<double>(i), 0.0});
+    }
+    
+    // Simple exponential decay: dy/dt = -0.1 * y
+    auto system = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+        dydt[0] = -0.1 * y[0];
+        dydt[1] = -0.2 * y[1];
+    };
+    
+    std::cout << "Integrating " << initial_conditions.size() << " initial conditions in parallel...\n";
+    
+    // THIS IS ALL YOU NEED FOR PARALLEL EXECUTION!
+    diffeq::execution::parallel_for_each(initial_conditions, [&](std::vector<double>& state) {
+        diffeq::RK4Integrator<std::vector<double>> integrator(system);
+        integrator.step(state, 0.01); // Single integration step
+    });
+    
+    std::cout << "✓ Parallel integration completed!\n";
+    std::cout << "Result for initial condition 10: [" << initial_conditions[10][0] 
+              << ", " << initial_conditions[10][1] << "]\n";
+    
+    // Want to use GPU if available? Just one line:
+    diffeq::execution::enable_gpu_acceleration();
+    
+    // Want more workers? Just one line:
+    diffeq::execution::set_parallel_workers(8);
+    
+    std::cout << "Current worker count: " << diffeq::execution::parallel().worker_count() << "\n";
+}
+
+/**
  * @brief Robotics Control Systems Example
  * 
  * Demonstrates real-time integration with feedback signals from sensors
@@ -42,7 +84,38 @@ struct RobotArmSystem {
 void demonstrate_realtime_control() {
     std::cout << "\n=== Robotics Control System with Real-time Parallelism ===\n";
     
-    // Configure for real-time robotics control
+    // SIMPLE APPROACH: Use the simplified parallel interface for basic needs
+    std::cout << "\n--- Simple Parallel Approach ---\n";
+    
+    // Setup multiple control systems (e.g., different robot joints)
+    std::vector<std::vector<double>> joint_states;
+    for (int i = 0; i < 6; ++i) {  // 6-DOF robot arm
+        joint_states.push_back({0.1 * i, 0.0}); // [angle, angular_velocity]
+    }
+    
+    // Create simple parallel executor
+    auto parallel = diffeq::execution::Parallel(4); // 4 worker threads
+    
+    auto simple_start_time = std::chrono::high_resolution_clock::now();
+    
+    // Parallel control loop - very simple!
+    parallel.for_each(joint_states, [](std::vector<double>& state) {
+        RobotArmSystem system;
+        diffeq::RK4Integrator<std::vector<double>> integrator(system);
+        integrator.step(state, 0.001); // 1ms control timestep
+    });
+    
+    auto simple_end_time = std::chrono::high_resolution_clock::now();
+    auto simple_duration = std::chrono::duration_cast<std::chrono::microseconds>(simple_end_time - simple_start_time);
+    
+    std::cout << "Simple parallel control completed in " << simple_duration.count() << " μs\n";
+    std::cout << "Average per joint: " << simple_duration.count() / joint_states.size() << " μs\n";
+    
+    // ADVANCED APPROACH: Use full facade for complex real-time requirements
+    std::cout << "\n--- Advanced Facade Approach (for complex scenarios) ---\n";
+    
+    // For applications requiring precise real-time control, load balancing,
+    // hardware-specific optimizations, etc., use the full facade:
     auto parallel_config = diffeq::execution::presets::robotics_control()
         .realtime_priority()
         .workers(4)                    // Dedicated cores for control
@@ -52,7 +125,7 @@ void demonstrate_realtime_control() {
     
     // Create integrator for robot dynamics
     auto robot_system = RobotArmSystem{};
-    auto integrator = diffeq::ode::factory::make_rk4_integrator<std::vector<double>, double>(robot_system);
+    auto integrator = diffeq::RK4Integrator<std::vector<double>>(robot_system);
     
     // Initial state: [angle=0.1 rad, angular_velocity=0]
     std::vector<double> state = {0.1, 0.0};
@@ -62,7 +135,7 @@ void demonstrate_realtime_control() {
     std::cout << "Running real-time robot control simulation...\n";
     std::cout << "Target frequency: 1kHz (1ms timestep)\n";
     
-    auto start_time = std::chrono::high_resolution_clock::now();
+    auto advanced_start_time = std::chrono::high_resolution_clock::now();
     
     // Simulate real-time control loop
     for (double t = 0.0; t < simulation_time; t += dt) {
@@ -89,11 +162,11 @@ void demonstrate_realtime_control() {
         }
     }
     
-    auto end_time = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    auto advanced_end_time = std::chrono::high_resolution_clock::now();
+    auto advanced_duration = std::chrono::duration_cast<std::chrono::milliseconds>(advanced_end_time - advanced_start_time);
     
-    std::cout << "Simulation completed in " << duration.count() << "ms\n";
-    std::cout << "Average loop time: " << duration.count() / (simulation_time / dt) << "ms\n";
+    std::cout << "Simulation completed in " << advanced_duration.count() << "ms\n";
+    std::cout << "Average loop time: " << advanced_duration.count() / (simulation_time / dt) << "ms\n";
     std::cout << "Final robot state: angle=" << state[0] << " rad, velocity=" << state[1] << " rad/s\n";
 }
 
@@ -156,7 +229,7 @@ void demonstrate_monte_carlo_simulation() {
     for (size_t i = 0; i < num_simulations; ++i) {
         simulation_futures.push_back(parallel_config->async([=]() {
             // Create integrator for this simulation
-            auto integrator = diffeq::ode::factory::make_rk4_integrator<std::vector<double>, double>(gbm_system);
+            auto integrator = diffeq::RK4Integrator<std::vector<double>>(gbm_system);
             
             // Random number generator for this thread
             std::mt19937 rng(std::random_device{}() + i);
@@ -286,7 +359,7 @@ void benchmark_hardware_targets() {
         
         // Parallel integration using the unified interface
         parallel_facade->parallel_for_each(states.begin(), states.end(), [&](auto& state) {
-            auto integrator = diffeq::ode::factory::make_rk4_integrator<std::vector<double>, double>(system);
+            auto integrator = diffeq::RK4Integrator<std::vector<double>>(system);
             
             double t = 0.0;
             while (t < end_time) {
@@ -324,9 +397,12 @@ void benchmark_hardware_targets() {
  */
 void demonstrate_all_parallelism_features() {
     std::cout << "=== Enhanced Parallelism Capabilities Demo ===\n";
-    std::cout << "Demonstrating modern C++ parallelism with unified hardware interface\n";
+    std::cout << "Demonstrating both simple and advanced parallelism interfaces\n";
     
-    // Run robotics control example
+    // Start with the simple interface for new users
+    quick_start_example();
+    
+    // Run robotics control example (shows both simple and advanced)
     robotics_control::demonstrate_realtime_control();
     
     // Run stochastic research example
