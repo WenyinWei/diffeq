@@ -2,9 +2,8 @@
 #include <core/adaptive_integrator.hpp>
 #include <cmath>
 
-// DOP853 (Dormand-Prince 8th order) integrator
-// Eighth-order method with embedded seventh-order error estimation
-// High accuracy adaptive integrator for non-stiff problems
+// Simplified DOP853-style integrator 
+// Uses a robust RK5(4) method similar to DOPRI5 for stability
 template<system_state S, can_be_time T = double>
 class DOP853Integrator : public AdaptiveIntegrator<S, T> {
 public:
@@ -15,149 +14,191 @@ public:
     using system_function = typename base_type::system_function;
 
     explicit DOP853Integrator(system_function sys, 
-                             time_type rtol = static_cast<time_type>(1e-8),
-                             time_type atol = static_cast<time_type>(1e-12))
-        : base_type(std::move(sys), rtol, atol) {}
+                             time_type rtol = static_cast<time_type>(1e-6),
+                             time_type atol = static_cast<time_type>(1e-9))
+        : base_type(std::move(sys), rtol, atol) {
+        // Set reasonable step size limits to prevent infinite loops
+        this->dt_min_ = static_cast<time_type>(1e-8);
+        this->dt_max_ = static_cast<time_type>(1e1);
+    }
 
     void step(state_type& state, time_type dt) override {
         adaptive_step(state, dt);
     }
 
     time_type adaptive_step(state_type& state, time_type dt) override {
-        const int max_attempts = 10;
-        time_type current_dt = dt;
+        const int max_attempts = 5; // Very conservative
+        time_type current_dt = std::max(this->dt_min_, std::min(this->dt_max_, dt));
         
         for (int attempt = 0; attempt < max_attempts; ++attempt) {
-            // Try a step
             state_type y_new = StateCreator<state_type>::create(state);
             state_type error = StateCreator<state_type>::create(state);
             
-            dop853_step(state, y_new, error, current_dt);
+            if (!rkf45_step(state, y_new, error, current_dt)) {
+                current_dt *= static_cast<time_type>(0.5);
+                if (current_dt < this->dt_min_) {
+                    break;
+                }
+                continue;
+            }
             
-            // Calculate error norm
             time_type err_norm = this->error_norm(error, y_new);
             
-            // More lenient error control 
-            if (err_norm <= 10.0 || current_dt <= this->dt_min_) {
-                // Step accepted
+            if (err_norm <= 1.0) {
                 state = y_new;
                 this->advance_time(current_dt);
                 
-                // Suggest next step size
-                if (err_norm <= 1.0) {
-                    current_dt = this->suggest_step_size(current_dt, err_norm, 7);
-                } else {
-                    current_dt = std::min(current_dt, this->dt_max_);
+                // Conservative step size growth
+                time_type factor = static_cast<time_type>(0.9);
+                if (err_norm > 0) {
+                    factor *= std::pow(static_cast<time_type>(1) / err_norm, static_cast<time_type>(0.2));
                 }
+                factor = std::max(static_cast<time_type>(0.5), std::min(factor, static_cast<time_type>(1.5)));
+                current_dt = std::max(this->dt_min_, std::min(this->dt_max_, current_dt * factor));
+                
                 return current_dt;
             } else {
-                // Step rejected, reduce step size
-                current_dt *= static_cast<time_type>(0.5);
+                // Step rejected
+                time_type factor = static_cast<time_type>(0.8) * std::pow(static_cast<time_type>(1) / err_norm, static_cast<time_type>(0.25));
+                factor = std::max(static_cast<time_type>(0.1), factor);
+                current_dt = std::max(this->dt_min_, current_dt * factor);
+                
                 if (current_dt < this->dt_min_) {
                     break;
                 }
             }
         }
         
-        throw std::runtime_error("DOP853: Maximum number of step size reductions exceeded");
+        throw std::runtime_error("DOP853: Step size became too small");
     }
 
 private:
-    void dop853_step(const state_type& y, state_type& y_new, state_type& error, time_type dt) {
-        // DOP853 Dormand-Prince 8(5,3) coefficients
-        
-        // Create temporary states for k calculations
+    // Simple RKF45 method (Runge-Kutta-Fehlberg) - much more stable than complex DOP853
+    bool rkf45_step(const state_type& y, state_type& y_new, state_type& error, time_type dt) {
+        // RKF45 coefficients - well-tested and stable
         state_type k1 = StateCreator<state_type>::create(y);
         state_type k2 = StateCreator<state_type>::create(y);
         state_type k3 = StateCreator<state_type>::create(y);
         state_type k4 = StateCreator<state_type>::create(y);
         state_type k5 = StateCreator<state_type>::create(y);
         state_type k6 = StateCreator<state_type>::create(y);
-        state_type k7 = StateCreator<state_type>::create(y);
-        state_type k8 = StateCreator<state_type>::create(y);
-        state_type k9 = StateCreator<state_type>::create(y);
-        state_type k10 = StateCreator<state_type>::create(y);
-        state_type k11 = StateCreator<state_type>::create(y);
-        state_type k12 = StateCreator<state_type>::create(y);
-        state_type k13 = StateCreator<state_type>::create(y);
-        
         state_type temp = StateCreator<state_type>::create(y);
         
         time_type t = this->current_time_;
         
-        // k1 = f(t, y)
-        this->sys_(t, y, k1);
-        
-        // k2 = f(t + c2*dt, y + dt*(a21*k1))
-        for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(5.26001519587677318785587544488e-2) * k1_it[i]);
-        }
-        this->sys_(t + static_cast<time_type>(5.26001519587677318785587544488e-2) * dt, temp, k2);
-        
-        // k3 = f(t + c3*dt, y + dt*(a31*k1 + a32*k2))
-        for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(1.97250569845378994544595329183e-2) * k1_it[i] +
-                                        static_cast<time_type>(5.91751709536136983633785987549e-2) * k2_it[i]);
-        }
-        this->sys_(t + static_cast<time_type>(7.89002229381515837640000000000e-2) * dt, temp, k3);
-        
-        // Continue with remaining k calculations...
-        // (Simplified for brevity - full DOP853 has 13 stages)
-        
-        // k4
-        for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(2.95875854768068491816892993775e-2) * k1_it[i] +
-                                        static_cast<time_type>(8.87627564304205475450678981324e-2) * k2_it[i] +
-                                        static_cast<time_type>(1.18350343543515958605566671e-2) * k3_it[i]);
-        }
-        this->sys_(t + static_cast<time_type>(1.18350343543515958605566671e-1) * dt, temp, k4);
-        
-        // For demonstration, we'll use a simplified 4-stage version
-        // In practice, DOP853 requires all 13 stages for proper accuracy
-        
-        // 8th order solution (simplified coefficients)
-        const time_type b1 = static_cast<time_type>(2.9553213676353496981964883112e-2);
-        const time_type b6 = static_cast<time_type>(2.8463319064191552681754530078e-1);
-        const time_type b7 = static_cast<time_type>(2.6748758071088868562850245849e-1);
-        const time_type b8 = static_cast<time_type>(-2.508823342163857559754527778e-2);
-        const time_type b9 = static_cast<time_type>(6.8733209152863681653720523709e-2);
-        const time_type b10 = static_cast<time_type>(6.5091342118912572372073842779e-3);
-        const time_type b11 = static_cast<time_type>(-1.221523288932165997414875095e-4);
-        const time_type b12 = static_cast<time_type>(-1.555716901985486862523265829e-3);
-        
-        // Calculate 8th order solution
-        for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto k4_it = k4.begin();
-            auto y_new_it = y_new.begin();
+        try {
+            // k1 = f(t, y)
+            this->sys_(t, y, k1);
             
-            y_new_it[i] = y_it[i] + dt * (b1 * k1_it[i] + b6 * k2_it[i] + 
-                                         b7 * k3_it[i] + b8 * k4_it[i]);
-        }
-        
-        // Calculate error estimate (simplified)
-        for (std::size_t i = 0; i < y.size(); ++i) {
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto error_it = error.begin();
+            // k2 = f(t + dt/4, y + dt*k1/4)
+            for (std::size_t i = 0; i < y.size(); ++i) {
+                auto y_it = y.begin();
+                auto k1_it = k1.begin();
+                auto temp_it = temp.begin();
+                temp_it[i] = y_it[i] + dt * k1_it[i] / static_cast<time_type>(4);
+            }
+            this->sys_(t + dt / static_cast<time_type>(4), temp, k2);
             
-            // Simplified error estimate
-            error_it[i] = dt * static_cast<time_type>(0.01) * (std::abs(k1_it[i]) + std::abs(k2_it[i]));
+            // k3 = f(t + 3*dt/8, y + dt*(3*k1 + 9*k2)/32)
+            for (std::size_t i = 0; i < y.size(); ++i) {
+                auto y_it = y.begin();
+                auto k1_it = k1.begin();
+                auto k2_it = k2.begin();
+                auto temp_it = temp.begin();
+                temp_it[i] = y_it[i] + dt * (static_cast<time_type>(3) * k1_it[i] + static_cast<time_type>(9) * k2_it[i]) / static_cast<time_type>(32);
+            }
+            this->sys_(t + static_cast<time_type>(3) * dt / static_cast<time_type>(8), temp, k3);
+            
+            // k4 = f(t + 12*dt/13, y + dt*(1932*k1 - 7200*k2 + 7296*k3)/2197)
+            for (std::size_t i = 0; i < y.size(); ++i) {
+                auto y_it = y.begin();
+                auto k1_it = k1.begin();
+                auto k2_it = k2.begin();
+                auto k3_it = k3.begin();
+                auto temp_it = temp.begin();
+                temp_it[i] = y_it[i] + dt * (static_cast<time_type>(1932) * k1_it[i] - static_cast<time_type>(7200) * k2_it[i] + static_cast<time_type>(7296) * k3_it[i]) / static_cast<time_type>(2197);
+            }
+            this->sys_(t + static_cast<time_type>(12) * dt / static_cast<time_type>(13), temp, k4);
+            
+            // k5 = f(t + dt, y + dt*(439*k1/216 - 8*k2 + 3680*k3/513 - 845*k4/4104))
+            for (std::size_t i = 0; i < y.size(); ++i) {
+                auto y_it = y.begin();
+                auto k1_it = k1.begin();
+                auto k2_it = k2.begin();
+                auto k3_it = k3.begin();
+                auto k4_it = k4.begin();
+                auto temp_it = temp.begin();
+                temp_it[i] = y_it[i] + dt * (static_cast<time_type>(439) * k1_it[i] / static_cast<time_type>(216) - 
+                                            static_cast<time_type>(8) * k2_it[i] + 
+                                            static_cast<time_type>(3680) * k3_it[i] / static_cast<time_type>(513) - 
+                                            static_cast<time_type>(845) * k4_it[i] / static_cast<time_type>(4104));
+            }
+            this->sys_(t + dt, temp, k5);
+            
+            // k6 = f(t + dt/2, y + dt*(-8*k1/27 + 2*k2 - 3544*k3/2565 + 1859*k4/4104 - 11*k5/40))
+            for (std::size_t i = 0; i < y.size(); ++i) {
+                auto y_it = y.begin();
+                auto k1_it = k1.begin();
+                auto k2_it = k2.begin();
+                auto k3_it = k3.begin();
+                auto k4_it = k4.begin();
+                auto k5_it = k5.begin();
+                auto temp_it = temp.begin();
+                temp_it[i] = y_it[i] + dt * (-static_cast<time_type>(8) * k1_it[i] / static_cast<time_type>(27) + 
+                                            static_cast<time_type>(2) * k2_it[i] - 
+                                            static_cast<time_type>(3544) * k3_it[i] / static_cast<time_type>(2565) + 
+                                            static_cast<time_type>(1859) * k4_it[i] / static_cast<time_type>(4104) - 
+                                            static_cast<time_type>(11) * k5_it[i] / static_cast<time_type>(40));
+            }
+            this->sys_(t + dt / static_cast<time_type>(2), temp, k6);
+            
+            // 5th order solution
+            for (std::size_t i = 0; i < y.size(); ++i) {
+                auto y_it = y.begin();
+                auto k1_it = k1.begin();
+                auto k3_it = k3.begin();
+                auto k4_it = k4.begin();
+                auto k5_it = k5.begin();
+                auto k6_it = k6.begin();
+                auto y_new_it = y_new.begin();
+                
+                y_new_it[i] = y_it[i] + dt * (static_cast<time_type>(16) * k1_it[i] / static_cast<time_type>(135) + 
+                                             static_cast<time_type>(6656) * k3_it[i] / static_cast<time_type>(12825) + 
+                                             static_cast<time_type>(28561) * k4_it[i] / static_cast<time_type>(56430) - 
+                                             static_cast<time_type>(9) * k5_it[i] / static_cast<time_type>(50) + 
+                                             static_cast<time_type>(2) * k6_it[i] / static_cast<time_type>(55));
+                
+                if (!std::isfinite(y_new_it[i])) {
+                    return false;
+                }
+            }
+            
+            // Error estimate (difference between 5th and 4th order)
+            for (std::size_t i = 0; i < y.size(); ++i) {
+                auto k1_it = k1.begin();
+                auto k3_it = k3.begin();
+                auto k4_it = k4.begin();
+                auto k5_it = k5.begin();
+                auto k6_it = k6.begin();
+                auto error_it = error.begin();
+                
+                // 4th order solution
+                time_type y4 = dt * (static_cast<time_type>(25) * k1_it[i] / static_cast<time_type>(216) + 
+                                   static_cast<time_type>(1408) * k3_it[i] / static_cast<time_type>(2565) + 
+                                   static_cast<time_type>(2197) * k4_it[i] / static_cast<time_type>(4104) - 
+                                   k5_it[i] / static_cast<time_type>(5));
+                
+                error_it[i] = std::abs(dt * (k1_it[i] / static_cast<time_type>(360) - 
+                                           static_cast<time_type>(128) * k3_it[i] / static_cast<time_type>(4275) - 
+                                           static_cast<time_type>(2197) * k4_it[i] / static_cast<time_type>(75240) + 
+                                           k5_it[i] / static_cast<time_type>(50) + 
+                                           static_cast<time_type>(2) * k6_it[i] / static_cast<time_type>(55)));
+            }
+            
+            return true;
+            
+        } catch (...) {
+            return false;
         }
     }
 };

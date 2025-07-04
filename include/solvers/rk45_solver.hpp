@@ -111,58 +111,33 @@ private:
         
         // k2 = f(t + dt/5, y + dt*k1/5)
         for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * a21 * k1_it[i];
+            temp[i] = y[i] + dt * a21 * k1[i];
         }
         this->sys_(this->current_time_ + dt / 5, temp, k2);
         
         // k3 = f(t + 3*dt/10, y + dt*(3*k1 + 9*k2)/40)
         for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (a31 * k1_it[i] + a32 * k2_it[i]);
+            temp[i] = y[i] + dt * (a31 * k1[i] + a32 * k2[i]);
         }
         this->sys_(this->current_time_ + dt * 3 / 10, temp, k3);
         
         // k4 = f(t + 4*dt/5, y + dt*(44*k1 - 56*k2 + 32*k3)/45)
         for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (a41 * k1_it[i] + a42 * k2_it[i] + a43 * k3_it[i]);
+            temp[i] = y[i] + dt * (a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
         }
         this->sys_(this->current_time_ + dt * 4 / 5, temp, k4);
         
         // k5 = f(t + 8*dt/9, y + dt*(19372*k1 - 25360*k2 + 64448*k3 - 212*k4)/6561)
         for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto k4_it = k4.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (a51 * k1_it[i] + a52 * k2_it[i] + 
-                                        a53 * k3_it[i] + a54 * k4_it[i]);
+            temp[i] = y[i] + dt * (a51 * k1[i] + a52 * k2[i] + 
+                                  a53 * k3[i] + a54 * k4[i]);
         }
         this->sys_(this->current_time_ + dt * 8 / 9, temp, k5);
         
         // k6 = f(t + dt, y + dt*(9017*k1 - 355*k2 + 46732*k3 + 49*k4 - 5103*k5)/3168)
         for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto k4_it = k4.begin();
-            auto k5_it = k5.begin();
-            auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (a61 * k1_it[i] + a62 * k2_it[i] + 
-                                        a63 * k3_it[i] + a64 * k4_it[i] + a65 * k5_it[i]);
+            temp[i] = y[i] + dt * (a61 * k1[i] + a62 * k2[i] + 
+                                  a63 * k3[i] + a64 * k4[i] + a65 * k5[i]);
         }
         this->sys_(this->current_time_ + dt, temp, k6);
         

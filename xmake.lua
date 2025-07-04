@@ -62,6 +62,13 @@ target("quick_test")
     add_files("examples/quick_test.cpp")
     set_rundir("$(projectdir)")
 
+-- 示例目标 - DOP853特定测试
+target("test_dop853")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/test_dop853.cpp")
+    set_rundir("$(projectdir)")
+
 -- 自定义任务：运行所有测试
 task("test")
     set_menu {
@@ -131,4 +138,21 @@ task("demo")
         
         print("Building and running advanced integrators demonstration...")
         task.run("run", {}, "advanced_integrators_usage")
+    end)
+
+-- 快速DOP853测试任务：只测试DOP853
+task("test-dop853")
+    set_menu {
+        usage = "xmake test-dop853",
+        description = "Run DOP853 specific tests with timeout",
+        options = {}
+    }
+    on_run(function ()
+        import("core.base.task")
+        
+        print("Building and running DOP853 tests...")
+        task.run("run", {}, "test_dop853")
+        
+        print("\nRunning DOP853 unit test...")
+        os.exec("timeout 10s ./build/linux/x86_64/release/test_advanced_integrators --gtest_filter='*DOP853*'")
     end)
