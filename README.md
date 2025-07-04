@@ -6,21 +6,22 @@ A high-performance, header-only C++ library for solving ordinary differential eq
 
 - **Pure C++20/23** - Modern C++ with no external dependencies
 - **Header-only** - Easy integration into your projects  
-- **Async Integration** - Non-blocking ODE solving with std::future and std::thread
+- **Unified Interface** - Single extensible interface for signal-aware ODE integration
 - **Signal Processing** - Type-safe event handling and real-time data processing
-- **Domain-specific Processors** - Built-in support for finance and robotics applications
+- **Cross-domain Support** - Works for finance, robotics, science, and any application domain
 - **High-accuracy integrators** - Including DOP853 (8th order Dormand-Prince)
-- **Template-based design** - Works with various state types (vectors, arrays, etc.)
+- **Template-based design** - Works with various state types using C++ concepts
 - **SciPy-consistent** - Core integrators match SciPy's behavior
-- **Standard C++ Only** - No platform-specific code or custom IPC systems
+- **Standard C++ Only** - No platform-specific code or custom systems
 - **Future-ready** - Designed for potential C++ standardization
 
 ## ✨ What's New in the Modernized Version
 
-- **Removed custom communication system** - Replaced with standard C++ async facilities
-- **New async module** - `include/async/async_integrator.hpp` with std::future-based integration
-- **New signal processing** - `include/signal/signal_processor.hpp` for type-safe event handling
-- **Modern CMake/Xmake** - Updated build system for C++20 header-only library
+- **Unified Interface** - Single `IntegrationInterface` applies to domains such as robotics control, financial exchange, and so on.
+- **Proper C++ concepts** - Template syntax uses `system_state` and `can_be_time` concepts
+- **Removed communication module** - Replaced with standard C++ async facilities
+- **Signal-aware integration** - Built-in support for discrete events, continuous influences, and real-time output
+- **Extensible design** - Works for any application domain with the same unified interface
 - **Clean architecture** - Better separation of concerns and modularity
 
 ## Supported Integrators
@@ -72,84 +73,84 @@ int main() {
 }
 ```
 
-### Async Integration with Signal Processing
+### Signal-Aware Integration with Unified Interface
 ```cpp
 #include <diffeq.hpp>
-#include <async/async_integrator.hpp>
-#include <signal/signal_processor.hpp>
-#include <vector>
-#include <future>
+#include <interfaces/integration_interface.hpp>
+
+using namespace diffeq;
+
+// Create unified interface (works for ANY domain)
+auto interface = interfaces::make_integration_interface<std::vector<double>, double>();
+
+// Register signal influences for real-time events
+interface->register_signal_influence<double>("price_update",
+    interfaces::IntegrationInterface<std::vector<double>, double>::InfluenceMode::CONTINUOUS_SHIFT,
+    [](const double& price, auto& state, auto t) {
+        // Modify portfolio dynamics based on price signal
+        double momentum = (price > 100.0) ? 0.01 : -0.01;
+        for (auto& asset : state) asset *= (1.0 + momentum);
+    });
+
+// Register real-time output monitoring
+interface->register_output_stream("portfolio_monitor",
+    [](const auto& state, auto t) {
+        std::cout << "Portfolio value: " << std::accumulate(state.begin(), state.end(), 0.0) << std::endl;
+    });
+
+// Create signal-aware ODE (combines your ODE with signal processing)
+auto signal_ode = interface->make_signal_aware_ode(my_portfolio_ode);
+auto integrator = make_rk45<std::vector<double>>(signal_ode);
+
+// Integration automatically handles signals and outputs
+std::vector<double> state = {100000.0, 150000.0, 120000.0}; // Initial portfolio
+integrator.integrate(state, 0.001, 1.0); // 1 day simulation
+```
+
+### Cross-Domain Applications (Finance, Robotics, Science)
+```cpp
+#include <diffeq.hpp>
+#include <interfaces/integration_interface.hpp>
 
 using namespace diffeq;
 
 int main() {
-    std::vector<double> state = {1.0, 0.0};  // Initial conditions
+    // FINANCE: Portfolio optimization with the unified interface
+    auto finance_interface = interfaces::make_integration_interface<std::vector<double>, double>();
     
-    // Create async integrator
-    auto integrator = async::factory::make_async_rk45<std::vector<double>>(
-        [](double t, const auto& y, auto& dydt) {
-            dydt[0] = y[1];      // dx/dt = v
-            dydt[1] = -y[0];     // dv/dt = -x (harmonic oscillator)
-        },
-        async::AsyncIntegrator<std::vector<double>>::Config{
-            .enable_async_stepping = true,
-            .enable_state_monitoring = true
-        }
-    );
-    
-    // Create signal processor for real-time data handling
-    auto signal_proc = signal::make_signal_processor(integrator);
-    
-    // Register signal handler for external events
-    signal_proc->register_handler<double>("market_update", 
-        [&](const signal::Signal<double>& sig) {
-            std::cout << "Received market data: " << sig.data << std::endl;
+    finance_interface->register_signal_influence<double>("market_volatility",
+        interfaces::IntegrationInterface<std::vector<double>, double>::InfluenceMode::DISCRETE_EVENT,
+        [](const double& volatility, auto& portfolio, auto t) {
+            if (volatility > 0.3) {
+                // Reduce risk exposure
+                for (auto& asset : portfolio) asset *= 0.9;
+            }
         });
     
-    // Start async integration
-    auto future = integrator->integrate_async(state, 0.01, 10.0);
+    // ROBOTICS: Multi-joint robot control with the same unified interface
+    auto robot_interface = interfaces::make_integration_interface<std::array<double, 18>, double>();
     
-    // Simulate external signals
-    signal_proc->emit_signal("market_update", 42.5);
-    
-    // Wait for completion
-    auto result = future.get();
-    std::cout << "Final state: [" << result[0] << ", " << result[1] << "]" << std::endl;
-    
-    return 0;
-}
-```
-
-### Domain-Specific Application (Finance)
-```cpp
-#include <diffeq.hpp>
-#include <domains/application_processors.hpp>
-#include <vector>
-
-using namespace diffeq::domains;
-
-int main() {
-    // Portfolio state: [asset1, asset2, asset3, VaR, sharpe_ratio]
-    std::vector<double> portfolio = {100000.0, 150000.0, 120000.0, 5000.0, 1.2};
-    
-    // Create finance processor
-    auto finance_proc = factory::make_finance_processor();
-    
-    // Set up portfolio dynamics
-    auto integrator = diffeq::make_rk45<std::vector<double>>(
-        [&](double t, const auto& y, auto& dydt) {
-            finance_proc->portfolio_dynamics(t, y, dydt);
+    robot_interface->register_signal_influence<std::array<double, 6>>("joint_targets",
+        interfaces::IntegrationInterface<std::array<double, 18>, double>::InfluenceMode::CONTINUOUS_SHIFT,
+        [](const auto& targets, auto& robot_state, auto t) {
+            // Update control targets for 6-DOF robot
+            for (size_t i = 0; i < targets.size(); ++i) {
+                robot_state[i + 12] = targets[i]; // Set target positions
+            }
         });
     
-    // Real-time portfolio optimization
-    integrator.integrate(portfolio, 0.001, 1.0);  // 1 day simulation
+    // Emergency stop capability
+    robot_interface->register_signal_influence<bool>("emergency_stop",
+        interfaces::IntegrationInterface<std::array<double, 18>, double>::InfluenceMode::DISCRETE_EVENT,
+        [](bool stop, auto& robot_state, auto t) {
+            if (stop) {
+                // Zero all velocities immediately
+                for (size_t i = 6; i < 12; ++i) robot_state[i] = 0.0;
+            }
+        });
     
-    std::cout << "Optimized portfolio value: " 
-              << (portfolio[0] + portfolio[1] + portfolio[2]) << std::endl;
-    
-    return 0;
-}
-```
+    // Both finance and robotics use the SAME unified interface!
+    // No domain-specific processors needed anymore.
     
     return 0;
 }
@@ -191,7 +192,7 @@ target_link_libraries(your_target diffeq::diffeq)
 
 ## Architecture Overview
 
-The modernized diffeq library follows a clean, modular architecture:
+The modernized diffeq library follows a clean, unified architecture:
 
 ```
 include/diffeq.hpp                 # Main header (includes everything)
@@ -204,50 +205,44 @@ include/diffeq.hpp                 # Main header (includes everything)
 │   ├── dop853_solver.hpp         # High-accuracy 8th order
 │   ├── bdf_solver.hpp            # For stiff systems
 │   └── ...                       # Other solvers
-├── async/                         # NEW: Async execution (standard C++ only)
+├── interfaces/                    # NEW: Unified interface (replaces domains)
+│   └── integration_interface.hpp # Single interface for all applications
+├── async/                         # Async execution (standard C++ only)
 │   └── async_integrator.hpp      # std::future-based async integration
-├── signal/                        # NEW: Signal processing 
+├── signal/                        # Signal processing 
 │   └── signal_processor.hpp      # Type-safe event handling
-├── domains/                       # NEW: Domain-specific processors
-│   └── application_processors.hpp # Finance and robotics
-└── communication/                 # DEPRECATED: Custom IPC (use async/ instead)
-    ├── process_connector.hpp      # [DEPRECATED]
-    ├── event_bus.hpp             # [DEPRECATED]  
-    └── realtime_priority.hpp     # [DEPRECATED]
+└── examples/                      # Usage examples
+    └── interface_usage.hpp        # How to use the unified interface
 ```
 
-## Migration Guide
+### Key Architectural Changes
 
-If you were using the old communication system, here's how to migrate:
+- **Unified Interface**: Single `IntegrationInterface` replaces all domain-specific processors
+- **Removed Legacy Code**: No more `communication/` or `domains/` directories
+- **C++ Concepts**: Proper template constraints using `system_state` and `can_be_time`
+- **Standard C++ Only**: All functionality using C++20/23 standard library
 
-### Old Communication System (Deprecated)
-```cpp
-// OLD: Don't use this anymore
-#include <communication/process_connector.hpp>
-#include <communication/event_bus.hpp>
+## Testing
 
-ProcessConnector connector;
-EventBus event_bus;
-// Complex IPC setup...
+The library includes comprehensive tests in the `test/` directory:
+
+```bash
+# Compile and run integration tests
+cd diffeq
+g++ -std=c++20 -I include test/integration/test_modernized_interface.cpp -o test_modernized
+./test_modernized
+
+# Compile and run unit tests
+g++ -std=c++20 -I include test/unit/test_*.cpp -o test_units
+./test_units
 ```
 
-### New Async/Signal System (Recommended)
-```cpp
-// NEW: Use this instead
-#include <async/async_integrator.hpp>
-#include <signal/signal_processor.hpp>
-
-auto integrator = async::factory::make_async_rk45<StateType>(ode_system);
-auto signal_proc = signal::make_signal_processor(integrator);
-// Simple, standard C++ only
-```
-
-### Benefits of Migration
-- **Standard C++ only** - No platform-specific code
-- **Better performance** - Less overhead than custom IPC
-- **Type safety** - Template-based instead of std::any
-- **Maintainability** - Cleaner separation of concerns
-- **Future-proof** - Suitable for C++ standardization
+The main integration test (`test/integration/test_modernized_interface.cpp`) validates:
+- Unified interface functionality across all domains
+- Signal processing and event handling
+- C++ concepts compliance
+- Async integration capabilities
+- Cross-domain usage patterns (finance, robotics, science)
 
 ## Usage
 
@@ -255,7 +250,23 @@ auto signal_proc = signal::make_signal_processor(integrator);
 2. **Define your ODE system**: Function that computes dy/dt = f(t, y)
 3. **Choose an integrator**: Use factory functions like `make_rk45()`, `make_dop853()`
 4. **Set initial conditions and integrate**
-5. **Optional**: Add async execution and signal processing for real-time applications
+5. **Optional**: Use unified interface for signal-aware integration across any domain
+
+### Basic Integration
+```cpp
+#include <diffeq.hpp>
+auto integrator = diffeq::make_rk45<std::vector<double>>(my_ode);
+integrator.integrate(state, dt, t_final);
+```
+
+### Signal-Aware Integration (Any Domain)
+```cpp
+#include <interfaces/integration_interface.hpp>
+auto interface = diffeq::interfaces::make_integration_interface<StateType, TimeType>();
+interface->register_signal_influence<DataType>("signal_name", mode, handler);
+auto signal_ode = interface->make_signal_aware_ode(my_ode);
+auto integrator = diffeq::make_rk45<StateType>(signal_ode);
+```
 
 ### Integrator Selection Guide
 
@@ -268,34 +279,42 @@ See `examples/` directory for detailed usage examples.
 
 ## Advanced Features
 
-### Async Integration
+### Unified Signal-Aware Integration
 ```cpp
+#include <interfaces/integration_interface.hpp>
+
+auto interface = interfaces::make_integration_interface<StateType, TimeType>();
+
+// Discrete events (instantaneous state changes)
+interface->register_signal_influence<EventType>("event_name",
+    IntegrationInterface<StateType, TimeType>::InfluenceMode::DISCRETE_EVENT, handler);
+
+// Continuous influences (modify ODE trajectory)  
+interface->register_signal_influence<DataType>("signal_name",
+    IntegrationInterface<StateType, TimeType>::InfluenceMode::CONTINUOUS_SHIFT, handler);
+
+// Real-time output streams
+interface->register_output_stream("stream_name", output_handler, interval);
+
+auto signal_ode = interface->make_signal_aware_ode(original_ode);
+```
+
+### Async Integration
+```cpp  
 #include <async/async_integrator.hpp>
 
 auto integrator = async::factory::make_async_dop853<StateType>(ode_system);
 auto future = integrator->integrate_async(initial_state, dt, t_final);
 // Continue other work...
-auto result = future.get();  // Get result when ready
+future.wait(); // Wait for completion
 ```
 
-### Signal Processing
-```cpp  
-#include <signal/signal_processor.hpp>
-
-auto signal_proc = signal::make_signal_processor(integrator);
-signal_proc->register_handler<MarketData>("price_update", handle_price_change);
-signal_proc->emit_signal("price_update", market_data);
-```
-
-### Domain-Specific Applications
+### Cross-Domain Applications
 ```cpp
-#include <domains/application_processors.hpp>
-
-// Finance: Portfolio optimization
-auto finance_proc = domains::factory::make_finance_processor();
-
-// Robotics: Robot control  
-auto robotics_proc = domains::factory::make_robotics_processor<6>(); // 6-DOF robot
+// Finance, robotics, science - all use the same unified interface!
+auto finance_interface = interfaces::make_integration_interface<std::vector<double>, double>();
+auto robot_interface = interfaces::make_integration_interface<std::array<double, 18>, double>();
+auto science_interface = interfaces::make_integration_interface<std::vector<float>, float>();
 ```
 
 ## Documentation

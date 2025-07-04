@@ -19,7 +19,7 @@ namespace diffeq::interfaces {
  * 3. Real-time output streaming during integration
  * 4. Bidirectional communication between ODE and external processes
  */
-template<system_state StateType, can_be_time TimeType = double>
+template<system_state StateType, can_be_time TimeType>
 class IntegrationInterface {
 public:
     using state_type = StateType;
