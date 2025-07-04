@@ -15,17 +15,22 @@
 #include <solvers/bdf_solver.hpp>        // BDF (multistep, stiff systems)
 #include <solvers/lsoda_solver.hpp>      // LSODA (automatic method switching)
 
+// Modern async and signal processing components (standard C++ only)
+#include <async/async_integrator.hpp>    // Async integration with std::future
+#include <signal/signal_processor.hpp>   // Generic signal processing
+#include <interfaces/integration_interface.hpp>  // Unified interface for all domains
+
 /**
  * @file diffeq.hpp
- * @brief Comprehensive ODE integrator library header
+ * @brief Modern C++ ODE Integration Library with Real-time Signal Processing
  * 
- * This library provides a modern C++20 implementation of popular ODE integrators
- * similar to those found in scipy.integrate. All integrators follow a consistent
- * API and support both fixed-size containers (std::array) and dynamic containers
- * (std::vector).
+ * This library provides a comprehensive C++20 implementation of ODE integrators
+ * with advanced real-time capabilities for financial and robotics applications.
+ * Features include real-time signal processing, inter-process communication,
+ * and async execution using modern C++ standards.
  * 
- * Available Integrators:
- * =====================
+ * Core Integrators:
+ * ================
  * 
  * Fixed Step Methods:
  * - EulerIntegrator: Simple 1st order explicit method
@@ -44,9 +49,25 @@
  * Automatic Methods:
  * - LSODAIntegrator: Automatic switching between Adams and BDF
  * 
- * Usage Example:
- * ==============
+ * Real-time Capabilities:
+ * ======================
  * 
+ * - AsyncIntegrator: Lightweight async wrapper using std::future and std::thread
+ * - SignalProcessor: Generic signal processing with type-safe handlers
+ * - IntegrationInterface: Unified interface for signal-aware ODE integration
+ * - Extensible design: Works for finance, robotics, science, and any domain
+ * 
+ * Key Features:
+ * - Header-only design (no external dependencies)
+ * - Standard C++20 facilities only with proper concepts
+ * - Optional external library support (networking, JSON, etc.)
+ * - Thread-safe async operations
+ * - Unified interface for all application domains
+ * 
+ * Usage Examples:
+ * ===============
+ * 
+ * Basic ODE Integration:
  * ```cpp
  * #include <diffeq.hpp>
  * #include <vector>
@@ -57,49 +78,98 @@
  * }
  * 
  * int main() {
- *     // Choose integrator based on problem characteristics:
- *     
- *     // For smooth, non-stiff problems - use RK45 (scipy default)
- *     RK45Integrator<std::vector<double>> integrator(exponential_decay);
- *     
- *     // For high accuracy - use DOP853
- *     // DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-12, 1e-15);
- *     
- *     // For stiff problems - use BDF or Radau
- *     // BDFIntegrator<std::vector<double>> integrator(exponential_decay);
- *     
- *     // For unknown stiffness - use LSODA (automatic)
- *     // LSODAIntegrator<std::vector<double>> integrator(exponential_decay);
- *     
  *     std::vector<double> y = {1.0};  // Initial condition
- *     integrator.set_time(0.0);       // Set initial time
- *     integrator.integrate(y, 0.1, 1.0);  // Integrate from t=0 to t=1 with suggested dt=0.1
- *     
+ *     RK45Integrator<std::vector<double>> integrator(exponential_decay);
+ *     integrator.integrate(y, 0.1, 1.0);  // Integrate from t=0 to t=1
  *     // Result: y[0] ≈ exp(-1) ≈ 0.368
  *     return 0;
  * }
  * ```
  * 
+ * Real-time Signal-Aware Integration:
+ * 
+ * #include <diffeq.hpp>
+ * #include <interfaces/integration_interface.hpp>
+ * 
+ * // Create signal-aware interface
+ * auto interface = diffeq::interfaces::make_integration_interface<std::vector<double>>();
+ * 
+ * // Register signal influences
+ * interface->register_signal_influence<double>("price_update",
+ *     diffeq::interfaces::IntegrationInterface<std::vector<double>>::InfluenceMode::CONTINUOUS_SHIFT,
+ *     [](const double& price, auto& state, auto t) {
+ *         // Modify portfolio dynamics based on price signal
+ *         double momentum = (price > 100.0) ? 0.01 : -0.01;
+ *         for (auto& asset : state) asset *= (1.0 + momentum);
+ *     });
+ * 
+ * // Register real-time output
+ * interface->register_output_stream("monitor",
+ *     [](const auto& state, auto t) {
+ *         std::cout << "Portfolio value: " << std::accumulate(state.begin(), state.end(), 0.0) << std::endl;
+ *     });
+ * 
+ * // Create signal-aware ODE
+ * auto signal_ode = interface->make_signal_aware_ode(my_portfolio_ode);
+ * auto integrator = diffeq::make_rk45<std::vector<double>>(signal_ode);
+ * 
+ * // Integration automatically handles signals and outputs
+ * integrator.integrate(state, dt, t_final);
+ * 
+ * Real-time Robot Control:
+ * 
+ * #include <diffeq.hpp>
+ * #include <interfaces/integration_interface.hpp>
+ * 
+ * constexpr size_t N_JOINTS = 6;
+ * std::array<double, N_JOINTS * 3> robot_state{}; // position, velocity, acceleration
+ * 
+ * // Create robotics interface
+ * auto interface = diffeq::interfaces::make_integration_interface<std::array<double, 18>>();
+ * 
+ * // Register control signal influence
+ * interface->register_signal_influence<std::vector<double>>("control_targets",
+ *     diffeq::interfaces::IntegrationInterface<std::array<double, 18>>::InfluenceMode::DISCRETE_EVENT,
+ *     [](const auto& targets, auto& state, auto t) {
+ *         // Update target positions for each joint
+ *         for (size_t i = 0; i < targets.size() && i < N_JOINTS; ++i) {
+ *             // Apply control logic
+ *         }
+ *     });
+ * 
+ * // Emergency stop capability
+ * interface->register_signal_influence<bool>("emergency_stop",
+ *     diffeq::interfaces::IntegrationInterface<std::array<double, 18>>::InfluenceMode::DISCRETE_EVENT,
+ *     [](bool stop, auto& state, auto t) {
+ *         if (stop) {
+ *             // Set all velocities to zero
+ *             for (size_t i = N_JOINTS; i < 2 * N_JOINTS; ++i) state[i] = 0.0;
+ *         }
+ *     });
+ * 
+ * // Create robotics interface and register signals for real-time control.
+ * // Example shows emergency stop and joint monitoring capabilities.
+ * 
  * Guidelines for Integrator Selection:
- * ===================================
+ * =====================================
  * 
  * 1. **RK45Integrator**: Best general-purpose choice for smooth, non-stiff ODEs.
- *    Similar to scipy.integrate.solve_ivp with method='RK45'.
+ *    Similar to scipy.integrate.solve_ivp with method RK45.
  * 
  * 2. **RK23Integrator**: Lower accuracy but faster for less demanding problems.
- *    Similar to scipy.integrate.solve_ivp with method='RK23'.
+ *    Similar to scipy.integrate.solve_ivp with method RK23.
  * 
  * 3. **DOP853Integrator**: High accuracy for demanding smooth problems.
- *    Similar to scipy.integrate.solve_ivp with method='DOP853'.
+ *    Similar to scipy.integrate.solve_ivp with method DOP853.
  * 
  * 4. **BDFIntegrator**: Variable order method for stiff systems.
- *    Similar to scipy.integrate.solve_ivp with method='BDF'.
+ *    Similar to scipy.integrate.solve_ivp with method BDF.
  * 
  * 5. **RadauIntegrator**: Implicit method for stiff systems.
- *    Similar to scipy.integrate.solve_ivp with method='Radau'.
+ *    Similar to scipy.integrate.solve_ivp with method Radau.
  * 
  * 6. **LSODAIntegrator**: Automatic stiffness detection and method switching.
- *    Similar to scipy.integrate.odeint or solve_ivp with method='LSODA'.
+ *    Similar to scipy.integrate.odeint or solve_ivp with method LSODA.
  * 
  * 7. **RK4Integrator**: Simple fixed-step method for educational purposes or
  *    when step size control is handled externally.
@@ -107,12 +177,28 @@
  * Concepts:
  * =========
  * 
- * - `system_state`: Container types (std::vector, std::array, etc.) that can
+ * - system_state: Container types (std::vector, std::array, etc.) that can
  *   represent the state vector of the ODE system.
  * 
- * - `can_be_time`: Arithmetic types (double, float, int) that can represent time.
+ * - can_be_time: Arithmetic types (double, float, int) that can represent time.
  * 
- * All integrators are templated on these concepts for maximum flexibility.
+ * All integrators and interfaces are templated on these concepts for maximum
+ * flexibility and type safety.
+ * 
+ * Architecture:
+ * =============
+ * 
+ * The library uses a unified interface design where all real-time signal processing
+ * capabilities are provided through a single IntegrationInterface class. This 
+ * interface supports:
+ * 
+ * 1. **Discrete Events**: Instantaneous state modifications triggered by signals
+ * 2. **Continuous Influences**: Ongoing trajectory modifications from signals  
+ * 3. **Parameter Updates**: Dynamic changes to integration parameters
+ * 4. **Real-time Output**: Streaming integration data at specified intervals
+ * 
+ * This design eliminates the need for domain-specific processors while remaining
+ * flexible enough to handle any application domain.
  */
 
 namespace diffeq {
@@ -120,14 +206,14 @@ namespace diffeq {
     using std::vector;
     using std::array;
     
-    // Common type aliases
+    // Common type aliases for system_state concept
     template<typename T>
     using VectorState = std::vector<T>;
     
     template<typename T, std::size_t N>
     using ArrayState = std::array<T, N>;
     
-    // Default scalar types
+    // Default scalar types for can_be_time concept
     using DefaultScalar = double;
     using DefaultTime = double;
 }
