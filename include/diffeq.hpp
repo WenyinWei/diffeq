@@ -36,12 +36,9 @@
 #include <signal/signal_processor.hpp>   // Generic signal processing
 #include <interfaces/integration_interface.hpp>  // Unified interface for all domains
 
-// Enhanced parallelism capabilities with modern C++ features
-#include <execution/parallel.hpp>                 // Simplified parallel execution interface
-#include <execution/parallelism_facade_clean.hpp> // Advanced parallelism interface (Facade pattern)
-#include <execution/parallel_builder.hpp>         // Fluent interface for configuration (Builder pattern)
-// #include <execution/modern_executor.hpp>          // Modern C++ executor support with coroutines (disabled due to std::execution compatibility)
-#include <execution/hardware_support.hpp>         // Hardware-specific execution (CUDA, OpenCL, FPGA, MPI)
+// Standard parallelism library integration examples
+// Note: Use standard libraries (std::execution, OpenMP, TBB, Thrust) instead of custom parallel classes
+// See docs/STANDARD_PARALLELISM.md and examples/standard_parallelism.hpp for integration examples
 
 /**
  * @file diffeq.hpp
