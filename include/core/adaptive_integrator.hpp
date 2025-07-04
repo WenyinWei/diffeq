@@ -69,17 +69,43 @@ protected:
         return atol_ + rtol_ * std::abs(y_val);
     }
 
-    // Calculate error norm
+    // Calculate error norm using SciPy-style L2 norm
     time_type error_norm(const state_type& error, const state_type& y) const {
-        time_type norm = static_cast<time_type>(0);
+        time_type norm_squared = static_cast<time_type>(0);
+        std::size_t n = 0;
+        
         for (std::size_t i = 0; i < y.size(); ++i) {
             auto y_it = y.begin();
             auto err_it = error.begin();
-            time_type tol = calculate_tolerance(y_it[i]);
-            time_type scaled_error = std::abs(err_it[i]) / tol;
-            norm = std::max(norm, scaled_error);
+            time_type scale = atol_ + std::abs(y_it[i]) * rtol_;
+            time_type scaled_error = err_it[i] / scale;
+            norm_squared += scaled_error * scaled_error;
+            ++n;
         }
-        return norm;
+        
+        if (n == 0) return static_cast<time_type>(0);
+        return std::sqrt(norm_squared / n);
+    }
+
+    // SciPy-style error norm calculation using max of current and new state
+    time_type error_norm_scipy_style(const state_type& error, const state_type& y_old, const state_type& y_new) const {
+        time_type norm_squared = static_cast<time_type>(0);
+        std::size_t n = 0;
+        
+        for (std::size_t i = 0; i < y_old.size(); ++i) {
+            auto y_old_it = y_old.begin();
+            auto y_new_it = y_new.begin();
+            auto err_it = error.begin();
+            
+            // SciPy uses: scale = atol + max(abs(y), abs(y_new)) * rtol
+            time_type scale = atol_ + std::max(std::abs(y_old_it[i]), std::abs(y_new_it[i])) * rtol_;
+            time_type scaled_error = err_it[i] / scale;
+            norm_squared += scaled_error * scaled_error;
+            ++n;
+        }
+        
+        if (n == 0) return static_cast<time_type>(0);
+        return std::sqrt(norm_squared / n);
     }
 
     // Suggest new step size based on error

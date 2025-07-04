@@ -28,31 +28,48 @@ public:
         time_type current_dt = dt;
         
         for (int attempt = 0; attempt < max_attempts; ++attempt) {
-            // Try a step
             state_type y_new = StateCreator<state_type>::create(state);
             state_type error = StateCreator<state_type>::create(state);
             
             rk45_step(state, y_new, error, current_dt);
             
-            // Calculate error norm
-            time_type err_norm = this->error_norm(error, y_new);
+            // Calculate error norm using SciPy-style scaling
+            time_type err_norm = this->error_norm_scipy_style(error, state, y_new);
             
-            // More lenient error control for debugging
-            if (err_norm <= 10.0 || current_dt <= this->dt_min_) {
+            if (err_norm <= 1.0) {
                 // Step accepted
                 state = y_new;
                 this->advance_time(current_dt);
                 
-                // Suggest next step size (more conservative)
-                if (err_norm <= 1.0) {
-                    current_dt = this->suggest_step_size(current_dt, err_norm, 4);
+                // SciPy-style step size control
+                // For RK45: error_estimator_order = 4, so exponent = -1/(4+1) = -1/5
+                time_type safety = static_cast<time_type>(0.9);
+                time_type min_factor = static_cast<time_type>(0.2);
+                time_type max_factor = static_cast<time_type>(10.0);
+                time_type error_exponent = static_cast<time_type>(-1.0 / 5.0);  // -(1/(error_estimator_order + 1))
+                
+                time_type factor;
+                if (err_norm == 0) {
+                    factor = max_factor;
                 } else {
-                    current_dt = std::min(current_dt, this->dt_max_);
+                    factor = std::min(max_factor, safety * std::pow(err_norm, error_exponent));
                 }
+                
+                // If step was rejected, limit growth
+                factor = std::max(min_factor, std::min(max_factor, factor));
+                current_dt = std::max(this->dt_min_, std::min(this->dt_max_, current_dt * factor));
+                
                 return current_dt;
             } else {
                 // Step rejected, reduce step size
-                current_dt *= static_cast<time_type>(0.5);
+                time_type safety = static_cast<time_type>(0.9);
+                time_type min_factor = static_cast<time_type>(0.2);
+                time_type error_exponent = static_cast<time_type>(-1.0 / 5.0);  // -(1/(error_estimator_order + 1))
+                
+                time_type factor = std::max(min_factor, 
+                                           safety * std::pow(err_norm, error_exponent));
+                current_dt = std::max(this->dt_min_, current_dt * factor);
+                
                 if (current_dt < this->dt_min_) {
                     break;
                 }
@@ -64,84 +81,92 @@ public:
 
 private:
     void rk45_step(const state_type& y, state_type& y_new, state_type& error, time_type dt) {
-        // Dormand-Prince coefficients
-        const time_type a21 = static_cast<time_type>(1.0/5.0);
-        const time_type a31 = static_cast<time_type>(3.0/40.0);
-        const time_type a32 = static_cast<time_type>(9.0/40.0);
-        const time_type a41 = static_cast<time_type>(44.0/45.0);
-        const time_type a42 = static_cast<time_type>(-56.0/15.0);
-        const time_type a43 = static_cast<time_type>(32.0/9.0);
-        const time_type a51 = static_cast<time_type>(19372.0/6561.0);
-        const time_type a52 = static_cast<time_type>(-25360.0/2187.0);
-        const time_type a53 = static_cast<time_type>(64448.0/6561.0);
-        const time_type a54 = static_cast<time_type>(-212.0/729.0);
-        const time_type a61 = static_cast<time_type>(9017.0/3168.0);
-        const time_type a62 = static_cast<time_type>(-355.0/33.0);
-        const time_type a63 = static_cast<time_type>(46732.0/5247.0);
-        const time_type a64 = static_cast<time_type>(49.0/176.0);
-        const time_type a65 = static_cast<time_type>(-5103.0/18656.0);
+        // Dormand-Prince coefficients matching SciPy's RK45
+        // C = [0, 1/5, 3/10, 4/5, 8/9, 1]
+        // A = (see SciPy implementation)
+        // B = [35/384, 0, 500/1113, 125/192, -2187/6784, 11/84] (5th order)
+        // E = [-71/57600, 0, 71/16695, -71/1920, 17253/339200, -22/525, 1/40] (error)
         
-        // Fourth-order solution coefficients
-        const time_type b1 = static_cast<time_type>(35.0/384.0);
-        const time_type b3 = static_cast<time_type>(500.0/1113.0);
-        const time_type b4 = static_cast<time_type>(125.0/192.0);
-        const time_type b5 = static_cast<time_type>(-2187.0/6784.0);
-        const time_type b6 = static_cast<time_type>(11.0/84.0);
-        
-        // Fifth-order solution coefficients (for error estimation)
-        const time_type c1 = static_cast<time_type>(5179.0/57600.0);
-        const time_type c3 = static_cast<time_type>(7571.0/16695.0);
-        const time_type c4 = static_cast<time_type>(393.0/640.0);
-        const time_type c5 = static_cast<time_type>(-92097.0/339200.0);
-        const time_type c6 = static_cast<time_type>(187.0/2100.0);
-        const time_type c7 = static_cast<time_type>(1.0/40.0);
-        
-        // Temporary states
         state_type k1 = StateCreator<state_type>::create(y);
         state_type k2 = StateCreator<state_type>::create(y);
         state_type k3 = StateCreator<state_type>::create(y);
         state_type k4 = StateCreator<state_type>::create(y);
         state_type k5 = StateCreator<state_type>::create(y);
         state_type k6 = StateCreator<state_type>::create(y);
-        state_type k7 = StateCreator<state_type>::create(y);
+        state_type k7 = StateCreator<state_type>::create(y);  // For error estimation
         state_type temp = StateCreator<state_type>::create(y);
         
+        time_type t = this->current_time_;
+        
         // k1 = f(t, y)
-        this->sys_(this->current_time_, y, k1);
+        this->sys_(t, y, k1);
         
         // k2 = f(t + dt/5, y + dt*k1/5)
         for (std::size_t i = 0; i < y.size(); ++i) {
-            temp[i] = y[i] + dt * a21 * k1[i];
+            auto y_it = y.begin();
+            auto k1_it = k1.begin();
+            auto temp_it = temp.begin();
+            temp_it[i] = y_it[i] + dt * k1_it[i] / static_cast<time_type>(5);
         }
-        this->sys_(this->current_time_ + dt / 5, temp, k2);
+        this->sys_(t + dt / static_cast<time_type>(5), temp, k2);
         
-        // k3 = f(t + 3*dt/10, y + dt*(3*k1 + 9*k2)/40)
+        // k3 = f(t + 3*dt/10, y + dt*(3*k1/40 + 9*k2/40))
         for (std::size_t i = 0; i < y.size(); ++i) {
-            temp[i] = y[i] + dt * (a31 * k1[i] + a32 * k2[i]);
+            auto y_it = y.begin();
+            auto k1_it = k1.begin();
+            auto k2_it = k2.begin();
+            auto temp_it = temp.begin();
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(3) * k1_it[i] / static_cast<time_type>(40) + 
+                                        static_cast<time_type>(9) * k2_it[i] / static_cast<time_type>(40));
         }
-        this->sys_(this->current_time_ + dt * 3 / 10, temp, k3);
+        this->sys_(t + static_cast<time_type>(3) * dt / static_cast<time_type>(10), temp, k3);
         
-        // k4 = f(t + 4*dt/5, y + dt*(44*k1 - 56*k2 + 32*k3)/45)
+        // k4 = f(t + 4*dt/5, y + dt*(44*k1/45 - 56*k2/15 + 32*k3/9))
         for (std::size_t i = 0; i < y.size(); ++i) {
-            temp[i] = y[i] + dt * (a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+            auto y_it = y.begin();
+            auto k1_it = k1.begin();
+            auto k2_it = k2.begin();
+            auto k3_it = k3.begin();
+            auto temp_it = temp.begin();
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(44) * k1_it[i] / static_cast<time_type>(45) + 
+                                        static_cast<time_type>(-56) * k2_it[i] / static_cast<time_type>(15) + 
+                                        static_cast<time_type>(32) * k3_it[i] / static_cast<time_type>(9));
         }
-        this->sys_(this->current_time_ + dt * 4 / 5, temp, k4);
+        this->sys_(t + static_cast<time_type>(4) * dt / static_cast<time_type>(5), temp, k4);
         
-        // k5 = f(t + 8*dt/9, y + dt*(19372*k1 - 25360*k2 + 64448*k3 - 212*k4)/6561)
+        // k5 = f(t + 8*dt/9, y + dt*(19372*k1/6561 - 25360*k2/2187 + 64448*k3/6561 - 212*k4/729))
         for (std::size_t i = 0; i < y.size(); ++i) {
-            temp[i] = y[i] + dt * (a51 * k1[i] + a52 * k2[i] + 
-                                  a53 * k3[i] + a54 * k4[i]);
+            auto y_it = y.begin();
+            auto k1_it = k1.begin();
+            auto k2_it = k2.begin();
+            auto k3_it = k3.begin();
+            auto k4_it = k4.begin();
+            auto temp_it = temp.begin();
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(19372) * k1_it[i] / static_cast<time_type>(6561) + 
+                                        static_cast<time_type>(-25360) * k2_it[i] / static_cast<time_type>(2187) + 
+                                        static_cast<time_type>(64448) * k3_it[i] / static_cast<time_type>(6561) + 
+                                        static_cast<time_type>(-212) * k4_it[i] / static_cast<time_type>(729));
         }
-        this->sys_(this->current_time_ + dt * 8 / 9, temp, k5);
+        this->sys_(t + static_cast<time_type>(8) * dt / static_cast<time_type>(9), temp, k5);
         
-        // k6 = f(t + dt, y + dt*(9017*k1 - 355*k2 + 46732*k3 + 49*k4 - 5103*k5)/3168)
+        // k6 = f(t + dt, y + dt*(9017*k1/3168 - 355*k2/33 + 46732*k3/5247 + 49*k4/176 - 5103*k5/18656))
         for (std::size_t i = 0; i < y.size(); ++i) {
-            temp[i] = y[i] + dt * (a61 * k1[i] + a62 * k2[i] + 
-                                  a63 * k3[i] + a64 * k4[i] + a65 * k5[i]);
+            auto y_it = y.begin();
+            auto k1_it = k1.begin();
+            auto k2_it = k2.begin();
+            auto k3_it = k3.begin();
+            auto k4_it = k4.begin();
+            auto k5_it = k5.begin();
+            auto temp_it = temp.begin();
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(9017) * k1_it[i] / static_cast<time_type>(3168) + 
+                                        static_cast<time_type>(-355) * k2_it[i] / static_cast<time_type>(33) + 
+                                        static_cast<time_type>(46732) * k3_it[i] / static_cast<time_type>(5247) + 
+                                        static_cast<time_type>(49) * k4_it[i] / static_cast<time_type>(176) + 
+                                        static_cast<time_type>(-5103) * k5_it[i] / static_cast<time_type>(18656));
         }
-        this->sys_(this->current_time_ + dt, temp, k6);
+        this->sys_(t + dt, temp, k6);
         
-        // Fourth-order solution
+        // 5th order solution: y_new = y + dt*(35*k1/384 + 500*k3/1113 + 125*k4/192 - 2187*k5/6784 + 11*k6/84)
         for (std::size_t i = 0; i < y.size(); ++i) {
             auto y_it = y.begin();
             auto k1_it = k1.begin();
@@ -151,37 +176,32 @@ private:
             auto k6_it = k6.begin();
             auto y_new_it = y_new.begin();
             
-            y_new_it[i] = y_it[i] + dt * (b1 * k1_it[i] + b3 * k3_it[i] + 
-                                         b4 * k4_it[i] + b5 * k5_it[i] + b6 * k6_it[i]);
+            y_new_it[i] = y_it[i] + dt * (static_cast<time_type>(35) * k1_it[i] / static_cast<time_type>(384) + 
+                                         static_cast<time_type>(500) * k3_it[i] / static_cast<time_type>(1113) + 
+                                         static_cast<time_type>(125) * k4_it[i] / static_cast<time_type>(192) + 
+                                         static_cast<time_type>(-2187) * k5_it[i] / static_cast<time_type>(6784) + 
+                                         static_cast<time_type>(11) * k6_it[i] / static_cast<time_type>(84));
         }
         
-        // k7 = f(t + dt, y_new) for fifth-order estimate
-        this->sys_(this->current_time_ + dt, y_new, k7);
+        // k7 = f(t + dt, y_new) - needed for error estimation
+        this->sys_(t + dt, y_new, k7);
         
-        // Simplified error estimate: use difference between 4th and 5th order solutions
-        // Calculate 5th order solution
-        state_type y_5th = StateCreator<state_type>::create(y);
+        // Error estimate using E = [-71/57600, 0, 71/16695, -71/1920, 17253/339200, -22/525, 1/40]
         for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_it = y.begin();
             auto k1_it = k1.begin();
             auto k3_it = k3.begin();
             auto k4_it = k4.begin();
             auto k5_it = k5.begin();
             auto k6_it = k6.begin();
             auto k7_it = k7.begin();
-            auto y_5th_it = y_5th.begin();
-            
-            y_5th_it[i] = y_it[i] + dt * (c1 * k1_it[i] + c3 * k3_it[i] + c4 * k4_it[i] + 
-                                         c5 * k5_it[i] + c6 * k6_it[i] + c7 * k7_it[i]);
-        }
-        
-        // Error = |y_5th - y_4th|
-        for (std::size_t i = 0; i < y.size(); ++i) {
-            auto y_new_it = y_new.begin();
-            auto y_5th_it = y_5th.begin();
             auto error_it = error.begin();
             
-            error_it[i] = std::abs(y_5th_it[i] - y_new_it[i]);
+            error_it[i] = dt * (static_cast<time_type>(-71) * k1_it[i] / static_cast<time_type>(57600) + 
+                               static_cast<time_type>(71) * k3_it[i] / static_cast<time_type>(16695) + 
+                               static_cast<time_type>(-71) * k4_it[i] / static_cast<time_type>(1920) + 
+                               static_cast<time_type>(17253) * k5_it[i] / static_cast<time_type>(339200) + 
+                               static_cast<time_type>(-22) * k6_it[i] / static_cast<time_type>(525) + 
+                               k7_it[i] / static_cast<time_type>(40));
         }
     }
 };
