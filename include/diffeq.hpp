@@ -15,6 +15,11 @@
 #include <solvers/bdf_solver.hpp>        // BDF (multistep, stiff systems)
 #include <solvers/lsoda_solver.hpp>      // LSODA (automatic method switching)
 
+// SDE (Stochastic Differential Equation) support
+#include <sde/sde_base.hpp>              // SDE base infrastructure
+#include <sde/sde_solvers.hpp>           // SDE integrators (Euler-Maruyama, Milstein, SRI1, etc.)
+#include <sde/advanced_sde_solvers.hpp>  // Advanced SDE integrators (SRA, SRI, SOSRI, SOSRA)
+
 // Modern async and signal processing components (standard C++ only)
 #include <async/async_integrator.hpp>    // Async integration with std::future
 #include <signal/signal_processor.hpp>   // Generic signal processing
@@ -48,6 +53,26 @@
  * 
  * Automatic Methods:
  * - LSODAIntegrator: Automatic switching between Adams and BDF
+ * 
+ * SDE (Stochastic Differential Equation) Integrators:
+ * ===================================================
+ * 
+ * Basic Methods:
+ * - EulerMaruyamaIntegrator: Basic SDE solver (strong order 0.5)
+ * - MilsteinIntegrator: Higher-order method with Lévy area (strong order 1.0)
+ * - SRI1Integrator: Stochastic Runge-Kutta method (strong order 1.0)
+ * - ImplicitEulerMaruyamaIntegrator: Implicit method for stiff SDEs
+ * 
+ * Advanced High-Order Methods (Strong Order 1.5):
+ * - SRAIntegrator: Stochastic Runge-Kutta for additive noise SDEs
+ * - SRIIntegrator: Stochastic Runge-Kutta for general Itô SDEs  
+ * - SOSRAIntegrator: Stability-optimized SRA, robust to stiffness
+ * - SOSRIIntegrator: Stability-optimized SRI, robust to stiffness
+ * 
+ * Pre-configured Methods:
+ * - SRA1, SRA2: Different tableau variants for additive noise
+ * - SRIW1: Weak order 2.0 variant for general SDEs
+ * - SOSRA, SOSRI: Stability-optimized for high tolerances
  * 
  * Real-time Capabilities:
  * ======================
@@ -149,6 +174,45 @@
  * 
  * // Create robotics interface and register signals for real-time control.
  * // Example shows emergency stop and joint monitoring capabilities.
+ * 
+ * Stochastic Differential Equations (SDEs):
+ * ==========================================
+ * 
+ * ```cpp
+ * #include <diffeq.hpp>
+ * #include <sde/sde_base.hpp>
+ * #include <sde/sde_solvers.hpp>
+ * 
+ * using namespace diffeq::sde;
+ * 
+ * // Define SDE system: dX = f(t,X)dt + g(t,X)dW
+ * // Example: Geometric Brownian Motion dS = μS dt + σS dW
+ * auto drift = [](double t, const std::vector<double>& x, std::vector<double>& fx) {
+ *     double mu = 0.05;  // 5% drift
+ *     fx[0] = mu * x[0];
+ * };
+ * 
+ * auto diffusion = [](double t, const std::vector<double>& x, std::vector<double>& gx) {
+ *     double sigma = 0.2;  // 20% volatility
+ *     gx[0] = sigma * x[0];
+ * };
+ * 
+ * // Create SDE problem and integrator
+ * auto problem = factory::make_sde_problem<std::vector<double>, double>(
+ *     drift, diffusion, NoiseType::DIAGONAL_NOISE);
+ * auto wiener = factory::make_wiener_process<std::vector<double>, double>(1, 42);
+ * 
+ * EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
+ * 
+ * std::vector<double> state = {100.0};  // Initial stock price
+ * integrator.integrate(state, 0.01, 1.0);  // Integrate to t=1
+ * ```
+ * 
+ * Available SDE methods:
+ * - EulerMaruyamaIntegrator: Basic method (strong order 0.5)
+ * - MilsteinIntegrator: Higher accuracy with Lévy area (strong order 1.0)
+ * - SRI1Integrator: Stochastic Runge-Kutta (strong order 1.0)
+ * - ImplicitEulerMaruyamaIntegrator: For stiff SDEs
  * 
  * Guidelines for Integrator Selection:
  * =====================================

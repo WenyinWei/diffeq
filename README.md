@@ -40,6 +40,27 @@ A high-performance, header-only C++ library for solving ordinary differential eq
 - **RadauIntegrator**: 5th order implicit Runge-Kutta
 - **BDFIntegrator**: Variable order (1-6) backward differentiation
 
+### Stochastic Differential Equations (SDEs)
+
+#### Basic SDE Methods
+- **EulerMaruyamaIntegrator**: Basic SDE solver (strong order 0.5)
+- **MilsteinIntegrator**: Higher-order method with Lévy area (strong order 1.0)
+- **SRI1Integrator**: Stochastic Runge-Kutta method (strong order 1.0)
+- **ImplicitEulerMaruyamaIntegrator**: Implicit method for stiff SDEs
+
+#### Advanced High-Order Methods (Strong Order 1.5)
+- **SRAIntegrator**: Stochastic Runge-Kutta for additive noise SDEs
+- **SRIIntegrator**: Stochastic Runge-Kutta for general Itô SDEs  
+- **SOSRAIntegrator**: Stability-optimized SRA, robust to stiffness
+- **SOSRIIntegrator**: Stability-optimized SRI, robust to stiffness
+
+#### Pre-configured Methods
+- **SRA1, SRA2**: Different tableau variants for additive noise
+- **SRIW1**: Weak order 2.0 variant for general SDEs
+- **SOSRA, SOSRI**: Stability-optimized for high tolerances
+
+*All SDE methods are inspired by the DifferentialEquations.jl/StochasticDiffEq.jl algorithms with proper tableau-based implementations.*
+
 ### Automatic Methods  
 - **LSODAIntegrator**: Automatic switching between Adams and BDF
 
@@ -151,6 +172,94 @@ int main() {
     
     // Both finance and robotics use the SAME unified interface!
     // No domain-specific processors needed anymore.
+    
+    return 0;
+}
+```
+
+### Stochastic Differential Equations (SDE) 
+```cpp
+#include <diffeq.hpp>
+#include <sde/sde_solvers.hpp>
+#include <sde/advanced_sde_solvers.hpp>
+
+using namespace diffeq::sde;
+
+// Define Black-Scholes model: dS = μS dt + σS dW
+void black_scholes_drift(double t, const std::vector<double>& S, std::vector<double>& dS) {
+    double mu = 0.05;  // Expected return
+    dS[0] = mu * S[0];
+}
+
+void black_scholes_diffusion(double t, const std::vector<double>& S, std::vector<double>& gS) {
+    double sigma = 0.2;  // Volatility
+    gS[0] = sigma * S[0];
+}
+
+int main() {
+    // Create SDE problem
+    auto problem = factory::make_sde_problem<std::vector<double>, double>(
+        black_scholes_drift, black_scholes_diffusion, NoiseType::DIAGONAL_NOISE);
+    
+    auto wiener = factory::make_wiener_process<std::vector<double>, double>(1, 12345);
+    
+    std::vector<double> S = {100.0};  // Initial stock price
+    
+    // Compare different SDE methods
+    
+    // Basic Euler-Maruyama (strong order 0.5)
+    {
+        EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        std::vector<double> price = S;
+        integrator.integrate(price, 0.01, 1.0);
+        std::cout << "Euler-Maruyama: " << price[0] << std::endl;
+    }
+    
+    // Advanced SRA1 (strong order 1.5 for additive-like noise)
+    {
+        auto integrator = factory::make_sra1_integrator<std::vector<double>, double>(problem, wiener);
+        std::vector<double> price = S;
+        integrator->integrate(price, 0.01, 1.0);
+        std::cout << "SRA1: " << price[0] << std::endl;
+    }
+    
+    // Stability-optimized SOSRI (robust for stiff problems)
+    {
+        auto integrator = factory::make_sosri_integrator<std::vector<double>, double>(problem, wiener);
+        std::vector<double> price = S;
+        integrator->integrate(price, 0.01, 1.0);
+        std::cout << "SOSRI: " << price[0] << std::endl;
+    }
+    
+    // Multi-dimensional SDE: Heston stochastic volatility
+    auto heston_drift = [](double t, const std::vector<double>& x, std::vector<double>& dx) {
+        double S = x[0], V = x[1];
+        double mu = 0.05, kappa = 2.0, theta = 0.04;
+        dx[0] = mu * S;
+        dx[1] = kappa * (theta - V);
+    };
+    
+    auto heston_diffusion = [](double t, const std::vector<double>& x, std::vector<double>& gx) {
+        double S = x[0], V = std::max(x[1], 0.0);
+        double sigma = 0.3;
+        gx[0] = std::sqrt(V) * S;
+        gx[1] = sigma * std::sqrt(V);
+    };
+    
+    auto heston_problem = factory::make_sde_problem<std::vector<double>, double>(
+        heston_drift, heston_diffusion, NoiseType::GENERAL_NOISE);
+    
+    auto heston_wiener = factory::make_wiener_process<std::vector<double>, double>(2, 54321);
+    
+    // Use SOSRA for robust performance on this complex model
+    auto heston_integrator = factory::make_sosra_integrator<std::vector<double>, double>(
+        heston_problem, heston_wiener);
+    
+    std::vector<double> heston_state = {100.0, 0.04};  // [S, V]
+    heston_integrator->integrate(heston_state, 0.01, 1.0);
+    
+    std::cout << "Heston model: S = " << heston_state[0] 
+              << ", V = " << heston_state[1] << std::endl;
     
     return 0;
 }

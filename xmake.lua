@@ -77,6 +77,37 @@ target("test_dop853")
     add_packages("gtest")
     set_rundir("$(projectdir)")
 
+-- 测试目标 - SDE 积分器测试
+target("test_sde_solvers")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("test/integration/test_sde_solvers.cpp")
+    add_packages("gtest")
+    set_rundir("$(projectdir)")
+
+-- 测试目标 - SDE 集成测试
+target("test_sde_integration")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("test/integration/test_sde_integration.cpp")
+    add_packages("gtest")
+    set_rundir("$(projectdir)")
+
+-- 测试目标 - 现代化接口测试
+target("test_modernized_interface")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("test/integration/test_modernized_interface.cpp")
+    add_packages("gtest")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - SDE 演示
+target("sde_demo")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/sde_demo.cpp")
+    set_rundir("$(projectdir)")
+
 -- 自定义任务：运行所有测试
 task("test")
     set_menu {
@@ -99,6 +130,15 @@ task("test")
         
         print("\nBuilding and running DOP853 comprehensive tests...")
         task.run("run", {}, "test_dop853")
+        
+        print("\nBuilding and running SDE solvers tests...")
+        task.run("run", {}, "test_sde_solvers")
+        
+        print("\nBuilding and running SDE integration tests...")
+        task.run("run", {}, "test_sde_integration")
+        
+        print("\nBuilding and running modernized interface tests...")
+        task.run("run", {}, "test_modernized_interface")
     end)
 
 -- 自定义任务：运行示例
@@ -120,6 +160,9 @@ task("example")
         
         print("\nBuilding and running advanced integrators example...")
         task.run("run", {}, "advanced_integrators_usage")
+        
+        print("\nBuilding and running SDE demo...")
+        task.run("run", {}, "sde_demo")
     end)
 
 -- 快速测试任务：只测试基本功能
