@@ -106,8 +106,8 @@ void demonstrate_exponential_decay() {
     
     {
         std::vector<double> y = {1.0};
-        DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-10, 1e-15);
-        time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
+        // DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-3, 1e-6);
+        // time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
     }
     
     {
@@ -202,8 +202,8 @@ void demonstrate_lorenz_system() {
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-10, 1e-15);
-        time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
+        // DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-3, 1e-6);
+        // time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
     }
     
     {
@@ -220,9 +220,10 @@ void demonstrate_stiff_robertson() {
     std::cout << "B + C -> A + C (k3 = 1e4)" << std::endl;
     std::cout << "Initial conditions: A(0) = 1, B(0) = 0, C(0) = 0" << std::endl << std::endl;
     
-    double t_start = 0.0, t_end = 1e5, dt = 1.0;  // Very long time scale
+    double t_start = 0.0, t_end = 1.0, dt = 0.1;  // Much shorter time scale for demo
     
     std::cout << "Note: This is a very stiff system. Explicit methods may fail or be very slow." << std::endl;
+    std::cout << "Using shortened time range (t=1.0) for demonstration purposes." << std::endl;
     
     // Only test implicit methods for this stiff system
     try {

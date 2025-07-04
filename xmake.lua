@@ -63,10 +63,18 @@ target("quick_test")
     set_rundir("$(projectdir)")
 
 -- 示例目标 - DOP853特定测试
-target("test_dop853")
+target("test_dop853_example")
     set_kind("binary")
     add_includedirs("include")
     add_files("examples/test_dop853.cpp")
+    set_rundir("$(projectdir)")
+
+-- 测试目标 - DOP853 综合测试
+target("test_dop853")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("test/unit/test_dop853.cpp")
+    add_packages("gtest")
     set_rundir("$(projectdir)")
 
 -- 自定义任务：运行所有测试
@@ -88,6 +96,9 @@ task("test")
         
         print("\nBuilding and running advanced integrators tests...")
         task.run("run", {}, "test_advanced_integrators")
+        
+        print("\nBuilding and running DOP853 comprehensive tests...")
+        task.run("run", {}, "test_dop853")
     end)
 
 -- 自定义任务：运行示例
@@ -150,9 +161,9 @@ task("test-dop853")
     on_run(function ()
         import("core.base.task")
         
-        print("Building and running DOP853 tests...")
+        print("Building and running DOP853 comprehensive tests...")
         task.run("run", {}, "test_dop853")
         
-        print("\nRunning DOP853 unit test...")
-        os.exec("timeout 10s ./build/linux/x86_64/release/test_advanced_integrators --gtest_filter='*DOP853*'")
+        print("\nRunning DOP853 example...")
+        task.run("run", {}, "test_dop853_example")
     end)
