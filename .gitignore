@@ -43,3 +43,9 @@
 # Build directories
 .xmake/
 build/
+
+# Example executables
+simple_standard_parallelism
+standard_parallelism_demo
+test_standard_parallelism
+parallelism_integration_demo
