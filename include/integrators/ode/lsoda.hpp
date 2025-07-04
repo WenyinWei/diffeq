@@ -1,15 +1,21 @@
 #pragma once
-#include <core/adaptive_integrator.hpp>
-#include <solvers/rk45_solver.hpp>
-#include <solvers/bdf_solver.hpp>
+
+#include "../../core/adaptive_integrator.hpp"
+#include "rk45.hpp"
+#include "bdf.hpp"
 #include <memory>
 #include <cmath>
 
-// LSODA (Livermore Solver for Ordinary Differential equations, Automatic method switching)
-// Automatically switches between non-stiff (Adams) and stiff (BDF) methods
-// This is a simplified version inspired by the original LSODA algorithm
+namespace diffeq::integrators::ode {
+
+/**
+ * @brief LSODA integrator - automatically switches between stiff and non-stiff methods
+ * 
+ * Automatically switches between non-stiff (Adams, approximated by RK45) and stiff (BDF) methods
+ * based on stiffness detection. This is a simplified version inspired by the original LSODA algorithm.
+ */
 template<system_state S, can_be_time T = double>
-class LSODAIntegrator : public AdaptiveIntegrator<S, T> {
+class LSODA : public AdaptiveIntegrator<S, T> {
 public:
     using base_type = AdaptiveIntegrator<S, T>;
     using state_type = typename base_type::state_type;
@@ -22,16 +28,17 @@ public:
         BDF       // Stiff method
     };
 
-    explicit LSODAIntegrator(system_function sys, 
-                           time_type rtol = static_cast<time_type>(1e-6),
-                           time_type atol = static_cast<time_type>(1e-9))
+    explicit LSODA(system_function sys, 
+                   time_type rtol = static_cast<time_type>(1e-6),
+                   time_type atol = static_cast<time_type>(1e-9))
         : base_type(std::move(sys), rtol, atol),
           current_method_(MethodType::ADAMS),
           stiffness_detection_frequency_(10),
           step_count_(0),
           consecutive_stiff_steps_(0),
           consecutive_nonstiff_steps_(0),
-          stiffness_threshold_(static_cast<time_type>(3.25)) {
+          stiffness_threshold_(static_cast<time_type>(3.25)),
+          has_previous_values_(false) {
         
         // Create internal integrators
         rk45_integrator_ = std::make_unique<RK45Integrator<S, T>>(
@@ -75,6 +82,29 @@ public:
     
     void set_stiffness_threshold(time_type threshold) {
         stiffness_threshold_ = threshold;
+    }
+
+    void set_tolerances(time_type rtol, time_type atol) {
+        this->rtol_ = rtol;
+        this->atol_ = atol;
+        if (rk45_integrator_) {
+            rk45_integrator_->set_tolerances(rtol, atol);
+        }
+        if (bdf_integrator_) {
+            bdf_integrator_->set_tolerances(rtol, atol);
+        }
+    }
+
+    void integrate(state_type& state, time_type dt, time_type end_time) override {
+        // Initialize if needed
+        if (!has_previous_values_) {
+            y_prev_ = StateCreator<state_type>::create(state);
+            f_prev_ = StateCreator<state_type>::create(state);
+            has_previous_values_ = false; // Will be set in detect_stiffness
+        }
+        
+        // Call base implementation
+        base_type::integrate(state, dt, end_time);
     }
 
 private:
@@ -203,29 +233,6 @@ private:
         
         consecutive_nonstiff_steps_ = 0;
     }
-
-public:
-    // Additional methods for compatibility
-    void set_tolerances(time_type rtol, time_type atol) {
-        this->rtol_ = rtol;
-        this->atol_ = atol;
-        if (rk45_integrator_) {
-            rk45_integrator_->set_tolerances(rtol, atol);
-        }
-        if (bdf_integrator_) {
-            bdf_integrator_->set_tolerances(rtol, atol);
-        }
-    }
-    
-    void integrate(state_type& state, time_type dt, time_type end_time) override {
-        // Initialize if needed
-        if (!has_previous_values_) {
-            y_prev_ = StateCreator<state_type>::create(state);
-            f_prev_ = StateCreator<state_type>::create(state);
-            has_previous_values_ = false; // Will be set in detect_stiffness
-        }
-        
-        // Call base implementation
-        base_type::integrate(state, dt, end_time);
-    }
 };
+
+} // namespace diffeq::integrators::ode

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <core/abstract_integrator.hpp>
+#include <integrators/ode/rk45.hpp>
+#include <integrators/ode/dop853.hpp>
+#include <integrators/ode/bdf.hpp>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -394,7 +397,7 @@ auto make_async_rk45(
     T rtol = static_cast<T>(1e-6),
     T atol = static_cast<T>(1e-9)
 ) {
-    auto base = std::make_unique<RK45Integrator<S, T>>(std::move(sys), rtol, atol);
+    auto base = std::make_unique<diffeq::integrators::ode::RK45Integrator<S, T>>(std::move(sys), rtol, atol);
     return std::make_unique<AsyncIntegrator<S, T>>(std::move(base), config);
 }
 
@@ -405,7 +408,7 @@ auto make_async_dop853(
     T rtol = static_cast<T>(1e-10),
     T atol = static_cast<T>(1e-15)
 ) {
-    auto base = std::make_unique<DOP853Integrator<S, T>>(std::move(sys), rtol, atol);
+    auto base = std::make_unique<diffeq::integrators::ode::DOP853Integrator<S, T>>(std::move(sys), rtol, atol);
     return std::make_unique<AsyncIntegrator<S, T>>(std::move(base), config);
 }
 
@@ -416,7 +419,7 @@ auto make_async_bdf(
     T rtol = static_cast<T>(1e-6),
     T atol = static_cast<T>(1e-9)
 ) {
-    auto base = std::make_unique<BDFIntegrator<S, T>>(std::move(sys), rtol, atol);
+    auto base = std::make_unique<diffeq::integrators::ode::BDFIntegrator<S, T>>(std::move(sys), rtol, atol);
     return std::make_unique<AsyncIntegrator<S, T>>(std::move(base), config);
 }
 

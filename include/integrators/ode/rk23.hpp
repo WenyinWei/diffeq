@@ -1,8 +1,20 @@
 #pragma once
 #include <core/adaptive_integrator.hpp>
+#include <core/state_creator.hpp>
 
-// RK23 (Bogacki-Shampine) integrator
-// Second-order method with third-order error estimation
+namespace diffeq::integrators::ode {
+
+/**
+ * @brief RK23 (Bogacki-Shampine) adaptive integrator
+ * 
+ * Second-order method with third-order error estimation.
+ * Good for problems that don't require high accuracy.
+ * Lower computational cost than RK45.
+ * 
+ * Order: 2(3) - 2nd order method with 3rd order error estimation
+ * Stages: 4
+ * Adaptive: Yes
+ */
 template<system_state S, can_be_time T = double>
 class RK23Integrator : public AdaptiveIntegrator<S, T> {
 public:
@@ -31,46 +43,22 @@ public:
             
             rk23_step(state, y_new, error, current_dt);
             
-            // Calculate error norm using SciPy-style scaling
-            time_type err_norm = this->error_norm_scipy_style(error, state, y_new);
+            // Calculate error norm
+            time_type err_norm = this->error_norm(error, y_new);
             
             if (err_norm <= 1.0) {
-                // Step accepted
+                // Accept step
                 state = y_new;
                 this->advance_time(current_dt);
                 
-                // SciPy-style step size control
-                // For RK23: error_estimator_order = 2, so exponent = -1/(2+1) = -1/3
-                time_type safety = static_cast<time_type>(0.9);
-                time_type min_factor = static_cast<time_type>(0.2);
-                time_type max_factor = static_cast<time_type>(10.0);
-                time_type error_exponent = static_cast<time_type>(-1.0 / 3.0);  // -(1/(error_estimator_order + 1))
-                
-                time_type factor;
-                if (err_norm == 0) {
-                    factor = max_factor;
-                } else {
-                    factor = std::min(max_factor, safety * std::pow(err_norm, error_exponent));
-                }
-                
-                // If step was rejected, limit growth
-                factor = std::max(min_factor, std::min(max_factor, factor));
-                current_dt = std::max(this->dt_min_, std::min(this->dt_max_, current_dt * factor));
-                
-                return current_dt;
+                // Suggest next step size
+                time_type next_dt = this->suggest_step_size(current_dt, err_norm, 3);
+                return std::max(this->dt_min_, std::min(this->dt_max_, next_dt));
             } else {
-                // Step rejected, reduce step size
-                time_type safety = static_cast<time_type>(0.9);
-                time_type min_factor = static_cast<time_type>(0.2);
-                time_type error_exponent = static_cast<time_type>(-1.0 / 3.0);  // -(1/(error_estimator_order + 1))
-                
-                time_type factor = std::max(min_factor, 
-                                           safety * std::pow(err_norm, error_exponent));
-                current_dt = std::max(this->dt_min_, current_dt * factor);
-                
-                if (current_dt < this->dt_min_) {
-                    break;
-                }
+                // Reject step and reduce step size
+                current_dt *= std::max(this->safety_factor_ * std::pow(err_norm, -1.0/3.0), 
+                                     static_cast<time_type>(0.1));
+                current_dt = std::max(current_dt, this->dt_min_);
             }
         }
         
@@ -110,7 +98,7 @@ private:
             auto y_it = y.begin();
             auto k2_it = k2.begin();
             auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * static_cast<time_type>(3) * k2_it[i] / static_cast<time_type>(4);
+            temp_it[i] = y_it[i] + static_cast<time_type>(3) * dt * k2_it[i] / static_cast<time_type>(4);
         }
         this->sys_(t + static_cast<time_type>(3) * dt / static_cast<time_type>(4), temp, k3);
         
@@ -122,8 +110,8 @@ private:
             auto k3_it = k3.begin();
             auto y_new_it = y_new.begin();
             
-            y_new_it[i] = y_it[i] + dt * (static_cast<time_type>(2) * k1_it[i] / static_cast<time_type>(9) + 
-                                         k2_it[i] / static_cast<time_type>(3) + 
+            y_new_it[i] = y_it[i] + dt * (static_cast<time_type>(2) * k1_it[i] / static_cast<time_type>(9) +
+                                         k2_it[i] / static_cast<time_type>(3) +
                                          static_cast<time_type>(4) * k3_it[i] / static_cast<time_type>(9));
         }
         
@@ -138,10 +126,12 @@ private:
             auto k4_it = k4.begin();
             auto error_it = error.begin();
             
-            error_it[i] = dt * (static_cast<time_type>(5) * k1_it[i] / static_cast<time_type>(72) + 
-                               static_cast<time_type>(-1) * k2_it[i] / static_cast<time_type>(12) + 
-                               static_cast<time_type>(-1) * k3_it[i] / static_cast<time_type>(9) + 
+            error_it[i] = dt * (static_cast<time_type>(5) * k1_it[i] / static_cast<time_type>(72) -
+                               k2_it[i] / static_cast<time_type>(12) -
+                               k3_it[i] / static_cast<time_type>(9) +
                                k4_it[i] / static_cast<time_type>(8));
         }
     }
 };
+
+} // namespace diffeq::integrators::ode

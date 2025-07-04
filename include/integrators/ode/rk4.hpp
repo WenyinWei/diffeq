@@ -1,14 +1,20 @@
 #pragma once
-#include <functional>
-#include <concepts>
-#include <iterator>
-#include <type_traits>
-#include <vector>
-#include <array>
 #include <core/concepts.hpp>
 #include <core/abstract_integrator.hpp>
 #include <core/state_creator.hpp>
 
+namespace diffeq::integrators::ode {
+
+/**
+ * @brief Classical 4th-order Runge-Kutta integrator
+ * 
+ * The most famous and widely used fixed-step ODE solver.
+ * Excellent balance between accuracy and computational cost.
+ * 
+ * Order: 4
+ * Stability: Good for non-stiff problems
+ * Usage: General-purpose ODE integration
+ */
 template<system_state S, can_be_time T = double>
 class RK4Integrator : public AbstractIntegrator<S, T> {
 public:
@@ -70,12 +76,12 @@ public:
             auto k3_it = k3.begin();
             auto k4_it = k4.begin();
             
-            state_it[i] = state_it[i] + dt * (k1_it[i] + 
-                                            static_cast<value_type>(2) * k2_it[i] + 
-                                            static_cast<value_type>(2) * k3_it[i] + 
-                                            k4_it[i]) / static_cast<time_type>(6);
+            state_it[i] = state_it[i] + dt * (k1_it[i] + static_cast<time_type>(2) * k2_it[i] + 
+                         static_cast<time_type>(2) * k3_it[i] + k4_it[i]) / static_cast<time_type>(6);
         }
         
         this->advance_time(dt);
     }
 };
+
+} // namespace diffeq::integrators::ode

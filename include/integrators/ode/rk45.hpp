@@ -1,10 +1,22 @@
 #pragma once
 #include <core/adaptive_integrator.hpp>
+#include <core/state_creator.hpp>
 #include <cmath>
 
-// RK45 (Dormand-Prince) integrator
-// Fourth-order method with fifth-order error estimation
-// This is the most popular adaptive RK method
+namespace diffeq::integrators::ode {
+
+/**
+ * @brief RK45 (Dormand-Prince) adaptive integrator
+ * 
+ * Fourth-order method with fifth-order error estimation.
+ * This is the most popular adaptive RK method and the default
+ * in many scientific computing packages (scipy, MATLAB).
+ * 
+ * Order: 4(5) - 4th order method with 5th order error estimation
+ * Stages: 7
+ * Adaptive: Yes
+ * Reference: scipy.integrate.solve_ivp with method='RK45'
+ */
 template<system_state S, can_be_time T = double>
 class RK45Integrator : public AdaptiveIntegrator<S, T> {
 public:
@@ -33,46 +45,22 @@ public:
             
             rk45_step(state, y_new, error, current_dt);
             
-            // Calculate error norm using SciPy-style scaling
-            time_type err_norm = this->error_norm_scipy_style(error, state, y_new);
+            // Calculate error norm
+            time_type err_norm = this->error_norm(error, y_new);
             
             if (err_norm <= 1.0) {
-                // Step accepted
+                // Accept step
                 state = y_new;
                 this->advance_time(current_dt);
                 
-                // SciPy-style step size control
-                // For RK45: error_estimator_order = 4, so exponent = -1/(4+1) = -1/5
-                time_type safety = static_cast<time_type>(0.9);
-                time_type min_factor = static_cast<time_type>(0.2);
-                time_type max_factor = static_cast<time_type>(10.0);
-                time_type error_exponent = static_cast<time_type>(-1.0 / 5.0);  // -(1/(error_estimator_order + 1))
-                
-                time_type factor;
-                if (err_norm == 0) {
-                    factor = max_factor;
-                } else {
-                    factor = std::min(max_factor, safety * std::pow(err_norm, error_exponent));
-                }
-                
-                // If step was rejected, limit growth
-                factor = std::max(min_factor, std::min(max_factor, factor));
-                current_dt = std::max(this->dt_min_, std::min(this->dt_max_, current_dt * factor));
-                
-                return current_dt;
+                // Suggest next step size
+                time_type next_dt = this->suggest_step_size(current_dt, err_norm, 5);
+                return std::max(this->dt_min_, std::min(this->dt_max_, next_dt));
             } else {
-                // Step rejected, reduce step size
-                time_type safety = static_cast<time_type>(0.9);
-                time_type min_factor = static_cast<time_type>(0.2);
-                time_type error_exponent = static_cast<time_type>(-1.0 / 5.0);  // -(1/(error_estimator_order + 1))
-                
-                time_type factor = std::max(min_factor, 
-                                           safety * std::pow(err_norm, error_exponent));
-                current_dt = std::max(this->dt_min_, current_dt * factor);
-                
-                if (current_dt < this->dt_min_) {
-                    break;
-                }
+                // Reject step and reduce step size
+                current_dt *= std::max(this->safety_factor_ * std::pow(err_norm, -1.0/5.0), 
+                                     static_cast<time_type>(0.1));
+                current_dt = std::max(current_dt, this->dt_min_);
             }
         }
         
@@ -116,7 +104,7 @@ private:
             auto k1_it = k1.begin();
             auto k2_it = k2.begin();
             auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(3) * k1_it[i] / static_cast<time_type>(40) + 
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(3) * k1_it[i] / static_cast<time_type>(40) +
                                         static_cast<time_type>(9) * k2_it[i] / static_cast<time_type>(40));
         }
         this->sys_(t + static_cast<time_type>(3) * dt / static_cast<time_type>(10), temp, k3);
@@ -128,8 +116,8 @@ private:
             auto k2_it = k2.begin();
             auto k3_it = k3.begin();
             auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(44) * k1_it[i] / static_cast<time_type>(45) + 
-                                        static_cast<time_type>(-56) * k2_it[i] / static_cast<time_type>(15) + 
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(44) * k1_it[i] / static_cast<time_type>(45) -
+                                        static_cast<time_type>(56) * k2_it[i] / static_cast<time_type>(15) +
                                         static_cast<time_type>(32) * k3_it[i] / static_cast<time_type>(9));
         }
         this->sys_(t + static_cast<time_type>(4) * dt / static_cast<time_type>(5), temp, k4);
@@ -142,10 +130,10 @@ private:
             auto k3_it = k3.begin();
             auto k4_it = k4.begin();
             auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(19372) * k1_it[i] / static_cast<time_type>(6561) + 
-                                        static_cast<time_type>(-25360) * k2_it[i] / static_cast<time_type>(2187) + 
-                                        static_cast<time_type>(64448) * k3_it[i] / static_cast<time_type>(6561) + 
-                                        static_cast<time_type>(-212) * k4_it[i] / static_cast<time_type>(729));
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(19372) * k1_it[i] / static_cast<time_type>(6561) -
+                                        static_cast<time_type>(25360) * k2_it[i] / static_cast<time_type>(2187) +
+                                        static_cast<time_type>(64448) * k3_it[i] / static_cast<time_type>(6561) -
+                                        static_cast<time_type>(212) * k4_it[i] / static_cast<time_type>(729));
         }
         this->sys_(t + static_cast<time_type>(8) * dt / static_cast<time_type>(9), temp, k5);
         
@@ -158,11 +146,11 @@ private:
             auto k4_it = k4.begin();
             auto k5_it = k5.begin();
             auto temp_it = temp.begin();
-            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(9017) * k1_it[i] / static_cast<time_type>(3168) + 
-                                        static_cast<time_type>(-355) * k2_it[i] / static_cast<time_type>(33) + 
-                                        static_cast<time_type>(46732) * k3_it[i] / static_cast<time_type>(5247) + 
-                                        static_cast<time_type>(49) * k4_it[i] / static_cast<time_type>(176) + 
-                                        static_cast<time_type>(-5103) * k5_it[i] / static_cast<time_type>(18656));
+            temp_it[i] = y_it[i] + dt * (static_cast<time_type>(9017) * k1_it[i] / static_cast<time_type>(3168) -
+                                        static_cast<time_type>(355) * k2_it[i] / static_cast<time_type>(33) +
+                                        static_cast<time_type>(46732) * k3_it[i] / static_cast<time_type>(5247) +
+                                        static_cast<time_type>(49) * k4_it[i] / static_cast<time_type>(176) -
+                                        static_cast<time_type>(5103) * k5_it[i] / static_cast<time_type>(18656));
         }
         this->sys_(t + dt, temp, k6);
         
@@ -176,17 +164,17 @@ private:
             auto k6_it = k6.begin();
             auto y_new_it = y_new.begin();
             
-            y_new_it[i] = y_it[i] + dt * (static_cast<time_type>(35) * k1_it[i] / static_cast<time_type>(384) + 
-                                         static_cast<time_type>(500) * k3_it[i] / static_cast<time_type>(1113) + 
-                                         static_cast<time_type>(125) * k4_it[i] / static_cast<time_type>(192) + 
-                                         static_cast<time_type>(-2187) * k5_it[i] / static_cast<time_type>(6784) + 
+            y_new_it[i] = y_it[i] + dt * (static_cast<time_type>(35) * k1_it[i] / static_cast<time_type>(384) +
+                                         static_cast<time_type>(500) * k3_it[i] / static_cast<time_type>(1113) +
+                                         static_cast<time_type>(125) * k4_it[i] / static_cast<time_type>(192) -
+                                         static_cast<time_type>(2187) * k5_it[i] / static_cast<time_type>(6784) +
                                          static_cast<time_type>(11) * k6_it[i] / static_cast<time_type>(84));
         }
         
         // k7 = f(t + dt, y_new) - needed for error estimation
         this->sys_(t + dt, y_new, k7);
         
-        // Error estimate using E = [-71/57600, 0, 71/16695, -71/1920, 17253/339200, -22/525, 1/40]
+        // Error estimate: error = dt * (-71*k1/57600 + 71*k3/16695 - 71*k4/1920 + 17253*k5/339200 - 22*k6/525 + k7/40)
         for (std::size_t i = 0; i < y.size(); ++i) {
             auto k1_it = k1.begin();
             auto k3_it = k3.begin();
@@ -196,12 +184,14 @@ private:
             auto k7_it = k7.begin();
             auto error_it = error.begin();
             
-            error_it[i] = dt * (static_cast<time_type>(-71) * k1_it[i] / static_cast<time_type>(57600) + 
-                               static_cast<time_type>(71) * k3_it[i] / static_cast<time_type>(16695) + 
-                               static_cast<time_type>(-71) * k4_it[i] / static_cast<time_type>(1920) + 
-                               static_cast<time_type>(17253) * k5_it[i] / static_cast<time_type>(339200) + 
-                               static_cast<time_type>(-22) * k6_it[i] / static_cast<time_type>(525) + 
+            error_it[i] = dt * (-static_cast<time_type>(71) * k1_it[i] / static_cast<time_type>(57600) +
+                               static_cast<time_type>(71) * k3_it[i] / static_cast<time_type>(16695) -
+                               static_cast<time_type>(71) * k4_it[i] / static_cast<time_type>(1920) +
+                               static_cast<time_type>(17253) * k5_it[i] / static_cast<time_type>(339200) -
+                               static_cast<time_type>(22) * k6_it[i] / static_cast<time_type>(525) +
                                k7_it[i] / static_cast<time_type>(40));
         }
     }
 };
+
+} // namespace diffeq::integrators::ode

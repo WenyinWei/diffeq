@@ -4,14 +4,8 @@
 #include <iomanip>
 #include <chrono>
 
-// Include all integrators
-#include <solvers/rk4_solver.hpp>
-#include <solvers/rk23_solver.hpp>
-#include <solvers/rk45_solver.hpp>
-#include <solvers/dop853_solver.hpp>
-#include <solvers/radau_solver.hpp>
-#include <solvers/bdf_solver.hpp>
-#include <solvers/lsoda_solver.hpp>
+// Include modern diffeq library
+#include <diffeq.hpp>
 
 // Test systems
 
@@ -88,37 +82,37 @@ void demonstrate_exponential_decay() {
     // Test all integrators
     {
         std::vector<double> y = {1.0};
-        RK4Integrator<std::vector<double>> integrator(exponential_decay);
+        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(exponential_decay);
         time_integrator(integrator, y, t_start, dt, t_end, "RK4");
     }
     
     {
         std::vector<double> y = {1.0};
-        RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+        diffeq::integrators::ode::RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "RK23");
     }
     
     {
         std::vector<double> y = {1.0};
-        RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-8, 1e-12);
+        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-8, 1e-12);
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");
     }
     
     {
         std::vector<double> y = {1.0};
-        // DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-3, 1e-6);
-        // time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
+        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-3, 1e-6);
+        time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
     }
     
     {
         std::vector<double> y = {1.0};
-        BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "BDF");
     }
     
     {
         std::vector<double> y = {1.0};
-        LSODAIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
     }
 }
@@ -133,7 +127,7 @@ void demonstrate_van_der_pol() {
     
     {
         std::vector<double> y = {1.0, 0.0};
-        RK4Integrator<std::vector<double>> integrator(
+        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             });
@@ -142,25 +136,26 @@ void demonstrate_van_der_pol() {
     
     {
         std::vector<double> y = {1.0, 0.0};
-        RK45Integrator<std::vector<double>> integrator(
+        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             }, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");
     }
     
-    {
-        std::vector<double> y = {1.0, 0.0};
-        RadauIntegrator<std::vector<double>> integrator(
-            [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
-                vdp(t, y, dydt);
-            }, 1e-6, 1e-9);
-        time_integrator(integrator, y, t_start, dt, t_end, "Radau");
-    }
+    // Note: RadauIntegrator not implemented in current hierarchy
+    // {
+    //     std::vector<double> y = {1.0, 0.0};
+    //     RadauIntegrator<std::vector<double>> integrator(
+    //         [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+    //             vdp(t, y, dydt);
+    //         }, 1e-6, 1e-9);
+    //     time_integrator(integrator, y, t_start, dt, t_end, "Radau");
+    // }
     
     {
         std::vector<double> y = {1.0, 0.0};
-        BDFIntegrator<std::vector<double>> integrator(
+        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             }, 1e-6, 1e-9);
@@ -169,13 +164,13 @@ void demonstrate_van_der_pol() {
     
     {
         std::vector<double> y = {1.0, 0.0};
-        LSODAIntegrator<std::vector<double>> integrator(
+        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             }, 1e-6, 1e-9);
         double timing = time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
         std::cout << "        Final method: " << 
-            (integrator.get_current_method() == LSODAIntegrator<std::vector<double>>::MethodType::ADAMS ? 
+            (integrator.get_current_method() == diffeq::integrators::ode::LSODA<std::vector<double>>::MethodType::ADAMS ? 
              "Adams (non-stiff)" : "BDF (stiff)") << std::endl;
     }
 }
@@ -190,25 +185,25 @@ void demonstrate_lorenz_system() {
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        RK4Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(lorenz_system);
         time_integrator(integrator, y, t_start, dt, t_end, "RK4");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        // DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-3, 1e-6);
-        // time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
+        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-3, 1e-6);
+        time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        LSODAIntegrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
         time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
     }
 }
@@ -226,17 +221,18 @@ void demonstrate_stiff_robertson() {
     std::cout << "Using shortened time range (t=1.0) for demonstration purposes." << std::endl;
     
     // Only test implicit methods for this stiff system
-    try {
-        std::vector<double> y = {1.0, 0.0, 0.0};
-        RadauIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
-        time_integrator(integrator, y, t_start, dt, t_end, "Radau");
-    } catch (const std::exception& e) {
-        std::cout << std::setw(15) << "Radau" << ": Failed - " << e.what() << std::endl;
-    }
+    // Note: RadauIntegrator not implemented in current hierarchy
+    // try {
+    //     std::vector<double> y = {1.0, 0.0, 0.0};
+    //     RadauIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
+    //     time_integrator(integrator, y, t_start, dt, t_end, "Radau");
+    // } catch (const std::exception& e) {
+    //     std::cout << std::setw(15) << "Radau" << ": Failed - " << e.what() << std::endl;
+    // }
     
     try {
         std::vector<double> y = {1.0, 0.0, 0.0};
-        BDFIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
+        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "BDF");
     } catch (const std::exception& e) {
         std::cout << std::setw(15) << "BDF" << ": Failed - " << e.what() << std::endl;
@@ -244,10 +240,10 @@ void demonstrate_stiff_robertson() {
     
     try {
         std::vector<double> y = {1.0, 0.0, 0.0};
-        LSODAIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
+        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
         double timing = time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
         std::cout << "        Final method: " << 
-            (integrator.get_current_method() == LSODAIntegrator<std::vector<double>>::MethodType::ADAMS ? 
+            (integrator.get_current_method() == diffeq::integrators::ode::LSODA<std::vector<double>>::MethodType::ADAMS ? 
              "Adams (non-stiff)" : "BDF (stiff)") << std::endl;
     } catch (const std::exception& e) {
         std::cout << std::setw(15) << "LSODA" << ": Failed - " << e.what() << std::endl;
@@ -269,7 +265,7 @@ void demonstrate_adaptive_features() {
     
     for (auto [rtol, atol] : tolerances) {
         std::vector<double> y = {1.0};
-        RK45Integrator<std::vector<double>> integrator(exponential_decay, rtol, atol);
+        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(exponential_decay, rtol, atol);
         
         std::cout << "Tolerances: rtol = " << rtol << ", atol = " << atol << std::endl;
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");
@@ -296,7 +292,7 @@ int main() {
         std::cout << "✓ RK23: Adaptive 3rd order with embedded error estimation" << std::endl;
         std::cout << "✓ RK45: Adaptive 5th order Dormand-Prince (scipy default)" << std::endl;
         std::cout << "✓ DOP853: High-accuracy 8th order for demanding problems" << std::endl;
-        std::cout << "✓ Radau: Implicit 5th order for stiff systems" << std::endl;
+        std::cout << "• Radau: Implicit 5th order for stiff systems (not yet implemented)" << std::endl;
         std::cout << "✓ BDF: Variable-order implicit multistep for stiff systems" << std::endl;
         std::cout << "✓ LSODA: Automatic method switching (Adams ↔ BDF)" << std::endl;
         

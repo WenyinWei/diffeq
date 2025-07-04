@@ -5,20 +5,31 @@
 #include <core/abstract_integrator.hpp>
 #include <core/adaptive_integrator.hpp>
 
-// All integrator implementations
-#include <solvers/euler_solvers.hpp>     // Euler, ImprovedEuler, etc.
-#include <solvers/rk4_solver.hpp>        // RK4 (fixed step)
-#include <solvers/rk23_solver.hpp>       // RK23 (adaptive, Bogacki-Shampine)
-#include <solvers/rk45_solver.hpp>       // RK45 (adaptive, Dormand-Prince)
-#include <solvers/dop853_solver.hpp>     // DOP853 (8th order, high accuracy)
-#include <solvers/radau_solver.hpp>      // Radau IIA (implicit, stiff systems)
-#include <solvers/bdf_solver.hpp>        // BDF (multistep, stiff systems)
-#include <solvers/lsoda_solver.hpp>      // LSODA (automatic method switching)
+// ODE integrator implementations (organized by method type)
+#include <integrators/ode/euler.hpp>           // Simple Euler method
+#include <integrators/ode/improved_euler.hpp>  // Heun's method
+#include <integrators/ode/rk4.hpp>             // Classic 4th order Runge-Kutta
+#include <integrators/ode/rk23.hpp>            // RK23 (adaptive, Bogacki-Shampine)
+#include <integrators/ode/rk45.hpp>            // RK45 (adaptive, Dormand-Prince)
+#include <integrators/ode/dop853.hpp>          // DOP853 (8th order, high accuracy)
+#include <integrators/ode/bdf.hpp>             // BDF (multistep, stiff systems)
+#include <integrators/ode/lsoda.hpp>           // LSODA (automatic stiff/non-stiff switching)
 
-// SDE (Stochastic Differential Equation) support
-#include <sde/sde_base.hpp>              // SDE base infrastructure
-#include <sde/sde_solvers.hpp>           // SDE integrators (Euler-Maruyama, Milstein, SRI1, etc.)
-#include <sde/advanced_sde_solvers.hpp>  // Advanced SDE integrators (SRA, SRI, SOSRI, SOSRA)
+// SDE (Stochastic Differential Equation) integrators (organized by method type)
+#include <sde/sde_base.hpp>                    // SDE base infrastructure
+#include <integrators/sde/euler_maruyama.hpp>  // Basic SDE solver (strong order 0.5)
+#include <integrators/sde/milstein.hpp>        // Milstein method with Lévy area (strong order 1.0)
+#include <integrators/sde/sri1.hpp>            // Stochastic Runge-Kutta method (strong order 1.0)
+#include <integrators/sde/implicit_euler_maruyama.hpp>  // Implicit method for stiff SDEs
+
+// Advanced high-order SDE integrators (strong order 1.5)
+#include <integrators/sde/sra.hpp>             // SRA base implementation
+#include <integrators/sde/sra1.hpp>            // SRA1 variant for additive noise
+#include <integrators/sde/sra2.hpp>            // SRA2 variant for additive noise
+#include <integrators/sde/sosra.hpp>           // Stability-optimized SRA
+#include <integrators/sde/sri.hpp>             // SRI base implementation
+#include <integrators/sde/sriw1.hpp>           // SRIW1 variant for general SDEs
+#include <integrators/sde/sosri.hpp>           // Stability-optimized SRI
 
 // Modern async and signal processing components (standard C++ only)
 #include <async/async_integrator.hpp>    // Async integration with std::future
@@ -270,6 +281,28 @@ namespace diffeq {
     using std::vector;
     using std::array;
     
+    // Re-export integrator classes for convenience
+    using integrators::ode::EulerIntegrator;
+    using integrators::ode::ImprovedEulerIntegrator;
+    using integrators::ode::RK4Integrator;
+    using integrators::ode::RK23Integrator;
+    using integrators::ode::RK45Integrator;
+    using integrators::ode::DOP853Integrator;
+    using integrators::ode::BDFIntegrator;
+    
+    // Re-export SDE integrators
+    using sde::EulerMaruyamaIntegrator;
+    using sde::MilsteinIntegrator;
+    using sde::SRI1Integrator;
+    using sde::ImplicitEulerMaruyamaIntegrator;
+    using sde::SRAIntegrator;
+    using sde::SRA1Integrator;
+    using sde::SRA2Integrator;
+    using sde::SOSRAIntegrator;
+    using sde::SRIIntegrator;
+    using sde::SRIW1Integrator;
+    using sde::SOSRIIntegrator;
+    
     // Common type aliases for system_state concept
     template<typename T>
     using VectorState = std::vector<T>;
@@ -292,7 +325,7 @@ namespace diffeq {
     auto make_rk45(typename AbstractIntegrator<S>::system_function sys,
                    typename S::value_type rtol = 1e-6,
                    typename S::value_type atol = 1e-9) {
-        return RK45Integrator<S>(std::move(sys), rtol, atol);
+        return integrators::ode::RK45Integrator<S>(std::move(sys), rtol, atol);
     }
     
     /**
@@ -302,7 +335,7 @@ namespace diffeq {
     auto make_dop853(typename AbstractIntegrator<S>::system_function sys,
                      typename S::value_type rtol = 1e-10,
                      typename S::value_type atol = 1e-15) {
-        return DOP853Integrator<S>(std::move(sys), rtol, atol);
+        return integrators::ode::DOP853Integrator<S>(std::move(sys), rtol, atol);
     }
     
     /**
@@ -312,16 +345,6 @@ namespace diffeq {
     auto make_bdf(typename AbstractIntegrator<S>::system_function sys,
                   typename S::value_type rtol = 1e-6,
                   typename S::value_type atol = 1e-9) {
-        return BDFIntegrator<S>(std::move(sys), rtol, atol);
-    }
-    
-    /**
-     * Create an LSODA integrator with automatic method switching
-     */
-    template<system_state S>
-    auto make_lsoda(typename AbstractIntegrator<S>::system_function sys,
-                    typename S::value_type rtol = 1e-6,
-                    typename S::value_type atol = 1e-9) {
-        return LSODAIntegrator<S>(std::move(sys), rtol, atol);
+        return integrators::ode::BDFIntegrator<S>(std::move(sys), rtol, atol);
     }
 }
