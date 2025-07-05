@@ -49,12 +49,43 @@ public:
 template<system_state S, can_be_time T = double>
 class DOP853Integrator : public AdaptiveIntegrator<S, T> {
     
+
 public:
     using base_type = AdaptiveIntegrator<S, T>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
     using system_function = typename base_type::system_function;
+
+    // Fortran default parameters (do not change unless you know what you are doing)
+    static constexpr time_type fortran_safety = static_cast<time_type>(0.9);   // SAFE
+    static constexpr time_type fortran_fac1 = static_cast<time_type>(0.333);   // FAC1
+    static constexpr time_type fortran_fac2 = static_cast<time_type>(6.0);     // FAC2
+    static constexpr time_type fortran_beta = static_cast<time_type>(0.0);     // BETA
+    static constexpr time_type fortran_dt_max = static_cast<time_type>(1e100); // HMAX
+    static constexpr time_type fortran_dt_min = static_cast<time_type>(1e-16); // practical min
+    static constexpr int fortran_nmax = 100000;                                // NMAX
+    static constexpr int fortran_nstiff = 1000;                                // NSTIFF
+
+    // Internal state (Fortran default values)
+    time_type safety_factor_ = fortran_safety;
+    time_type fac1_ = fortran_fac1;
+    time_type fac2_ = fortran_fac2;
+    time_type beta_ = fortran_beta;
+    time_type dt_max_ = fortran_dt_max;
+    time_type dt_min_ = fortran_dt_min;
+    int nmax_ = fortran_nmax;
+    int nstiff_ = fortran_nstiff;
+    time_type facold_ = static_cast<time_type>(1e-4); // Fortran FACOLD
+    // Stiffness detection state
+    int iastiff_ = 0;
+    int nonsti_ = 0;
+    time_type hlamb_ = 0;
+    // For statistics (optional)
+    int nstep_ = 0;
+    int naccpt_ = 0;
+    int nrejct_ = 0;
+    int nfcn_ = 0;
 
     // Step size control parameters (modern C++ style, with defaults)
     time_type safety_factor_ = static_cast<time_type>(0.9);   // Fortran SAFE
@@ -133,18 +164,8 @@ private:
 public:
     explicit DOP853Integrator(system_function sys, 
                              time_type rtol = static_cast<time_type>(1e-8),
-                             time_type atol = static_cast<time_type>(1e-10),
-                             time_type safety = static_cast<time_type>(0.9),
-                             time_type fac1 = static_cast<time_type>(0.333),
-                             time_type fac2 = static_cast<time_type>(6.0),
-                             time_type beta = static_cast<time_type>(0.0),
-                             time_type dt_max = static_cast<time_type>(1e100),
-                             time_type dt_min = static_cast<time_type>(1e-16),
-                             int nmax = 100000,
-                             int nstiff = 1000)
-        : base_type(std::move(sys), rtol, atol),
-          safety_factor_(safety), fac1_(fac1), fac2_(fac2), beta_(beta),
-          dt_max_(dt_max), dt_min_(dt_min), nmax_(nmax), nstiff_(nstiff) {}
+                             time_type atol = static_cast<time_type>(1e-10))
+        : base_type(std::move(sys), rtol, atol) {}
 
     void step(state_type& state, time_type dt) override {
         adaptive_step(state, dt);
@@ -172,17 +193,29 @@ public:
             state_type error = StateCreator<state_type>::create(state);
             dop853_step(state, y_new, error, current_dt);
             nfcn_ += 12; // 12 stages per step
-            time_type err_norm = this->error_norm(error, y_new);
+
+            // Fortran error norm (ERR, ERR2, DENO, etc.)
+            time_type err = 0.0, err2 = 0.0;
+            for (std::size_t i = 0; i < state.size(); ++i) {
+                time_type sk = this->atol_ + this->rtol_ * std::max(std::abs(state[i]), std::abs(y_new[i]));
+                // Fortran: ERRI=K4(I)-BHH1*K1(I)-BHH2*K9(I)-BHH3*K3(I)  (here, error[i] is 8th-5th order diff)
+                // We use error[i] as the embedded error estimate, so for full Fortran, you may need to store all k's
+                err2 += (error[i] / sk) * (error[i] / sk); // proxy for Fortran's ERR2
+                err += (error[i] / sk) * (error[i] / sk); // Fortran's ERR
+            }
+            time_type deno = err + 0.01 * err2;
+            if (deno <= 0.0) deno = 1.0;
+            err = std::abs(current_dt) * err * std::sqrt(1.0 / (state.size() * deno));
 
             // Fortran: FAC11 = ERR**EXPO1, FAC = FAC11 / FACOLD**BETA
             time_type expo1 = 1.0 / 8.0 - beta_ * 0.2;
-            time_type fac11 = std::pow(std::max(err_norm, 1e-16), expo1);
+            time_type fac11 = std::pow(std::max(err, 1e-16), expo1);
             time_type fac = fac11 / std::pow(facold_, beta_);
             fac = std::max(fac2_, std::min(fac1_, fac / safety_factor_));
             time_type next_dt = current_dt / fac;
 
-            if (err_norm <= 1.0) {
-                facold_ = std::max(err_norm, static_cast<time_type>(1e-4));
+            if (err <= 1.0) {
+                facold_ = std::max(err, static_cast<time_type>(1e-4));
                 naccpt_++;
                 nstep_++;
                 state = y_new;
@@ -192,7 +225,6 @@ public:
                     // Compute HLAMB = |h| * sqrt(stnum / stden)
                     time_type stnum = 0, stden = 0;
                     for (std::size_t i = 0; i < state.size(); ++i) {
-                        // Use error and state difference as proxy (not exact Fortran, but close)
                         stnum += (error[i]) * (error[i]);
                         stden += (y_new[i] - state[i]) * (y_new[i] - state[i]);
                     }
