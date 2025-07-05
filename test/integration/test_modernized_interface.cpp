@@ -112,7 +112,7 @@ private:
         // Test that basic integration still works with the new architecture
         std::vector<double> state = {1.0, 0.0};
         auto integrator = make_rk45<std::vector<double>>(harmonic_oscillator);
-        integrator.integrate(state, 0.01, 3.14159); // π seconds
+        integrator->integrate(state, 0.01, 3.14159); // π seconds
         
         // Should be approximately [-1, 0] after π seconds
         double error = std::abs(state[0] + 1.0) + std::abs(state[1]);
@@ -352,7 +352,7 @@ private:
         auto signal_proc = interface->get_signal_processor();
         signal_proc->emit_signal("external_force", 2.0);
         
-        integrator.integrate(state, 0.01, 0.5);
+        integrator->integrate(state, 0.01, 0.5);
         
         std::cout << "     Signal-aware integration result: [" << state[0] << ", " << state[1] << "]" << std::endl;
         

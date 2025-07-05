@@ -39,7 +39,7 @@ void modern_parallel_integration_example() {
     std::for_each(std::execution::par, initial_conditions.begin(), initial_conditions.end(),
         [&](std::vector<double>& state) {
             auto integrator = diffeq::make_rk45<std::vector<double>>(system);
-            integrator.step(state, 0.01); // Single integration step
+            integrator->step(state, 0.01); // Single integration step
         });
     
     auto end_time = std::chrono::high_resolution_clock::now();
@@ -97,7 +97,7 @@ void demonstrate_realtime_control() {
         [](std::vector<double>& state) {
             RobotArmSystem system;
             auto integrator = diffeq::make_rk45<std::vector<double>>(system);
-            integrator.step(state, 0.001); // 1ms control timestep
+            integrator->step(state, 0.001); // 1ms control timestep
         });
     
     auto end_time = std::chrono::high_resolution_clock::now();
@@ -129,7 +129,7 @@ void demonstrate_realtime_control() {
     for (double t = 0.0; t < simulation_time; t += dt) {
         // Execute control step asynchronously
         auto control_future = std::async(std::launch::async, [&, t]() {
-            integrator.step(state, dt);
+            integrator->step(state, dt);
         });
         
         // Simulate sensor reading (parallel)
@@ -273,9 +273,9 @@ void benchmark_hardware_targets() {
     // Sequential execution
     auto seq_start = std::chrono::high_resolution_clock::now();
     std::vector<std::vector<double>> seq_states(num_integrations, initial_state);
-    for (int i = 0; i < num_integrations; ++i) {
-        integrator.integrate(seq_states[i], dt, t_final);
-    }
+            for (int i = 0; i < num_integrations; ++i) {
+            integrator->integrate(seq_states[i], dt, t_final);
+        }
     auto seq_end = std::chrono::high_resolution_clock::now();
     auto seq_duration = std::chrono::duration_cast<std::chrono::milliseconds>(seq_end - seq_start);
     
@@ -285,7 +285,7 @@ void benchmark_hardware_targets() {
     std::for_each(std::execution::par, par_states.begin(), par_states.end(),
         [&](std::vector<double>& state) {
             auto local_integrator = diffeq::make_rk45<std::vector<double>>(system);
-            local_integrator.integrate(state, dt, t_final);
+            local_integrator->integrate(state, dt, t_final);
         });
     auto par_end = std::chrono::high_resolution_clock::now();
     auto par_duration = std::chrono::duration_cast<std::chrono::milliseconds>(par_end - par_start);

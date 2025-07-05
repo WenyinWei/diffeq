@@ -198,14 +198,14 @@ public:
         int steps = static_cast<int>(T / dt);
         
         // Use high-order SDE integrator for better accuracy
-        auto integrator = diffeq::sde::factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
-        integrator->set_time(0.0);
+        diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        integrator.set_time(0.0);
         
         std::cout << "Initial state: S = " << x[0] << ", V = " << x[1] << std::endl;
         
         // Integrate Heston model
         for (int i = 0; i < steps; ++i) {
-            integrator->step(x, dt);
+            integrator.step(x, dt);
             
             // Output every 25 steps (quarterly)
             if (i % 25 == 0) {
@@ -270,14 +270,14 @@ public:
             drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
         
         auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 67890);
-        auto integrator = diffeq::sde::factory::make_milstein_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
         
         std::vector<double> state = {0.0, 0.0};  // Initial [x, xdot]
         double dt = 0.01;
         double T = 10.0;
         int steps = static_cast<int>(T / dt);
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         
         std::cout << "Simulating controlled oscillator with noise..." << std::endl;
         
@@ -293,7 +293,7 @@ public:
             total_error += error;
             max_error = std::max(max_error, error);
             
-            integrator->step(state, dt);
+            integrator.step(state, dt);
             
             // Output every 100 steps
             if (i % 100 == 0) {
@@ -356,14 +356,14 @@ public:
             drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
         
         auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 11111);
-        auto integrator = diffeq::sde::factory::make_sra1_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
         
         std::vector<double> population = {2.0, 1.0};  // Initial [prey, predator]
         double dt = 0.01;
         double T = 20.0;
         int steps = static_cast<int>(T / dt);
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         
         std::cout << "Initial populations: prey = " << population[0] << ", predator = " << population[1] << std::endl;
         
@@ -372,7 +372,7 @@ public:
         double min_pred = population[1], max_pred = population[1];
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(population, dt);
+            integrator.step(population, dt);
             
             // Update min/max
             min_prey = std::min(min_prey, population[0]);
@@ -423,10 +423,10 @@ void demonstrate_async_sde_integration() {
         drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
     
     auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 22222);
-    auto integrator = diffeq::sde::factory::make_euler_maruyama_integrator<std::vector<double>, double>(problem, wiener);
+    diffeq::sde::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
     
-    // Create async integrator
-    auto async_integrator = diffeq::async::make_async_integrator(integrator);
+    // Note: Async integrator functionality is not currently available
+    // For now, we'll use the regular integrator
     
     std::vector<double> state = {1.0, 0.0};
     double dt = 0.01;
@@ -437,10 +437,9 @@ void demonstrate_async_sde_integration() {
     
     auto start_time = std::chrono::high_resolution_clock::now();
     
-    // Async integration
+    // Regular integration (async not available)
     for (int i = 0; i < steps; ++i) {
-        auto future = async_integrator->step_async(state, dt);
-        future.wait();  // Wait for completion
+        integrator.step(state, dt);
         
         if (i % 100 == 0) {
             std::cout << "Step " << i << ": [" << state[0] << ", " << state[1] << "]" << std::endl;
@@ -450,7 +449,7 @@ void demonstrate_async_sde_integration() {
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
     
-    std::cout << "Async integration completed in " << duration.count() << "ms" << std::endl;
+    std::cout << "Integration completed in " << duration.count() << "ms" << std::endl;
     std::cout << "Final state: [" << state[0] << ", " << state[1] << "]" << std::endl;
 }
 

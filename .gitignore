@@ -37,13 +37,17 @@
 *.out
 *.app
 
+
+
 # debug information files
 *.dwo
 
 # Build directories
 .xmake/
-.vscode/
 build/
+
+# vscode config
+.vscode/
 
 # Example executables
 simple_standard_parallelism

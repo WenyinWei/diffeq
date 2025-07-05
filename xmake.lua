@@ -9,6 +9,9 @@ set_description("Modern C++ Differential Equation Solver Library")
 set_warnings("all")
 set_optimize("fastest")
 
+-- Enable parallel compilation for faster builds
+-- xmake will automatically use parallel compilation
+
 -- Handle character encoding issues on Windows
 if is_plat("windows") then
     add_cxxflags("/utf-8")
