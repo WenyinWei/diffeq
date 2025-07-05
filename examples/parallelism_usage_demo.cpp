@@ -3,15 +3,21 @@
 #include <iostream>
 #include <chrono>
 #include <random>
+#include <thread>
+#include <future>
+#include <algorithm>
+#include <execution>
+#include <ranges>
+#include <numeric>
 
 /**
- * @brief Quick Start Example - Simplified Parallel Interface
+ * @brief Modern Parallel Integration Example
  * 
- * This shows the easiest way to add parallelism to your diffeq computations.
- * No complex configuration needed!
+ * This demonstrates how to use standard C++20/23 parallelism with diffeq
+ * integrators for high-performance computations.
  */
-void quick_start_example() {
-    std::cout << "\n=== Quick Start: Simplified Parallel Interface ===" << std::endl;
+void modern_parallel_integration_example() {
+    std::cout << "\n=== Modern Parallel Integration Example ===" << std::endl;
     
     // Example: Parallel ODE integration for multiple initial conditions
     std::vector<std::vector<double>> initial_conditions;
@@ -27,30 +33,28 @@ void quick_start_example() {
     
     std::cout << "Integrating " << initial_conditions.size() << " initial conditions in parallel..." << std::endl;
     
-    // THIS IS ALL YOU NEED FOR PARALLEL EXECUTION!
-    diffeq::execution::parallel_for_each(initial_conditions, [&](std::vector<double>& state) {
-        diffeq::RK4Integrator<std::vector<double>> integrator(system);
-        integrator.step(state, 0.01); // Single integration step
-    });
+    auto start_time = std::chrono::high_resolution_clock::now();
     
-    std::cout << "✓ Parallel integration completed!" << std::endl;
+    // Use standard C++20 parallel execution
+    std::for_each(std::execution::par, initial_conditions.begin(), initial_conditions.end(),
+        [&](std::vector<double>& state) {
+            auto integrator = diffeq::make_rk45<std::vector<double>>(system);
+            integrator.step(state, 0.01); // Single integration step
+        });
+    
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+    
+    std::cout << "✓ Parallel integration completed in " << duration.count() << " μs!" << std::endl;
     std::cout << "Result for initial condition 10: [" << initial_conditions[10][0] 
               << ", " << initial_conditions[10][1] << "]" << std::endl;
-    
-    // Want to use GPU if available? Just one line:
-    diffeq::execution::enable_gpu_acceleration();
-    
-    // Want more workers? Just one line:
-    diffeq::execution::set_parallel_workers(8);
-    
-    std::cout << "Current worker count: " << diffeq::execution::parallel().worker_count() << std::endl;
 }
 
 /**
  * @brief Robotics Control Systems Example
  * 
  * Demonstrates real-time integration with feedback signals from sensors
- * with low latency and deterministic performance requirements.
+ * using modern async capabilities.
  */
 namespace robotics_control {
 
@@ -78,10 +82,7 @@ struct RobotArmSystem {
 };
 
 void demonstrate_realtime_control() {
-    std::cout << "\n=== Robotics Control System with Real-time Parallelism ===" << std::endl;
-    
-    // SIMPLE APPROACH: Use the simplified parallel interface for basic needs
-    std::cout << "\n--- Simple Parallel Approach ---" << std::endl;
+    std::cout << "\n=== Robotics Control System with Modern Async ===" << std::endl;
     
     // Setup multiple control systems (e.g., different robot joints)
     std::vector<std::vector<double>> joint_states;
@@ -89,39 +90,28 @@ void demonstrate_realtime_control() {
         joint_states.push_back({0.1 * i, 0.0}); // [angle, angular_velocity]
     }
     
-    // Create simple parallel executor
-    auto parallel = diffeq::execution::Parallel(4); // 4 worker threads
+    auto start_time = std::chrono::high_resolution_clock::now();
     
-    auto simple_start_time = std::chrono::high_resolution_clock::now();
+    // Parallel control loop using standard C++ parallelism
+    std::for_each(std::execution::par, joint_states.begin(), joint_states.end(),
+        [](std::vector<double>& state) {
+            RobotArmSystem system;
+            auto integrator = diffeq::make_rk45<std::vector<double>>(system);
+            integrator.step(state, 0.001); // 1ms control timestep
+        });
     
-    // Parallel control loop - very simple!
-    parallel.for_each(joint_states, [](std::vector<double>& state) {
-        RobotArmSystem system;
-        diffeq::RK4Integrator<std::vector<double>> integrator(system);
-        integrator.step(state, 0.001); // 1ms control timestep
-    });
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
     
-    auto simple_end_time = std::chrono::high_resolution_clock::now();
-    auto simple_duration = std::chrono::duration_cast<std::chrono::microseconds>(simple_end_time - simple_start_time);
+    std::cout << "Parallel control completed in " << duration.count() << " μs" << std::endl;
+    std::cout << "Average per joint: " << duration.count() / joint_states.size() << " μs" << std::endl;
     
-    std::cout << "Simple parallel control completed in " << simple_duration.count() << " μs" << std::endl;
-    std::cout << "Average per joint: " << simple_duration.count() / joint_states.size() << " μs" << std::endl;
-    
-    // ADVANCED APPROACH: Use full facade for complex real-time requirements
-    std::cout << "\n--- Advanced Facade Approach (for complex scenarios) ---" << std::endl;
-    
-    // For applications requiring precise real-time control, load balancing,
-    // hardware-specific optimizations, etc., use the full facade:
-    auto parallel_config = diffeq::execution::presets::robotics_control()
-        .realtime_priority()
-        .workers(4)                    // Dedicated cores for control
-        .batch_size(1)                 // Single step processing
-        .disable_load_balancing()      // Deterministic scheduling
-        .build();
+    // Advanced async approach using diffeq async capabilities
+    std::cout << "\n--- Advanced Async Approach ---" << std::endl;
     
     // Create integrator for robot dynamics
     auto robot_system = RobotArmSystem{};
-    auto integrator = diffeq::RK4Integrator<std::vector<double>>(robot_system);
+    auto integrator = diffeq::make_rk45<std::vector<double>>(robot_system);
     
     // Initial state: [angle=0.1 rad, angular_velocity=0]
     std::vector<double> state = {0.1, 0.0};
@@ -133,15 +123,17 @@ void demonstrate_realtime_control() {
     
     auto advanced_start_time = std::chrono::high_resolution_clock::now();
     
-    // Simulate real-time control loop
+    // Simulate real-time control loop with async execution
+    std::vector<std::future<void>> control_futures;
+    
     for (double t = 0.0; t < simulation_time; t += dt) {
-        // Execute control step with real-time priority
-        auto control_future = parallel_config->async([&]() {
-            integrator->step(state, dt);
+        // Execute control step asynchronously
+        auto control_future = std::async(std::launch::async, [&, t]() {
+            integrator.step(state, dt);
         });
         
         // Simulate sensor reading (parallel)
-        auto sensor_future = parallel_config->async([&]() {
+        auto sensor_future = std::async(std::launch::async, [&]() {
             // Placeholder for sensor data processing
             std::this_thread::sleep_for(std::chrono::microseconds(50));
             return state[0];  // Return angle measurement
@@ -171,8 +163,7 @@ void demonstrate_realtime_control() {
 /**
  * @brief Stochastic Process Research Example
  * 
- * Demonstrates Monte Carlo simulations requiring thousands/millions of integrations
- * with focus on throughput rather than latency.
+ * Demonstrates Monte Carlo simulations using modern parallelism.
  */
 namespace stochastic_research {
 
@@ -191,77 +182,74 @@ struct GeometricBrownianMotion {
 };
 
 void demonstrate_monte_carlo_simulation() {
-    std::cout << "\n=== Stochastic Process Research with GPU-Accelerated Monte Carlo ===" << std::endl;
-    
-    // Configure for high-throughput Monte Carlo
-    auto parallel_config = diffeq::execution::presets::monte_carlo()
-        .workers(16)                   // Many workers for throughput
-        .batch_size(1000)              // Large batches for efficiency
-        .enable_gpu_if_available()     // Use GPU for massive parallelism
-        .build();
+    std::cout << "\n=== Stochastic Process Research with Modern Parallelism ===" << std::endl;
     
     const int num_simulations = 10000;
     const double initial_price = 100.0;
-    const double time_horizon = 1.0;  // 1 year
-    const double dt = 0.01;           // Daily steps
+    const double dt = 0.01;
+    const double t_final = 1.0;
     
     std::cout << "Running " << num_simulations << " Monte Carlo simulations..." << std::endl;
-    std::cout << "Using " << parallel_config->worker_count() << " workers" << std::endl;
     
     auto start_time = std::chrono::high_resolution_clock::now();
     
-    // Parallel Monte Carlo simulation
+    // Use standard C++20 parallel execution for Monte Carlo
     std::vector<double> final_prices(num_simulations);
     
-    parallel_config->parallel_for(0, num_simulations, [&](int i) {
-        // Each simulation gets its own random number generator
-        std::mt19937 rng(i);  // Seed with simulation index
-        std::normal_distribution<double> normal(0.0, 1.0);
-        
-        GeometricBrownianMotion gbm;
-        diffeq::EulerMaruyama<std::vector<double>> integrator(gbm);
-        
-        std::vector<double> state = {initial_price};
-        
-        // Integrate stochastic process
-        for (double t = 0.0; t < time_horizon; t += dt) {
-            integrator.step(state, dt, normal(rng));
-        }
-        
-        final_prices[i] = state[0];
-    });
+    std::for_each(std::execution::par, 
+        std::views::iota(0, num_simulations).begin(),
+        std::views::iota(0, num_simulations).end(),
+        [&](int i) {
+            std::mt19937 rng(i);  // Seed with simulation index
+            std::normal_distribution<double> normal(0.0, 1.0);
+            
+            // Create SDE system
+            auto drift = [](double t, const std::vector<double>& x, std::vector<double>& fx) {
+                double mu = 0.05;
+                fx[0] = mu * x[0];
+            };
+            
+            auto diffusion = [](double t, const std::vector<double>& x, std::vector<double>& gx) {
+                double sigma = 0.2;
+                gx[0] = sigma * x[0];
+            };
+            
+            // Simple Euler-Maruyama implementation
+            std::vector<double> state = {initial_price};
+            for (double t = 0.0; t < t_final; t += dt) {
+                double dW = normal(rng) * std::sqrt(dt);
+                state[0] += 0.05 * state[0] * dt + 0.2 * state[0] * dW;
+            }
+            
+            final_prices[i] = state[0];
+        });
     
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
     
     // Calculate statistics
-    double sum = 0.0, sum_sq = 0.0;
+    double mean_price = std::reduce(final_prices.begin(), final_prices.end()) / num_simulations;
+    double variance = 0.0;
     for (double price : final_prices) {
-        sum += price;
-        sum_sq += price * price;
+        variance += (price - mean_price) * (price - mean_price);
     }
-    double mean = sum / num_simulations;
-    double variance = (sum_sq / num_simulations) - (mean * mean);
+    variance /= num_simulations;
     double std_dev = std::sqrt(variance);
     
-    std::cout << "Monte Carlo completed in " << duration.count() << "ms" << std::endl;
-    std::cout << "Simulations per second: " << (num_simulations * 1000.0 / duration.count()) << std::endl;
-    std::cout << "Final price statistics:" << std::endl;
-    std::cout << "  Mean: $" << mean << std::endl;
-    std::cout << "  Std Dev: $" << std_dev << std::endl;
-    std::cout << "  Min: $" << *std::min_element(final_prices.begin(), final_prices.end()) << std::endl;
-    std::cout << "  Max: $" << *std::max_element(final_prices.begin(), final_prices.end()) << std::endl;
+    std::cout << "Monte Carlo simulation completed in " << duration.count() << "ms" << std::endl;
+    std::cout << "Mean final price: " << mean_price << std::endl;
+    std::cout << "Standard deviation: " << std_dev << std::endl;
+    std::cout << "Theoretical mean: " << initial_price * std::exp(0.05) << std::endl;
 }
 
 } // namespace stochastic_research
 
 /**
- * @brief Multi-Hardware Target Example
+ * @brief Hardware Benchmarking Example
  * 
- * Demonstrates how to benchmark and choose the best hardware target
- * for different problem sizes and requirements.
+ * Demonstrates performance comparison across different hardware configurations.
  */
-namespace multi_hardware_demo {
+namespace hardware_benchmark {
 
 struct ExponentialDecay {
     double k = 1.0;
@@ -272,100 +260,59 @@ struct ExponentialDecay {
 };
 
 void benchmark_hardware_targets() {
-    std::cout << "\n=== Multi-Hardware Target Benchmarking ===" << std::endl;
+    std::cout << "\n=== Hardware Performance Benchmarking ===" << std::endl;
     
     const int num_integrations = 10000;
+    const double dt = 0.01;
+    const double t_final = 1.0;
+    
+    auto system = ExponentialDecay{};
+    auto integrator = diffeq::make_rk45<std::vector<double>>(system);
     std::vector<double> initial_state = {1.0};
     
-    ExponentialDecay system;
-    diffeq::RK4Integrator<std::vector<double>> integrator(system);
-    
-    std::cout << "Benchmarking " << num_integrations << " integrations on different targets..." << std::endl;
-    
-    // Test CPU-only execution
-    auto cpu_config = diffeq::execution::presets::cpu_only()
-        .workers(4)
-        .build();
-    
-    auto cpu_start = std::chrono::high_resolution_clock::now();
-    
-    std::vector<std::vector<double>> states(num_integrations, initial_state);
-    cpu_config->parallel_for(0, num_integrations, [&](int i) {
-        integrator.step(states[i], 0.01);
-    });
-    
-    auto cpu_end = std::chrono::high_resolution_clock::now();
-    auto cpu_duration = std::chrono::duration_cast<std::chrono::microseconds>(cpu_end - cpu_start);
-    
-    std::cout << "CPU (4 cores): " << cpu_duration.count() << " μs" << std::endl;
-    
-    // Test GPU execution (if available)
-    if (diffeq::execution::gpu_available()) {
-        auto gpu_config = diffeq::execution::presets::gpu_accelerated()
-            .build();
-        
-        auto gpu_start = std::chrono::high_resolution_clock::now();
-        
-        std::vector<std::vector<double>> gpu_states(num_integrations, initial_state);
-        gpu_config->parallel_for(0, num_integrations, [&](int i) {
-            integrator.step(gpu_states[i], 0.01);
-        });
-        
-        auto gpu_end = std::chrono::high_resolution_clock::now();
-        auto gpu_duration = std::chrono::duration_cast<std::chrono::microseconds>(gpu_end - gpu_start);
-        
-        std::cout << "GPU: " << gpu_duration.count() << " μs" << std::endl;
-        std::cout << "GPU speedup: " << (double)cpu_duration.count() / gpu_duration.count() << "x" << std::endl;
-    } else {
-        std::cout << "GPU: Not available" << std::endl;
+    // Sequential execution
+    auto seq_start = std::chrono::high_resolution_clock::now();
+    std::vector<std::vector<double>> seq_states(num_integrations, initial_state);
+    for (int i = 0; i < num_integrations; ++i) {
+        integrator.integrate(seq_states[i], dt, t_final);
     }
+    auto seq_end = std::chrono::high_resolution_clock::now();
+    auto seq_duration = std::chrono::duration_cast<std::chrono::milliseconds>(seq_end - seq_start);
     
-    // Test hybrid CPU+GPU execution
-    auto hybrid_config = diffeq::execution::presets::hybrid()
-        .cpu_workers(2)
-        .gpu_batch_size(1000)
-        .build();
+    // Parallel execution
+    auto par_start = std::chrono::high_resolution_clock::now();
+    std::vector<std::vector<double>> par_states(num_integrations, initial_state);
+    std::for_each(std::execution::par, par_states.begin(), par_states.end(),
+        [&](std::vector<double>& state) {
+            auto local_integrator = diffeq::make_rk45<std::vector<double>>(system);
+            local_integrator.integrate(state, dt, t_final);
+        });
+    auto par_end = std::chrono::high_resolution_clock::now();
+    auto par_duration = std::chrono::duration_cast<std::chrono::milliseconds>(par_end - par_start);
     
-    auto hybrid_start = std::chrono::high_resolution_clock::now();
-    
-    std::vector<std::vector<double>> hybrid_states(num_integrations, initial_state);
-    hybrid_config->parallel_for(0, num_integrations, [&](int i) {
-        integrator.step(hybrid_states[i], 0.01);
-    });
-    
-    auto hybrid_end = std::chrono::high_resolution_clock::now();
-    auto hybrid_duration = std::chrono::duration_cast<std::chrono::microseconds>(hybrid_end - hybrid_start);
-    
-    std::cout << "Hybrid (CPU+GPU): " << hybrid_duration.count() << " μs" << std::endl;
+    std::cout << "Sequential execution: " << seq_duration.count() << "ms" << std::endl;
+    std::cout << "Parallel execution: " << par_duration.count() << "ms" << std::endl;
+    std::cout << "Speedup: " << static_cast<double>(seq_duration.count()) / par_duration.count() << "x" << std::endl;
+    std::cout << "Hardware concurrency: " << std::thread::hardware_concurrency() << " threads" << std::endl;
 }
 
-} // namespace multi_hardware_demo
+} // namespace hardware_benchmark
 
-/**
- * @brief Comprehensive demonstration of all parallelism features
- */
 void demonstrate_all_parallelism_features() {
-    std::cout << "\n=== Comprehensive Parallelism Feature Demo ===" << std::endl;
+    std::cout << "\n=== Complete Parallelism Feature Demonstration ===" << std::endl;
     
-    // 1. Quick start
-    quick_start_example();
-    
-    // 2. Robotics control
+    modern_parallel_integration_example();
     robotics_control::demonstrate_realtime_control();
-    
-    // 3. Stochastic research
     stochastic_research::demonstrate_monte_carlo_simulation();
+    hardware_benchmark::benchmark_hardware_targets();
     
-    // 4. Hardware benchmarking
-    multi_hardware_demo::benchmark_hardware_targets();
-    
-    std::cout << "\n=== All parallelism features demonstrated! ===" << std::endl;
+    std::cout << "\n=== All Examples Completed Successfully! ===" << std::endl;
 }
 
 int main() {
-    std::cout << "=== diffeq Parallelism Usage Examples ===" << std::endl;
+    std::cout << "Modern DiffeQ Parallelism Examples" << std::endl;
+    std::cout << "===================================" << std::endl;
     
-    // Run comprehensive demonstration
     demonstrate_all_parallelism_features();
     
     return 0;

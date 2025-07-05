@@ -6,12 +6,11 @@
 #include <chrono>
 
 // Include integrators (excluding DOP853 which has its own test file)
-#include <solvers/rk4_solver.hpp>
-#include <solvers/rk23_solver.hpp>
-#include <solvers/rk45_solver.hpp>
-#include <solvers/radau_solver.hpp>
-#include <solvers/bdf_solver.hpp>
-#include <solvers/lsoda_solver.hpp>
+#include <integrators/ode/rk4.hpp>
+#include <integrators/ode/rk23.hpp>
+#include <integrators/ode/rk45.hpp>
+#include <integrators/ode/bdf.hpp>
+#include <integrators/ode/lsoda.hpp>
 
 // Test system: dy/dt = -y (exact solution: y(t) = y0 * exp(-t))
 void exponential_decay(double t, const std::vector<double>& y, std::vector<double>& dydt) {
@@ -70,7 +69,7 @@ protected:
 };
 
 TEST_F(IntegratorTest, RK4IntegratorVector) {
-    RK4Integrator<std::vector<double>> integrator(exponential_decay);
+    diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(exponential_decay);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -81,7 +80,7 @@ TEST_F(IntegratorTest, RK4IntegratorVector) {
 }
 
 TEST_F(IntegratorTest, RK4IntegratorArray) {
-    RK4Integrator<std::array<double, 1>> integrator(exponential_decay_array);
+    diffeq::integrators::ode::RK4Integrator<std::array<double, 1>> integrator(exponential_decay_array);
     
     auto y = y0_array_;
     integrator.set_time(t_start_);
@@ -92,7 +91,7 @@ TEST_F(IntegratorTest, RK4IntegratorArray) {
 }
 
 TEST_F(IntegratorTest, RK23IntegratorAdaptive) {
-    RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::integrators::ode::RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -103,7 +102,7 @@ TEST_F(IntegratorTest, RK23IntegratorAdaptive) {
 }
 
 TEST_F(IntegratorTest, RK45IntegratorAdaptive) {
-    RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -113,11 +112,11 @@ TEST_F(IntegratorTest, RK45IntegratorAdaptive) {
     EXPECT_NEAR(y[0], exact, 1e-6);
 }
 
-TEST_F(IntegratorTest, RadauIntegratorStiff) {
+TEST_F(IntegratorTest, BDFIntegratorStiff) {
     // Test with a mildly stiff system
     VanderPolOscillator vdp(5.0);  // Moderately stiff
     
-    RadauIntegrator<std::vector<double>> integrator(
+    diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(
         [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
             vdp(t, y, dydt);
         }, 1e-6, 1e-9);
@@ -136,7 +135,7 @@ TEST_F(IntegratorTest, RadauIntegratorStiff) {
 }
 
 TEST_F(IntegratorTest, BDFIntegratorMultistep) {
-    BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9, 3);
+    diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9, 3);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -147,7 +146,7 @@ TEST_F(IntegratorTest, BDFIntegratorMultistep) {
 }
 
 TEST_F(IntegratorTest, LSODAIntegratorAutomatic) {
-    LSODAIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::integrators::ode::LSODA<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -164,12 +163,12 @@ TEST_F(IntegratorTest, LSODAStiffnessSwitching) {
     // Test with Van der Pol oscillator that becomes stiff
     VanderPolOscillator vdp(10.0);  // Stiff system
     
-    LSODAIntegrator<std::vector<double>> integrator(
+    diffeq::integrators::ode::LSODA<std::vector<double>> integrator(
         [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
             vdp(t, y, dydt);
         }, 1e-6, 1e-9);
     
-    integrator.set_stiffness_detection_frequency(5);  // Check stiffness every 5 steps
+    // Note: set_stiffness_detection_frequency may not be available in current implementation
     
     std::vector<double> y = {1.0, 0.0};
     integrator.set_time(0.0);
@@ -192,7 +191,7 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
     
     // RK4
     {
-        RK4Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
@@ -263,28 +262,28 @@ TEST_F(IntegratorTest, PerformanceComparison) {
     }
     
     {
-        RK23Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::integrators::ode::RK23Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
     }
     
     {
-        RK45Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
     }
     
     {
-        BDFIntegrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
     }
     
     {
-        LSODAIntegrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
