@@ -33,12 +33,12 @@ diffeq::parallel::integrate_parallel(system, states, 0.01, 1000);
 - Manual backend selection and configuration
 
 ### 3. **Direct Standard Libraries** (Maximum control)
-- `diffeq::examples::ODEStdExecution` - C++17/20 std::execution
-- `diffeq::examples::ODEOpenMP` - OpenMP parallel loops  
-- `diffeq::examples::ODETBB` - Intel Threading Building Blocks
-- `diffeq::examples::ODEThrust` - NVIDIA Thrust (GPU without kernels)
-- `diffeq::examples::ODECuda` - Direct CUDA kernels
-- `diffeq::examples::ODEOpenCL` - OpenCL cross-platform
+- `ODEStdExecution` - C++17/20 std::execution
+- `ODEOpenMP` - OpenMP parallel loops  
+- `ODETBB` - Intel Threading Building Blocks
+- `ODEThrust` - NVIDIA Thrust (GPU without kernels)
+- `ODECuda` - Direct CUDA kernels
+- `ODEOpenCL` - OpenCL cross-platform
 
 Note: Class names use **suffix** naming (ODE + Backend) for better auto-completion grouping.
 
@@ -73,7 +73,7 @@ std::vector<std::vector<double>> initial_conditions(1000);
 // ... fill with different initial conditions ...
 
 HarmonicOscillator system;
-diffeq::examples::ODEStdExecution<std::vector<double>, double>::integrate_multiple_conditions(
+ODEStdExecution<std::vector<double>, double>::integrate_multiple_conditions(
     system, initial_conditions, 0.01, 100
 );
 ```
@@ -85,7 +85,7 @@ diffeq::examples::ODEStdExecution<std::vector<double>, double>::integrate_multip
 std::vector<double> frequencies = {0.5, 1.0, 1.5, 2.0, 2.5};
 std::vector<std::vector<double>> results;
 
-diffeq::examples::ODEStdExecution<std::vector<double>, double>::parameter_sweep(
+ODEStdExecution<std::vector<double>, double>::parameter_sweep(
     [](const std::vector<double>& y, std::vector<double>& dydt, double t, double omega) {
         dydt[0] = y[1];
         dydt[1] = -omega*omega*y[0];  // Parameterized frequency

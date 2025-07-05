@@ -1,0 +1,145 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'include/**'
+      - 'examples/**'
+      - 'docs/**'
+      - 'Doxyfile'
+      - 'tools/scripts/build_docs.sh'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'include/**'
+      - 'examples/**'
+      - 'docs/**'
+      - 'Doxyfile'
+      - 'tools/scripts/build_docs.sh'
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y doxygen graphviz plantuml
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx sphinx-rtd-theme breathe exhale
+        
+    - name: Make build script executable
+      run: chmod +x tools/scripts/build_docs.sh
+      
+    - name: Generate documentation
+      run: |
+        ./tools/scripts/build_docs.sh all
+        
+    - name: Upload Doxygen artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: doxygen-docs
+        path: docs/generated/html/
+        
+    - name: Upload Sphinx artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: sphinx-docs
+        path: docs/sphinx/_build/html/
+        
+    - name: Upload API docs artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: api-docs
+        path: docs/api/
+
+  deploy-docs:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download Doxygen artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: doxygen-docs
+        path: docs/generated/html/
+        
+    - name: Download Sphinx artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: sphinx-docs
+        path: docs/sphinx/_build/html/
+        
+    - name: Download API docs artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: api-docs
+        path: docs/api/
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/generated/html
+        destination_dir: ./doxygen
+        
+    - name: Deploy Sphinx to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/sphinx/_build/html
+        destination_dir: ./sphinx
+
+  docs-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y doxygen graphviz plantuml
+        pip install sphinx sphinx-rtd-theme breathe exhale
+        
+    - name: Check documentation syntax
+      run: |
+        chmod +x tools/scripts/build_docs.sh
+        ./tools/scripts/build_docs.sh doxygen
+        # Check for warnings and errors in Doxygen output
+        if grep -i "warning\|error" doxygen.log; then
+          echo "Documentation warnings or errors found"
+          exit 1
+        fi
+        
+    - name: Validate documentation structure
+      run: |
+        # Check if required documentation files exist
+        test -f docs/index.md || exit 1
+        test -f docs/api/README.md || exit 1
+        test -f docs/examples/README.md || exit 1
+        test -f docs/performance/README.md || exit 1
+        echo "Documentation structure validation passed" 
