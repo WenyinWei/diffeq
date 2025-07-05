@@ -9,6 +9,7 @@
 #include <integrators/ode/rk4.hpp>
 #include <integrators/ode/rk23.hpp>
 #include <integrators/ode/rk45.hpp>
+#include <integrators/ode/dop853.hpp>
 #include <integrators/ode/bdf.hpp>
 #include <integrators/ode/lsoda.hpp>
 
@@ -111,6 +112,18 @@ TEST_F(IntegratorTest, RK45IntegratorAdaptive) {
     double exact = analytical_solution(t_end_);
     EXPECT_NEAR(y[0], exact, 1e-6);
 }
+
+TEST_F(IntegratorTest, DOP853IntegratorAdaptive) {
+    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    
+    auto y = y0_vector_;
+    integrator.set_time(t_start_);
+    integrator.integrate(y, dt_, t_end_);
+    
+    double exact = analytical_solution(t_end_);
+    EXPECT_NEAR(y[0], exact, 1e-6);
+}
+
 
 TEST_F(IntegratorTest, BDFIntegratorStiff) {
     // Test with a mildly stiff system
