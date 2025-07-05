@@ -1,4 +1,12 @@
 
+#pragma once
+#include <core/adaptive_integrator.hpp>
+#include <core/state_creator.hpp>
+#include <cmath>
+#include <stdexcept>
+
+namespace diffeq::integrators::ode {
+
 template<system_state S, can_be_time T>
 class DOP853Integrator;
 
@@ -30,13 +38,7 @@ public:
         return result;
     }
 };
-#pragma once
-#include <core/adaptive_integrator.hpp>
-#include <core/state_creator.hpp>
-#include <cmath>
-#include <stdexcept>
 
-namespace diffeq::integrators::ode {
 
 /**
  * @brief DOP853 (Dormand-Prince 8(5,3)) adaptive integrator
