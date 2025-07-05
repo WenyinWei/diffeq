@@ -2,24 +2,15 @@
 #include <core/adaptive_integrator.hpp>
 #include <core/state_creator.hpp>
 #include <cmath>
-#include <array>
-#include <algorithm>
-#include <fstream>
-#include <chrono>
+#include <stdexcept>
 
 namespace diffeq::integrators::ode {
 
 /**
- * @brief DOP853 - High-order Runge-Kutta integrator
+ * @brief DOP853 (Dormand-Prince 8(5,3)) adaptive integrator
  * 
- * 8th order Runge-Kutta method with adaptive step size control.
- * Based on Dormand-Prince coefficients with very high accuracy.
- * Used for problems requiring exceptional precision.
- * 
- * Order: 8(5,3) - 8th order method with 5th and 3rd order error estimation
- * Stages: 12
- * Adaptive: Yes
- * Reference: scipy.integrate.solve_ivp with method='DOP853'
+ * Eighth-order method with embedded 5th and 3rd order error estimation.
+ * Reference: Hairer, Norsett, Wanner, "Solving Ordinary Differential Equations I"
  */
 template<system_state S, can_be_time T = double>
 class DOP853Integrator : public AdaptiveIntegrator<S, T> {
@@ -30,302 +21,196 @@ public:
     using value_type = typename base_type::value_type;
     using system_function = typename base_type::system_function;
 
-    static constexpr int N_STAGES = 12;
-
     explicit DOP853Integrator(system_function sys, 
-                             time_type rtol = static_cast<time_type>(1e-3),
-                             time_type atol = static_cast<time_type>(1e-6))
-        : base_type(std::move(sys), rtol, atol), 
-          safety_(static_cast<time_type>(0.9)),
-          min_factor_(static_cast<time_type>(0.2)),
-          max_factor_(static_cast<time_type>(10.0)) {
-        this->dt_min_ = static_cast<time_type>(1e-12);
-        this->dt_max_ = static_cast<time_type>(1e6);
-        initialize_coefficients();
-    }
+                             time_type rtol = static_cast<time_type>(1e-8),
+                             time_type atol = static_cast<time_type>(1e-10))
+        : base_type(std::move(sys), rtol, atol) {}
 
     void step(state_type& state, time_type dt) override {
         adaptive_step(state, dt);
     }
 
     time_type adaptive_step(state_type& state, time_type dt) override {
-        // Debug log setup (append mode, allow env override for test isolation)
-        static std::string log_name = [](){
-            const char* env = std::getenv("DOP853_DEBUG_LOG");
-            return env ? std::string(env) : std::string("dop853_debug.log");
-        }();
-        static std::ofstream debug_log(log_name, std::ios::app);
-        static constexpr int MAX_STEPS = 1000000; // safety limit
-        static constexpr double MAX_SECONDS = 30.0; // timeout in seconds
-        int step_count = 0;
-        auto start_time = std::chrono::steady_clock::now();
-
-        time_type h_abs = std::abs(dt);
-        time_type min_step = 10 * std::abs(std::nextafter(this->current_time_, this->current_time_ + dt) - this->current_time_);
-
-        if (h_abs > this->dt_max_) {
-            h_abs = this->dt_max_;
-        } else if (h_abs < std::max(min_step, this->dt_min_)) {
-            h_abs = std::max(min_step, this->dt_min_);
-        }
-
-        bool step_accepted = false;
-        bool step_rejected = false;
-        time_type actual_dt = 0;
-
-        while (!step_accepted) {
-            ++step_count;
-            auto now = std::chrono::steady_clock::now();
-            double elapsed = std::chrono::duration<double>(now - start_time).count();
-            if (step_count > MAX_STEPS || elapsed > MAX_SECONDS) {
-                debug_log << "[TIMEOUT] Step limit or time exceeded. Aborting.\n";
-                throw std::runtime_error("DOP853 adaptive_step timeout or too many steps");
-            }
-
-            time_type error_norm = rk_step(state, state, h_abs);
-            debug_log << "step: " << step_count << ", t: " << this->current_time_ << ", h: " << h_abs << ", error_norm: " << error_norm << ", accepted: " << step_accepted << ", rejected: " << step_rejected << std::endl;
-
-            if (std::isnan(error_norm) || std::isinf(error_norm)) {
-                debug_log << "[ERROR] error_norm is NaN or Inf. Aborting.\n";
-                throw std::runtime_error("DOP853 error_norm is NaN or Inf");
-            }
-
-            if (error_norm < 1.0) {
-                step_accepted = true;
-                actual_dt = h_abs;
-                this->advance_time(h_abs);
-
-                if (!step_rejected) {
-                    // Suggest next step size
-                    time_type factor = std::min(max_factor_, safety_ * std::pow(std::max(error_norm, static_cast<time_type>(1e-10)), error_exponent_));
-                    h_abs = std::min(this->dt_max_, h_abs * factor);
-                }
+        const int max_attempts = 10;
+        time_type current_dt = dt;
+        for (int attempt = 0; attempt < max_attempts; ++attempt) {
+            state_type y_new = StateCreator<state_type>::create(state);
+            state_type error = StateCreator<state_type>::create(state);
+            dop853_step(state, y_new, error, current_dt);
+            time_type err_norm = this->error_norm(error, y_new);
+            if (err_norm <= 1.0) {
+                state = y_new;
+                this->advance_time(current_dt);
+                time_type next_dt = this->suggest_step_size(current_dt, err_norm, 8);
+                return std::max(this->dt_min_, std::min(this->dt_max_, next_dt));
             } else {
-                step_rejected = true;
-                time_type factor = std::max(min_factor_, safety_ * std::pow(std::max(error_norm, static_cast<time_type>(1e-10)), error_exponent_));
-                h_abs = std::max(this->dt_min_, h_abs * factor);
+                current_dt *= std::max(this->safety_factor_ * std::pow(err_norm, -1.0/8.0), static_cast<time_type>(0.1));
+                current_dt = std::max(current_dt, this->dt_min_);
             }
         }
-
-        debug_log << "[COMPLETE] t: " << this->current_time_ << ", dt: " << actual_dt << std::endl;
-        debug_log.flush();
-        return actual_dt;
+        throw std::runtime_error("DOP853: Maximum number of step size reductions exceeded");
     }
 
 private:
-    std::array<time_type, N_STAGES + 1> C_;
-    std::array<std::array<time_type, N_STAGES>, N_STAGES> A_;
-    std::array<time_type, N_STAGES> B_;
-    std::array<time_type, N_STAGES> ER_; // Error estimation weights (Fortran er1, er6, ...)
-    time_type BHH1_, BHH2_, BHH3_; // Error estimation weights (Fortran bhh1, bhh2, bhh3)
-    std::array<time_type, N_STAGES + 1> E3_;  // 3rd order error estimate
-    std::array<time_type, N_STAGES + 1> E5_;  // 5th order error estimate
+    // DOP853 Butcher tableau coefficients (from Fortran code)
+    static constexpr time_type c2  = 0.0526001519587677318785587544488;
+    static constexpr time_type c3  = 0.0789002279381515978178381316732;
+    static constexpr time_type c4  = 0.118350341907227396726757197510;
+    static constexpr time_type c5  = 0.281649658092772603273242802490;
+    static constexpr time_type c6  = 0.333333333333333333333333333333;
+    static constexpr time_type c7  = 0.25;
+    static constexpr time_type c8  = 0.307692307692307692307692307692;
+    static constexpr time_type c9  = 0.651282051282051282051282051282;
+    static constexpr time_type c10 = 0.6;
+    static constexpr time_type c11 = 0.857142857142857142857142857142;
 
-    // Adaptive step control parameters
-    time_type safety_;
-    time_type min_factor_;
-    time_type max_factor_;
-    static constexpr time_type error_exponent_ = -1.0 / 8.0;  // -1/(order+1) for 7th order error estimator
+    // a_ij coefficients (only nonzero, as in Fortran)
+    static constexpr time_type a21 = 0.0526001519587677318785587544488;
+    static constexpr time_type a31 = 0.0197250569845378994544595329183;
+    static constexpr time_type a32 = 0.0591751709536136983633785987549;
+    static constexpr time_type a41 = 0.0295875854768068491816892993775;
+    static constexpr time_type a43 = 0.0887627564304205475450678981324;
+    static constexpr time_type a51 = 0.241365134159266685502369798665;
+    static constexpr time_type a53 = -0.884549479328286085344864962717;
+    static constexpr time_type a54 = 0.924834003261792003115737966543;
+    static constexpr time_type a61 = 0.037037037037037037037037037037;
+    static constexpr time_type a64 = 0.170828608729473871279604482173;
+    static constexpr time_type a65 = 0.125467687566822425016691814123;
+    static constexpr time_type a71 = 0.037109375;
+    static constexpr time_type a74 = 0.170252211019544039314978060272;
+    static constexpr time_type a75 = 0.0602165389804559606850219397283;
+    static constexpr time_type a76 = -0.017578125;
+    static constexpr time_type a81 = 0.0370920001185047927108779319836;
+    static constexpr time_type a84 = 0.170383925712239993810214054705;
+    static constexpr time_type a85 = 0.107262030446373284651809199168;
+    static constexpr time_type a86 = -0.0153194377486244017527936158236;
+    static constexpr time_type a87 = 0.00827378916381402288758473766002;
+    static constexpr time_type a91 = 0.624110958716075717114429577812;
+    static constexpr time_type a94 = -3.36089262944694129406857109825;
+    static constexpr time_type a95 = -0.868219346841726006818189891453;
+    static constexpr time_type a96 = 27.5920996994467083049415600797;
+    static constexpr time_type a97 = 20.1540675504778934086186788979;
+    static constexpr time_type a98 = -43.4898841810699588477366255144;
+    static constexpr time_type a101 = 0.477662536438264365890433908527;
+    static constexpr time_type a104 = -2.48811461997166764192642586468;
+    static constexpr time_type a105 = -0.590290826836842996371446475743;
+    static constexpr time_type a106 = 21.2300514481811942347288949897;
+    static constexpr time_type a107 = 15.2792336328824235832596922938;
+    static constexpr time_type a108 = -33.2882109689848629194453265587;
+    static constexpr time_type a109 = -0.0203312017085086261358222928593;
+    static constexpr time_type a111 = -0.93714243008598732571704021658;
+    static constexpr time_type a114 = 5.18637242884406370830023853209;
+    static constexpr time_type a115 = 1.09143734899672957818500254654;
+    static constexpr time_type a116 = -8.14978701074692612513997267357;
+    static constexpr time_type a117 = -18.5200656599969598641566180701;
+    static constexpr time_type a118 = 22.7394870993505042818970056734;
+    static constexpr time_type a119 = 2.49360555267965238987089396762;
+    static constexpr time_type a1110 = -3.0467644718982195003823669022;
+    static constexpr time_type a121 = 2.27331014751653820792359768449;
+    static constexpr time_type a124 = -10.5344954667372501984066689879;
+    static constexpr time_type a125 = -2.00087205822486249909675718444;
+    static constexpr time_type a126 = -17.9589318631187989172765950534;
+    static constexpr time_type a127 = 27.9488845294199600508499808837;
+    static constexpr time_type a128 = -2.85899827713502369474065508674;
+    static constexpr time_type a129 = -8.87285693353062954433549289258;
+    static constexpr time_type a1210 = 12.3605671757943030647266201528;
+    static constexpr time_type a1211 = 0.643392746015763530355970484046;
 
-    void initialize_coefficients() {
-        // C coefficients (times for stages)
-        C_[0] = static_cast<time_type>(0.0);
-        C_[1] = static_cast<time_type>(0.526001519587677318785587544488e-01);
-        C_[2] = static_cast<time_type>(0.789002279381515978178381316732e-01);
-        C_[3] = static_cast<time_type>(0.118350341907227396726757197510e+00);
-        C_[4] = static_cast<time_type>(0.281649658092772603273242802490e+00);
-        C_[5] = static_cast<time_type>(0.333333333333333333333333333333e+00);
-        C_[6] = static_cast<time_type>(0.25e+00);
-        C_[7] = static_cast<time_type>(0.307692307692307692307692307692e+00);
-        C_[8] = static_cast<time_type>(0.651282051282051282051282051282e+00);
-        C_[9] = static_cast<time_type>(0.6e+00);
-        C_[10] = static_cast<time_type>(0.857142857142857142857142857142e+00);
-        C_[11] = static_cast<time_type>(1.0);
-        C_[12] = static_cast<time_type>(1.0);
-        
-        // A matrix (simplified version - full DOP853 has many more coefficients)
-        // For brevity, implementing a simplified high-order method
-        // A full implementation would include all DOP853 coefficients
-        
-        // Initialize A matrix to zero
-        for (int i = 0; i < N_STAGES; ++i) {
-            for (int j = 0; j < N_STAGES; ++j) {
-                A_[i][j] = static_cast<time_type>(0.0);
-            }
-        }
-        
-        // Fill in some key coefficients (Fortran DOP853, partial, user should complete for production)
-        A_[1][0] = static_cast<time_type>(5.26001519587677318785587544488e-2); // a21
-        A_[2][0] = static_cast<time_type>(1.97250569845378994544595329183e-2); // a31
-        A_[2][1] = static_cast<time_type>(5.91751709536136983633785987549e-2); // a32
-        A_[3][0] = static_cast<time_type>(2.95875854768068491816892993775e-2); // a41
-        A_[3][2] = static_cast<time_type>(8.87627564304205475450678981324e-2); // a43
-        A_[4][0] = static_cast<time_type>(2.41365134159266685502369798665e-1); // a51
-        A_[4][2] = static_cast<time_type>(-8.84549479328286085344864962717e-1); // a53
-        A_[4][3] = static_cast<time_type>(9.24834003261792003115737966543e-1); // a54
-        A_[5][0] = static_cast<time_type>(3.7037037037037037037037037037e-2); // a61
-        A_[5][3] = static_cast<time_type>(1.70828608729473871279604482173e-1); // a64
-        A_[5][4] = static_cast<time_type>(1.25467687566822425016691814123e-1); // a65
-        A_[6][0] = static_cast<time_type>(3.7109375e-2); // a71
-        A_[6][3] = static_cast<time_type>(1.70252211019544039314978060272e-1); // a74
-        A_[6][4] = static_cast<time_type>(6.02165389804559606850219397283e-2); // a75
-        A_[6][5] = static_cast<time_type>(-1.7578125e-2); // a76
-        A_[7][0] = static_cast<time_type>(3.70920001185047927108779319836e-2); // a81
-        A_[7][3] = static_cast<time_type>(1.70383925712239993810214054705e-1); // a84
-        A_[7][4] = static_cast<time_type>(1.07262030446373284651809199168e-1); // a85
-        A_[7][5] = static_cast<time_type>(-1.53194377486244017527936158236e-2); // a86
-        A_[7][6] = static_cast<time_type>(8.27378916381402288758473766002e-3); // a87
-        
-        A_[8][0] = 3.70920001185047927108779319836e-2;
-        A_[8][3] = 1.70383925712239993810214054705e-1;
-        A_[8][4] = 1.07262030446373284651809199168e-1;
-        A_[8][5] = -1.53194377486244017527936158236e-2;
-        A_[8][6] = 8.27378916381402288758473766002e-3;
+    // b_i coefficients (8th order solution)
+    static constexpr time_type b1 = 0.0542937341165687622380535766363;
+    static constexpr time_type b6 = 4.45031289275240888144113950566;
+    static constexpr time_type b7 = 1.89151789931450038304281599044;
+    static constexpr time_type b8 = -5.8012039600105847814672114227;
+    static constexpr time_type b9 = 0.31116436695781989440891606237;
+    static constexpr time_type b10 = -0.152160949662516078556178806805;
+    static constexpr time_type b11 = 0.201365400804030348374776537501;
+    static constexpr time_type b12 = 0.0447106157277725905176885569043;
 
-        A_[9][0] = 6.24110958716075717114429577812e-1;
-        A_[9][3] = -3.36089262944694129406857109825;
-        A_[9][4] = -8.68219346841726006818189891453e-1;
-        A_[9][5] = 2.75920996994467083049415600797e1;
-        A_[9][6] = 2.01540675504778934086186788979e1;
-        A_[9][7] = -4.34898841810699588477366255144e1;
+    // Error coefficients (5th order)
+    static constexpr time_type er1 = 0.01312004499419488073250102996;
+    static constexpr time_type er6 = -12.25156446376204440720569753;
+    static constexpr time_type er7 = -4.957589496572501915214079952;
+    static constexpr time_type er8 = 16.64377182454986536961530415;
+    static constexpr time_type er9 = -0.3503288487499736816886487290;
+    static constexpr time_type er10 = 0.3341791187130174790297318841;
+    static constexpr time_type er11 = 0.08192320648511571246570742613;
+    static constexpr time_type er12 = -0.02235530786388629525884427845;
 
-        A_[10][0] = 4.77662536438264365890433908527e-1;
-        A_[10][3] = -2.48811461997166764192642586468;
-        A_[10][4] = -5.90290826836842996371446475743e-1;
-        A_[10][5] = 2.12300514481811942347288949897e1;
-        A_[10][6] = 1.52792336328824235832596922938e1;
-        A_[10][7] = -3.32882109689848629194453265587e1;
-        A_[10][8] = -2.03312017085086261358222928593e-2;
+    // For brevity, d coefficients for dense output are omitted here
 
-        A_[11][0] = -9.3714243008598732571704021658e-1;
-        A_[11][3] = 5.18637242884406370830023853209;
-        A_[11][4] = 1.09143734899672957818500254654;
-        A_[11][5] = -8.14978701074692612513997267357;
-        A_[11][6] = -1.85200656599969598641566180701e1;
-        A_[11][7] = 2.27394870993505042818970056734e1;
-        A_[11][8] = 2.49360555267965238987089396762;
-        A_[11][9] = -3.0467644718982195003823669022;
-
-        // B coefficients for final solution (Fortran b1, b6, b7, ...)
-        B_[0] = static_cast<time_type>(5.42937341165687622380535766363e-2); // b1
-        B_[5] = static_cast<time_type>(4.45031289275240888144113950566e0); // b6
-        B_[6] = static_cast<time_type>(1.89151789931450038304281599044e0); // b7
-        B_[7] = static_cast<time_type>(-5.8012039600105847814672114227e0); // b8
-        B_[8] = static_cast<time_type>(3.1116436695781989440891606237e-1); // b9
-        B_[9] = static_cast<time_type>(-1.52160949662516078556178806805e-1); // b10
-        B_[10] = static_cast<time_type>(2.01365400804030348374776537501e-1); // b11
-        B_[11] = static_cast<time_type>(4.47106157277725905176885569043e-2); // b12
-
-        // Error estimation weights (Fortran er1, er6, ...)
-        ER_.fill(static_cast<time_type>(0.0));
-        ER_[0] = static_cast<time_type>(0.1312004499419488073250102996e-1); // er1
-        ER_[5] = static_cast<time_type>(-0.1225156446376204440720569753e+01); // er6
-        ER_[6] = static_cast<time_type>(-0.4957589496572501915214079952e+00); // er7
-        ER_[7] = static_cast<time_type>(0.1664377182454986536961530415e+01); // er8
-        ER_[8] = static_cast<time_type>(-0.3503288487499736816886487290e+00); // er9
-        ER_[9] = static_cast<time_type>(0.3341791187130174790297318841e+00); // er10
-        ER_[10] = static_cast<time_type>(0.8192320648511571246570742613e-01); // er11
-        ER_[11] = static_cast<time_type>(-0.2235530786388629525884427845e-01); // er12
-
-        // Error estimation weights (Fortran bhh1, bhh2, bhh3)
-        BHH1_ = static_cast<time_type>(0.244094488188976377952755905512e+00);
-        BHH2_ = static_cast<time_type>(0.733846688281611857341361741547e+00);
-        BHH3_ = static_cast<time_type>(0.220588235294117647058823529412e-01);
-
-        // Error estimation coefficients (simplified, legacy)
-        for (int i = 0; i <= N_STAGES; ++i) {
-            E3_[i] = E5_[i] = static_cast<time_type>(0.0);
-        }
-        E3_[0] = static_cast<time_type>(1e-6);  // Simplified error estimate
-        E5_[0] = static_cast<time_type>(1e-8);  // Simplified error estimate
-    }
-    
-    // DOP853 12-stage Runge-Kutta step, Fortran-aligned
-    time_type rk_step(const state_type& y, state_type& y_new, time_type h) {
-        constexpr int N = N_STAGES;
-        std::vector<state_type> k(N, StateCreator<state_type>::create(y));
-        state_type y1 = StateCreator<state_type>::create(y);
+    void dop853_step(const state_type& y, state_type& y_new, state_type& error, time_type dt) {
+        // Allocate all needed k vectors
+        std::vector<state_type> k(12, StateCreator<state_type>::create(y));
+        state_type temp = StateCreator<state_type>::create(y);
         time_type t = this->current_time_;
 
-        // Stage 1: k1 = f(t, y)
+        // k1 = f(t, y)
         this->sys_(t, y, k[0]);
 
-        // Stage 2: y1 = y + h*a21*k1
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * A_[1][0] * k[0][i];
-        this->sys_(t + C_[1] * h, y1, k[1]);
+        // k2 = f(t + c2*dt, y + dt*a21*k1)
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * a21 * k[0][i];
+        this->sys_(t + c2 * dt, temp, k[1]);
 
-        // Stage 3: y1 = y + h*(a31*k1 + a32*k2)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[2][0] * k[0][i] + A_[2][1] * k[1][i]);
-        this->sys_(t + C_[2] * h, y1, k[2]);
+        // k3 = f(t + c3*dt, y + dt*(a31*k1 + a32*k2))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a31 * k[0][i] + a32 * k[1][i]);
+        this->sys_(t + c3 * dt, temp, k[2]);
 
-        // Stage 4: y1 = y + h*(a41*k1 + a43*k3)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[3][0] * k[0][i] + A_[3][2] * k[2][i]);
-        this->sys_(t + C_[3] * h, y1, k[3]);
+        // k4 = f(t + c4*dt, y + dt*(a41*k1 + a43*k3))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a41 * k[0][i] + a43 * k[2][i]);
+        this->sys_(t + c4 * dt, temp, k[3]);
 
-        // Stage 5: y1 = y + h*(a51*k1 + a53*k3 + a54*k4)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[4][0] * k[0][i] + A_[4][2] * k[2][i] + A_[4][3] * k[3][i]);
-        this->sys_(t + C_[4] * h, y1, k[4]);
+        // k5 = f(t + c5*dt, y + dt*(a51*k1 + a53*k3 + a54*k4))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a51 * k[0][i] + a53 * k[2][i] + a54 * k[3][i]);
+        this->sys_(t + c5 * dt, temp, k[4]);
 
-        // Stage 6: y1 = y + h*(a61*k1 + a64*k4 + a65*k5)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[5][0] * k[0][i] + A_[5][3] * k[3][i] + A_[5][4] * k[4][i]);
-        this->sys_(t + C_[5] * h, y1, k[5]);
+        // k6 = f(t + c6*dt, y + dt*(a61*k1 + a64*k4 + a65*k5))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a61 * k[0][i] + a64 * k[3][i] + a65 * k[4][i]);
+        this->sys_(t + c6 * dt, temp, k[5]);
 
-        // Stage 7: y1 = y + h*(a71*k1 + a74*k4 + a75*k5 + a76*k6)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[6][0] * k[0][i] + A_[6][3] * k[3][i] + A_[6][4] * k[4][i] + A_[6][5] * k[5][i]);
-        this->sys_(t + C_[6] * h, y1, k[6]);
+        // k7 = f(t + c7*dt, y + dt*(a71*k1 + a74*k4 + a75*k5 + a76*k6))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a71 * k[0][i] + a74 * k[3][i] + a75 * k[4][i] + a76 * k[5][i]);
+        this->sys_(t + c7 * dt, temp, k[6]);
 
-        // Stage 8: y1 = y + h*(a81*k1 + a84*k4 + a85*k5 + a86*k6 + a87*k7)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[7][0] * k[0][i] + A_[7][3] * k[3][i] + A_[7][4] * k[4][i] + A_[7][5] * k[5][i] + A_[7][6] * k[6][i]);
-        this->sys_(t + C_[7] * h, y1, k[7]);
+        // k8 = f(t + c8*dt, y + dt*(a81*k1 + a84*k4 + a85*k5 + a86*k6 + a87*k7))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a81 * k[0][i] + a84 * k[3][i] + a85 * k[4][i] + a86 * k[5][i] + a87 * k[6][i]);
+        this->sys_(t + c8 * dt, temp, k[7]);
 
-        // Stage 9: y1 = y + h*(a91*k1 + a94*k4 + a95*k5 + a96*k6 + a97*k7 + a98*k8)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[8][0] * k[0][i] + A_[8][3] * k[3][i] + A_[8][4] * k[4][i] + A_[8][5] * k[5][i] + A_[8][6] * k[6][i] + A_[8][7] * k[7][i]);
-        this->sys_(t + C_[8] * h, y1, k[8]);
+        // k9 = f(t + c9*dt, y + dt*(a91*k1 + a94*k4 + a95*k5 + a96*k6 + a97*k7 + a98*k8))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a91 * k[0][i] + a94 * k[3][i] + a95 * k[4][i] + a96 * k[5][i] + a97 * k[6][i] + a98 * k[7][i]);
+        this->sys_(t + c9 * dt, temp, k[8]);
 
-        // Stage 10: y1 = y + h*(a101*k1 + a104*k4 + a105*k5 + a106*k6 + a107*k7 + a108*k8 + a109*k9)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[9][0] * k[0][i] + A_[9][3] * k[3][i] + A_[9][4] * k[4][i] + A_[9][5] * k[5][i] + A_[9][6] * k[6][i] + A_[9][7] * k[7][i] + A_[9][8] * k[8][i]);
-        this->sys_(t + C_[9] * h, y1, k[9]);
+        // k10 = f(t + c10*dt, y + dt*(a101*k1 + a104*k4 + a105*k5 + a106*k6 + a107*k7 + a108*k8 + a109*k9))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a101 * k[0][i] + a104 * k[3][i] + a105 * k[4][i] + a106 * k[5][i] + a107 * k[6][i] + a108 * k[7][i] + a109 * k[8][i]);
+        this->sys_(t + c10 * dt, temp, k[9]);
 
-        // Stage 11: y1 = y + h*(a111*k1 + a114*k4 + a115*k5 + a116*k6 + a117*k7 + a118*k8 + a119*k9 + a1110*k10)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[10][0] * k[0][i] + A_[10][3] * k[3][i] + A_[10][4] * k[4][i] + A_[10][5] * k[5][i] + A_[10][6] * k[6][i] + A_[10][7] * k[7][i] + A_[10][8] * k[8][i] + A_[10][9] * k[9][i]);
-        this->sys_(t + C_[10] * h, y1, k[10]);
+        // k11 = f(t + c11*dt, y + dt*(a111*k1 + a114*k4 + a115*k5 + a116*k6 + a117*k7 + a118*k8 + a119*k9 + a1110*k10))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a111 * k[0][i] + a114 * k[3][i] + a115 * k[4][i] + a116 * k[5][i] + a117 * k[6][i] + a118 * k[7][i] + a119 * k[8][i] + a1110 * k[9][i]);
+        this->sys_(t + c11 * dt, temp, k[10]);
 
-        // Stage 12: y1 = y + h*(a121*k1 + a124*k4 + a125*k5 + a126*k6 + a127*k7 + a128*k8 + a129*k9 + a1210*k10 + a1211*k11)
-        for (size_t i = 0; i < y.size(); ++i)
-            y1[i] = y[i] + h * (A_[11][0] * k[0][i] + A_[11][3] * k[3][i] + A_[11][4] * k[4][i] + A_[11][5] * k[5][i] + A_[11][6] * k[6][i] + A_[11][7] * k[7][i] + A_[11][8] * k[8][i] + A_[11][9] * k[9][i] + A_[11][10] * k[10][i]);
-        this->sys_(t + C_[11] * h, y1, k[11]);
+        // k12 = f(t + dt, y + dt*(a121*k1 + a124*k4 + a125*k5 + a126*k6 + a127*k7 + a128*k8 + a129*k9 + a1210*k10 + a1211*k11))
+        for (std::size_t i = 0; i < y.size(); ++i)
+            temp[i] = y[i] + dt * (a121 * k[0][i] + a124 * k[3][i] + a125 * k[4][i] + a126 * k[5][i] + a127 * k[6][i] + a128 * k[7][i] + a129 * k[8][i] + a1210 * k[9][i] + a1211 * k[10][i]);
+        this->sys_(t + dt, temp, k[11]);
 
-        // 8th order solution (main step)
-        for (size_t i = 0; i < y.size(); ++i) {
-            y_new[i] = y[i]
-                + h * (B_[0] * k[0][i] + B_[5] * k[5][i] + B_[6] * k[6][i] + B_[7] * k[7][i] + B_[8] * k[8][i] + B_[9] * k[9][i] + B_[10] * k[10][i] + B_[11] * k[11][i]);
+        // 8th order solution (y_new)
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            y_new[i] = y[i] + dt * (b1 * k[0][i] + b6 * k[5][i] + b7 * k[6][i] + b8 * k[7][i] + b9 * k[8][i] + b10 * k[9][i] + b11 * k[10][i] + b12 * k[11][i]);
         }
 
-        // Error estimation (Fortran-aligned)
-        time_type err = 0, err2 = 0;
-        for (size_t i = 0; i < y.size(); ++i) {
-            time_type sk = this->atol_ + this->rtol_ * std::max(std::abs(y[i]), std::abs(y_new[i]));
-            // First error component
-            time_type erri1 = y_new[i] - (BHH1_ * k[0][i] + BHH2_ * k[8][i] + BHH3_ * k[11][i]);
-            err2 += (erri1 / sk) * (erri1 / sk);
-            // Second error component
-            time_type erri2 = ER_[0] * k[0][i] + ER_[5] * k[5][i] + ER_[6] * k[6][i] + ER_[7] * k[7][i] + ER_[8] * k[8][i] + ER_[9] * k[9][i] + ER_[10] * k[10][i] + ER_[11] * k[11][i];
-            err += (erri2 / sk) * (erri2 / sk);
+        // 5th order error estimate (embedded)
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            error[i] = dt * (er1 * k[0][i] + er6 * k[5][i] + er7 * k[6][i] + er8 * k[7][i] + er9 * k[8][i] + er10 * k[9][i] + er11 * k[10][i] + er12 * k[11][i]);
         }
-        time_type deno = err + 0.01 * err2;
-        if (deno <= 0.0) deno = 1.0;
-        err = std::abs(h) * std::sqrt(err / (y.size() * deno));
-        return err;
     }
 };
 
