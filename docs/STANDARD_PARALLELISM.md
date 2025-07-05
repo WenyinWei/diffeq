@@ -2,6 +2,46 @@
 
 This document shows how to use standard parallelism libraries with the diffeq library, addressing the feedback to avoid custom parallel classes and use proven standard libraries instead.
 
+## Quick Start: Simplified Interface
+
+For most users, the simplest approach is to use the unified convenience interface:
+
+```cpp
+#include <examples/standard_parallelism.hpp>
+
+// SIMPLEST USAGE: Just add parallel to existing code
+auto system = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+    dydt[0] = y[1];           // dx/dt = v  
+    dydt[1] = -y[0];          // dv/dt = -x
+};
+
+std::vector<std::vector<double>> states(100, {1.0, 0.0});  // 100 initial conditions
+
+// THIS IS ALL YOU NEED! Automatic hardware selection and parallel execution:
+diffeq::parallel::integrate_parallel(system, states, 0.01, 1000);
+```
+
+## Available Interfaces
+
+### 1. **Simple Functions** (Recommended for most users)
+- `diffeq::parallel::integrate_parallel()` - Automatic backend selection
+- `diffeq::parallel::parameter_sweep_parallel()` - Parallel parameter sweeps
+- `diffeq::parallel::create_async_dispatcher()` - One-by-one task processing
+
+### 2. **Class-based Interface** (For advanced control)
+- `diffeq::parallel::ODEParallel<State, Time>` - Unified parallel integrator
+- Manual backend selection and configuration
+
+### 3. **Direct Standard Libraries** (Maximum control)
+- `diffeq::examples::ODEStdExecution` - C++17/20 std::execution
+- `diffeq::examples::ODEOpenMP` - OpenMP parallel loops  
+- `diffeq::examples::ODETBB` - Intel Threading Building Blocks
+- `diffeq::examples::ODEThrust` - NVIDIA Thrust (GPU without kernels)
+- `diffeq::examples::ODECuda` - Direct CUDA kernels
+- `diffeq::examples::ODEOpenCL` - OpenCL cross-platform
+
+Note: Class names use **suffix** naming (ODE + Backend) for better auto-completion grouping.
+
 ## Overview
 
 Instead of creating custom parallel classes, we recommend using established standard libraries:
@@ -33,7 +73,7 @@ std::vector<std::vector<double>> initial_conditions(1000);
 // ... fill with different initial conditions ...
 
 HarmonicOscillator system;
-diffeq::examples::StandardParallelODE<std::vector<double>, double>::integrate_multiple_conditions(
+diffeq::examples::ODEStdExecution<std::vector<double>, double>::integrate_multiple_conditions(
     system, initial_conditions, 0.01, 100
 );
 ```
@@ -45,7 +85,7 @@ diffeq::examples::StandardParallelODE<std::vector<double>, double>::integrate_mu
 std::vector<double> frequencies = {0.5, 1.0, 1.5, 2.0, 2.5};
 std::vector<std::vector<double>> results;
 
-diffeq::examples::StandardParallelODE<std::vector<double>, double>::parameter_sweep(
+diffeq::examples::ODEStdExecution<std::vector<double>, double>::parameter_sweep(
     [](const std::vector<double>& y, std::vector<double>& dydt, double t, double omega) {
         dydt[0] = y[1];
         dydt[1] = -omega*omega*y[0];  // Parameterized frequency
@@ -427,7 +467,7 @@ For scenarios where trigger signals arrive one-by-one:
 #include <condition_variable>
 #include <mutex>
 
-class AsyncODEProcessor {
+class ODETaskDispatcher {
 private:
     std::queue<std::function<void()>> task_queue;
     std::mutex queue_mutex;
@@ -491,10 +531,10 @@ public:
 
 // Usage example
 void demonstrate_async_processing() {
-    AsyncODEProcessor processor;
+    ODETaskDispatcher processor;
     
     // Start the processor in background
-    std::thread processor_thread(&AsyncODEProcessor::process_tasks, &processor);
+    std::thread processor_thread(&ODETaskDispatcher::process_tasks, &processor);
     
     // Simple harmonic oscillator
     auto system = [](const std::vector<double>& y, std::vector<double>& dydt, double t) {
@@ -534,7 +574,7 @@ For distributed computing across multiple processes:
 ```cpp
 #include <mpi.h>
 
-class MPIAsyncODEProcessor {
+class MPIODETaskDispatcher {
 public:
     static void master_process() {
         int world_size, world_rank;

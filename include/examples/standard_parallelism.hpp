@@ -51,6 +51,8 @@
 #include <condition_variable>
 #include <mutex>
 #include <atomic>
+#include <memory>
+#include <iostream>
 
 namespace diffeq::examples {
 
@@ -61,7 +63,7 @@ namespace diffeq::examples {
  * existing diffeq integrators - no custom parallel classes needed!
  */
 template<typename State, typename Time>
-class StandardParallelODE {
+class ODEStdExecution {
 public:
     
     /**
@@ -121,8 +123,8 @@ public:
                          Time param = parameters[i];
                          
                          // Create system with this parameter
-                         auto system = [&](const State& y, State& dydt, Time t) {
-                             system_template(y, dydt, t, param);  // Pass parameter
+                         auto system = [&](Time t, const State& y, State& dydt) {
+                             system_template(t, y, dydt, param);  // Pass parameter
                          };
                          
                          auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
@@ -141,7 +143,7 @@ public:
  * OpenMP is widely supported and doesn't require custom infrastructure.
  */
 template<typename State, typename Time>
-class OpenMPParallelODE {
+class ODEOpenMP {
 public:
     
     template<typename System>
@@ -215,7 +217,7 @@ public:
  * TBB provides sophisticated parallel algorithms and task scheduling.
  */
 template<typename State, typename Time>
-class TBBParallelODE {
+class ODETBB {
 public:
     template<typename System>
     static void integrate_tbb(
@@ -267,7 +269,7 @@ public:
  * writing kernel functions - this is how.
  */
 template<typename State, typename Time>
-class ThrustGPUODE {
+class ODEThrust {
 public:
     /**
      * @brief GPU ODE integration using Thrust - NO custom kernels needed!
@@ -399,7 +401,7 @@ namespace availability {
  * providing maximum control and performance on NVIDIA GPUs.
  */
 template<typename State, typename Time>
-class CUDADirectODE {
+class ODECuda {
 public:
     /**
      * @brief Check CUDA availability using standard runtime functions
@@ -437,7 +439,7 @@ public:
  * and can target both GPU and CPU devices.
  */
 template<typename State, typename Time>
-class OpenCLODE {
+class ODEOpenCL {
 public:
     static bool opencl_available() {
         try {
@@ -469,13 +471,13 @@ public:
 #endif
 
 /**
- * @brief Asynchronous CPU processing with one-by-one thread startup
+ * @brief Asynchronous ODE task dispatcher with one-by-one thread startup
  * 
  * This addresses the user's requirement for threads to start one-by-one
  * as trigger signals arrive from external processes.
  */
 template<typename State, typename Time>
-class AsyncODEProcessor {
+class ODETaskDispatcher {
 private:
     std::queue<std::function<void()>> task_queue;
     std::mutex queue_mutex;
@@ -484,9 +486,9 @@ private:
     std::vector<std::thread> worker_threads;
     
 public:
-    AsyncODEProcessor() = default;
+    ODETaskDispatcher() = default;
     
-    ~AsyncODEProcessor() {
+    ~ODETaskDispatcher() {
         stop();
     }
     
@@ -565,3 +567,240 @@ public:
 };
 
 } // namespace diffeq::examples
+
+/**
+ * @brief Convenient unified interface for ODE parallelism
+ * 
+ * This provides a simpler architecture that automatically chooses
+ * the best available parallel execution method.
+ */
+namespace diffeq::parallel {
+
+/**
+ * @brief Auto-selecting parallel ODE integrator
+ * 
+ * This class automatically detects available hardware and chooses
+ * the most appropriate parallel execution strategy.
+ */
+template<typename State, typename Time>
+class ODEParallel {
+public:
+    enum class Backend {
+        Auto,           // Automatically choose best available
+        StdExecution,   // C++17/20 std::execution
+        OpenMP,         // OpenMP parallel loops
+        TBB,            // Intel Threading Building Blocks
+        Thrust,         // NVIDIA Thrust (GPU without kernels)
+        Cuda,           // Direct CUDA kernels
+        OpenCL          // OpenCL cross-platform
+    };
+    
+private:
+    Backend selected_backend = Backend::Auto;
+    
+    Backend detect_best_backend() const {
+        // Priority order: GPU -> TBB -> OpenMP -> std::execution
+        if (diffeq::examples::availability::cuda_direct_available()) {
+            return Backend::Cuda;
+        }
+        if (diffeq::examples::availability::thrust_available()) {
+            return Backend::Thrust;
+        }
+        if (diffeq::examples::availability::tbb_available()) {
+            return Backend::TBB;
+        }
+        if (diffeq::examples::availability::openmp_available()) {
+            return Backend::OpenMP;
+        }
+        if (diffeq::examples::availability::std_execution_available()) {
+            return Backend::StdExecution;
+        }
+        return Backend::StdExecution; // Fallback
+    }
+    
+public:
+    /**
+     * @brief Construct with automatic backend selection
+     */
+    ODEParallel() : selected_backend(Backend::Auto) {}
+    
+    /**
+     * @brief Construct with specific backend
+     */
+    explicit ODEParallel(Backend backend) : selected_backend(backend) {}
+    
+    /**
+     * @brief Set preferred backend
+     */
+    void set_backend(Backend backend) {
+        selected_backend = backend;
+    }
+    
+    /**
+     * @brief Get currently selected backend
+     */
+    Backend get_backend() const {
+        return selected_backend == Backend::Auto ? detect_best_backend() : selected_backend;
+    }
+    
+    /**
+     * @brief Integrate multiple initial conditions in parallel
+     * 
+     * This is the main convenience method that most users will need.
+     */
+    template<typename System>
+    void integrate_parallel(
+        System&& system,
+        std::vector<State>& states,
+        Time dt,
+        int steps
+    ) {
+        Backend backend = get_backend();
+        
+        switch (backend) {
+#ifdef TBB_AVAILABLE
+            case Backend::TBB:
+                diffeq::examples::ODETBB<State, Time>::integrate_tbb(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+#endif
+                
+#ifdef _OPENMP
+            case Backend::OpenMP:
+                diffeq::examples::ODEOpenMP<State, Time>::integrate_openmp(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+#endif
+                
+#ifdef THRUST_AVAILABLE
+            case Backend::Thrust:
+                diffeq::examples::ODEThrust<State, Time>::integrate_gpu(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+#endif
+                
+            case Backend::StdExecution:
+            default:
+                diffeq::examples::ODEStdExecution<State, Time>::integrate_multiple_conditions(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+        }
+    }
+    
+    /**
+     * @brief Parameter sweep with automatic parallelization
+     * 
+     * Demonstrates flexibility beyond initial conditions - vary parameters,
+     * integrators, callbacks, execution devices, etc.
+     */
+    template<typename System>
+    void parameter_sweep(
+        System&& system_template,
+        const State& initial_state,
+        const std::vector<Time>& parameters,
+        std::vector<State>& results,
+        Time dt,
+        int steps
+    ) {
+        Backend backend = get_backend();
+        
+        // All backends can use the standard parameter sweep implementation
+        diffeq::examples::ODEStdExecution<State, Time>::parameter_sweep(
+            std::forward<System>(system_template), initial_state, parameters, results, dt, steps);
+    }
+    
+    /**
+     * @brief Get information about available backends
+     */
+    static std::vector<std::pair<Backend, std::string>> available_backends() {
+        std::vector<std::pair<Backend, std::string>> backends;
+        
+        backends.emplace_back(Backend::StdExecution, "C++17/20 std::execution");
+        
+        if (diffeq::examples::availability::openmp_available()) {
+            backends.emplace_back(Backend::OpenMP, "OpenMP parallel loops");
+        }
+        
+        if (diffeq::examples::availability::tbb_available()) {
+            backends.emplace_back(Backend::TBB, "Intel Threading Building Blocks");
+        }
+        
+        if (diffeq::examples::availability::thrust_available()) {
+            backends.emplace_back(Backend::Thrust, "NVIDIA Thrust (GPU without kernels)");
+        }
+        
+        if (diffeq::examples::availability::cuda_direct_available()) {
+            backends.emplace_back(Backend::Cuda, "Direct CUDA kernels");
+        }
+        
+        if (diffeq::examples::availability::opencl_available()) {
+            backends.emplace_back(Backend::OpenCL, "OpenCL cross-platform");
+        }
+        
+        return backends;
+    }
+    
+    /**
+     * @brief Print available backends
+     */
+    static void print_available_backends() {
+        auto backends = available_backends();
+        std::cout << "Available parallel backends:\n";
+        for (const auto& [backend, description] : backends) {
+            std::cout << "  - " << description << "\n";
+        }
+    }
+};
+
+/**
+ * @brief Convenience functions for quick parallel ODE integration
+ * 
+ * These functions provide the simplest possible interface for users
+ * who just want to parallelize their existing ODE code.
+ */
+
+/**
+ * @brief Parallel integration with automatic backend selection
+ * 
+ * Simplest usage: just pass your states and system, get parallel execution.
+ */
+template<typename System, typename State, typename Time>
+void integrate_parallel(
+    System&& system,
+    std::vector<State>& states,
+    Time dt,
+    int steps
+) {
+    ODEParallel<State, Time> parallel;
+    parallel.integrate_parallel(std::forward<System>(system), states, dt, steps);
+}
+
+/**
+ * @brief Parallel parameter sweep
+ * 
+ * Vary parameters, integrators, callbacks, or any other aspect of your ODE system.
+ */
+template<typename System, typename State, typename Time>
+void parameter_sweep_parallel(
+    System&& system_template,
+    const State& initial_state,
+    const std::vector<Time>& parameters,
+    std::vector<State>& results,
+    Time dt,
+    int steps
+) {
+    ODEParallel<State, Time> parallel;
+    parallel.parameter_sweep(std::forward<System>(system_template), initial_state, parameters, results, dt, steps);
+}
+
+/**
+ * @brief Create an async task dispatcher for one-by-one processing
+ * 
+ * For scenarios where tasks arrive sequentially from external signals.
+ */
+template<typename State, typename Time>
+std::unique_ptr<diffeq::examples::ODETaskDispatcher<State, Time>> create_async_dispatcher() {
+    return std::make_unique<diffeq::examples::ODETaskDispatcher<State, Time>>();
+}
+
+} // namespace diffeq::parallel

@@ -152,7 +152,7 @@ __kernel void integrate_harmonic_oscillator_opencl(
 }
 )";
 
-class OpenCLODEIntegrator {
+class ODEOpenCLIntegrator {
 public:
     static bool opencl_available() {
         try {
@@ -225,7 +225,7 @@ public:
 // Asynchronous CPU Processing - One-by-One Thread Startup
 // ================================================================
 
-class AsyncODEProcessor {
+class ODETaskDispatcher {
 private:
     std::queue<std::function<void()>> task_queue;
     std::mutex queue_mutex;
@@ -234,9 +234,9 @@ private:
     std::vector<std::thread> worker_threads;
     
 public:
-    AsyncODEProcessor() = default;
+    ODETaskDispatcher() = default;
     
-    ~AsyncODEProcessor() {
+    ~ODETaskDispatcher() {
         stop();
     }
     
@@ -323,7 +323,7 @@ public:
 
 class SignalDrivenODEProcessor {
 private:
-    AsyncODEProcessor processor;
+    ODETaskDispatcher processor;
     std::atomic<int> signal_count{0};
     
 public:
@@ -394,7 +394,7 @@ void demonstrate_opencl() {
     std::cout << "\n=== OpenCL Cross-Platform GPU Computing ===\n";
     
 #ifdef OPENCL_AVAILABLE
-    if (OpenCLODEIntegrator::opencl_available()) {
+    if (ODEOpenCLIntegrator::opencl_available()) {
         std::cout << "OpenCL devices detected!\n";
         
         const int num_oscillators = 500;
@@ -406,7 +406,7 @@ void demonstrate_opencl() {
         }
         
         auto start = std::chrono::high_resolution_clock::now();
-        OpenCLODEIntegrator::integrate_harmonic_oscillators(states, frequencies, 0.01, 1000);
+        ODEOpenCLIntegrator::integrate_harmonic_oscillators(states, frequencies, 0.01, 1000);
         auto end = std::chrono::high_resolution_clock::now();
         
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);

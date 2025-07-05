@@ -23,8 +23,8 @@ auto simple_harmonic_oscillator(double omega = 1.0) {
 void test_async_processing() {
     std::cout << "=== Testing Asynchronous Processing ===\n";
     
-    diffeq::examples::AsyncODEProcessor<std::vector<double>, double> processor;
-    processor.start_async_processing();
+    diffeq::examples::ODETaskDispatcher<std::vector<double>, double> dispatcher;
+    dispatcher.start_async_processing();
     
     auto system = simple_harmonic_oscillator(1.0);
     std::vector<std::future<std::vector<double>>> futures;
@@ -36,7 +36,7 @@ void test_async_processing() {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         
         std::vector<double> initial_state = {static_cast<double>(i + 1), 0.0};
-        auto future = processor.submit_ode_task(system, initial_state, 0.01, 100);
+        auto future = dispatcher.submit_ode_task(system, initial_state, 0.01, 100);
         futures.push_back(std::move(future));
         
         std::cout << "  Task " << i << " submitted (x0=" << (i + 1) << ")\n";
@@ -49,7 +49,7 @@ void test_async_processing() {
         std::cout << "  Task " << i << " result: x=" << result[0] << ", v=" << result[1] << "\n";
     }
     
-    processor.stop();
+    dispatcher.stop();
     std::cout << "✓ Asynchronous processing test completed\n\n";
 }
 
@@ -57,7 +57,7 @@ void test_cuda_availability() {
     std::cout << "=== Testing CUDA Availability ===\n";
     
 #ifdef __CUDACC__
-    if (diffeq::examples::CUDADirectODE<std::vector<double>, double>::cuda_available()) {
+    if (diffeq::examples::ODECuda<std::vector<double>, double>::cuda_available()) {
         std::cout << "✓ CUDA GPU detected and available\n";
         
         // Demo data for CUDA integration
@@ -71,7 +71,7 @@ void test_cuda_availability() {
         std::cout << "  See examples/advanced_gpu_async_demo.cpp for full implementation\n";
         
         // Note: Actual CUDA kernel would be called here
-        diffeq::examples::CUDADirectODE<std::vector<double>, double>::integrate_harmonic_oscillators_cuda(
+        diffeq::examples::ODECuda<std::vector<double>, double>::integrate_harmonic_oscillators_cuda(
             states, frequencies, 0.01, 100
         );
     } else {
@@ -88,7 +88,7 @@ void test_opencl_availability() {
     std::cout << "=== Testing OpenCL Availability ===\n";
     
 #ifdef OPENCL_AVAILABLE
-    if (diffeq::examples::OpenCLODE<std::vector<double>, double>::opencl_available()) {
+    if (diffeq::examples::ODEOpenCL<std::vector<double>, double>::opencl_available()) {
         std::cout << "✓ OpenCL devices detected and available\n";
         
         SimpleHarmonicOscillator system;
@@ -100,7 +100,7 @@ void test_opencl_availability() {
         auto system_lambda = simple_harmonic_oscillator(1.0);
         
         // Note: Actual OpenCL kernel would be called here
-        diffeq::examples::OpenCLODE<std::vector<double>, double>::integrate_opencl(
+        diffeq::examples::ODEOpenCL<std::vector<double>, double>::integrate_opencl(
             system_lambda, states, 0.01, 100
         );
     } else {
