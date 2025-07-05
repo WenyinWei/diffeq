@@ -36,6 +36,10 @@
 #include <signal/signal_processor.hpp>   // Generic signal processing
 #include <interfaces/integration_interface.hpp>  // Unified interface for all domains
 
+// Standard parallelism library integration examples
+// Note: Use standard libraries (std::execution, OpenMP, TBB, Thrust) instead of custom parallel classes
+// See docs/STANDARD_PARALLELISM.md and examples/standard_parallelism.hpp for integration examples
+
 /**
  * @file diffeq.hpp
  * @brief Modern C++ ODE Integration Library with Real-time Signal Processing
