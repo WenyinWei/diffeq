@@ -38,7 +38,7 @@
 
 // Standard parallelism library integration examples
 // Note: Use standard libraries (std::execution, OpenMP, TBB, Thrust) instead of custom parallel classes
-// See docs/STANDARD_PARALLELISM.md and examples/standard_parallelism.hpp for integration examples
+// See docs/STANDARD_PARALLELISM.md and examples/standard_parallelism_demo.cpp for integration examples
 
 /**
  * @file diffeq.hpp

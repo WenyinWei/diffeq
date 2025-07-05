@@ -1,6 +1,5 @@
-#pragma once
-
 #include <interfaces/integration_interface.hpp>
+#include <diffeq.hpp>
 #include <vector>
 #include <array>
 #include <string>
@@ -176,6 +175,8 @@ auto create_scientific_interface() {
  */
 template<system_state StateType>
 void demonstrate_usage(StateType initial_state) {
+    std::cout << "\n=== Integration Interface Usage Demo ===" << std::endl;
+    
     // Create interface for your domain (finance example)
     auto interface = create_portfolio_interface<StateType>();
     
@@ -198,22 +199,104 @@ void demonstrate_usage(StateType initial_state) {
     auto signal_proc = interface->get_signal_processor();
     
     StateType state = initial_state;
+    double t_start = 0.0, t_end = 1.0, dt = 0.1;
     
-    // Integration with signal processing
-    for (int step = 0; step < 100; ++step) {
-        integrator.integrate(state, 0.01, 0.01 * step);
-        
-        // Simulate external signals
-        if (step == 25) {
-            signal_proc->emit_signal("price_update", 105.0);
+    std::cout << "Initial portfolio state: [" << state[0] << ", " << state[1] << ", " << state[2] << "]" << std::endl;
+    
+    // Integrate with signal processing
+    for (double t = t_start; t < t_end; t += dt) {
+        // Simulate market signals
+        if (t > 0.3 && t < 0.4) {
+            signal_proc->emit_signal("price_update", 110.0);
         }
-        if (step == 50) {
+        if (t > 0.7) {
             signal_proc->emit_signal("risk_alert", std::string("high_volatility"));
         }
-        if (step == 75) {
-            signal_proc->emit_signal("price_update", 95.0);
-        }
+        
+        // Integrate one step
+        integrator->step(state, dt);
     }
+    
+    std::cout << "Final portfolio state: [" << state[0] << ", " << state[1] << ", " << state[2] << "]" << std::endl;
+    std::cout << "Integration completed successfully!" << std::endl;
 }
 
 } // namespace diffeq::examples
+
+int main() {
+    std::cout << "=== diffeq Integration Interface Examples ===" << std::endl;
+    
+    // Example with vector state
+    std::vector<double> initial_portfolio = {1000.0, 2000.0, 1500.0};
+    diffeq::examples::demonstrate_usage(initial_portfolio);
+    
+    std::cout << "\n=== Robotics Interface Example ===" << std::endl;
+    
+    // Create robotics interface
+    auto robotics_interface = diffeq::examples::create_robotics_interface<std::vector<double>>();
+    
+    // Define robot dynamics
+    auto robot_ode = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+        // Simple double integrator: d²θ/dt² = u
+        dydt[0] = y[1];  // dθ/dt = ω
+        dydt[1] = -0.1 * y[0] - 0.5 * y[1];  // Simple PD control
+    };
+    
+    auto signal_aware_robot_ode = robotics_interface->make_signal_aware_ode(robot_ode);
+    auto robot_integrator = diffeq::make_rk4<std::vector<double>>(signal_aware_robot_ode);
+    
+    std::vector<double> robot_state = {0.1, 0.0}; // [angle, angular_velocity]
+    auto robot_signal_proc = robotics_interface->get_signal_processor();
+    
+    std::cout << "Initial robot state: angle=" << robot_state[0] << " rad, velocity=" << robot_state[1] << " rad/s" << std::endl;
+    
+    // Simulate robot control
+    for (double t = 0.0; t < 2.0; t += 0.01) {
+        if (t > 0.5) {
+            robot_signal_proc->emit_signal("control_command", std::vector<double>{0.5});
+        }
+        if (t > 1.5) {
+            robot_signal_proc->emit_signal("emergency_stop", true);
+        }
+        
+        robot_integrator->step(robot_state, 0.01);
+    }
+    
+    std::cout << "Final robot state: angle=" << robot_state[0] << " rad, velocity=" << robot_state[1] << " rad/s" << std::endl;
+    
+    std::cout << "\n=== Scientific Interface Example ===" << std::endl;
+    
+    // Create scientific interface
+    auto scientific_interface = diffeq::examples::create_scientific_interface<std::vector<double>>();
+    
+    // Define scientific system (e.g., chemical reaction)
+    auto chemical_ode = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+        // Simple chemical reaction: A -> B
+        double k = 0.1; // reaction rate
+        dydt[0] = -k * y[0];  // dA/dt = -k*A
+        dydt[1] = k * y[0];   // dB/dt = k*A
+    };
+    
+    auto signal_aware_chemical_ode = scientific_interface->make_signal_aware_ode(chemical_ode);
+    auto chemical_integrator = diffeq::make_rk45<std::vector<double>>(signal_aware_chemical_ode);
+    
+    std::vector<double> chemical_state = {1.0, 0.0}; // [A, B]
+    auto chemical_signal_proc = scientific_interface->get_signal_processor();
+    
+    std::cout << "Initial chemical state: A=" << chemical_state[0] << ", B=" << chemical_state[1] << std::endl;
+    
+    // Simulate chemical reaction with parameter updates
+    for (double t = 0.0; t < 10.0; t += 0.1) {
+        if (t > 5.0) {
+            chemical_signal_proc->emit_signal("parameter_update", 0.2); // Increase reaction rate
+        }
+        
+        chemical_integrator->step(chemical_state, 0.1);
+    }
+    
+    std::cout << "Final chemical state: A=" << chemical_state[0] << ", B=" << chemical_state[1] << std::endl;
+    
+    std::cout << "\n=== All examples completed successfully! ===" << std::endl;
+    
+    return 0;
+} 

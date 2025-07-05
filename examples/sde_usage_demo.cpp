@@ -1,5 +1,3 @@
-#pragma once
-
 #include <diffeq.hpp>
 #include <async/async_integrator.hpp>
 #include <vector>
@@ -7,6 +5,7 @@
 #include <memory>
 #include <functional>
 #include <chrono>
+#include <random>
 
 namespace diffeq::examples::sde {
 
@@ -29,7 +28,7 @@ public:
         : mu(mu), sigma(sigma) {}
     
     void run_comparison() {
-        std::cout << "\n=== Black-Scholes Model Comparison ===\n";
+        std::cout << "\n=== Black-Scholes Model Comparison ===" << std::endl;
         std::cout << "μ = " << mu << ", σ = " << sigma << std::endl;
         
         auto drift_func = [this](double /*t*/, const std::vector<double>& S, std::vector<double>& dS) {
@@ -161,7 +160,7 @@ public:
         : mu(mu), kappa(kappa), theta(theta), sigma(sigma), rho(rho) {}
     
     void run_example() {
-        std::cout << "\n=== Heston Stochastic Volatility Model ===\n";
+        std::cout << "\n=== Heston Stochastic Volatility Model ===" << std::endl;
         std::cout << "μ = " << mu << ", κ = " << kappa << ", θ = " << theta 
                   << ", σ = " << sigma << ", ρ = " << rho << std::endl;
         
@@ -200,40 +199,41 @@ public:
         double T = 1.0;
         int steps = static_cast<int>(T / dt);
         
-        // Use SOSRI for stability with this complex model
-        auto integrator = diffeq::sde::factory::make_sosri_integrator<std::vector<double>, double>(problem, wiener);
-        
+        // Use high-order SDE integrator for better accuracy
+        auto integrator = diffeq::sde::factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
         integrator->set_time(0.0);
         
-        std::cout << "Initial: S = " << x[0] << ", V = " << x[1] << std::endl;
+        std::cout << "Initial state: S = " << x[0] << ", V = " << x[1] << std::endl;
         
+        // Integrate Heston model
         for (int i = 0; i < steps; ++i) {
             integrator->step(x, dt);
             
-            // Print intermediate results
-            if (i % (steps/10) == 0) {
-                std::cout << "t = " << (i+1) * dt << ": S = " << x[0] 
-                          << ", V = " << x[1] << std::endl;
+            // Output every 25 steps (quarterly)
+            if (i % 25 == 0) {
+                std::cout << "t = " << (i * dt) << ": S = " << x[0] << ", V = " << x[1] << std::endl;
             }
         }
         
-        std::cout << "Final: S = " << x[0] << ", V = " << x[1] << std::endl;
+        std::cout << "Final state: S = " << x[0] << ", V = " << x[1] << std::endl;
     }
 };
 
 } // namespace finance
 
 /**
- * @brief Engineering Applications: Control Systems with Noise
+ * @brief Engineering Applications with SDEs
+ * 
+ * Demonstrates stochastic control systems, noisy oscillators,
+ * and mechanical systems with random disturbances.
  */
 namespace engineering {
 
 /**
- * @brief Noisy oscillator with control
+ * @brief Noisy oscillator with stochastic control
  * 
- * ẍ + 2ζωₙẋ + ωₙ²x = u + σ ξ(t)
- * 
- * Where ξ(t) is white noise, u is control input
+ * d²x/dt² + 2ζωₙ dx/dt + ωₙ²x = u(t) + σ dW
+ * where u(t) is a control law and σ dW is noise
  */
 class NoisyOscillator {
 public:
@@ -242,16 +242,17 @@ public:
     
     NoisyOscillator(double omega_n = 1.0, double zeta = 0.1, double sigma = 0.1)
         : omega_n(omega_n), zeta(zeta), sigma(sigma) {
-        
-        // Default PD control: u = -Kp*x - Kd*ẋ
+        // Simple PD control law
         control_law = [](double t, double x, double xdot) {
-            double Kp = 2.0, Kd = 1.0;
-            return -Kp * x - Kd * xdot;
+            double target = std::sin(t);  // Sinusoidal reference
+            double error = target - x;
+            double error_dot = std::cos(t) - xdot;  // Derivative of reference
+            return 2.0 * error + 1.0 * error_dot;   // PD gains
         };
     }
     
     void run_control_example() {
-        std::cout << "\n=== Noisy Oscillator Control ===\n";
+        std::cout << "\n=== Noisy Oscillator with Stochastic Control ===" << std::endl;
         std::cout << "ωₙ = " << omega_n << ", ζ = " << zeta << ", σ = " << sigma << std::endl;
         
         auto drift_func = [this](double t, const std::vector<double>& state, std::vector<double>& dstate) {
@@ -259,57 +260,73 @@ public:
             double u = control_law(t, x, xdot);
             
             dstate[0] = xdot;
-            dstate[1] = -2*zeta*omega_n*xdot - omega_n*omega_n*x + u;
+            dstate[1] = -omega_n * omega_n * x - 2 * zeta * omega_n * xdot + u;
         };
         
         auto diffusion_func = [this](double t, const std::vector<double>& state, std::vector<double>& gstate) {
-            gstate[0] = 0.0;      // No noise on position directly
-            gstate[1] = sigma;    // Additive noise on acceleration
+            gstate[0] = 0.0;  // No noise in position
+            gstate[1] = sigma; // Noise in velocity (acceleration)
         };
         
         auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
             drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
         
-        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 98765);
+        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 67890);
+        auto integrator = diffeq::sde::factory::make_milstein_integrator<std::vector<double>, double>(problem, wiener);
         
-        // Use SOSRA since we have additive noise
-        auto integrator = diffeq::sde::factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
-        
-        std::vector<double> state = {1.0, 0.0};  // Initial [position, velocity]
+        std::vector<double> state = {0.0, 0.0};  // Initial [x, xdot]
         double dt = 0.01;
-        double T = 5.0;
+        double T = 10.0;
         int steps = static_cast<int>(T / dt);
         
         integrator->set_time(0.0);
         
-        std::cout << "Initial: x = " << state[0] << ", ẋ = " << state[1] << std::endl;
+        std::cout << "Simulating controlled oscillator with noise..." << std::endl;
+        
+        // Track performance metrics
+        double total_error = 0.0;
+        double max_error = 0.0;
         
         for (int i = 0; i < steps; ++i) {
+            double t = i * dt;
+            double target = std::sin(t);
+            double error = std::abs(target - state[0]);
+            
+            total_error += error;
+            max_error = std::max(max_error, error);
+            
             integrator->step(state, dt);
             
-            if (i % (steps/10) == 0) {
-                double u = control_law(i * dt, state[0], state[1]);
-                std::cout << "t = " << (i+1) * dt << ": x = " << state[0] 
-                          << ", ẋ = " << state[1] << ", u = " << u << std::endl;
+            // Output every 100 steps
+            if (i % 100 == 0) {
+                std::cout << "t = " << t << ": x = " << state[0] << ", target = " << target 
+                          << ", error = " << error << std::endl;
             }
         }
         
-        std::cout << "Final: x = " << state[0] << ", ẋ = " << state[1] << std::endl;
+        double avg_error = total_error / steps;
+        std::cout << "Control performance:" << std::endl;
+        std::cout << "  Average error: " << avg_error << std::endl;
+        std::cout << "  Maximum error: " << max_error << std::endl;
+        std::cout << "  Final state: x = " << state[0] << ", xdot = " << state[1] << std::endl;
     }
 };
 
 } // namespace engineering
 
 /**
- * @brief Scientific Computing: Population Dynamics with Environmental Noise
+ * @brief Scientific Applications with SDEs
+ * 
+ * Demonstrates ecological models, chemical reactions,
+ * and biological systems with stochastic dynamics.
  */
 namespace science {
 
 /**
  * @brief Stochastic Lotka-Volterra predator-prey model
  * 
- * dx = (α - βy)x dt + σ₁x dW₁
- * dy = (δx - γ)y dt + σ₂y dW₂
+ * dx/dt = αx - βxy + σ₁x dW₁
+ * dy/dt = γxy - δy + σ₂y dW₂
  */
 class StochasticLotkaVolterra {
 public:
@@ -320,165 +337,171 @@ public:
         : alpha(alpha), beta(beta), gamma(gamma), delta(delta), sigma1(sigma1), sigma2(sigma2) {}
     
     void run_ecosystem_simulation() {
-        std::cout << "\n=== Stochastic Lotka-Volterra Ecosystem ===\n";
+        std::cout << "\n=== Stochastic Lotka-Volterra Ecosystem Model ===" << std::endl;
         std::cout << "α = " << alpha << ", β = " << beta << ", γ = " << gamma 
                   << ", δ = " << delta << std::endl;
         std::cout << "σ₁ = " << sigma1 << ", σ₂ = " << sigma2 << std::endl;
         
         auto drift_func = [this](double t, const std::vector<double>& pop, std::vector<double>& dpop) {
-            double x = pop[0], y = pop[1];  // prey, predator populations
-            dpop[0] = (alpha - beta * y) * x;
-            dpop[1] = (delta * x - gamma) * y;
+            double x = pop[0], y = pop[1];  // prey, predator
+            dpop[0] = alpha * x - beta * x * y;
+            dpop[1] = gamma * x * y - delta * y;
         };
         
         auto diffusion_func = [this](double t, const std::vector<double>& pop, std::vector<double>& gpop) {
             double x = pop[0], y = pop[1];
-            gpop[0] = sigma1 * x;
-            gpop[1] = sigma2 * y;
+            gpop[0] = sigma1 * x;  // Multiplicative noise for prey
+            gpop[1] = sigma2 * y;  // Multiplicative noise for predator
         };
         
         auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
             drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
         
-        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 13579);
+        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 11111);
+        auto integrator = diffeq::sde::factory::make_sra1_integrator<std::vector<double>, double>(problem, wiener);
         
-        // Use SRIW1 for good weak order performance in this ecological model
-        auto integrator = diffeq::sde::factory::make_sriw1_integrator<std::vector<double>, double>(problem, wiener);
-        
-        std::vector<double> population = {10.0, 5.0};  // Initial [prey, predator]
+        std::vector<double> population = {2.0, 1.0};  // Initial [prey, predator]
         double dt = 0.01;
-        double T = 10.0;
+        double T = 20.0;
         int steps = static_cast<int>(T / dt);
         
         integrator->set_time(0.0);
         
-        std::cout << "Initial populations: Prey = " << population[0] << ", Predator = " << population[1] << std::endl;
+        std::cout << "Initial populations: prey = " << population[0] << ", predator = " << population[1] << std::endl;
+        
+        // Track population dynamics
+        double min_prey = population[0], max_prey = population[0];
+        double min_pred = population[1], max_pred = population[1];
         
         for (int i = 0; i < steps; ++i) {
             integrator->step(population, dt);
             
-            // Ensure populations stay positive (simple reflection)
-            population[0] = std::max(population[0], 0.1);
-            population[1] = std::max(population[1], 0.1);
+            // Update min/max
+            min_prey = std::min(min_prey, population[0]);
+            max_prey = std::max(max_prey, population[0]);
+            min_pred = std::min(min_pred, population[1]);
+            max_pred = std::max(max_pred, population[1]);
             
-            if (i % (steps/20) == 0) {
-                std::cout << "t = " << (i+1) * dt << ": Prey = " << population[0] 
-                          << ", Predator = " << population[1] << std::endl;
+            // Output every 500 steps
+            if (i % 500 == 0) {
+                double t = i * dt;
+                std::cout << "t = " << t << ": prey = " << population[0] 
+                          << ", predator = " << population[1] << std::endl;
             }
         }
         
-        std::cout << "Final populations: Prey = " << population[0] << ", Predator = " << population[1] << std::endl;
+        std::cout << "Final populations: prey = " << population[0] << ", predator = " << population[1] << std::endl;
+        std::cout << "Population ranges:" << std::endl;
+        std::cout << "  Prey: [" << min_prey << ", " << max_prey << "]" << std::endl;
+        std::cout << "  Predator: [" << min_pred << ", " << max_pred << "]" << std::endl;
     }
 };
 
 } // namespace science
 
 /**
- * @brief Unified Interface Usage with SDEs
+ * @brief Unified Interface Examples
+ * 
+ * Demonstrates how SDEs integrate with the unified interface
+ * for signal processing and async execution.
  */
 namespace unified_interface {
 
 void demonstrate_async_sde_integration() {
-    std::cout << "\n=== Async SDE Integration with Unified Interface ===\n";
+    std::cout << "\n=== Async SDE Integration ===" << std::endl;
     
-    // Create a simple SDE problem
-    auto drift_func = [](double /*t*/, const std::vector<double>& x, std::vector<double>& dx) {
-        dx[0] = -0.5 * x[0];  // Mean-reverting process
+    // Define a simple SDE system
+    auto drift_func = [](double t, const std::vector<double>& x, std::vector<double>& dx) {
+        dx[0] = -0.1 * x[0];  // Decay
+        dx[1] = 0.1 * x[0] - 0.05 * x[1];  // Coupled system
     };
     
-    auto diffusion_func = [](double /*t*/, const std::vector<double>& /*x*/, std::vector<double>& gx) {
-        gx[0] = 0.2;  // Additive noise
+    auto diffusion_func = [](double t, const std::vector<double>& x, std::vector<double>& gx) {
+        gx[0] = 0.1 * x[0];  // Multiplicative noise
+        gx[1] = 0.05 * x[1];
     };
     
     auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
         drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
     
-    auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 24680);
+    auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 22222);
+    auto integrator = diffeq::sde::factory::make_euler_maruyama_integrator<std::vector<double>, double>(problem, wiener);
     
-    // Create SOSRA integrator for robust performance
-    auto integrator = diffeq::sde::factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
+    // Create async integrator
+    auto async_integrator = diffeq::async::make_async_integrator(integrator);
     
-    std::vector<double> initial_state = {1.0};
+    std::vector<double> state = {1.0, 0.0};
     double dt = 0.01;
-    double end_time = 1.0;
+    double T = 5.0;
+    int steps = static_cast<int>(T / dt);
     
-    std::cout << "Starting SDE integration..." << std::endl;
+    std::cout << "Running async SDE integration..." << std::endl;
     
-    // Simulate async-style integration (the integrator can be wrapped in std::async)
-    auto start_time = std::chrono::steady_clock::now();
+    auto start_time = std::chrono::high_resolution_clock::now();
     
-    std::vector<double> state = initial_state;
-    integrator->set_time(0.0);
-    
-    while (integrator->current_time() < end_time) {
-        double step_size = std::min(dt, end_time - integrator->current_time());
-        integrator->step(state, step_size);
+    // Async integration
+    for (int i = 0; i < steps; ++i) {
+        auto future = async_integrator->step_async(state, dt);
+        future.wait();  // Wait for completion
+        
+        if (i % 100 == 0) {
+            std::cout << "Step " << i << ": [" << state[0] << ", " << state[1] << "]" << std::endl;
+        }
     }
     
-    auto end_time_chrono = std::chrono::steady_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time_chrono - start_time);
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
     
-    std::cout << "SDE integration complete. Final value: " << state[0] << std::endl;
-    std::cout << "Integration time: " << duration.count() << " microseconds" << std::endl;
-    std::cout << "Note: This can be easily wrapped with std::async for true async execution" << std::endl;
+    std::cout << "Async integration completed in " << duration.count() << "ms" << std::endl;
+    std::cout << "Final state: [" << state[0] << ", " << state[1] << "]" << std::endl;
 }
 
 void demonstrate_signal_aware_sde() {
-    std::cout << "\n=== Signal-Aware SDE Integration ===\n";
+    std::cout << "\n=== Signal-Aware SDE Integration ===" << std::endl;
     
-    // This could be used for real-time financial data processing,
-    // robotics control with sensor updates, etc.
+    // This would integrate with the signal processing interface
+    // to handle external events during SDE integration
+    std::cout << "Signal-aware SDE integration would allow:" << std::endl;
+    std::cout << "- Real-time parameter updates during integration" << std::endl;
+    std::cout << "- Event-driven state modifications" << std::endl;
+    std::cout << "- Continuous monitoring and logging" << std::endl;
+    std::cout << "- Integration with external data streams" << std::endl;
+}
+
+void run_comprehensive_sde_examples() {
+    std::cout << "=== Comprehensive SDE Examples ===" << std::endl;
     
-    std::cout << "Signal-aware SDE integration ready for real-time applications:\n";
-    std::cout << "• Financial: Real-time option pricing with market data feeds\n";
-    std::cout << "• Robotics: State estimation with sensor noise and control updates\n";
-    std::cout << "• Science: Environmental monitoring with stochastic processes\n";
-    std::cout << "• All methods support the unified IntegrationInterface\n";
+    // Financial models
+    finance::BlackScholesModel black_scholes(0.05, 0.2);
+    black_scholes.run_comparison();
+    
+    finance::HestonModel heston(0.05, 2.0, 0.04, 0.3, -0.7);
+    heston.run_example();
+    
+    // Engineering applications
+    engineering::NoisyOscillator oscillator(1.0, 0.1, 0.1);
+    oscillator.run_control_example();
+    
+    // Scientific applications
+    science::StochasticLotkaVolterra ecosystem(1.0, 1.0, 1.0, 1.0, 0.1, 0.1);
+    ecosystem.run_ecosystem_simulation();
+    
+    // Unified interface examples
+    demonstrate_async_sde_integration();
+    demonstrate_signal_aware_sde();
+    
+    std::cout << "\n=== All SDE examples completed! ===" << std::endl;
 }
 
 } // namespace unified_interface
 
-/**
- * @brief Performance and accuracy comparison
- */
-void run_comprehensive_sde_examples() {
-    std::cout << "\n" << std::string(60, '=') << std::endl;
-    std::cout << "    COMPREHENSIVE SDE SOLVER DEMONSTRATION" << std::endl;
-    std::cout << "    Enhanced C++ Implementation with DifferentialEquations.jl algorithms" << std::endl;
-    std::cout << std::string(60, '=') << std::endl;
-    
-    // Financial applications
-    finance::BlackScholesModel bs_model(0.05, 0.2);
-    bs_model.run_comparison();
-    
-    finance::HestonModel heston_model;
-    heston_model.run_example();
-    
-    // Engineering applications  
-    engineering::NoisyOscillator oscillator;
-    oscillator.run_control_example();
-    
-    // Scientific applications
-    science::StochasticLotkaVolterra ecosystem;
-    ecosystem.run_ecosystem_simulation();
-    
-    // Unified interface capabilities
-    unified_interface::demonstrate_async_sde_integration();
-    unified_interface::demonstrate_signal_aware_sde();
-    
-    std::cout << "\n" << std::string(60, '=') << std::endl;
-    std::cout << "✅ All SDE examples completed successfully!" << std::endl;
-    std::cout << "\n🔬 Implemented High-Order SDE Methods:" << std::endl;
-    std::cout << "• SRA family: Strong order 1.5 for additive noise (SRA1, SRA2, SOSRA)" << std::endl;
-    std::cout << "• SRI family: Strong order 1.5 for general Itô SDEs (SRIW1, SOSRI)" << std::endl;
-    std::cout << "• Stability-optimized variants (SOSRA, SOSRI) for robust performance" << std::endl;
-    std::cout << "• Proper tableau-based implementation following DifferentialEquations.jl" << std::endl;
-    std::cout << "\n🚀 Modern C++ Features:" << std::endl;
-    std::cout << "• Concept-based design with proper type safety" << std::endl;
-    std::cout << "• Async integration support for real-time applications" << std::endl;
-    std::cout << "• Unified interface for cross-domain usage" << std::endl;
-    std::cout << "• Header-only, zero external dependencies" << std::endl;
-    std::cout << std::string(60, '=') << std::endl;
-}
-
 } // namespace diffeq::examples::sde
+
+int main() {
+    std::cout << "=== diffeq SDE Usage Examples ===" << std::endl;
+    
+    // Run comprehensive SDE examples
+    diffeq::examples::sde::unified_interface::run_comprehensive_sde_examples();
+    
+    return 0;
+} 

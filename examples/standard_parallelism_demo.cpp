@@ -1,233 +1,589 @@
-#include <examples/standard_parallelism.hpp>
-#include <iostream>
+#include <diffeq.hpp>
 #include <vector>
+#include <algorithm>
+#include <execution>
+#include <numeric>
+#include <iostream>
 #include <chrono>
-#include <iomanip>
+#include <future>
+#include <queue>
+#include <condition_variable>
+#include <mutex>
+#include <atomic>
+#include <memory>
+
+// Conditional includes for optional libraries
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
+#ifdef TBB_AVAILABLE
+#include <tbb/parallel_for.h>
+#include <tbb/parallel_for_each.h>
+#include <tbb/task_scheduler_init.h>
+#endif
+
+#ifdef THRUST_AVAILABLE
+#include <thrust/for_each.h>
+#include <thrust/execution_policy.h>
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
+#endif
+
+#ifdef __CUDACC__
+#include <cuda_runtime.h>
+#endif
+
+#ifdef OPENCL_AVAILABLE
+#include <CL/cl.hpp>
+#endif
+
+namespace diffeq::examples {
 
 /**
- * @brief Demonstration of using standard parallelism libraries with diffeq
+ * @brief Example: Parallel ODE integration using std::execution policies
  * 
- * This example shows the user's requested approach: using standard libraries
- * instead of custom parallel classes, with flexibility beyond just initial conditions.
+ * This shows how to use standard C++17/20 execution policies with
+ * existing diffeq integrators - no custom parallel classes needed!
  */
-
-// Simple harmonic oscillator system for demonstration
-struct HarmonicOscillator {
-    double omega = 1.0;  // Frequency parameter - can be varied!
+template<typename State, typename Time>
+class ODEStdExecution {
+public:
     
-    void operator()(const std::vector<double>& y, std::vector<double>& dydt, double t) const {
-        dydt[0] = y[1];           // dx/dt = v
-        dydt[1] = -omega*omega*y[0];  // dv/dt = -ω²x
+    /**
+     * @brief Integrate multiple initial conditions in parallel using std::execution
+     * 
+     * @param system The ODE system function
+     * @param initial_conditions Vector of initial states
+     * @param dt Time step
+     * @param steps Number of integration steps
+     */
+    template<typename System>
+    static void integrate_multiple_conditions(
+        System&& system,
+        std::vector<State>& initial_conditions,
+        Time dt,
+        int steps
+    ) {
+        // Use standard C++17 parallel execution - no custom classes!
+        std::for_each(std::execution::par_unseq, 
+                     initial_conditions.begin(), 
+                     initial_conditions.end(),
+                     [&](State& state) {
+                         auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                         for (int i = 0; i < steps; ++i) {
+                             integrator.step(state, dt);
+                         }
+                     });
     }
     
-    // Overload for parameter sweep
-    void operator()(const std::vector<double>& y, std::vector<double>& dydt, double t, double param_omega) const {
-        dydt[0] = y[1];
-        dydt[1] = -param_omega*param_omega*y[0];
+    /**
+     * @brief Parameter sweep using std::execution policies
+     * 
+     * Demonstrate flexibility beyond just initial conditions -
+     * vary parameters, integrators, callbacks, etc.
+     */
+    template<typename System>
+    static void parameter_sweep(
+        System&& system_template,
+        const State& initial_state,
+        const std::vector<Time>& parameters,
+        std::vector<State>& results,
+        Time dt,
+        int steps
+    ) {
+        results.resize(parameters.size());
+        
+        // Create indices for parallel processing
+        std::vector<size_t> indices(parameters.size());
+        std::iota(indices.begin(), indices.end(), 0);
+        
+        // Parallel parameter sweep using standard library
+        std::for_each(std::execution::par, 
+                     indices.begin(), 
+                     indices.end(),
+                     [&](size_t i) {
+                         State state = initial_state;
+                         Time param = parameters[i];
+                         
+                         // Create system with this parameter
+                         auto system = [&](Time t, const State& y, State& dydt) {
+                             system_template(t, y, dydt, param);  // Pass parameter
+                         };
+                         
+                         auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                         for (int step = 0; step < steps; ++step) {
+                             integrator.step(state, dt);
+                         }
+                         results[i] = state;
+                     });
     }
 };
 
-void print_timing(const std::string& method, std::chrono::microseconds duration, size_t operations) {
-    std::cout << std::setw(20) << method << ": " 
-              << std::setw(8) << duration.count() << " μs"
-              << " (" << operations << " operations, "
-              << std::fixed << std::setprecision(2)
-              << (duration.count() / static_cast<double>(operations)) << " μs/op)"
-              << std::endl;
+#ifdef _OPENMP
+/**
+ * @brief OpenMP examples for CPU parallelism
+ * 
+ * OpenMP is widely supported and doesn't require custom infrastructure.
+ */
+template<typename State, typename Time>
+class ODEOpenMP {
+public:
+    
+    template<typename System>
+    static void integrate_openmp(
+        System&& system,
+        std::vector<State>& states,
+        Time dt,
+        int steps
+    ) {
+        // Simple OpenMP parallel loop - no custom classes needed!
+        #pragma omp parallel for
+        for (size_t i = 0; i < states.size(); ++i) {
+            auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+            for (int step = 0; step < steps; ++step) {
+                integrator.step(states[i], dt);
+            }
+        }
+    }
+    
+    /**
+     * @brief Different integrators in parallel
+     * Demonstrate running different algorithms simultaneously
+     */
+    template<typename System>
+    static void multi_integrator_comparison(
+        System&& system,
+        const State& initial_state,
+        Time dt,
+        int steps,
+        std::vector<State>& rk4_results,
+        std::vector<State>& euler_results
+    ) {
+        const int num_runs = 100;
+        rk4_results.resize(num_runs, initial_state);
+        euler_results.resize(num_runs, initial_state);
+        
+        #pragma omp parallel sections
+        {
+            #pragma omp section
+            {
+                // RK4 integration
+                #pragma omp parallel for
+                for (int i = 0; i < num_runs; ++i) {
+                    auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                    for (int step = 0; step < steps; ++step) {
+                        integrator.step(rk4_results[i], dt);
+                    }
+                }
+            }
+            
+            #pragma omp section
+            {
+                // Euler integration (for comparison)
+                #pragma omp parallel for
+                for (int i = 0; i < num_runs; ++i) {
+                    auto integrator = diffeq::integrators::ode::EulerIntegrator<State, Time>(system);
+                    for (int step = 0; step < steps; ++step) {
+                        integrator.step(euler_results[i], dt);
+                    }
+                }
+            }
+        }
+    }
+};
+#endif
+
+#ifdef TBB_AVAILABLE
+/**
+ * @brief Intel TBB examples for advanced parallelism
+ */
+template<typename State, typename Time>
+class ODETBB {
+public:
+    
+    template<typename System>
+    static void integrate_tbb(
+        System&& system,
+        std::vector<State>& states,
+        Time dt,
+        int steps
+    ) {
+        // TBB parallel for - handles load balancing automatically
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, states.size()),
+                         [&](const tbb::blocked_range<size_t>& range) {
+                             for (size_t i = range.begin(); i != range.end(); ++i) {
+                                 auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                                 for (int step = 0; step < steps; ++step) {
+                                     integrator.step(states[i], dt);
+                                 }
+                             }
+                         });
+    }
+    
+    template<typename System>
+    static void integrate_blocked(
+        System&& system,
+        std::vector<State>& states,
+        Time dt,
+        int steps,
+        size_t block_size = 1000
+    ) {
+        // TBB with custom block sizes for cache optimization
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, states.size(), block_size),
+                         [&](const tbb::blocked_range<size_t>& range) {
+                             for (size_t i = range.begin(); i != range.end(); ++i) {
+                                 auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                                 for (int step = 0; step < steps; ++step) {
+                                     integrator.step(states[i], dt);
+                                 }
+                             }
+                         });
+    }
+};
+#endif
+
+/**
+ * @brief Task-based async dispatcher for ODE integration
+ */
+template<typename State, typename Time>
+class ODETaskDispatcher {
+private:
+    std::queue<std::function<void()>> task_queue;
+    std::mutex queue_mutex;
+    std::condition_variable cv;
+    std::atomic<bool> stop_flag{false};
+    std::vector<std::thread> worker_threads;
+
+public:
+    ODETaskDispatcher() = default;
+
+    ~ODETaskDispatcher() {
+        stop();
+    }
+
+    template<typename System>
+    std::future<State> submit_ode_task(
+        System&& system,
+        State initial_state,
+        Time dt,
+        int steps
+    ) {
+        auto promise = std::make_shared<std::promise<State>>();
+        auto future = promise->get_future();
+        
+        auto task = [system = std::forward<System>(system),
+                    initial_state,
+                    dt,
+                    steps,
+                    promise]() mutable {
+            State state = initial_state;
+            auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+            
+            for (int i = 0; i < steps; ++i) {
+                integrator.step(state, dt);
+            }
+            
+            promise->set_value(state);
+        };
+        
+        {
+            std::lock_guard<std::mutex> lock(queue_mutex);
+            task_queue.push(std::move(task));
+        }
+        cv.notify_one();
+        
+        return future;
+    }
+
+    void start_async_processing(size_t num_threads = std::thread::hardware_concurrency()) {
+        for (size_t i = 0; i < num_threads; ++i) {
+            worker_threads.emplace_back([this]() {
+                while (!stop_flag) {
+                    std::function<void()> task;
+                    {
+                        std::unique_lock<std::mutex> lock(queue_mutex);
+                        cv.wait(lock, [this]() { return !task_queue.empty() || stop_flag; });
+                        
+                        if (stop_flag && task_queue.empty()) break;
+                        
+                        if (!task_queue.empty()) {
+                            task = std::move(task_queue.front());
+                            task_queue.pop();
+                        }
+                    }
+                    
+                    if (task) {
+                        std::thread worker_thread(task);
+                        worker_thread.detach();
+                    }
+                }
+            });
+        }
+    }
+
+    void stop() {
+        stop_flag = true;
+        cv.notify_all();
+        
+        for (auto& thread : worker_threads) {
+            if (thread.joinable()) {
+                thread.join();
+            }
+        }
+        worker_threads.clear();
+    }
+};
+
+/**
+ * @brief Unified parallel interface that automatically chooses the best backend
+ */
+template<typename State, typename Time>
+class ODEParallel {
+public:
+    enum class Backend {
+        Auto,           // Automatically choose best available
+        StdExecution,   // C++17/20 std::execution
+        OpenMP,         // OpenMP parallel loops
+        TBB,            // Intel Threading Building Blocks
+        Thrust,         // NVIDIA Thrust (GPU without kernels)
+        Cuda,           // Direct CUDA kernels
+        OpenCL          // OpenCL cross-platform
+    };
+
+private:
+    Backend selected_backend = Backend::Auto;
+
+    Backend detect_best_backend() const {
+        // Simple detection logic - in practice would be more sophisticated
+        #ifdef _OPENMP
+        return Backend::OpenMP;
+        #elif defined(TBB_AVAILABLE)
+        return Backend::TBB;
+        #elif defined(THRUST_AVAILABLE)
+        return Backend::Thrust;
+        #else
+        return Backend::StdExecution;
+        #endif
+    }
+
+public:
+    ODEParallel() : selected_backend(Backend::Auto) {}
+    
+    explicit ODEParallel(Backend backend) : selected_backend(backend) {}
+    
+    void set_backend(Backend backend) {
+        selected_backend = backend;
+    }
+    
+    Backend get_backend() const {
+        return selected_backend;
+    }
+
+    template<typename System>
+    void integrate_parallel(
+        System&& system,
+        std::vector<State>& states,
+        Time dt,
+        int steps
+    ) {
+        Backend backend = (selected_backend == Backend::Auto) ? detect_best_backend() : selected_backend;
+        
+        switch (backend) {
+            case Backend::StdExecution:
+                ODEStdExecution<State, Time>::integrate_multiple_conditions(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+                
+            #ifdef _OPENMP
+            case Backend::OpenMP:
+                ODEOpenMP<State, Time>::integrate_openmp(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+            #endif
+                
+            #ifdef TBB_AVAILABLE
+            case Backend::TBB:
+                ODETBB<State, Time>::integrate_tbb(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+            #endif
+                
+            default:
+                // Fallback to std::execution
+                ODEStdExecution<State, Time>::integrate_multiple_conditions(
+                    std::forward<System>(system), states, dt, steps);
+                break;
+        }
+    }
+
+    template<typename System>
+    void parameter_sweep(
+        System&& system_template,
+        const State& initial_state,
+        const std::vector<Time>& parameters,
+        std::vector<State>& results,
+        Time dt,
+        int steps
+    ) {
+        ODEStdExecution<State, Time>::parameter_sweep(
+            std::forward<System>(system_template),
+            initial_state, parameters, results, dt, steps);
+    }
+
+    static std::vector<std::pair<Backend, std::string>> available_backends() {
+        std::vector<std::pair<Backend, std::string>> backends;
+        
+        backends.emplace_back(Backend::StdExecution, "C++17/20 std::execution");
+        
+        #ifdef _OPENMP
+        backends.emplace_back(Backend::OpenMP, "OpenMP");
+        #endif
+        
+        #ifdef TBB_AVAILABLE
+        backends.emplace_back(Backend::TBB, "Intel TBB");
+        #endif
+        
+        #ifdef THRUST_AVAILABLE
+        backends.emplace_back(Backend::Thrust, "NVIDIA Thrust");
+        #endif
+        
+        return backends;
+    }
+
+    static void print_available_backends() {
+        auto backends = available_backends();
+        std::cout << "Available parallel backends:" << std::endl;
+        for (const auto& [backend, name] : backends) {
+            std::cout << "  - " << name << std::endl;
+        }
+    }
+};
+
+// Convenience functions
+template<typename System, typename State, typename Time>
+void integrate_parallel(
+    System&& system,
+    std::vector<State>& states,
+    Time dt,
+    int steps
+) {
+    ODEParallel<State, Time> parallel;
+    parallel.integrate_parallel(std::forward<System>(system), states, dt, steps);
 }
 
+template<typename System, typename State, typename Time>
+void parameter_sweep_parallel(
+    System&& system_template,
+    const State& initial_state,
+    const std::vector<Time>& parameters,
+    std::vector<State>& results,
+    Time dt,
+    int steps
+) {
+    ODEParallel<State, Time> parallel;
+    parallel.parameter_sweep(std::forward<System>(system_template),
+                           initial_state, parameters, results, dt, steps);
+}
+
+template<typename State, typename Time>
+std::unique_ptr<diffeq::examples::ODETaskDispatcher<State, Time>> create_async_dispatcher() {
+    return std::make_unique<diffeq::examples::ODETaskDispatcher<State, Time>>();
+}
+
+} // namespace diffeq::examples
+
 int main() {
-    std::cout << "=================================================================\n";
-    std::cout << "diffeq Standard Parallelism Integration Examples\n";
-    std::cout << "=================================================================\n";
-    std::cout << "Demonstrating how to use standard libraries instead of custom parallel classes\n\n";
+    std::cout << "=== diffeq Standard Parallelism Examples ===" << std::endl;
     
-    // Check what's available
-    std::cout << "Available Parallelism Libraries:\n";
-    std::cout << "- std::execution: " << (diffeq::examples::availability::std_execution_available() ? "✓" : "✗") << "\n";
-    std::cout << "- OpenMP:         " << (diffeq::examples::availability::openmp_available() ? "✓" : "✗") << "\n";
-    std::cout << "- Intel TBB:      " << (diffeq::examples::availability::tbb_available() ? "✓" : "✗") << "\n";
-    std::cout << "- NVIDIA Thrust:  " << (diffeq::examples::availability::thrust_available() ? "✓" : "✗") << "\n\n";
+    // Show available backends
+    diffeq::examples::ODEParallel<std::vector<double>, double>::print_available_backends();
     
-    // Test problem setup
+    // Define a simple ODE system: exponential decay
+    auto system = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+        dydt[0] = -0.1 * y[0];
+        dydt[1] = -0.2 * y[1];
+    };
+    
+    // Parameterized system for parameter sweep
+    auto parameterized_system = [](double t, const std::vector<double>& y, std::vector<double>& dydt, double decay_rate) {
+        dydt[0] = -decay_rate * y[0];
+        dydt[1] = -decay_rate * 2.0 * y[1];
+    };
+    
     const int num_conditions = 1000;
     const double dt = 0.01;
     const int steps = 100;
     
-    HarmonicOscillator system;
-    
-    // ================================================================
-    // Example 1: Multiple Initial Conditions with std::execution
-    // ================================================================
-    std::cout << "1. Multiple Initial Conditions using std::execution\n";
-    std::cout << "   ================================================\n";
-    
-    std::vector<std::vector<double>> initial_conditions(num_conditions);
+    // Create initial conditions
+    std::vector<std::vector<double>> initial_conditions;
     for (int i = 0; i < num_conditions; ++i) {
-        initial_conditions[i] = {static_cast<double>(i) * 0.1, 0.0}; // x₀ = i*0.1, v₀ = 0
+        initial_conditions.push_back({static_cast<double>(i), static_cast<double>(i) * 0.5});
     }
     
-    auto start = std::chrono::high_resolution_clock::now();
-    diffeq::examples::StandardParallelODE<std::vector<double>, double>::integrate_multiple_conditions(
-        system, initial_conditions, dt, steps
-    );
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::cout << "\n=== Testing std::execution Parallelism ===" << std::endl;
     
-    print_timing("std::execution", duration, num_conditions);
-    std::cout << "   Final position of condition 100: " << initial_conditions[100][0] << "\n\n";
+    auto start_time = std::chrono::high_resolution_clock::now();
     
-    // ================================================================
-    // Example 2: Parameter Sweep - Beyond Initial Conditions!
-    // ================================================================
-    std::cout << "2. Parameter Sweep using std::execution (flexibility beyond initial conditions)\n";
-    std::cout << "   ===========================================================================\n";
+    // Test std::execution parallelism
+    diffeq::examples::ODEStdExecution<std::vector<double>, double>::integrate_multiple_conditions(
+        system, initial_conditions, dt, steps);
     
-    // Different frequency parameters for harmonic oscillator
-    std::vector<double> omega_values;
-    for (int i = 1; i <= 100; ++i) {
-        omega_values.push_back(i * 0.1); // ω = 0.1, 0.2, ..., 10.0
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    
+    std::cout << "std::execution completed in " << duration.count() << "ms" << std::endl;
+    std::cout << "Result for condition 10: [" << initial_conditions[10][0] << ", " << initial_conditions[10][1] << "]" << std::endl;
+    
+    #ifdef _OPENMP
+    std::cout << "\n=== Testing OpenMP Parallelism ===" << std::endl;
+    
+    // Reset initial conditions
+    for (int i = 0; i < num_conditions; ++i) {
+        initial_conditions[i] = {static_cast<double>(i), static_cast<double>(i) * 0.5};
     }
     
+    start_time = std::chrono::high_resolution_clock::now();
+    
+    diffeq::examples::ODEOpenMP<std::vector<double>, double>::integrate_openmp(
+        system, initial_conditions, dt, steps);
+    
+    end_time = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    
+    std::cout << "OpenMP completed in " << duration.count() << "ms" << std::endl;
+    std::cout << "Result for condition 10: [" << initial_conditions[10][0] << ", " << initial_conditions[10][1] << "]" << std::endl;
+    #endif
+    
+    std::cout << "\n=== Testing Parameter Sweep ===" << std::endl;
+    
+    std::vector<double> decay_rates = {0.05, 0.1, 0.15, 0.2, 0.25};
     std::vector<std::vector<double>> parameter_results;
-    std::vector<double> initial_state = {1.0, 0.0}; // Start from x=1, v=0
+    std::vector<double> initial_state = {1.0, 1.0};
     
-    start = std::chrono::high_resolution_clock::now();
-    diffeq::examples::StandardParallelODE<std::vector<double>, double>::parameter_sweep(
-        [](const std::vector<double>& y, std::vector<double>& dydt, double t, double omega) {
-            dydt[0] = y[1];
-            dydt[1] = -omega*omega*y[0];
-        },
-        initial_state, omega_values, parameter_results, dt, steps
-    );
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    diffeq::examples::ODEStdExecution<std::vector<double>, double>::parameter_sweep(
+        parameterized_system, initial_state, decay_rates, parameter_results, dt, steps);
     
-    print_timing("Parameter Sweep", duration, omega_values.size());
-    std::cout << "   Result for ω=1.0: x=" << parameter_results[9][0] << ", v=" << parameter_results[9][1] << "\n\n";
+    std::cout << "Parameter sweep results:" << std::endl;
+    for (size_t i = 0; i < decay_rates.size(); ++i) {
+        std::cout << "  Decay rate " << decay_rates[i] << ": [" 
+                  << parameter_results[i][0] << ", " << parameter_results[i][1] << "]" << std::endl;
+    }
     
-#ifdef _OPENMP
-    // ================================================================
-    // Example 3: OpenMP Parallelism
-    // ================================================================
-    std::cout << "3. OpenMP Parallel Integration\n";
-    std::cout << "   ============================\n";
+    std::cout << "\n=== Testing Unified Parallel Interface ===" << std::endl;
     
     // Reset initial conditions
     for (int i = 0; i < num_conditions; ++i) {
-        initial_conditions[i] = {static_cast<double>(i) * 0.1, 0.0};
+        initial_conditions[i] = {static_cast<double>(i), static_cast<double>(i) * 0.5};
     }
     
-    start = std::chrono::high_resolution_clock::now();
-    diffeq::examples::OpenMPParallelODE<std::vector<double>, double>::integrate_openmp(
-        system, initial_conditions, dt, steps
-    );
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    diffeq::examples::ODEParallel<std::vector<double>, double> parallel;
+    parallel.integrate_parallel(system, initial_conditions, dt, steps);
     
-    print_timing("OpenMP", duration, num_conditions);
+    std::cout << "Unified interface completed successfully!" << std::endl;
+    std::cout << "Result for condition 10: [" << initial_conditions[10][0] << ", " << initial_conditions[10][1] << "]" << std::endl;
     
-    // Demonstrate multiple integrators running simultaneously
-    std::vector<std::vector<double>> rk4_results, euler_results;
-    start = std::chrono::high_resolution_clock::now();
-    diffeq::examples::OpenMPParallelODE<std::vector<double>, double>::multi_integrator_comparison(
-        system, {1.0, 0.0}, dt, steps/10, rk4_results, euler_results
-    );
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    
-    print_timing("Multi-Integrator", duration, rk4_results.size() + euler_results.size());
-    std::cout << "   RK4 vs Euler difference: " 
-              << std::abs(rk4_results[0][0] - euler_results[0][0]) << "\n\n";
-#endif
-
-#ifdef TBB_AVAILABLE
-    // ================================================================
-    // Example 4: Intel TBB Parallelism
-    // ================================================================
-    std::cout << "4. Intel TBB Parallel Integration\n";
-    std::cout << "   ===============================\n";
-    
-    // Reset initial conditions
-    for (int i = 0; i < num_conditions; ++i) {
-        initial_conditions[i] = {static_cast<double>(i) * 0.1, 0.0};
-    }
-    
-    start = std::chrono::high_resolution_clock::now();
-    diffeq::examples::TBBParallelODE<std::vector<double>, double>::integrate_tbb(
-        system, initial_conditions, dt, steps
-    );
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    
-    print_timing("TBB", duration, num_conditions);
-    
-    // Blocked execution for memory efficiency
-    for (int i = 0; i < num_conditions; ++i) {
-        initial_conditions[i] = {static_cast<double>(i) * 0.1, 0.0};
-    }
-    
-    start = std::chrono::high_resolution_clock::now();
-    diffeq::examples::TBBParallelODE<std::vector<double>, double>::integrate_blocked(
-        system, initial_conditions, dt, steps, 100
-    );
-    end = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    
-    print_timing("TBB Blocked", duration, num_conditions);
-    std::cout << "\n";
-#endif
-
-#ifdef THRUST_AVAILABLE
-    // ================================================================
-    // Example 5: GPU with NVIDIA Thrust (NO custom kernels!)
-    // ================================================================
-    std::cout << "5. GPU Integration using NVIDIA Thrust (NO custom kernels!)\n";
-    std::cout << "   ========================================================\n";
-    
-    if (diffeq::examples::ThrustGPUODE<std::vector<double>, double>::gpu_available()) {
-        std::cout << "GPU detected! Demonstrating GPU ODE integration without custom kernels...\n";
-        
-        // Smaller problem size for GPU demo
-        std::vector<std::vector<double>> gpu_conditions(100);
-        for (int i = 0; i < 100; ++i) {
-            gpu_conditions[i] = {static_cast<double>(i) * 0.1, 0.0};
-        }
-        
-        start = std::chrono::high_resolution_clock::now();
-        diffeq::examples::ThrustGPUODE<std::vector<double>, double>::integrate_gpu(
-            system, gpu_conditions, dt, steps
-        );
-        end = std::chrono::high_resolution_clock::now();
-        duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        
-        print_timing("GPU (Thrust)", duration, gpu_conditions.size());
-        std::cout << "   GPU result: " << gpu_conditions[50][0] << "\n";
-    } else {
-        std::cout << "No GPU available - skipping GPU demonstration\n";
-    }
-    std::cout << "\n";
-#endif
-
-    // ================================================================
-    // Summary and Usage Recommendations
-    // ================================================================
-    std::cout << "Usage Recommendations:\n";
-    std::cout << "======================\n";
-    std::cout << "• For simple parallel loops: Use std::for_each with std::execution::par\n";
-    std::cout << "• For CPU-intensive work: Use OpenMP pragmas\n";
-    std::cout << "• For complex task scheduling: Use Intel TBB\n";
-    std::cout << "• For GPU acceleration: Use NVIDIA Thrust (no custom kernels needed!)\n";
-    std::cout << "• Mix and match based on your specific needs\n";
-    std::cout << "• No custom parallel classes needed - standard libraries are sufficient!\n\n";
-    
-    std::cout << "Key Advantages:\n";
-    std::cout << "• ✓ Use proven, optimized standard libraries\n";
-    std::cout << "• ✓ No custom 'facade' classes to learn\n";
-    std::cout << "• ✓ Flexibility beyond just initial conditions\n";
-    std::cout << "• ✓ GPU support without writing CUDA kernels\n";
-    std::cout << "• ✓ Hardware detection using standard library functions\n";
-    std::cout << "• ✓ Choose the right tool for each specific use case\n";
+    std::cout << "\n=== All standard parallelism examples completed! ===" << std::endl;
     
     return 0;
 }

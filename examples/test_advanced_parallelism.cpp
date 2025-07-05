@@ -1,4 +1,4 @@
-#include <examples/standard_parallelism.hpp>
+#include <diffeq.hpp>
 #include <iostream>
 #include <vector>
 #include <chrono>

@@ -7,7 +7,7 @@ This document shows how to use standard parallelism libraries with the diffeq li
 For most users, the simplest approach is to use the unified convenience interface:
 
 ```cpp
-#include <examples/standard_parallelism.hpp>
+#include <diffeq.hpp>
 
 // SIMPLEST USAGE: Just add parallel to existing code
 auto system = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
@@ -56,7 +56,7 @@ Instead of creating custom parallel classes, we recommend using established stan
 ### 1. Basic Parallel Integration with std::execution
 
 ```cpp
-#include <examples/standard_parallelism.hpp>
+#include <diffeq.hpp>
 #include <execution>
 #include <algorithm>
 
