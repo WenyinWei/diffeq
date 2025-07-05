@@ -7,6 +7,7 @@
 #include <array>
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
 #include <core/concepts.hpp>
 #include <core/abstract_integrator.hpp>
 #include <core/state_creator.hpp>

@@ -4,8 +4,6 @@
 #include <chrono>
 #include <random>
 
-namespace diffeq::examples::parallelism {
-
 /**
  * @brief Quick Start Example - Simplified Parallel Interface
  * 
@@ -364,13 +362,11 @@ void demonstrate_all_parallelism_features() {
     std::cout << "\n=== All parallelism features demonstrated! ===" << std::endl;
 }
 
-} // namespace diffeq::examples::parallelism
-
 int main() {
     std::cout << "=== diffeq Parallelism Usage Examples ===" << std::endl;
     
     // Run comprehensive demonstration
-    diffeq::examples::parallelism::demonstrate_all_parallelism_features();
+    demonstrate_all_parallelism_features();
     
     return 0;
 } 

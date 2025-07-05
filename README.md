@@ -269,18 +269,9 @@ int main() {
 
 ### Prerequisites
 - C++20 compatible compiler (GCC 10+, Clang 12+, MSVC 2019+)
-- CMake 3.20+ (recommended) or xmake
+- xmake build system
 
-### Modern CMake Build (Recommended)
-```bash
-cd diffeq
-mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j$(nproc)
-ctest  # Run tests
-```
-
-### Legacy xmake Build
+### xmake Build
 ```bash
 cd diffeq
 xmake          # Build all examples and tests
@@ -293,9 +284,9 @@ Since the library is header-only, you can also simply:
 #include "path/to/diffeq/include/diffeq.hpp"
 ```
 
-Or with CMake:
-```cmake
-find_package(diffeq REQUIRED)
+Or with xmake:
+```lua
+add_requires("diffeq")
 target_link_libraries(your_target diffeq::diffeq)
 ```
 

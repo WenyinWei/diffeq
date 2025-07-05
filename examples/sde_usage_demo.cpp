@@ -7,8 +7,6 @@
 #include <chrono>
 #include <random>
 
-namespace diffeq::examples::sde {
-
 /**
  * @brief Financial Market Modeling with Advanced SDE Solvers
  * 
@@ -495,13 +493,11 @@ void run_comprehensive_sde_examples() {
 
 } // namespace unified_interface
 
-} // namespace diffeq::examples::sde
-
 int main() {
     std::cout << "=== diffeq SDE Usage Examples ===" << std::endl;
     
     // Run comprehensive SDE examples
-    diffeq::examples::sde::unified_interface::run_comprehensive_sde_examples();
+    unified_interface::run_comprehensive_sde_examples();
     
     return 0;
 } 

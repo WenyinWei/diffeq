@@ -1,6 +1,7 @@
 #pragma once
 #include <core/adaptive_integrator.hpp>
 #include <core/state_creator.hpp>
+#include <stdexcept>
 
 namespace diffeq::integrators::ode {
 

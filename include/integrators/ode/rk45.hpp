@@ -2,6 +2,7 @@
 #include <core/adaptive_integrator.hpp>
 #include <core/state_creator.hpp>
 #include <cmath>
+#include <stdexcept>
 
 namespace diffeq::integrators::ode {
 

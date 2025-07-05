@@ -443,13 +443,14 @@ auto async_execute(F&& func, Args&&... args) {
  */
 template<typename ExecutionPolicy, typename F, typename... Args>
 auto execute_std(ExecutionPolicy&& policy, F&& func, Args&&... args) {
-    return std::execution::execute(
-        std::forward<ExecutionPolicy>(policy),
-        [f = std::forward<F>(func), 
-         args_tuple = std::make_tuple(std::forward<Args>(args)...)]() mutable {
-            return std::apply(std::move(f), std::move(args_tuple));
-        }
-    );
+    // Note: std::execution::execute is not yet standardized
+    // This is a placeholder for future C++ standard versions
+    // For now, we use our own async executor
+    static AsyncExecutor global_executor;
+    return global_executor.submit([f = std::forward<F>(func), 
+                                  args_tuple = std::make_tuple(std::forward<Args>(args)...)]() mutable {
+        return std::apply(std::move(f), std::move(args_tuple));
+    });
 }
 #endif
 

@@ -657,34 +657,34 @@ public:
 
 ## Building and Dependencies
 
-### CMake Integration
-```cmake
-# For std::execution
-target_compile_features(your_target PRIVATE cxx_std_17)
+### xmake Integration
+```lua
+-- For std::execution
+set_languages("c++17")
 
-# For OpenMP
-find_package(OpenMP REQUIRED)
-target_link_libraries(your_target OpenMP::OpenMP_CXX)
+-- For OpenMP
+add_requires("openmp")
+target_link_libraries(your_target openmp)
 
-# For Intel TBB
-find_package(TBB REQUIRED)
-target_link_libraries(your_target TBB::tbb)
+-- For Intel TBB
+add_requires("tbb")
+target_link_libraries(your_target tbb)
 
-# For NVIDIA Thrust (comes with CUDA)
-find_package(CUDA REQUIRED)
-target_link_libraries(your_target ${CUDA_LIBRARIES})
+-- For NVIDIA Thrust (comes with CUDA)
+add_requires("cuda")
+target_link_libraries(your_target cuda)
 
-# For direct CUDA kernel usage
-enable_language(CUDA)
-set_property(TARGET your_target PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+-- For direct CUDA kernel usage
+set_languages("cuda")
+set_policy("build.cuda.devlink", true)
 
-# For OpenCL
-find_package(OpenCL REQUIRED)
-target_link_libraries(your_target OpenCL::OpenCL)
+-- For OpenCL
+add_requires("opencl")
+target_link_libraries(your_target opencl)
 
-# For MPI (distributed computing)
-find_package(MPI REQUIRED)
-target_link_libraries(your_target MPI::MPI_CXX)
+-- For MPI (distributed computing)
+add_requires("mpi")
+target_link_libraries(your_target mpi)
 ```
 
 ## Summary: Choosing the Right Approach

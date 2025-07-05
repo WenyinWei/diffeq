@@ -4,6 +4,7 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <stdexcept>
 
 namespace diffeq::integrators::ode {
 

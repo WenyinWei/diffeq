@@ -38,8 +38,6 @@
 #include <CL/cl.hpp>
 #endif
 
-namespace diffeq::examples {
-
 /**
  * @brief Example: Parallel ODE integration using std::execution policies
  * 
@@ -487,17 +485,15 @@ void parameter_sweep_parallel(
 }
 
 template<typename State, typename Time>
-std::unique_ptr<diffeq::examples::ODETaskDispatcher<State, Time>> create_async_dispatcher() {
-    return std::make_unique<diffeq::examples::ODETaskDispatcher<State, Time>>();
+std::unique_ptr<ODETaskDispatcher<State, Time>> create_async_dispatcher() {
+    return std::make_unique<ODETaskDispatcher<State, Time>>();
 }
-
-} // namespace diffeq::examples
 
 int main() {
     std::cout << "=== diffeq Standard Parallelism Examples ===" << std::endl;
     
     // Show available backends
-    diffeq::examples::ODEParallel<std::vector<double>, double>::print_available_backends();
+    ODEParallel<std::vector<double>, double>::print_available_backends();
     
     // Define a simple ODE system: exponential decay
     auto system = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
@@ -526,7 +522,7 @@ int main() {
     auto start_time = std::chrono::high_resolution_clock::now();
     
     // Test std::execution parallelism
-    diffeq::examples::ODEStdExecution<std::vector<double>, double>::integrate_multiple_conditions(
+    ODEStdExecution<std::vector<double>, double>::integrate_multiple_conditions(
         system, initial_conditions, dt, steps);
     
     auto end_time = std::chrono::high_resolution_clock::now();
@@ -545,7 +541,7 @@ int main() {
     
     start_time = std::chrono::high_resolution_clock::now();
     
-    diffeq::examples::ODEOpenMP<std::vector<double>, double>::integrate_openmp(
+    ODEOpenMP<std::vector<double>, double>::integrate_openmp(
         system, initial_conditions, dt, steps);
     
     end_time = std::chrono::high_resolution_clock::now();
@@ -561,7 +557,7 @@ int main() {
     std::vector<std::vector<double>> parameter_results;
     std::vector<double> initial_state = {1.0, 1.0};
     
-    diffeq::examples::ODEStdExecution<std::vector<double>, double>::parameter_sweep(
+    ODEStdExecution<std::vector<double>, double>::parameter_sweep(
         parameterized_system, initial_state, decay_rates, parameter_results, dt, steps);
     
     std::cout << "Parameter sweep results:" << std::endl;
@@ -577,7 +573,7 @@ int main() {
         initial_conditions[i] = {static_cast<double>(i), static_cast<double>(i) * 0.5};
     }
     
-    diffeq::examples::ODEParallel<std::vector<double>, double> parallel;
+    ODEParallel<std::vector<double>, double> parallel;
     parallel.integrate_parallel(system, initial_conditions, dt, steps);
     
     std::cout << "Unified interface completed successfully!" << std::endl;

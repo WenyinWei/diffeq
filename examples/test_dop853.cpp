@@ -11,7 +11,7 @@ int main() {
     
     try {
         std::vector<double> y = {1.0};
-        DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-8, 1e-12);
+        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-8, 1e-12);
         integrator.set_time(0.0);
         integrator.integrate(y, 0.01, 1.0);
         std::cout << "DOP853 result: " << y[0] << " (expected: " << std::exp(-1.0) << ")" << std::endl;

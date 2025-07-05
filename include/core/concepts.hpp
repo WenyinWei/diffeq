@@ -2,6 +2,7 @@
 #include <concepts>
 #include <type_traits>
 #include <iterator>
+#include <string>
 
 // Time type concept - supports both integer and floating point time
 template<typename T>

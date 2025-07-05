@@ -31,7 +31,7 @@ target("test_advanced_integrators")
     set_kind("binary")
     add_includedirs("include")
     add_files("test/unit/test_advanced_integrators.cpp")
-    add_packages("gtest")
+    add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
 
 -- 示例目标 - State概念使用示例
@@ -74,7 +74,7 @@ target("test_dop853")
     set_kind("binary")
     add_includedirs("include")
     add_files("test/unit/test_dop853.cpp")
-    add_packages("gtest")
+    add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
 
 -- 测试目标 - SDE 积分器测试
@@ -82,7 +82,7 @@ target("test_sde_solvers")
     set_kind("binary")
     add_includedirs("include")
     add_files("test/integration/test_sde_solvers.cpp")
-    add_packages("gtest")
+    add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
 
 -- 测试目标 - SDE 集成测试
@@ -90,7 +90,7 @@ target("test_sde_integration")
     set_kind("binary")
     add_includedirs("include")
     add_files("test/integration/test_sde_integration.cpp")
-    add_packages("gtest")
+    add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
 
 -- 测试目标 - 现代化接口测试
@@ -98,7 +98,7 @@ target("test_modernized_interface")
     set_kind("binary")
     add_includedirs("include")
     add_files("test/integration/test_modernized_interface.cpp")
-    add_packages("gtest")
+    add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
 
 -- 示例目标 - SDE 演示
@@ -106,6 +106,84 @@ target("sde_demo")
     set_kind("binary")
     add_includedirs("include")
     add_files("examples/sde_demo.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 接口使用演示
+target("interface_usage_demo")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/interface_usage_demo.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 并行化使用演示
+target("parallelism_usage_demo")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/parallelism_usage_demo.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - SDE使用演示
+target("sde_usage_demo")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/sde_usage_demo.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 标准并行化演示
+target("standard_parallelism_demo")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/standard_parallelism_demo.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 工作积分器演示
+target("working_integrators_demo")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/working_integrators_demo.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 实时信号处理
+target("realtime_signal_processing")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/realtime_signal_processing.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 高级GPU异步演示
+target("advanced_gpu_async_demo")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/advanced_gpu_async_demo.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 简单标准并行化
+target("simple_standard_parallelism")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/simple_standard_parallelism.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 简化并行使用
+target("simplified_parallel_usage")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/simplified_parallel_usage.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 测试高级并行化
+target("test_advanced_parallelism")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("examples/test_advanced_parallelism.cpp")
+    set_rundir("$(projectdir)")
+
+-- 示例目标 - 测试标准并行化
+target("test_standard_parallelism")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("test/integration/test_standard_parallelism.cpp")
+    add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
 
 -- 自定义任务：运行所有测试
@@ -163,6 +241,36 @@ task("example")
         
         print("\nBuilding and running SDE demo...")
         task.run("run", {}, "sde_demo")
+        
+        print("\nBuilding and running interface usage demo...")
+        task.run("run", {}, "interface_usage_demo")
+        
+        print("\nBuilding and running parallelism usage demo...")
+        task.run("run", {}, "parallelism_usage_demo")
+        
+        print("\nBuilding and running SDE usage demo...")
+        task.run("run", {}, "sde_usage_demo")
+        
+        print("\nBuilding and running standard parallelism demo...")
+        task.run("run", {}, "standard_parallelism_demo")
+        
+        print("\nBuilding and running working integrators demo...")
+        task.run("run", {}, "working_integrators_demo")
+        
+        print("\nBuilding and running realtime signal processing...")
+        task.run("run", {}, "realtime_signal_processing")
+        
+        print("\nBuilding and running advanced GPU async demo...")
+        task.run("run", {}, "advanced_gpu_async_demo")
+        
+        print("\nBuilding and running simple standard parallelism...")
+        task.run("run", {}, "simple_standard_parallelism")
+        
+        print("\nBuilding and running simplified parallel usage...")
+        task.run("run", {}, "simplified_parallel_usage")
+        
+        print("\nBuilding and running test advanced parallelism...")
+        task.run("run", {}, "test_advanced_parallelism")
     end)
 
 -- 快速测试任务：只测试基本功能
@@ -209,6 +317,34 @@ task("test-dop853")
         
         print("\nRunning DOP853 example...")
         task.run("run", {}, "test_dop853_example")
+    end)
+
+-- 新示例任务：运行新创建的示例
+task("new-examples")
+    set_menu {
+        usage = "xmake new-examples",
+        description = "Run all newly created examples",
+        options = {}
+    }
+    on_run(function ()
+        import("core.base.task")
+        
+        print("Building and running new examples...")
+        
+        print("\nBuilding and running interface usage demo...")
+        task.run("run", {}, "interface_usage_demo")
+        
+        print("\nBuilding and running parallelism usage demo...")
+        task.run("run", {}, "parallelism_usage_demo")
+        
+        print("\nBuilding and running SDE usage demo...")
+        task.run("run", {}, "sde_usage_demo")
+        
+        print("\nBuilding and running standard parallelism demo...")
+        task.run("run", {}, "standard_parallelism_demo")
+        
+        print("\nBuilding and running test standard parallelism...")
+        task.run("run", {}, "test_standard_parallelism")
     end)
 
 -- 文档生成任务

@@ -54,19 +54,14 @@ This directory contains comprehensive examples demonstrating how to use the diff
 ### Prerequisites
 
 - C++17 or later compiler
-- CMake or xmake build system
+- xmake build system
 - Optional: OpenMP, Intel TBB, CUDA for advanced parallelism examples
 
 ### Building
 
 ```bash
-# Using xmake (recommended)
+# Using xmake
 xmake
-
-# Or using CMake
-mkdir build && cd build
-cmake ..
-make
 ```
 
 ### Running Examples

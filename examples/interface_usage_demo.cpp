@@ -7,8 +7,6 @@
 #include <chrono>
 #include <iostream>
 
-namespace diffeq::examples {
-
 /**
  * @brief Example usage patterns for the general integration interface
  * 
@@ -21,12 +19,12 @@ namespace diffeq::examples {
  */
 template<system_state StateType>
 auto create_portfolio_interface() {
-    auto interface = interfaces::make_integration_interface<StateType>();
+    auto interface = diffeq::interfaces::make_integration_interface<StateType>();
     
     // Example: Market data signal causes continuous trajectory shift
     interface->template register_signal_influence<double>(
         "price_update",
-        interfaces::IntegrationInterface<StateType>::InfluenceMode::CONTINUOUS_SHIFT,
+        diffeq::interfaces::IntegrationInterface<StateType>::InfluenceMode::CONTINUOUS_SHIFT,
         [](const double& new_price, StateType& state, auto t) {
             // Modify portfolio dynamics based on price update
             if (state.size() >= 3) {
@@ -42,7 +40,7 @@ auto create_portfolio_interface() {
     // Example: Risk alert causes discrete state modification
     interface->template register_signal_influence<std::string>(
         "risk_alert",
-        interfaces::IntegrationInterface<StateType>::InfluenceMode::DISCRETE_EVENT,
+        diffeq::interfaces::IntegrationInterface<StateType>::InfluenceMode::DISCRETE_EVENT,
         [](const std::string& alert_type, StateType& state, auto t) {
             if (alert_type == "high_volatility" && state.size() >= 3) {
                 // Reduce all positions by 10%
@@ -76,12 +74,12 @@ auto create_portfolio_interface() {
  */
 template<system_state StateType>
 auto create_robotics_interface() {
-    auto interface = interfaces::make_integration_interface<StateType>();
+    auto interface = diffeq::interfaces::make_integration_interface<StateType>();
     
     // Example: Control command causes discrete position target update
     interface->template register_signal_influence<std::vector<double>>(
         "control_command",
-        interfaces::IntegrationInterface<StateType>::InfluenceMode::DISCRETE_EVENT,
+        diffeq::interfaces::IntegrationInterface<StateType>::InfluenceMode::DISCRETE_EVENT,
         [](const std::vector<double>& targets, StateType& state, auto t) {
             // Update target positions (assuming state has position targets)
             size_t n_joints = std::min(targets.size(), state.size() / 3);
@@ -98,7 +96,7 @@ auto create_robotics_interface() {
     // Example: Emergency stop signal
     interface->template register_signal_influence<bool>(
         "emergency_stop",
-        interfaces::IntegrationInterface<StateType>::InfluenceMode::DISCRETE_EVENT,
+        diffeq::interfaces::IntegrationInterface<StateType>::InfluenceMode::DISCRETE_EVENT,
         [](const bool& stop, StateType& state, auto t) {
             if (stop) {
                 // Set all velocities to zero
@@ -136,12 +134,12 @@ auto create_robotics_interface() {
  */
 template<system_state StateType>
 auto create_scientific_interface() {
-    auto interface = interfaces::make_integration_interface<StateType>();
+    auto interface = diffeq::interfaces::make_integration_interface<StateType>();
     
     // Example: Parameter update from external optimization
     interface->template register_signal_influence<double>(
         "parameter_update",
-        interfaces::IntegrationInterface<StateType>::InfluenceMode::PARAMETER_UPDATE,
+        diffeq::interfaces::IntegrationInterface<StateType>::InfluenceMode::PARAMETER_UPDATE,
         [](const double& new_param, StateType& state, auto t) {
             // Update system parameters affecting dynamics
             // This could modify integration tolerances, system constants, etc.
@@ -151,7 +149,7 @@ auto create_scientific_interface() {
     // Example: Data logging triggered by external events
     interface->template register_signal_influence<std::string>(
         "log_trigger",
-        interfaces::IntegrationInterface<StateType>::InfluenceMode::OUTPUT_TRIGGER,
+        diffeq::interfaces::IntegrationInterface<StateType>::InfluenceMode::OUTPUT_TRIGGER,
         [](const std::string& log_type, StateType& state, auto t) {
             // This will trigger all output streams immediately
         }
@@ -221,19 +219,17 @@ void demonstrate_usage(StateType initial_state) {
     std::cout << "Integration completed successfully!" << std::endl;
 }
 
-} // namespace diffeq::examples
-
 int main() {
     std::cout << "=== diffeq Integration Interface Examples ===" << std::endl;
     
     // Example with vector state
     std::vector<double> initial_portfolio = {1000.0, 2000.0, 1500.0};
-    diffeq::examples::demonstrate_usage(initial_portfolio);
+    demonstrate_usage(initial_portfolio);
     
     std::cout << "\n=== Robotics Interface Example ===" << std::endl;
     
     // Create robotics interface
-    auto robotics_interface = diffeq::examples::create_robotics_interface<std::vector<double>>();
+    auto robotics_interface = create_robotics_interface<std::vector<double>>();
     
     // Define robot dynamics
     auto robot_ode = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
@@ -243,7 +239,7 @@ int main() {
     };
     
     auto signal_aware_robot_ode = robotics_interface->make_signal_aware_ode(robot_ode);
-    auto robot_integrator = diffeq::make_rk4<std::vector<double>>(signal_aware_robot_ode);
+    auto robot_integrator = diffeq::make_rk45<std::vector<double>>(signal_aware_robot_ode);
     
     std::vector<double> robot_state = {0.1, 0.0}; // [angle, angular_velocity]
     auto robot_signal_proc = robotics_interface->get_signal_processor();
@@ -267,7 +263,7 @@ int main() {
     std::cout << "\n=== Scientific Interface Example ===" << std::endl;
     
     // Create scientific interface
-    auto scientific_interface = diffeq::examples::create_scientific_interface<std::vector<double>>();
+    auto scientific_interface = create_scientific_interface<std::vector<double>>();
     
     // Define scientific system (e.g., chemical reaction)
     auto chemical_ode = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {

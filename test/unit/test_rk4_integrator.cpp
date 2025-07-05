@@ -3,7 +3,7 @@
 #include <array>
 #include <cmath>
 #include <memory>
-#include "../../include/solvers/rk4_solver.hpp"
+#include <diffeq.hpp>
 
 // Test helper macro
 #define TEST_ASSERT(condition, message) \
