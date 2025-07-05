@@ -56,6 +56,28 @@ public:
     using value_type = typename base_type::value_type;
     using system_function = typename base_type::system_function;
 
+    // Step size control parameters (modern C++ style, with defaults)
+    time_type safety_factor_ = static_cast<time_type>(0.9);   // Fortran SAFE
+    time_type fac1_ = static_cast<time_type>(0.333);          // Fortran FAC1 (min step size factor)
+    time_type fac2_ = static_cast<time_type>(6.0);            // Fortran FAC2 (max step size factor)
+    time_type beta_ = static_cast<time_type>(0.0);            // Fortran BETA (step size stabilization)
+    time_type dt_max_ = static_cast<time_type>(1e100);        // Fortran HMAX (max step size)
+    time_type dt_min_ = static_cast<time_type>(1e-16);        // Min step size (not in Fortran, but practical)
+    int nmax_ = 100000;                                       // Fortran NMAX (max steps)
+    int nstiff_ = 1000;                                       // Fortran NSTIFF (stiffness test interval)
+
+    // Stiffness detection state
+    int iastiff_ = 0;
+    int nonsti_ = 0;
+    time_type hlamb_ = 0;
+    time_type facold_ = static_cast<time_type>(1e-4);
+
+    // For statistics (optional)
+    int nstep_ = 0;
+    int naccpt_ = 0;
+    int nrejct_ = 0;
+    int nfcn_ = 0;
+
 private:
     // Compute a good initial step size (HINIT from Fortran)
     time_type compute_initial_step(const state_type& y, time_type t, const system_function& sys, time_type t_end) const {
@@ -111,8 +133,18 @@ private:
 public:
     explicit DOP853Integrator(system_function sys, 
                              time_type rtol = static_cast<time_type>(1e-8),
-                             time_type atol = static_cast<time_type>(1e-10))
-        : base_type(std::move(sys), rtol, atol) {}
+                             time_type atol = static_cast<time_type>(1e-10),
+                             time_type safety = static_cast<time_type>(0.9),
+                             time_type fac1 = static_cast<time_type>(0.333),
+                             time_type fac2 = static_cast<time_type>(6.0),
+                             time_type beta = static_cast<time_type>(0.0),
+                             time_type dt_max = static_cast<time_type>(1e100),
+                             time_type dt_min = static_cast<time_type>(1e-16),
+                             int nmax = 100000,
+                             int nstiff = 1000)
+        : base_type(std::move(sys), rtol, atol),
+          safety_factor_(safety), fac1_(fac1), fac2_(fac2), beta_(beta),
+          dt_max_(dt_max), dt_min_(dt_min), nmax_(nmax), nstiff_(nstiff) {}
 
     void step(state_type& state, time_type dt) override {
         adaptive_step(state, dt);
@@ -132,25 +164,63 @@ public:
             // Use the system function and current state to estimate initial step
             current_dt = compute_initial_step(state, t, this->sys_, t_end);
             // Clamp to allowed min/max
-            current_dt = std::max(this->dt_min_, std::min(this->dt_max_, current_dt));
+            current_dt = std::max(dt_min_, std::min(dt_max_, current_dt));
         }
-        const int max_attempts = 10;
-        for (int attempt = 0; attempt < max_attempts; ++attempt) {
+        int attempt = 0;
+        for (; attempt < nmax_; ++attempt) {
             state_type y_new = StateCreator<state_type>::create(state);
             state_type error = StateCreator<state_type>::create(state);
             dop853_step(state, y_new, error, current_dt);
+            nfcn_ += 12; // 12 stages per step
             time_type err_norm = this->error_norm(error, y_new);
+
+            // Fortran: FAC11 = ERR**EXPO1, FAC = FAC11 / FACOLD**BETA
+            time_type expo1 = 1.0 / 8.0 - beta_ * 0.2;
+            time_type fac11 = std::pow(std::max(err_norm, 1e-16), expo1);
+            time_type fac = fac11 / std::pow(facold_, beta_);
+            fac = std::max(fac2_, std::min(fac1_, fac / safety_factor_));
+            time_type next_dt = current_dt / fac;
+
             if (err_norm <= 1.0) {
+                facold_ = std::max(err_norm, static_cast<time_type>(1e-4));
+                naccpt_++;
+                nstep_++;
                 state = y_new;
                 this->advance_time(current_dt);
-                time_type next_dt = this->suggest_step_size(current_dt, err_norm, 8);
-                return std::max(this->dt_min_, std::min(this->dt_max_, next_dt));
+                // stiffness detection (Fortran HLAMB)
+                if (nstiff_ > 0 && (naccpt_ % nstiff_ == 0 || iastiff_ > 0)) {
+                    // Compute HLAMB = |h| * sqrt(stnum / stden)
+                    time_type stnum = 0, stden = 0;
+                    for (std::size_t i = 0; i < state.size(); ++i) {
+                        // Use error and state difference as proxy (not exact Fortran, but close)
+                        stnum += (error[i]) * (error[i]);
+                        stden += (y_new[i] - state[i]) * (y_new[i] - state[i]);
+                    }
+                    if (stden > 0) hlamb_ = std::abs(current_dt) * std::sqrt(stnum / stden);
+                    if (hlamb_ > 6.1) {
+                        nonsti_ = 0;
+                        iastiff_++;
+                        if (iastiff_ == 15) {
+                            throw std::runtime_error("DOP853: Problem seems to become stiff");
+                        }
+                    } else {
+                        nonsti_++;
+                        if (nonsti_ == 6) iastiff_ = 0;
+                    }
+                }
+                // Clamp next step size
+                next_dt = std::max(dt_min_, std::min(dt_max_, next_dt));
+                // Accept and return next step size
+                return next_dt;
             } else {
-                current_dt *= std::max(this->safety_factor_ * std::pow(err_norm, -1.0/8.0), static_cast<time_type>(0.1));
-                current_dt = std::max(current_dt, this->dt_min_);
+                // Step rejected
+                nrejct_++;
+                nstep_++;
+                next_dt = current_dt / std::min(fac1_, fac11 / safety_factor_);
+                current_dt = std::max(dt_min_, next_dt);
             }
         }
-        throw std::runtime_error("DOP853: Maximum number of step size reductions exceeded");
+        throw std::runtime_error("DOP853: Maximum number of step size reductions or steps exceeded");
     }
 
 private:
