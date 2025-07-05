@@ -1,3 +1,35 @@
+
+template<system_state S, can_be_time T>
+class DOP853Integrator;
+
+template<system_state S, can_be_time T>
+class DOP853DenseOutputHelper {
+public:
+    using value_type = typename DOP853Integrator<S, T>::value_type;
+    // Dense output for DOP853: ported from Fortran CONTD8
+    // CON: continuous output coefficients, size 8*nd
+    // ICOMP: index mapping, size nd
+    // nd: number of dense output components
+    // xold: left endpoint of interval, h: step size
+    // x: interpolation point (xold <= x <= xold+h)
+    // Returns: interpolated value for component ii at x
+    static value_type contd8(
+        int ii, value_type x, const value_type* con, const int* icomp, int nd,
+        value_type xold, value_type h) {
+        int i = -1;
+        for (int j = 0; j < nd; ++j) {
+            if (icomp[j] == ii) { i = j; break; }
+        }
+        if (i == -1) {
+            throw std::runtime_error("No dense output available for component " + std::to_string(ii));
+        }
+        value_type s = (x - xold) / h;
+        value_type s1 = 1.0 - s;
+        value_type conpar = con[i + nd*4] + s * (con[i + nd*5] + s1 * (con[i + nd*6] + s * con[i + nd*7]));
+        value_type result = con[i] + s * (con[i + nd] + s1 * (con[i + nd*2] + s * (con[i + nd*3] + s1 * conpar)));
+        return result;
+    }
+};
 #pragma once
 #include <core/adaptive_integrator.hpp>
 #include <core/state_creator.hpp>
@@ -66,8 +98,11 @@ private:
         } else {
             h1 = std::max(1e-6, std::abs(h) * 1e-3);
         }
-        h = std::min(100 * std::abs(h), h1, std::abs(t_end - t));
-        h = std::copysign(h, t_end - t);
+        // Avoid std::min(a, b, c) which is not standard C++
+        time_type hmax = 100 * std::abs(h);
+        time_type htmp = (h1 < hmax) ? h1 : hmax;
+        htmp = (htmp < std::abs(t_end - t)) ? htmp : std::abs(t_end - t);
+        h = std::copysign(htmp, t_end - t);
         return h;
     }
 
