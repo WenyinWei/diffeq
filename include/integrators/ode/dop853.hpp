@@ -59,13 +59,13 @@ public:
 
     // Fortran default parameters (do not change unless you know what you are doing)
     static constexpr time_type fortran_safety = static_cast<time_type>(0.9);   // SAFE
-    static constexpr time_type fortran_fac1 = static_cast<time_type>(0.333);   // FAC1
-    static constexpr time_type fortran_fac2 = static_cast<time_type>(6.0);     // FAC2
-    static constexpr time_type fortran_beta = static_cast<time_type>(0.0);     // BETA
-    static constexpr time_type fortran_dt_max = static_cast<time_type>(1e100); // HMAX
-    static constexpr time_type fortran_dt_min = static_cast<time_type>(1e-16); // practical min
-    static constexpr int fortran_nmax = 100000;                                // NMAX
-    static constexpr int fortran_nstiff = 1000;                                // NSTIFF
+    static constexpr time_type fortran_fac1 = static_cast<time_type>(0.333);   // FAC1 (min step size factor)
+    static constexpr time_type fortran_fac2 = static_cast<time_type>(6.0);     // FAC2 (max step size factor)
+    static constexpr time_type fortran_beta = static_cast<time_type>(0.0);     // BETA (step size stabilization)
+    static constexpr time_type fortran_dt_max = static_cast<time_type>(1e100); // HMAX (max step size)
+    static constexpr time_type fortran_dt_min = static_cast<time_type>(1e-16); // practical min (not in Fortran, but practical)
+    static constexpr int fortran_nmax = 100000;                                // NMAX (max steps)
+    static constexpr int fortran_nstiff = 1000;                                // NSTIFF (stiffness test interval)
 
     // Internal state (Fortran default values)
     time_type safety_factor_ = fortran_safety;
@@ -81,28 +81,6 @@ public:
     int iastiff_ = 0;
     int nonsti_ = 0;
     time_type hlamb_ = 0;
-    // For statistics (optional)
-    int nstep_ = 0;
-    int naccpt_ = 0;
-    int nrejct_ = 0;
-    int nfcn_ = 0;
-
-    // Step size control parameters (modern C++ style, with defaults)
-    time_type safety_factor_ = static_cast<time_type>(0.9);   // Fortran SAFE
-    time_type fac1_ = static_cast<time_type>(0.333);          // Fortran FAC1 (min step size factor)
-    time_type fac2_ = static_cast<time_type>(6.0);            // Fortran FAC2 (max step size factor)
-    time_type beta_ = static_cast<time_type>(0.0);            // Fortran BETA (step size stabilization)
-    time_type dt_max_ = static_cast<time_type>(1e100);        // Fortran HMAX (max step size)
-    time_type dt_min_ = static_cast<time_type>(1e-16);        // Min step size (not in Fortran, but practical)
-    int nmax_ = 100000;                                       // Fortran NMAX (max steps)
-    int nstiff_ = 1000;                                       // Fortran NSTIFF (stiffness test interval)
-
-    // Stiffness detection state
-    int iastiff_ = 0;
-    int nonsti_ = 0;
-    time_type hlamb_ = 0;
-    time_type facold_ = static_cast<time_type>(1e-4);
-
     // For statistics (optional)
     int nstep_ = 0;
     int naccpt_ = 0;
