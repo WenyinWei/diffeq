@@ -111,7 +111,7 @@ private:
     bool test_basic_integration() {
         // Test that basic integration still works with the new architecture
         std::vector<double> state = {1.0, 0.0};
-        auto integrator = make_rk45<std::vector<double>>(harmonic_oscillator);
+        auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(harmonic_oscillator);
         integrator->integrate(state, 0.01, 3.14159); // π seconds
         
         // Should be approximately [-1, 0] after π seconds
@@ -344,7 +344,7 @@ private:
             });
         
         auto signal_ode = interface->make_signal_aware_ode(harmonic_oscillator);
-        auto integrator = make_rk45<std::vector<double>>(signal_ode);
+        auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(signal_ode);
         
         std::vector<double> state = {1.0, 0.0};
         

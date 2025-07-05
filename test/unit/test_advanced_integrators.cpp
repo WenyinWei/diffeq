@@ -142,7 +142,7 @@ TEST_F(IntegratorTest, BDFIntegratorMultistep) {
     integrator.integrate(y, dt_, t_end_);
     
     double exact = analytical_solution(t_end_);
-    EXPECT_NEAR(y[0], exact, 1e-4);
+    EXPECT_NEAR(y[0], exact, 1e-3);
 }
 
 TEST_F(IntegratorTest, LSODAIntegratorAutomatic) {

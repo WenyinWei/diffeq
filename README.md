@@ -81,7 +81,7 @@ int main() {
     std::vector<double> y = {1.0};  // Initial condition: y(0) = 1
     
     // Create high-accuracy DOP853 integrator  
-    auto integrator = diffeq::make_dop853<std::vector<double>>(exponential_decay);
+    auto integrator = std::make_unique<diffeq::integrators::ode::DOP853Integrator<std::vector<double>>>(exponential_decay);
     
     // Integrate from t=0 to t=1
     integrator.integrate(y, 0.01, 1.0);
@@ -121,7 +121,7 @@ interface->register_output_stream("portfolio_monitor",
 
 // Create signal-aware ODE (combines your ODE with signal processing)
 auto signal_ode = interface->make_signal_aware_ode(my_portfolio_ode);
-auto integrator = make_rk45<std::vector<double>>(signal_ode);
+auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(signal_ode);
 
 // Integration automatically handles signals and outputs
 std::vector<double> state = {100000.0, 150000.0, 120000.0}; // Initial portfolio
@@ -348,14 +348,14 @@ The main integration test (`test/integration/test_modernized_interface.cpp`) val
 
 1. **Include the main header**: `#include <diffeq.hpp>`
 2. **Define your ODE system**: Function that computes dy/dt = f(t, y)
-3. **Choose an integrator**: Use factory functions like `make_rk45()`, `make_dop853()`
+3. **Choose an integrator**: Use direct construction with `std::make_unique`
 4. **Set initial conditions and integrate**
 5. **Optional**: Use unified interface for signal-aware integration across any domain
 
 ### Basic Integration
 ```cpp
 #include <diffeq.hpp>
-auto integrator = diffeq::make_rk45<std::vector<double>>(my_ode);
+auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(my_ode);
 integrator.integrate(state, dt, t_final);
 ```
 
@@ -365,15 +365,15 @@ integrator.integrate(state, dt, t_final);
 auto interface = diffeq::interfaces::make_integration_interface<StateType, TimeType>();
 interface->register_signal_influence<DataType>("signal_name", mode, handler);
 auto signal_ode = interface->make_signal_aware_ode(my_ode);
-auto integrator = diffeq::make_rk45<StateType>(signal_ode);
+auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<StateType>>(signal_ode);
 ```
 
 ### Integrator Selection Guide
 
-- **`make_rk45()`**: Best general-purpose choice (Dormand-Prince 5th order)
-- **`make_dop853()`**: High-accuracy applications (8th order)  
-- **`make_bdf()`**: Stiff systems (backward differentiation)
-- **`make_lsoda()`**: Automatic stiffness detection
+- **`RK45Integrator`**: Best general-purpose choice (Dormand-Prince 5th order)
+- **`DOP853Integrator`**: High-accuracy applications (8th order)
+- **`BDFIntegrator`**: Stiff systems (backward differentiation)
+- **`LSODAIntegrator`**: Automatic stiffness detection
 
 See `examples/` directory for detailed usage examples.
 

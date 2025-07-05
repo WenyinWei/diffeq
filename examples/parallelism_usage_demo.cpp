@@ -38,7 +38,7 @@ void modern_parallel_integration_example() {
     // Use standard C++20 parallel execution
     std::for_each(std::execution::par, initial_conditions.begin(), initial_conditions.end(),
         [&](std::vector<double>& state) {
-            auto integrator = diffeq::make_rk45<std::vector<double>>(system);
+            auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(system);
             integrator->step(state, 0.01); // Single integration step
         });
     
@@ -96,7 +96,7 @@ void demonstrate_realtime_control() {
     std::for_each(std::execution::par, joint_states.begin(), joint_states.end(),
         [](std::vector<double>& state) {
             RobotArmSystem system;
-            auto integrator = diffeq::make_rk45<std::vector<double>>(system);
+            auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(system);
             integrator->step(state, 0.001); // 1ms control timestep
         });
     
@@ -111,7 +111,7 @@ void demonstrate_realtime_control() {
     
     // Create integrator for robot dynamics
     auto robot_system = RobotArmSystem{};
-    auto integrator = diffeq::make_rk45<std::vector<double>>(robot_system);
+    auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(robot_system);
     
     // Initial state: [angle=0.1 rad, angular_velocity=0]
     std::vector<double> state = {0.1, 0.0};
@@ -267,7 +267,7 @@ void benchmark_hardware_targets() {
     const double t_final = 1.0;
     
     auto system = ExponentialDecay{};
-    auto integrator = diffeq::make_rk45<std::vector<double>>(system);
+    auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(system);
     std::vector<double> initial_state = {1.0};
     
     // Sequential execution
@@ -284,7 +284,7 @@ void benchmark_hardware_targets() {
     std::vector<std::vector<double>> par_states(num_integrations, initial_state);
     std::for_each(std::execution::par, par_states.begin(), par_states.end(),
         [&](std::vector<double>& state) {
-            auto local_integrator = diffeq::make_rk45<std::vector<double>>(system);
+            auto local_integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(system);
             local_integrator->integrate(state, dt, t_final);
         });
     auto par_end = std::chrono::high_resolution_clock::now();
