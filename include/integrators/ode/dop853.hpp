@@ -14,6 +14,7 @@ namespace diffeq::integrators::ode {
  */
 template<system_state S, can_be_time T = double>
 class DOP853Integrator : public AdaptiveIntegrator<S, T> {
+    
 public:
     using base_type = AdaptiveIntegrator<S, T>;
     using state_type = typename base_type::state_type;
@@ -21,6 +22,56 @@ public:
     using value_type = typename base_type::value_type;
     using system_function = typename base_type::system_function;
 
+private:
+    // Compute a good initial step size (HINIT from Fortran)
+    time_type compute_initial_step(const state_type& y, time_type t, const system_function& sys, time_type t_end) const {
+        // Compute f0 = f(t, y)
+        state_type f0 = StateCreator<state_type>::create(y);
+        sys(t, y, f0);
+
+        // Compute a norm for y and f0
+        time_type dnf = 0.0, dny = 0.0;
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            time_type sk = this->atol_ + this->rtol_ * std::abs(y[i]);
+            dnf += (f0[i] / sk) * (f0[i] / sk);
+            dny += (y[i] / sk) * (y[i] / sk);
+        }
+        time_type h = 1e-6;
+        if (dnf > 1e-10 && dny > 1e-10) {
+            h = std::sqrt(dny / dnf) * 0.01;
+        }
+        h = std::min(h, std::abs(t_end - t));
+        h = std::copysign(h, t_end - t);
+
+        // Perform an explicit Euler step
+        state_type y1 = StateCreator<state_type>::create(y);
+        for (std::size_t i = 0; i < y.size(); ++i)
+            y1[i] = y[i] + h * f0[i];
+        state_type f1 = StateCreator<state_type>::create(y);
+        sys(t + h, y1, f1);
+
+        // Estimate the second derivative
+        time_type der2 = 0.0;
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            time_type sk = this->atol_ + this->rtol_ * std::abs(y[i]);
+            der2 += ((f1[i] - f0[i]) / sk) * ((f1[i] - f0[i]) / sk);
+        }
+        der2 = std::sqrt(der2) / h;
+
+        // Step size is computed such that h^order * max(norm(f0), norm(der2)) = 0.01
+        time_type der12 = std::max(std::abs(der2), std::sqrt(dnf));
+        time_type h1 = h;
+        if (der12 > 1e-15) {
+            h1 = std::pow(0.01 / der12, 1.0 / 8.0);
+        } else {
+            h1 = std::max(1e-6, std::abs(h) * 1e-3);
+        }
+        h = std::min(100 * std::abs(h), h1, std::abs(t_end - t));
+        h = std::copysign(h, t_end - t);
+        return h;
+    }
+
+public:
     explicit DOP853Integrator(system_function sys, 
                              time_type rtol = static_cast<time_type>(1e-8),
                              time_type atol = static_cast<time_type>(1e-10))
@@ -30,9 +81,23 @@ public:
         adaptive_step(state, dt);
     }
 
+    // To match Fortran DOP853, we need to know the integration target time for HINIT
+    // This version assumes you set target_time_ before calling adaptive_step
+    time_type target_time_ = 0; // User must set this before integration
+
     time_type adaptive_step(state_type& state, time_type dt) override {
-        const int max_attempts = 10;
+        // Fortran DOP853: if dt <= 0, estimate initial step size using HINIT (compute_initial_step)
+        time_type t = this->current_time_;
+        time_type t_end = target_time_;
+        if (t_end == t) t_end = t + 1.0; // fallback if not set
         time_type current_dt = dt;
+        if (current_dt <= 0) {
+            // Use the system function and current state to estimate initial step
+            current_dt = compute_initial_step(state, t, this->sys_, t_end);
+            // Clamp to allowed min/max
+            current_dt = std::max(this->dt_min_, std::min(this->dt_max_, current_dt));
+        }
+        const int max_attempts = 10;
         for (int attempt = 0; attempt < max_attempts; ++attempt) {
             state_type y_new = StateCreator<state_type>::create(state);
             state_type error = StateCreator<state_type>::create(state);
