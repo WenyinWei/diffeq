@@ -197,7 +197,7 @@ protected:
 };
 
 /**
- * @brief Factory functions for creating SDE problems and integrators
+ * @brief Factory functions for creating SDE problems and Wiener processes
  */
 namespace factory {
 

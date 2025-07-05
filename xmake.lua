@@ -1,353 +1,502 @@
 set_languages("c++20")
--- project("diffeq")
+set_project("diffeq")
 
--- 依赖管理
+-- Project metadata
+set_version("1.0.0")
+set_description("Modern C++ Differential Equation Solver Library")
+
+-- Global settings
+set_warnings("all")
+set_optimize("fastest")
+
+-- Handle character encoding issues on Windows
+if is_plat("windows") then
+    add_cxxflags("/utf-8")
+end
+
+-- Dependencies
 add_requires("eigen 3.4.0")
 add_requires("gtest", {optional = true})
 
--- 核心库配置
-target("diffeq_core")
-    set_kind("shared")
-    add_includedirs("include")
-    add_links("diffeq_core")
-    -- add_files("src/core/*.cpp") -- Commented out since there are no source files yet
+-- Global include directories
+add_includedirs("include")
 
--- 测试目标 - State概念测试
+-- ============================================================================
+-- LIBRARY TARGETS
+-- ============================================================================
+
+-- Main library target (header-only for now)
+target("diffeq")
+    set_kind("headeronly")
+    add_includedirs("include")
+    add_packages("eigen")
+    set_installdir("$(prefix)/include")
+    add_headerfiles("include/(**/*.hpp)")
+
+-- ============================================================================
+-- UNIT TESTS
+-- ============================================================================
+
+-- State concept tests
 target("test_state_concept")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/unit/test_state_concept.cpp")
+    add_deps("diffeq")
     set_rundir("$(projectdir)")
+    set_group("tests")
 
--- 测试目标 - RK4积分器测试
+-- RK4 integrator tests
 target("test_rk4_integrator")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/unit/test_rk4_integrator.cpp")
+    add_deps("diffeq")
     set_rundir("$(projectdir)")
+    set_group("tests")
 
--- 测试目标 - 高级积分器测试
+-- Advanced integrators tests
 target("test_advanced_integrators")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/unit/test_advanced_integrators.cpp")
+    add_deps("diffeq")
     add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
+    set_group("tests")
 
--- 示例目标 - State概念使用示例
-target("state_concept_usage")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/state_concept_usage.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - RK4积分器使用示例
-target("rk4_integrator_usage")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/rk4_integrator_usage.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 高级积分器使用示例
-target("advanced_integrators_usage")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/advanced_integrators_usage.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 快速测试
-target("quick_test")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/quick_test.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - DOP853特定测试
-target("test_dop853_example")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/test_dop853.cpp")
-    set_rundir("$(projectdir)")
-
--- 测试目标 - DOP853 综合测试
+-- DOP853 comprehensive tests
 target("test_dop853")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/unit/test_dop853.cpp")
+    add_deps("diffeq")
     add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
+    set_group("tests")
 
--- 测试目标 - SDE 积分器测试
+-- ============================================================================
+-- INTEGRATION TESTS
+-- ============================================================================
+
+-- SDE solvers integration tests
 target("test_sde_solvers")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/integration/test_sde_solvers.cpp")
+    add_deps("diffeq")
     add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
+    set_group("integration_tests")
 
--- 测试目标 - SDE 集成测试
+-- SDE integration tests
 target("test_sde_integration")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/integration/test_sde_integration.cpp")
+    add_deps("diffeq")
     add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
+    set_group("integration_tests")
 
--- 测试目标 - 现代化接口测试
+-- Modernized interface tests
 target("test_modernized_interface")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/integration/test_modernized_interface.cpp")
+    add_deps("diffeq")
     add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
+    set_group("integration_tests")
 
--- 示例目标 - SDE 演示
-target("sde_demo")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/sde_demo.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 接口使用演示
-target("interface_usage_demo")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/interface_usage_demo.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 并行化使用演示
-target("parallelism_usage_demo")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/parallelism_usage_demo.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - SDE使用演示
-target("sde_usage_demo")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/sde_usage_demo.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 标准并行化演示
-target("standard_parallelism_demo")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/standard_parallelism_demo.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 工作积分器演示
-target("working_integrators_demo")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/working_integrators_demo.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 实时信号处理
-target("realtime_signal_processing")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/realtime_signal_processing.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 高级GPU异步演示
-target("advanced_gpu_async_demo")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/advanced_gpu_async_demo.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 简单标准并行化
-target("simple_standard_parallelism")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/simple_standard_parallelism.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 简化并行使用
-target("simplified_parallel_usage")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/simplified_parallel_usage.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 测试高级并行化
-target("test_advanced_parallelism")
-    set_kind("binary")
-    add_includedirs("include")
-    add_files("examples/test_advanced_parallelism.cpp")
-    set_rundir("$(projectdir)")
-
--- 示例目标 - 测试标准并行化
+-- Standard parallelism tests
 target("test_standard_parallelism")
     set_kind("binary")
-    add_includedirs("include")
     add_files("test/integration/test_standard_parallelism.cpp")
+    add_deps("diffeq")
     add_packages("gtest", {configs = {main = true}})
     set_rundir("$(projectdir)")
+    set_group("integration_tests")
 
--- 自定义任务：运行所有测试
-task("test")
+-- ============================================================================
+-- EXAMPLES
+-- ============================================================================
+
+-- State concept usage example
+target("state_concept_usage")
+    set_kind("binary")
+    add_files("examples/state_concept_usage.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- RK4 integrator usage example
+target("rk4_integrator_usage")
+    set_kind("binary")
+    add_files("examples/rk4_integrator_usage.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Advanced integrators usage example
+target("advanced_integrators_usage")
+    set_kind("binary")
+    add_files("examples/advanced_integrators_usage.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Quick test example
+target("quick_test")
+    set_kind("binary")
+    add_files("examples/quick_test.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- DOP853 example
+target("test_dop853_example")
+    set_kind("binary")
+    add_files("examples/test_dop853.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- SDE demo
+target("sde_demo")
+    set_kind("binary")
+    add_files("examples/sde_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Interface usage demo
+target("interface_usage_demo")
+    set_kind("binary")
+    add_files("examples/interface_usage_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Parallelism usage demo
+target("parallelism_usage_demo")
+    set_kind("binary")
+    add_files("examples/parallelism_usage_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- SDE usage demo
+target("sde_usage_demo")
+    set_kind("binary")
+    add_files("examples/sde_usage_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Standard parallelism demo
+target("standard_parallelism_demo")
+    set_kind("binary")
+    add_files("examples/standard_parallelism_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Working integrators demo
+target("working_integrators_demo")
+    set_kind("binary")
+    add_files("examples/working_integrators_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Realtime signal processing
+target("realtime_signal_processing")
+    set_kind("binary")
+    add_files("examples/realtime_signal_processing.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Advanced GPU async demo
+target("advanced_gpu_async_demo")
+    set_kind("binary")
+    add_files("examples/advanced_gpu_async_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Simple standard parallelism
+target("simple_standard_parallelism")
+    set_kind("binary")
+    add_files("examples/simple_standard_parallelism.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Simplified parallel usage
+target("simplified_parallel_usage")
+    set_kind("binary")
+    add_files("examples/simplified_parallel_usage.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Test advanced parallelism
+target("test_advanced_parallelism")
+    set_kind("binary")
+    add_files("examples/test_advanced_parallelism.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- ============================================================================
+-- CUSTOM TASKS
+-- ============================================================================
+
+-- Comprehensive test suite
+task("test-all")
     set_menu {
-        usage = "xmake test",
-        description = "Run all tests",
-        options = {}
+        usage = "xmake test-all",
+        description = "Run all tests comprehensively",
+        options = {
+            {"v", "verbose", "kv", nil, "Verbose output"},
+            {"p", "parallel", "kv", nil, "Run tests in parallel"},
+            {"t", "timeout", "kv", "300", "Test timeout in seconds"}
+        }
     }
-    on_run(function ()
+    on_run(function (target, opt)
         import("core.base.task")
+        import("core.base.option")
         
-        -- 构建并运行测试
-        print("Building and running State concept tests...")
-        task.run("run", {}, "test_state_concept")
+        local verbose = option.get("verbose")
+        local parallel = option.get("parallel")
+        local timeout = tonumber(option.get("timeout")) or 300
         
-        print("\nBuilding and running RK4 integrator tests...")
-        task.run("run", {}, "test_rk4_integrator")
+        print("🧪 Running comprehensive test suite...")
         
-        print("\nBuilding and running advanced integrators tests...")
-        task.run("run", {}, "test_advanced_integrators")
+        local test_targets = {
+            "test_state_concept",
+            "test_rk4_integrator", 
+            "test_advanced_integrators",
+            "test_dop853",
+            "test_sde_solvers",
+            "test_sde_integration",
+            "test_modernized_interface",
+            "test_standard_parallelism"
+        }
         
-        print("\nBuilding and running DOP853 comprehensive tests...")
-        task.run("run", {}, "test_dop853")
+        local failed_tests = {}
+        local passed_tests = {}
         
-        print("\nBuilding and running SDE solvers tests...")
-        task.run("run", {}, "test_sde_solvers")
+        for _, test_name in ipairs(test_targets) do
+            if verbose then
+                print("  🔄 Running " .. test_name .. "...")
+            end
+            
+            local success = true
+            local start_time = os.time()
+            
+            -- Run test with timeout
+            local function run_test()
+                task.run("run", {}, test_name)
+            end
+            
+            if parallel then
+                -- For parallel execution, we'd need more sophisticated handling
+                success = pcall(run_test)
+            else
+                success = pcall(run_test)
+            end
+            
+            local end_time = os.time()
+            local duration = end_time - start_time
+            
+            if success then
+                if verbose then
+                    print("  ✅ " .. test_name .. " passed (" .. duration .. "s)")
+                end
+                table.insert(passed_tests, test_name)
+            else
+                print("  ❌ " .. test_name .. " failed (" .. duration .. "s)")
+                table.insert(failed_tests, test_name)
+            end
+            
+            if duration > timeout then
+                print("  ⚠️  " .. test_name .. " exceeded timeout (" .. timeout .. "s)")
+            end
+        end
         
-        print("\nBuilding and running SDE integration tests...")
-        task.run("run", {}, "test_sde_integration")
+        -- Summary
+        print("\n📊 Test Summary:")
+        print("  ✅ Passed: " .. #passed_tests .. "/" .. #test_targets)
+        print("  ❌ Failed: " .. #failed_tests)
         
-        print("\nBuilding and running modernized interface tests...")
-        task.run("run", {}, "test_modernized_interface")
+        if #failed_tests > 0 then
+            print("  Failed tests:")
+            for _, test_name in ipairs(failed_tests) do
+                print("    - " .. test_name)
+            end
+            os.exit(1)
+        else
+            print("  🎉 All tests passed!")
+        end
     end)
 
--- 自定义任务：运行示例
-task("example")
+-- Run all examples
+task("examples-all")
     set_menu {
-        usage = "xmake example",
-        description = "Run all usage examples",
-        options = {}
+        usage = "xmake examples-all",
+        description = "Run all examples",
+        options = {
+            {"v", "verbose", "kv", nil, "Verbose output"},
+            {"s", "skip-long", "kv", nil, "Skip long-running examples"}
+        }
     }
-    on_run(function ()
+    on_run(function (target, opt)
         import("core.base.task")
+        import("core.base.option")
         
-        -- 构建并运行示例
-        print("Building and running State concept example...")
-        task.run("run", {}, "state_concept_usage")
+        local verbose = option.get("verbose")
+        local skip_long = option.get("skip-long")
         
-        print("\nBuilding and running RK4 integrator example...")
-        task.run("run", {}, "rk4_integrator_usage")
+        print("🚀 Running all examples...")
         
-        print("\nBuilding and running advanced integrators example...")
-        task.run("run", {}, "advanced_integrators_usage")
+        local example_targets = {
+            "state_concept_usage",
+            "rk4_integrator_usage",
+            "advanced_integrators_usage",
+            "quick_test",
+            "test_dop853_example",
+            "sde_demo",
+            "interface_usage_demo",
+            "parallelism_usage_demo",
+            "sde_usage_demo",
+            "standard_parallelism_demo",
+            "working_integrators_demo",
+            "realtime_signal_processing",
+            "advanced_gpu_async_demo",
+            "simple_standard_parallelism",
+            "simplified_parallel_usage",
+            "test_advanced_parallelism"
+        }
         
-        print("\nBuilding and running SDE demo...")
-        task.run("run", {}, "sde_demo")
+        local long_examples = {
+            "advanced_gpu_async_demo",
+            "realtime_signal_processing"
+        }
         
-        print("\nBuilding and running interface usage demo...")
-        task.run("run", {}, "interface_usage_demo")
+        local failed_examples = {}
+        local passed_examples = {}
         
-        print("\nBuilding and running parallelism usage demo...")
-        task.run("run", {}, "parallelism_usage_demo")
+        for _, example_name in ipairs(example_targets) do
+            if skip_long then
+                local is_long = false
+                for _, long_name in ipairs(long_examples) do
+                    if example_name == long_name then
+                        is_long = true
+                        break
+                    end
+                end
+                if is_long then
+                    if verbose then
+                        print("  ⏭️  Skipping long example: " .. example_name)
+                    end
+                    goto continue
+                end
+            end
+            
+            if verbose then
+                print("  🔄 Running " .. example_name .. "...")
+            end
+            
+            local success = pcall(function()
+                task.run("run", {}, example_name)
+            end)
+            
+            if success then
+                if verbose then
+                    print("  ✅ " .. example_name .. " completed")
+                end
+                table.insert(passed_examples, example_name)
+            else
+                print("  ❌ " .. example_name .. " failed")
+                table.insert(failed_examples, example_name)
+            end
+            
+            ::continue::
+        end
         
-        print("\nBuilding and running SDE usage demo...")
-        task.run("run", {}, "sde_usage_demo")
+        -- Summary
+        print("\n📊 Example Summary:")
+        print("  ✅ Completed: " .. #passed_examples)
+        print("  ❌ Failed: " .. #failed_examples)
         
-        print("\nBuilding and running standard parallelism demo...")
-        task.run("run", {}, "standard_parallelism_demo")
-        
-        print("\nBuilding and running working integrators demo...")
-        task.run("run", {}, "working_integrators_demo")
-        
-        print("\nBuilding and running realtime signal processing...")
-        task.run("run", {}, "realtime_signal_processing")
-        
-        print("\nBuilding and running advanced GPU async demo...")
-        task.run("run", {}, "advanced_gpu_async_demo")
-        
-        print("\nBuilding and running simple standard parallelism...")
-        task.run("run", {}, "simple_standard_parallelism")
-        
-        print("\nBuilding and running simplified parallel usage...")
-        task.run("run", {}, "simplified_parallel_usage")
-        
-        print("\nBuilding and running test advanced parallelism...")
-        task.run("run", {}, "test_advanced_parallelism")
+        if #failed_examples > 0 then
+            print("  Failed examples:")
+            for _, example_name in ipairs(failed_examples) do
+                print("    - " .. example_name)
+            end
+        else
+            print("  🎉 All examples completed successfully!")
+        end
     end)
 
--- 快速测试任务：只测试基本功能
+-- Quick test (basic functionality)
 task("quick-test")
     set_menu {
         usage = "xmake quick-test",
-        description = "Run quick tests (concepts and RK4)",
+        description = "Run quick tests (concepts and basic integrators)",
         options = {}
     }
     on_run(function ()
         import("core.base.task")
         
-        print("Building and running quick tests...")
-        task.run("run", {}, "test_state_concept")
-        task.run("run", {}, "test_rk4_integrator")
+        print("⚡ Running quick tests...")
+        
+        local quick_tests = {
+            "test_state_concept",
+            "test_rk4_integrator"
+        }
+        
+        for _, test_name in ipairs(quick_tests) do
+            print("  🔄 Running " .. test_name .. "...")
+            task.run("run", {}, test_name)
+        end
+        
+        print("✅ Quick tests completed!")
     end)
 
--- 演示任务：运行高级积分器演示
-task("demo")
+-- Build and test everything
+task("build-test-all")
     set_menu {
-        usage = "xmake demo",
-        description = "Run advanced integrators demonstration",
-        options = {}
+        usage = "xmake build-test-all",
+        description = "Build everything and run comprehensive tests",
+        options = {
+            {"c", "clean", "kv", nil, "Clean before building"},
+            {"v", "verbose", "kv", nil, "Verbose output"}
+        }
     }
-    on_run(function ()
+    on_run(function (target, opt)
         import("core.base.task")
+        import("core.base.option")
         
-        print("Building and running advanced integrators demonstration...")
-        task.run("run", {}, "advanced_integrators_usage")
+        local clean = option.get("clean")
+        local verbose = option.get("verbose")
+        
+        print("🔨 Building and testing everything...")
+        
+        if clean then
+            print("  🧹 Cleaning...")
+            os.exec("xmake clean")
+        end
+        
+        print("  🔨 Building all targets...")
+        os.exec("xmake build")
+        
+        print("  🧪 Running all tests...")
+        task.run("test-all", {}, "verbose=" .. (verbose and "true" or "false"))
+        
+        print("  🚀 Running all examples...")
+        task.run("examples-all", {}, "verbose=" .. (verbose and "true" or "false"))
+        
+        print("🎉 Build and test completed successfully!")
     end)
 
--- 快速DOP853测试任务：只测试DOP853
-task("test-dop853")
-    set_menu {
-        usage = "xmake test-dop853",
-        description = "Run DOP853 specific tests with timeout",
-        options = {}
-    }
-    on_run(function ()
-        import("core.base.task")
-        
-        print("Building and running DOP853 comprehensive tests...")
-        task.run("run", {}, "test_dop853")
-        
-        print("\nRunning DOP853 example...")
-        task.run("run", {}, "test_dop853_example")
-    end)
-
--- 新示例任务：运行新创建的示例
-task("new-examples")
-    set_menu {
-        usage = "xmake new-examples",
-        description = "Run all newly created examples",
-        options = {}
-    }
-    on_run(function ()
-        import("core.base.task")
-        
-        print("Building and running new examples...")
-        
-        print("\nBuilding and running interface usage demo...")
-        task.run("run", {}, "interface_usage_demo")
-        
-        print("\nBuilding and running parallelism usage demo...")
-        task.run("run", {}, "parallelism_usage_demo")
-        
-        print("\nBuilding and running SDE usage demo...")
-        task.run("run", {}, "sde_usage_demo")
-        
-        print("\nBuilding and running standard parallelism demo...")
-        task.run("run", {}, "standard_parallelism_demo")
-        
-        print("\nBuilding and running test standard parallelism...")
-        task.run("run", {}, "test_standard_parallelism")
-    end)
-
--- 文档生成任务
+-- Documentation generation
 task("docs")
     set_menu {
         usage = "xmake docs",
@@ -400,7 +549,7 @@ task("docs")
             build_target = "serve"
         end
         
-        print("Generating documentation: " .. build_target)
+        print("📚 Generating documentation: " .. build_target)
         
         if os.host() == "windows" then
             os.exec(script_path .. " " .. build_target)
@@ -409,69 +558,68 @@ task("docs")
         end
     end)
 
--- 文档检查任务
-task("docs-check")
+-- Legacy task aliases for backward compatibility
+task("test")
     set_menu {
-        usage = "xmake docs-check",
-        description = "Check documentation quality and completeness",
-        options = {}
+        usage = "xmake test",
+        description = "Alias for test-all (legacy compatibility)"
     }
-    on_run(function (target, opt)
-        import("core.base.task")
-        
-        print("Checking documentation quality...")
-        
-        -- Check if required documentation files exist
-        local required_files = {
-            "docs/index.md",
-            "docs/api/README.md",
-            "docs/examples/README.md",
-            "docs/performance/README.md",
-            "Doxyfile"
-        }
-        
-        for _, file in ipairs(required_files) do
-            if not os.exists(file) then
-                print("Missing required documentation file: " .. file)
-                return
-            end
-        end
-        
-        -- Check if documentation can be generated
-        print("Testing documentation generation...")
-        task.run("docs", {}, "doxygen")
-        
-        print("Documentation check completed successfully!")
+    on_run(function ()
+        task.run("test-all")
     end)
 
--- 文档部署任务
-task("docs-deploy")
+task("example")
     set_menu {
-        usage = "xmake docs-deploy",
-        description = "Deploy documentation to GitHub Pages",
-        options = {}
+        usage = "xmake example", 
+        description = "Alias for examples-all (legacy compatibility)"
     }
-    on_run(function (target, opt)
+    on_run(function ()
+        task.run("examples-all")
+    end)
+
+task("demo")
+    set_menu {
+        usage = "xmake demo",
+        description = "Run advanced integrators demonstration (legacy compatibility)"
+    }
+    on_run(function ()
         import("core.base.task")
+        print("🎯 Running advanced integrators demonstration...")
+        task.run("run", {}, "advanced_integrators_usage")
+    end)
+
+task("test-dop853")
+    set_menu {
+        usage = "xmake test-dop853",
+        description = "Run DOP853 specific tests (legacy compatibility)"
+    }
+    on_run(function ()
+        import("core.base.task")
+        print("🔬 Running DOP853 comprehensive tests...")
+        task.run("run", {}, "test_dop853")
+        print("🎯 Running DOP853 example...")
+        task.run("run", {}, "test_dop853_example")
+    end)
+
+task("new-examples")
+    set_menu {
+        usage = "xmake new-examples",
+        description = "Run all newly created examples (legacy compatibility)"
+    }
+    on_run(function ()
+        import("core.base.task")
+        print("🆕 Running new examples...")
         
-        print("Deploying documentation to GitHub Pages...")
+        local new_examples = {
+            "interface_usage_demo",
+            "parallelism_usage_demo", 
+            "sde_usage_demo",
+            "standard_parallelism_demo",
+            "test_standard_parallelism"
+        }
         
-        -- Generate all documentation first
-        task.run("docs", {}, "all")
-        
-        -- Check if we're in a git repository
-        if not os.exists(".git") then
-            print("Not in a git repository. Cannot deploy.")
-            return
+        for _, example_name in ipairs(new_examples) do
+            print("  🔄 Running " .. example_name .. "...")
+            task.run("run", {}, example_name)
         end
-        
-        -- Create gh-pages branch and deploy
-        os.exec("git checkout -b gh-pages")
-        os.exec("git add docs/generated/")
-        os.exec("git commit -m 'Update documentation'")
-        os.exec("git push origin gh-pages")
-        os.exec("git checkout main")
-        
-        print("Documentation deployed to GitHub Pages!")
-        print("Visit: https://your-username.github.io/diffeq/")
     end)

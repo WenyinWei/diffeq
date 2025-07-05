@@ -6,7 +6,7 @@
 #include <chrono>
 
 // Include DOP853 integrator
-#include <solvers/dop853_solver.hpp>
+#include <diffeq.hpp>
 
 class DOP853Test : public ::testing::Test {
 protected:

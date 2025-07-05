@@ -96,39 +96,39 @@ public:
         
         // SOSRA
         {
-            auto integrator = diffeq::sde::factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(12345);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(S, dt);
+                integrator.step(S, dt);
             }
             results.push_back(S[0]);
         }
         
         // SRIW1
         {
-            auto integrator = diffeq::sde::factory::make_sriw1_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(12345);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(S, dt);
+                integrator.step(S, dt);
             }
             results.push_back(S[0]);
         }
         
         // SOSRI
         {
-            auto integrator = diffeq::sde::factory::make_sosri_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(12345);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(S, dt);
+                integrator.step(S, dt);
             }
             results.push_back(S[0]);
         }

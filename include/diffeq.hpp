@@ -21,8 +21,6 @@
 #include <integrators/sde/milstein.hpp>        // Milstein method with Lévy area (strong order 1.0)
 #include <integrators/sde/sri1.hpp>            // Stochastic Runge-Kutta method (strong order 1.0)
 #include <integrators/sde/implicit_euler_maruyama.hpp>  // Implicit method for stiff SDEs
-
-// Advanced high-order SDE integrators (strong order 1.5)
 #include <integrators/sde/sra.hpp>             // SRA base implementation
 #include <integrators/sde/sra1.hpp>            // SRA1 variant for additive noise
 #include <integrators/sde/sra2.hpp>            // SRA2 variant for additive noise
@@ -319,7 +317,7 @@ namespace diffeq {
     using DefaultTime = double;
 }
 
-// Optional: Convenience factory functions
+// Modern factory functions using std::make_unique
 namespace diffeq {
     
     /**
@@ -329,7 +327,7 @@ namespace diffeq {
     auto make_rk45(typename AbstractIntegrator<S>::system_function sys,
                    typename S::value_type rtol = 1e-6,
                    typename S::value_type atol = 1e-9) {
-        return integrators::ode::RK45Integrator<S>(std::move(sys), rtol, atol);
+        return std::make_unique<integrators::ode::RK45Integrator<S>>(std::move(sys), rtol, atol);
     }
     
     /**
@@ -339,7 +337,7 @@ namespace diffeq {
     auto make_dop853(typename AbstractIntegrator<S>::system_function sys,
                      typename S::value_type rtol = 1e-10,
                      typename S::value_type atol = 1e-15) {
-        return integrators::ode::DOP853Integrator<S>(std::move(sys), rtol, atol);
+        return std::make_unique<integrators::ode::DOP853Integrator<S>>(std::move(sys), rtol, atol);
     }
     
     /**
@@ -349,6 +347,40 @@ namespace diffeq {
     auto make_bdf(typename AbstractIntegrator<S>::system_function sys,
                   typename S::value_type rtol = 1e-6,
                   typename S::value_type atol = 1e-9) {
-        return integrators::ode::BDFIntegrator<S>(std::move(sys), rtol, atol);
+        return std::make_unique<integrators::ode::BDFIntegrator<S>>(std::move(sys), rtol, atol);
+    }
+    
+    /**
+     * Create an RK4 integrator (fixed step)
+     */
+    template<system_state S>
+    auto make_rk4(typename AbstractIntegrator<S>::system_function sys) {
+        return std::make_unique<integrators::ode::RK4Integrator<S>>(std::move(sys));
+    }
+    
+    /**
+     * Create an RK23 integrator (adaptive)
+     */
+    template<system_state S>
+    auto make_rk23(typename AbstractIntegrator<S>::system_function sys,
+                   typename S::value_type rtol = 1e-6,
+                   typename S::value_type atol = 1e-9) {
+        return std::make_unique<integrators::ode::RK23Integrator<S>>(std::move(sys), rtol, atol);
+    }
+    
+    /**
+     * Create an Euler integrator (fixed step)
+     */
+    template<system_state S>
+    auto make_euler(typename AbstractIntegrator<S>::system_function sys) {
+        return std::make_unique<integrators::ode::EulerIntegrator<S>>(std::move(sys));
+    }
+    
+    /**
+     * Create an Improved Euler integrator (fixed step)
+     */
+    template<system_state S>
+    auto make_improved_euler(typename AbstractIntegrator<S>::system_function sys) {
+        return std::make_unique<integrators::ode::ImprovedEulerIntegrator<S>>(std::move(sys));
     }
 }

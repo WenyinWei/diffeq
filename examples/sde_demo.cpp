@@ -18,7 +18,8 @@ int main() {
             drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
         
         auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 12345);
-        auto integrator = diffeq::sde::factory::make_euler_maruyama_integrator<std::vector<double>, double>(problem, wiener);
+        // auto integrator = diffeq::sde::factory::make_euler_maruyama_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
         
         std::vector<double> state = {1.0};  // Initial condition
         double dt = 0.01;
@@ -28,7 +29,7 @@ int main() {
         std::cout << "Initial state: " << state[0] << std::endl;
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(state, dt);
+            integrator.step(state, dt);
             if (i % 25 == 0) {  // Output every quarter
                 std::cout << "t = " << (i * dt) << ": X = " << state[0] << std::endl;
             }

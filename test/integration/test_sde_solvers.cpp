@@ -187,14 +187,14 @@ void test_advanced_sde_solvers() {
     
     // Test SRA1
     {
-        auto integrator = factory::make_sra1_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(12345);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(S, dt);
+            integrator.step(S, dt);
         }
         
         std::cout << "SRA1 final value: " << S[0] << std::endl;
@@ -202,14 +202,14 @@ void test_advanced_sde_solvers() {
     
     // Test SRA2
     {
-        auto integrator = factory::make_sra2_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SRA2Integrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(12345);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(S, dt);
+            integrator.step(S, dt);
         }
         
         std::cout << "SRA2 final value: " << S[0] << std::endl;
@@ -217,14 +217,14 @@ void test_advanced_sde_solvers() {
     
     // Test SOSRA
     {
-        auto integrator = factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(12345);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(S, dt);
+            integrator.step(S, dt);
         }
         
         std::cout << "SOSRA final value: " << S[0] << std::endl;
@@ -232,14 +232,14 @@ void test_advanced_sde_solvers() {
     
     // Test SRIW1
     {
-        auto integrator = factory::make_sriw1_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(12345);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(S, dt);
+            integrator.step(S, dt);
         }
         
         std::cout << "SRIW1 final value: " << S[0] << std::endl;
@@ -247,14 +247,14 @@ void test_advanced_sde_solvers() {
     
     // Test SOSRI
     {
-        auto integrator = factory::make_sosri_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(12345);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(S, dt);
+            integrator.step(S, dt);
         }
         
         std::cout << "SOSRI final value: " << S[0] << std::endl;
@@ -290,14 +290,14 @@ void test_additive_noise_sra() {
     
     // SRA1
     {
-        auto integrator = factory::make_sra1_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> X = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(54321);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(X, dt);
+            integrator.step(X, dt);
         }
         
         final_values.push_back(X[0]);
@@ -306,14 +306,14 @@ void test_additive_noise_sra() {
     
     // SRA2
     {
-        auto integrator = factory::make_sra2_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SRA2Integrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> X = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(54321);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(X, dt);
+            integrator.step(X, dt);
         }
         
         final_values.push_back(X[0]);
@@ -322,14 +322,14 @@ void test_additive_noise_sra() {
     
     // SOSRA
     {
-        auto integrator = factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
+        diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
         std::vector<double> X = initial_state;
         
-        integrator->set_time(0.0);
+        integrator.set_time(0.0);
         wiener->set_seed(54321);
         
         for (int i = 0; i < steps; ++i) {
-            integrator->step(X, dt);
+            integrator.step(X, dt);
         }
         
         final_values.push_back(X[0]);
@@ -367,14 +367,14 @@ void test_stiff_sde_stability() {
     try {
         // SOSRA
         {
-            auto integrator = factory::make_sosra_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> X = initial_state;
             
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(98765);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(X, dt);
+                integrator.step(X, dt);
             }
             
             std::cout << "SOSRA (stiff) final value: " << X[0] << std::endl;
@@ -382,14 +382,14 @@ void test_stiff_sde_stability() {
         
         // SOSRI
         {
-            auto integrator = factory::make_sosri_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> X = initial_state;
             
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(98765);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(X, dt);
+                integrator.step(X, dt);
             }
             
             std::cout << "SOSRI (stiff) final value: " << X[0] << std::endl;
@@ -448,39 +448,39 @@ void test_convergence_order() {
         
         // SRA1
         {
-            auto integrator = factory::make_sra1_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = initial_state;
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(11111);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(S, dt);
+                integrator.step(S, dt);
             }
             results.push_back(S[0]);
         }
         
         // SRIW1
         {
-            auto integrator = factory::make_sriw1_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = initial_state;
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(11111);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(S, dt);
+                integrator.step(S, dt);
             }
             results.push_back(S[0]);
         }
         
         // SOSRI
         {
-            auto integrator = factory::make_sosri_integrator<std::vector<double>, double>(problem, wiener);
+            diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = initial_state;
-            integrator->set_time(0.0);
+            integrator.set_time(0.0);
             wiener->set_seed(11111);
             
             for (int i = 0; i < steps; ++i) {
-                integrator->step(S, dt);
+                integrator.step(S, dt);
             }
             results.push_back(S[0]);
         }

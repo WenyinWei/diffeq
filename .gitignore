@@ -42,6 +42,7 @@
 
 # Build directories
 .xmake/
+.vscode/
 build/
 
 # Example executables
