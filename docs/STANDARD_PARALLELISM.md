@@ -222,6 +222,399 @@ std::for_each(std::execution::par, states.begin(), states.end(),
     });
 ```
 
+## Advanced GPU Computing: CUDA and OpenCL
+
+### Direct CUDA Kernel Usage
+
+For maximum GPU performance, you can write custom CUDA kernels:
+
+```cpp
+// CUDA kernel for parallel ODE integration
+__global__ void integrate_ode_kernel(
+    double* states,           // State vectors (flattened)
+    double* parameters,       // System parameters
+    double dt,
+    int steps,
+    int state_size,
+    int num_systems
+) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx >= num_systems) return;
+    
+    // Each thread handles one ODE system
+    double* my_state = &states[idx * state_size];
+    double param = parameters[idx];
+    
+    for (int step = 0; step < steps; ++step) {
+        // Simple harmonic oscillator: d²x/dt² = -ω²x
+        double x = my_state[0];
+        double v = my_state[1];
+        double omega = param;
+        
+        // Euler integration (for simplicity)
+        double new_v = v - omega * omega * x * dt;
+        double new_x = x + v * dt;
+        
+        my_state[0] = new_x;
+        my_state[1] = new_v;
+    }
+}
+
+// Host function to launch CUDA kernel
+void cuda_parallel_ode_integration(
+    std::vector<std::vector<double>>& states,
+    const std::vector<double>& parameters,
+    double dt,
+    int steps
+) {
+    // Flatten state data for GPU
+    int num_systems = states.size();
+    int state_size = states[0].size();
+    
+    std::vector<double> flat_states(num_systems * state_size);
+    for (int i = 0; i < num_systems; ++i) {
+        for (int j = 0; j < state_size; ++j) {
+            flat_states[i * state_size + j] = states[i][j];
+        }
+    }
+    
+    // Allocate GPU memory
+    double *d_states, *d_parameters;
+    cudaMalloc(&d_states, num_systems * state_size * sizeof(double));
+    cudaMalloc(&d_parameters, num_systems * sizeof(double));
+    
+    // Copy data to GPU
+    cudaMemcpy(d_states, flat_states.data(), 
+               num_systems * state_size * sizeof(double), 
+               cudaMemcpyHostToDevice);
+    cudaMemcpy(d_parameters, parameters.data(), 
+               num_systems * sizeof(double), 
+               cudaMemcpyHostToDevice);
+    
+    // Launch kernel
+    int block_size = 256;
+    int grid_size = (num_systems + block_size - 1) / block_size;
+    integrate_ode_kernel<<<grid_size, block_size>>>(
+        d_states, d_parameters, dt, steps, state_size, num_systems
+    );
+    
+    // Copy results back
+    cudaMemcpy(flat_states.data(), d_states, 
+               num_systems * state_size * sizeof(double), 
+               cudaMemcpyDeviceToHost);
+    
+    // Unflatten results
+    for (int i = 0; i < num_systems; ++i) {
+        for (int j = 0; j < state_size; ++j) {
+            states[i][j] = flat_states[i * state_size + j];
+        }
+    }
+    
+    // Cleanup
+    cudaFree(d_states);
+    cudaFree(d_parameters);
+}
+```
+
+### OpenCL for Cross-Platform GPU Computing
+
+OpenCL provides broader hardware support (NVIDIA, AMD, Intel):
+
+```cpp
+#include <CL/cl.hpp>
+
+// OpenCL kernel source code
+const char* opencl_kernel_source = R"(
+__kernel void integrate_ode_opencl(
+    __global double* states,
+    __global double* parameters,
+    double dt,
+    int steps,
+    int state_size
+) {
+    int idx = get_global_id(0);
+    
+    // Each work-item handles one ODE system
+    __global double* my_state = &states[idx * state_size];
+    double param = parameters[idx];
+    
+    for (int step = 0; step < steps; ++step) {
+        double x = my_state[0];
+        double v = my_state[1];
+        double omega = param;
+        
+        // Euler integration
+        double new_v = v - omega * omega * x * dt;
+        double new_x = x + v * dt;
+        
+        my_state[0] = new_x;
+        my_state[1] = new_v;
+    }
+}
+)";
+
+void opencl_parallel_ode_integration(
+    std::vector<std::vector<double>>& states,
+    const std::vector<double>& parameters,
+    double dt,
+    int steps
+) {
+    // OpenCL setup
+    std::vector<cl::Platform> platforms;
+    cl::Platform::get(&platforms);
+    
+    cl::Context context(CL_DEVICE_TYPE_GPU);
+    std::vector<cl::Device> devices = context.getInfo<CL_CONTEXT_DEVICES>();
+    cl::CommandQueue queue(context, devices[0]);
+    
+    // Create and build program
+    cl::Program program(context, opencl_kernel_source);
+    program.build(devices);
+    cl::Kernel kernel(program, "integrate_ode_opencl");
+    
+    // Prepare data
+    int num_systems = states.size();
+    int state_size = states[0].size();
+    std::vector<double> flat_states(num_systems * state_size);
+    
+    for (int i = 0; i < num_systems; ++i) {
+        for (int j = 0; j < state_size; ++j) {
+            flat_states[i * state_size + j] = states[i][j];
+        }
+    }
+    
+    // Create buffers
+    cl::Buffer states_buffer(context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+                            sizeof(double) * flat_states.size(), flat_states.data());
+    cl::Buffer params_buffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+                            sizeof(double) * parameters.size(), 
+                            const_cast<double*>(parameters.data()));
+    
+    // Set kernel arguments
+    kernel.setArg(0, states_buffer);
+    kernel.setArg(1, params_buffer);
+    kernel.setArg(2, dt);
+    kernel.setArg(3, steps);
+    kernel.setArg(4, state_size);
+    
+    // Execute kernel
+    queue.enqueueNDRangeKernel(kernel, cl::NullRange, 
+                              cl::NDRange(num_systems), cl::NullRange);
+    
+    // Read results
+    queue.enqueueReadBuffer(states_buffer, CL_TRUE, 0,
+                           sizeof(double) * flat_states.size(), flat_states.data());
+    
+    // Unflatten results
+    for (int i = 0; i < num_systems; ++i) {
+        for (int j = 0; j < state_size; ++j) {
+            states[i][j] = flat_states[i * state_size + j];
+        }
+    }
+}
+```
+
+## Asynchronous CPU Processing
+
+### One-by-One Thread Startup with std::async
+
+For scenarios where trigger signals arrive one-by-one:
+
+```cpp
+#include <future>
+#include <queue>
+#include <thread>
+#include <condition_variable>
+#include <mutex>
+
+class AsyncODEProcessor {
+private:
+    std::queue<std::function<void()>> task_queue;
+    std::mutex queue_mutex;
+    std::condition_variable cv;
+    std::atomic<bool> stop_flag{false};
+    
+public:
+    // Submit ODE integration task asynchronously
+    template<typename System>
+    std::future<std::vector<double>> submit_ode_task(
+        System&& system,
+        std::vector<double> initial_state,
+        double dt,
+        int steps
+    ) {
+        auto task = std::make_shared<std::packaged_task<std::vector<double>()>>(
+            [system = std::forward<System>(system), initial_state, dt, steps]() mutable {
+                auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+                std::vector<double> state = initial_state;
+                
+                for (int i = 0; i < steps; ++i) {
+                    integrator.step(state, dt);
+                }
+                return state;
+            }
+        );
+        
+        auto future = task->get_future();
+        
+        {
+            std::lock_guard<std::mutex> lock(queue_mutex);
+            task_queue.emplace([task]() { (*task)(); });
+        }
+        cv.notify_one();
+        
+        return future;
+    }
+    
+    // Process tasks one-by-one as they arrive
+    void process_tasks() {
+        while (!stop_flag) {
+            std::unique_lock<std::mutex> lock(queue_mutex);
+            cv.wait(lock, [this] { return !task_queue.empty() || stop_flag; });
+            
+            if (stop_flag) break;
+            
+            auto task = std::move(task_queue.front());
+            task_queue.pop();
+            lock.unlock();
+            
+            // Execute task in new thread (started one-by-one)
+            std::thread(task).detach();
+        }
+    }
+    
+    void stop() {
+        stop_flag = true;
+        cv.notify_all();
+    }
+};
+
+// Usage example
+void demonstrate_async_processing() {
+    AsyncODEProcessor processor;
+    
+    // Start the processor in background
+    std::thread processor_thread(&AsyncODEProcessor::process_tasks, &processor);
+    
+    // Simple harmonic oscillator
+    auto system = [](const std::vector<double>& y, std::vector<double>& dydt, double t) {
+        dydt[0] = y[1];
+        dydt[1] = -y[0];  // ω = 1
+    };
+    
+    std::vector<std::future<std::vector<double>>> futures;
+    
+    // Submit tasks one-by-one as signals arrive
+    for (int i = 0; i < 10; ++i) {
+        // Simulate trigger signal arrival
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        
+        std::vector<double> initial_state = {static_cast<double>(i), 0.0};
+        auto future = processor.submit_ode_task(system, initial_state, 0.01, 100);
+        futures.push_back(std::move(future));
+        
+        std::cout << "Submitted task " << i << " (triggered by signal)\n";
+    }
+    
+    // Collect results
+    for (size_t i = 0; i < futures.size(); ++i) {
+        auto result = futures[i].get();
+        std::cout << "Task " << i << " completed: x=" << result[0] << std::endl;
+    }
+    
+    processor.stop();
+    processor_thread.join();
+}
+```
+
+### Process-Based Asynchronous Computing
+
+For distributed computing across multiple processes:
+
+```cpp
+#include <mpi.h>
+
+class MPIAsyncODEProcessor {
+public:
+    static void master_process() {
+        int world_size, world_rank;
+        MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+        MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+        
+        std::vector<int> worker_status(world_size - 1, 0); // 0 = idle, 1 = busy
+        
+        // Distribute tasks to workers as signals arrive
+        for (int task_id = 0; task_id < 20; ++task_id) {
+            // Wait for trigger signal (simulated)
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            
+            // Find available worker
+            int worker = -1;
+            for (int i = 1; i < world_size; ++i) {
+                if (worker_status[i-1] == 0) {
+                    worker = i;
+                    worker_status[i-1] = 1;
+                    break;
+                }
+            }
+            
+            if (worker != -1) {
+                // Send task to worker
+                double initial_condition = task_id * 0.1;
+                MPI_Send(&initial_condition, 1, MPI_DOUBLE, worker, 0, MPI_COMM_WORLD);
+                std::cout << "Sent task " << task_id << " to worker " << worker << std::endl;
+            } else {
+                // No workers available, queue task or wait
+                task_id--; // Retry this task
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            }
+            
+            // Check for completed tasks
+            MPI_Status status;
+            int flag;
+            MPI_Iprobe(MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &flag, &status);
+            if (flag) {
+                double result;
+                MPI_Recv(&result, 1, MPI_DOUBLE, status.MPI_SOURCE, 1, MPI_COMM_WORLD, &status);
+                worker_status[status.MPI_SOURCE - 1] = 0; // Mark worker as idle
+                std::cout << "Received result " << result << " from worker " << status.MPI_SOURCE << std::endl;
+            }
+        }
+        
+        // Signal workers to stop
+        for (int i = 1; i < world_size; ++i) {
+            double stop_signal = -1.0;
+            MPI_Send(&stop_signal, 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
+        }
+    }
+    
+    static void worker_process() {
+        while (true) {
+            double initial_condition;
+            MPI_Status status;
+            MPI_Recv(&initial_condition, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
+            
+            if (initial_condition < 0) break; // Stop signal
+            
+            // Perform ODE integration
+            std::vector<double> state = {initial_condition, 0.0};
+            auto system = [](const std::vector<double>& y, std::vector<double>& dydt, double t) {
+                dydt[0] = y[1];
+                dydt[1] = -y[0];
+            };
+            
+            auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+            for (int i = 0; i < 100; ++i) {
+                integrator.step(state, 0.01);
+            }
+            
+            // Send result back
+            MPI_Send(&state[0], 1, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD);
+        }
+    }
+};
+```
+
 ## Building and Dependencies
 
 ### CMake Integration
@@ -240,6 +633,31 @@ target_link_libraries(your_target TBB::tbb)
 # For NVIDIA Thrust (comes with CUDA)
 find_package(CUDA REQUIRED)
 target_link_libraries(your_target ${CUDA_LIBRARIES})
+
+# For direct CUDA kernel usage
+enable_language(CUDA)
+set_property(TARGET your_target PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+
+# For OpenCL
+find_package(OpenCL REQUIRED)
+target_link_libraries(your_target OpenCL::OpenCL)
+
+# For MPI (distributed computing)
+find_package(MPI REQUIRED)
+target_link_libraries(your_target MPI::MPI_CXX)
 ```
+
+## Summary: Choosing the Right Approach
+
+| Use Case | Recommended Approach | Why |
+|----------|---------------------|-----|
+| Simple parallel loops | `std::execution::par` | Built-in, no dependencies |
+| CPU-intensive work | OpenMP | Mature, cross-platform |
+| Complex task scheduling | Intel TBB | Advanced algorithms |
+| Maximum GPU performance | Direct CUDA kernels | Full control, optimal performance |
+| Cross-platform GPU | OpenCL | Broad hardware support |
+| GPU without kernel writing | NVIDIA Thrust | Ease of use |
+| One-by-one task arrival | `std::async` with queues | Event-driven processing |
+| Distributed computing | MPI + async patterns | Scale across multiple machines |
 
 This approach gives you maximum flexibility while leveraging proven, optimized libraries instead of reinventing the wheel.

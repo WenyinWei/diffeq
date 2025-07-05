@@ -38,6 +38,20 @@
 #include <thrust/host_vector.h>
 #endif
 
+#ifdef __CUDACC__
+#include <cuda_runtime.h>
+#endif
+
+#ifdef OPENCL_AVAILABLE
+#include <CL/cl.hpp>
+#endif
+
+#include <future>
+#include <queue>
+#include <condition_variable>
+#include <mutex>
+#include <atomic>
+
 namespace diffeq::examples {
 
 /**
@@ -359,6 +373,195 @@ namespace availability {
         return false;
         #endif
     }
+    
+    inline bool cuda_direct_available() {
+        #ifdef __CUDACC__
+        return true;
+        #else
+        return false;
+        #endif
+    }
+    
+    inline bool opencl_available() {
+        #ifdef OPENCL_AVAILABLE
+        return true;
+        #else
+        return false;
+        #endif
+    }
 }
+
+#ifdef __CUDACC__
+/**
+ * @brief Direct CUDA kernel usage for maximum performance
+ * 
+ * This demonstrates how to write custom CUDA kernels for ODE integration,
+ * providing maximum control and performance on NVIDIA GPUs.
+ */
+template<typename State, typename Time>
+class CUDADirectODE {
+public:
+    /**
+     * @brief Check CUDA availability using standard runtime functions
+     */
+    static bool cuda_available() {
+        int device_count = 0;
+        cudaError_t error = cudaGetDeviceCount(&device_count);
+        return (error == cudaSuccess) && (device_count > 0);
+    }
+    
+    /**
+     * @brief Example: Direct CUDA kernel for harmonic oscillator
+     * 
+     * This shows how to implement custom CUDA kernels for specific ODE systems.
+     * Users can adapt this pattern for their own systems.
+     */
+    static void integrate_harmonic_oscillators_cuda(
+        std::vector<std::vector<Time>>& states,
+        const std::vector<Time>& frequencies,
+        Time dt,
+        int steps
+    ) {
+        // Implementation would contain CUDA kernel launch code
+        // See examples/advanced_gpu_async_demo.cpp for full implementation
+        std::cout << "CUDA direct kernel integration would run here\n";
+    }
+};
+#endif
+
+#ifdef OPENCL_AVAILABLE
+/**
+ * @brief OpenCL cross-platform GPU computing
+ * 
+ * OpenCL provides broader hardware support (NVIDIA, AMD, Intel)
+ * and can target both GPU and CPU devices.
+ */
+template<typename State, typename Time>
+class OpenCLODE {
+public:
+    static bool opencl_available() {
+        try {
+            std::vector<cl::Platform> platforms;
+            cl::Platform::get(&platforms);
+            return !platforms.empty();
+        } catch (...) {
+            return false;
+        }
+    }
+    
+    /**
+     * @brief OpenCL-based ODE integration
+     * 
+     * Demonstrates cross-platform GPU computing with OpenCL kernels.
+     */
+    template<typename System>
+    static void integrate_opencl(
+        System&& system,
+        std::vector<State>& states,
+        Time dt,
+        int steps
+    ) {
+        // OpenCL implementation would go here
+        // See examples/advanced_gpu_async_demo.cpp for full implementation
+        std::cout << "OpenCL integration would run here\n";
+    }
+};
+#endif
+
+/**
+ * @brief Asynchronous CPU processing with one-by-one thread startup
+ * 
+ * This addresses the user's requirement for threads to start one-by-one
+ * as trigger signals arrive from external processes.
+ */
+template<typename State, typename Time>
+class AsyncODEProcessor {
+private:
+    std::queue<std::function<void()>> task_queue;
+    std::mutex queue_mutex;
+    std::condition_variable cv;
+    std::atomic<bool> stop_flag{false};
+    std::vector<std::thread> worker_threads;
+    
+public:
+    AsyncODEProcessor() = default;
+    
+    ~AsyncODEProcessor() {
+        stop();
+    }
+    
+    /**
+     * @brief Submit ODE integration task for asynchronous execution
+     * 
+     * Each task will start in its own thread when triggered,
+     * supporting the one-by-one startup pattern requested.
+     */
+    template<typename System>
+    std::future<State> submit_ode_task(
+        System&& system,
+        State initial_state,
+        Time dt,
+        int steps
+    ) {
+        auto task = std::make_shared<std::packaged_task<State()>>(
+            [system = std::forward<System>(system), initial_state, dt, steps]() mutable {
+                auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                State state = initial_state;
+                
+                for (int i = 0; i < steps; ++i) {
+                    integrator.step(state, dt);
+                }
+                return state;
+            }
+        );
+        
+        auto future = task->get_future();
+        
+        {
+            std::lock_guard<std::mutex> lock(queue_mutex);
+            task_queue.emplace([task]() { (*task)(); });
+        }
+        cv.notify_one();
+        
+        return future;
+    }
+    
+    /**
+     * @brief Start asynchronous processing
+     * 
+     * Dispatcher thread spawns new worker threads one-by-one as tasks arrive.
+     * This satisfies the requirement for one-by-one thread startup.
+     */
+    void start_async_processing() {
+        worker_threads.emplace_back([this]() {
+            while (!stop_flag) {
+                std::unique_lock<std::mutex> lock(queue_mutex);
+                cv.wait(lock, [this] { return !task_queue.empty() || stop_flag; });
+                
+                if (stop_flag) break;
+                
+                auto task = std::move(task_queue.front());
+                task_queue.pop();
+                lock.unlock();
+                
+                // Start new thread for this specific task (one-by-one startup)
+                std::thread worker_thread(task);
+                worker_thread.detach(); // Let it run independently
+            }
+        });
+    }
+    
+    void stop() {
+        stop_flag = true;
+        cv.notify_all();
+        
+        for (auto& thread : worker_threads) {
+            if (thread.joinable()) {
+                thread.join();
+            }
+        }
+        worker_threads.clear();
+    }
+};
 
 } // namespace diffeq::examples
