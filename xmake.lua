@@ -300,9 +300,9 @@ task("test-all")
             
             if parallel then
                 -- For parallel execution, we'd need more sophisticated handling
-                success = pcall(run_test)
+                success = os.exec("xmake run " .. test_name)
             else
-                success = pcall(run_test)
+                success = os.exec("xmake run " .. test_name)
             end
             
             local end_time = os.time()
@@ -406,9 +406,7 @@ task("examples-all")
                 print("  🔄 Running " .. example_name .. "...")
             end
             
-            local success = pcall(function()
-                task.run("run", {}, example_name)
-            end)
+            local success = os.exec("xmake run " .. example_name)
             
             if success then
                 if verbose then
