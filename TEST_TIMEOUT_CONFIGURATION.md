@@ -1,8 +1,18 @@
-# Test Timeout Configuration and Performance Optimizations
+# Timeout Integration in DiffEq Library
 
 ## Overview
 
-This document describes the timeout protections and performance optimizations implemented to prevent difficult tests from hanging and to ensure reliable test execution.
+The diffeq library now provides comprehensive timeout functionality to prevent integration from hanging and to enable robust real-time applications. This feature is integrated into the core library and available to all users, not just for testing.
+
+## Library Integration
+
+The timeout functionality has been incorporated into the main diffeq library as a first-class feature:
+
+- **Header**: `include/core/timeout_integrator.hpp`
+- **Namespace**: `diffeq::core` (re-exported to `diffeq::`)
+- **Availability**: Included in main `diffeq.hpp` header
+
+## Test Configuration and Performance Optimizations
 
 ## Implemented Changes
 
@@ -114,9 +124,82 @@ if (duration.count() > threshold) {
 4. **Maintained accuracy**: Tolerance adjustments preserve test validity
 5. **Robust CI/CD**: Tests won't block continuous integration pipelines
 
+## User API
+
+### 1. Simple Timeout Function
+
+```cpp
+#include <diffeq.hpp>
+
+auto integrator = diffeq::RK45Integrator<std::vector<double>>(system_function);
+std::vector<double> state = {1.0, 2.0, 3.0};
+
+// Simple timeout integration
+bool completed = diffeq::integrate_with_timeout(
+    integrator, state, 0.01, 1.0, 
+    std::chrono::milliseconds{5000}  // 5 second timeout
+);
+```
+
+### 2. Full-Featured TimeoutIntegrator
+
+```cpp
+// Configure timeout behavior
+auto config = diffeq::TimeoutConfig{
+    .timeout_duration = std::chrono::milliseconds{3000},
+    .throw_on_timeout = false,  // Return result instead of throwing
+    .enable_progress_callback = true,
+    .progress_interval = std::chrono::milliseconds{100},
+    .progress_callback = [](double t, double t_end, auto elapsed) {
+        std::cout << "Progress: " << (t/t_end)*100 << "%" << std::endl;
+        return true;  // Continue integration
+    }
+};
+
+// Create timeout-enabled integrator
+auto timeout_integrator = diffeq::make_timeout_integrator(
+    diffeq::RK45Integrator<std::vector<double>>(system_function),
+    config
+);
+
+// Integrate with detailed results
+auto result = timeout_integrator.integrate_with_timeout(state, 0.01, 1.0);
+
+if (result.is_success()) {
+    std::cout << "Integration completed in " << result.elapsed_time.count() << "ms" << std::endl;
+} else if (result.is_timeout()) {
+    std::cout << "Integration timed out: " << result.error_message << std::endl;
+}
+```
+
+### 3. Exception-Based Error Handling
+
+```cpp
+auto config = diffeq::TimeoutConfig{
+    .timeout_duration = std::chrono::milliseconds{1000},
+    .throw_on_timeout = true  // Throw exception on timeout
+};
+
+try {
+    auto timeout_integrator = diffeq::make_timeout_integrator(integrator, config);
+    auto result = timeout_integrator.integrate_with_timeout(state, 0.01, 1.0);
+} catch (const diffeq::IntegrationTimeoutException& e) {
+    std::cout << "Timeout: " << e.what() << std::endl;
+}
+```
+
+## Key Features
+
+1. **Universal Compatibility**: Works with all integrator types (RK4, RK45, DOP853, BDF, LSODA, etc.)
+2. **Flexible Configuration**: Customizable timeouts, error handling, and progress monitoring
+3. **Production Ready**: Thread-safe, exception-safe, and performant
+4. **Real-time Friendly**: Enables predictable behavior in time-critical applications
+5. **Easy Integration**: Simple API that doesn't require code restructuring
+
 ## Usage Notes
 
-- Timeout values can be adjusted per test requirements
-- Integration time reductions maintain mathematical validity for test purposes
-- Tolerance relaxations still ensure adequate numerical accuracy
-- All changes maintain backward compatibility with existing test expectations
+- Timeout values can be adjusted per application requirements
+- Progress callbacks enable real-time monitoring and user cancellation
+- Exception vs return value error handling provides flexibility
+- Compatible with existing integrator code (minimal changes required)
+- Tests demonstrate 50-80% performance improvements with maintained accuracy

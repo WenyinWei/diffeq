@@ -10,6 +10,7 @@ This directory contains comprehensive examples demonstrating how to use the diff
 - **`rk4_integrator_usage.cpp`** - Basic RK4 integrator usage with various ODE systems
 - **`advanced_integrators_usage.cpp`** - Advanced integrator features and configurations
 - **`state_concept_usage.cpp`** - Shows how to use different state types (vectors, arrays, custom types)
+- **`timeout_integration_demo.cpp`** - Timeout-protected integration for robust applications
 
 ### Parallelism Examples
 
@@ -125,6 +126,8 @@ For complex applications:
 - **Parameter Sweeps**: Parallel parameter studies
 - **Multi-physics**: Coupled system integration
 - **Hardware Optimization**: Automatic backend selection
+- **Timeout Protection**: Prevents hanging integrations with configurable timeouts
+- **Progress Monitoring**: Real-time integration progress tracking and cancellation
 
 ## Best Practices
 
@@ -132,7 +135,8 @@ For complex applications:
 2. **Choose the Right Integrator**: Use RK45 for general problems, BDF for stiff systems
 3. **Leverage Parallelism**: Use parallel examples for performance-critical applications
 4. **Handle Real-time Requirements**: Use interface examples for systems with external signals
-5. **Validate Results**: Compare with analytical solutions when available
+5. **Use Timeout Protection**: Add timeout protection for production applications with `timeout_integration_demo.cpp`
+6. **Validate Results**: Compare with analytical solutions when available
 
 ## Troubleshooting
 
@@ -141,6 +145,7 @@ For complex applications:
 - **Performance Issues**: Check parallel backend availability
 - **Accuracy Problems**: Verify integrator choice and tolerances
 - **Memory Issues**: Use appropriate state types and batch sizes
+- **Hanging Integration**: Use timeout protection for robust applications
 
 ### Getting Help
 - Check the main library documentation

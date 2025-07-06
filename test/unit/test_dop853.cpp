@@ -4,22 +4,9 @@
 #include <cmath>
 #include <iostream>
 #include <chrono>
-#include <future>
-#include <stdexcept>
 
-// Include DOP853 integrator
+// Include the full diffeq library (includes timeout functionality)
 #include <diffeq.hpp>
-
-// Helper function to run integration with timeout
-template<typename Integrator, typename State>
-bool run_integration_with_timeout(Integrator& integrator, State& y, double dt, double t_end, 
-                                   std::chrono::seconds timeout = std::chrono::seconds(5)) {
-    auto future = std::async(std::launch::async, [&integrator, &y, dt, t_end]() {
-        integrator.integrate(y, dt, t_end);
-    });
-    
-    return future.wait_for(timeout) == std::future_status::ready;
-}
 
 class DOP853Test : public ::testing::Test {
 protected:
@@ -241,7 +228,7 @@ TEST_F(DOP853Test, PerformanceBaseline) {
     const std::chrono::seconds TIMEOUT{5};  // 5-second timeout
     
     try {
-        bool completed = run_integration_with_timeout(integrator, y, 0.01, 0.5, TIMEOUT);  // Reduced from 1.0 to 0.5 seconds
+        bool completed = diffeq::integrate_with_timeout(integrator, y, 0.01, 0.5, TIMEOUT);  // Reduced from 1.0 to 0.5 seconds
         ASSERT_TRUE(completed) << "DOP853 performance test timed out after " << TIMEOUT.count() << " seconds";
         
         auto end_time = std::chrono::high_resolution_clock::now();

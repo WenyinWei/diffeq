@@ -4,6 +4,7 @@
 #include <core/concepts.hpp>
 #include <core/abstract_integrator.hpp>
 #include <core/adaptive_integrator.hpp>
+#include <core/timeout_integrator.hpp>
 
 // ODE integrator implementations (organized by method type)
 #include <integrators/ode/euler.hpp>           // Simple Euler method
@@ -282,6 +283,14 @@ namespace diffeq {
     // Re-export commonly used types for convenience
     using std::vector;
     using std::array;
+    
+    // Re-export core functionality
+    using core::TimeoutIntegrator;
+    using core::TimeoutConfig;
+    using core::IntegrationResult;
+    using core::IntegrationTimeoutException;
+    using core::make_timeout_integrator;
+    using core::integrate_with_timeout;
     
     // Re-export integrator classes for convenience
     using integrators::ode::EulerIntegrator;
