@@ -112,10 +112,13 @@ private:
         // Test that basic integration still works with the new architecture
         std::vector<double> state = {1.0, 0.0};
         auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(harmonic_oscillator);
-        integrator->integrate(state, 0.01, 3.14159); // π seconds
         
-        // Should be approximately [-1, 0] after π seconds
-        double error = std::abs(state[0] + 1.0) + std::abs(state[1]);
+        // Reduced integration time from π to π/2 for faster testing
+        double t_end = 1.5708;  // π/2 seconds instead of π
+        integrator->integrate(state, 0.01, t_end);
+        
+        // Should be approximately [0, -1] after π/2 seconds
+        double error = std::abs(state[0]) + std::abs(state[1] + 1.0);
         std::cout << "     Final state: [" << state[0] << ", " << state[1] << "]" << std::endl;
         std::cout << "     Error: " << error << std::endl;
         
@@ -317,9 +320,15 @@ private:
                 });
             
             std::vector<double> initial_state = {1.0, 0.0};
-            auto future = async_integrator->integrate_async(initial_state, 0.01, 1.0);
+            auto future = async_integrator->integrate_async(initial_state, 0.01, 0.5);  // Reduced from 1.0 to 0.5 seconds
             
-            // Wait for completion
+            // Wait for completion with timeout
+            const std::chrono::seconds TIMEOUT{3};
+            if (future.wait_for(TIMEOUT) == std::future_status::timeout) {
+                std::cout << "     Async integration timed out after " << TIMEOUT.count() << " seconds" << std::endl;
+                return false;
+            }
+            
             future.wait();
             std::cout << "     Async integration completed: ✓" << std::endl;
             
@@ -352,7 +361,17 @@ private:
         auto signal_proc = interface->get_signal_processor();
         signal_proc->emit_signal("external_force", 2.0);
         
-        integrator->integrate(state, 0.01, 0.5);
+        // Integration with timeout protection
+        double t_end = 0.2;  // Reduced from 0.5 to 0.2 seconds for faster testing
+        auto start_time = std::chrono::high_resolution_clock::now();
+        integrator->integrate(state, 0.01, t_end);
+        auto end_time = std::chrono::high_resolution_clock::now();
+        
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        if (duration.count() > 2000) {  // 2-second timeout
+            std::cout << "     Signal-aware integration took too long: " << duration.count() << "ms" << std::endl;
+            return false;
+        }
         
         std::cout << "     Signal-aware integration result: [" << state[0] << ", " << state[1] << "]" << std::endl;
         

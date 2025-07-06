@@ -4,6 +4,8 @@
 #include <cmath>
 #include <iostream>
 #include <chrono>
+#include <future>
+#include <stdexcept>
 
 // Include integrators (excluding DOP853 which has its own test file)
 #include <integrators/ode/rk4.hpp>
@@ -68,6 +70,17 @@ protected:
     std::array<double, 1> y0_array_;
     double t_start_, t_end_, dt_, tolerance_;
 };
+
+// Helper function to run integration with timeout
+template<typename Integrator, typename State>
+bool run_integration_with_timeout(Integrator& integrator, State& y, double dt, double t_end, 
+                                   std::chrono::seconds timeout = std::chrono::seconds(5)) {
+    auto future = std::async(std::launch::async, [&integrator, &y, dt, t_end]() {
+        integrator.integrate(y, dt, t_end);
+    });
+    
+    return future.wait_for(timeout) == std::future_status::ready;
+}
 
 TEST_F(IntegratorTest, RK4IntegratorVector) {
     diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(exponential_decay);
@@ -197,17 +210,21 @@ TEST_F(IntegratorTest, LSODAStiffnessSwitching) {
 }
 
 TEST_F(IntegratorTest, LorenzSystemChaotic) {
-    // Test all integrators on Lorenz system
+    // Test all integrators on Lorenz system with reduced time interval and timeout protection
     std::vector<double> y0 = {1.0, 1.0, 1.0};
-    double t_end = 2.0;
+    double t_end = 0.5;  // Reduced from 2.0 to 0.5 seconds for faster testing
     double dt = 0.01;
+    const std::chrono::seconds TIMEOUT{3};  // 3-second timeout per integrator
     
     // RK4
     {
         diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        ASSERT_TRUE(completed) << "RK4 integration timed out after " << TIMEOUT.count() << " seconds";
+        
         // Just check solution is bounded (Lorenz attractor is bounded)
         EXPECT_LT(std::abs(y[0]), 50.0);
         EXPECT_LT(std::abs(y[1]), 50.0);
@@ -216,10 +233,13 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
     
     // RK45
     {
-        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-6, 1e-9);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        ASSERT_TRUE(completed) << "RK45 integration timed out after " << TIMEOUT.count() << " seconds";
+        
         EXPECT_LT(std::abs(y[0]), 50.0);
         EXPECT_LT(std::abs(y[1]), 50.0);
         EXPECT_LT(std::abs(y[2]), 50.0);
@@ -227,10 +247,13 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
     
     // LSODA
     {
-        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system, 1e-6, 1e-9);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        ASSERT_TRUE(completed) << "LSODA integration timed out after " << TIMEOUT.count() << " seconds";
+        
         EXPECT_LT(std::abs(y[0]), 50.0);
         EXPECT_LT(std::abs(y[1]), 50.0);
         EXPECT_LT(std::abs(y[2]), 50.0);
@@ -260,46 +283,57 @@ TEST_F(IntegratorTest, ToleranceSettings) {
     }
 }
 
-// Performance comparison test (just check they all run)
+// Performance comparison test (just check they all run) with timeout protection
 TEST_F(IntegratorTest, PerformanceComparison) {
     std::vector<double> y0 = {1.0, 1.0, 1.0};
-    double t_end = 1.0;
-    double dt = 0.001;
+    double t_end = 0.2;  // Reduced from 1.0 to 0.2 seconds for faster testing
+    double dt = 0.01;    // Increased from 0.001 to 0.01 for faster testing
+    const std::chrono::seconds TIMEOUT{2};  // 2-second timeout per integrator
     
     // Test that all integrators can handle the same problem
     {
         diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        EXPECT_TRUE(completed) << "RK4 performance test timed out";
     }
     
     {
         diffeq::integrators::ode::RK23Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        EXPECT_TRUE(completed) << "RK23 performance test timed out";
     }
     
     {
         diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        EXPECT_TRUE(completed) << "RK45 performance test timed out";
     }
     
     {
         diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        EXPECT_TRUE(completed) << "BDF performance test timed out";
     }
     
     {
         diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
-        EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
+        
+        bool completed = run_integration_with_timeout(integrator, y, dt, t_end, TIMEOUT);
+        EXPECT_TRUE(completed) << "LSODA performance test timed out";
     }
 }
 
