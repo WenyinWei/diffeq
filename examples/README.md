@@ -10,6 +10,8 @@ This directory contains comprehensive examples demonstrating how to use the diff
 - **`rk4_integrator_usage.cpp`** - Basic RK4 integrator usage with various ODE systems
 - **`advanced_integrators_usage.cpp`** - Advanced integrator features and configurations
 - **`state_concept_usage.cpp`** - Shows how to use different state types (vectors, arrays, custom types)
+- **`timeout_integration_demo.cpp`** - Timeout-protected integration for robust applications
+- **`seamless_parallel_timeout_demo.cpp`** - Seamless integration of timeout + async + parallel execution
 
 ### Parallelism Examples
 
@@ -41,6 +43,14 @@ This directory contains comprehensive examples demonstrating how to use the diff
   - Stochastic Lotka-Volterra ecosystem models
 - **`advanced_gpu_async_demo.cpp`** - GPU acceleration with async processing
 - **`realtime_signal_processing.cpp`** - Real-time signal processing integration
+- **`composable_facilities_demo.cpp`** 🎯 **NEW: Solves Combinatorial Explosion** - Composable architecture demonstration:
+  - High cohesion, low coupling design principles
+  - Independent facilities: Timeout, Parallel, Async, Signals, Output
+  - Flexible composition using decorator pattern
+  - Order-independent facility stacking
+  - Linear scaling (N classes for N facilities, not 2^N)
+  - Extensibility without modifying existing code
+  - Real-world usage scenarios and performance analysis
 
 ### Testing and Validation
 
@@ -125,14 +135,25 @@ For complex applications:
 - **Parameter Sweeps**: Parallel parameter studies
 - **Multi-physics**: Coupled system integration
 - **Hardware Optimization**: Automatic backend selection
+- **Timeout Protection**: Prevents hanging integrations with configurable timeouts
+- **Progress Monitoring**: Real-time integration progress tracking and cancellation
+- **Seamless Parallelization**: Automatic hardware utilization without configuration
+- **Execution Strategy Selection**: Auto-chooses optimal approach based on problem and hardware
 
 ## Best Practices
 
 1. **Start Simple**: Begin with `working_integrators_demo.cpp` to understand basic usage
 2. **Choose the Right Integrator**: Use RK45 for general problems, BDF for stiff systems
-3. **Leverage Parallelism**: Use parallel examples for performance-critical applications
+3. **Leverage Auto-Optimization**: Use `diffeq::integrate_auto()` for automatic hardware utilization
 4. **Handle Real-time Requirements**: Use interface examples for systems with external signals
-5. **Validate Results**: Compare with analytical solutions when available
+5. **Use Timeout Protection**: Add timeout protection for production applications
+6. **Scale Seamlessly**: From single integration to batch processing with `seamless_parallel_timeout_demo.cpp`
+7. **Compose Facilities**: Use the composable architecture for flexible combinations of capabilities
+   - Start with `make_builder(base_integrator)`
+   - Add only the facilities you need: `.with_timeout()`, `.with_parallel()`, etc.
+   - Avoid combinatorial explosion - compose instead of inheriting
+   - Order doesn't matter - decorators work in any sequence
+8. **Validate Results**: Compare with analytical solutions when available
 
 ## Troubleshooting
 
@@ -141,6 +162,7 @@ For complex applications:
 - **Performance Issues**: Check parallel backend availability
 - **Accuracy Problems**: Verify integrator choice and tolerances
 - **Memory Issues**: Use appropriate state types and batch sizes
+- **Hanging Integration**: Use timeout protection for robust applications
 
 ### Getting Help
 - Check the main library documentation

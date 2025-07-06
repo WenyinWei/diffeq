@@ -4,6 +4,8 @@
 #include <core/concepts.hpp>
 #include <core/abstract_integrator.hpp>
 #include <core/adaptive_integrator.hpp>
+#include <core/timeout_integrator.hpp>
+#include <core/composable_integration.hpp>
 
 // ODE integrator implementations (organized by method type)
 #include <integrators/ode/euler.hpp>           // Simple Euler method
@@ -282,6 +284,37 @@ namespace diffeq {
     // Re-export commonly used types for convenience
     using std::vector;
     using std::array;
+    
+    // Re-export core functionality
+    using core::TimeoutIntegrator;
+    using core::TimeoutConfig;
+    using core::IntegrationResult;
+    using core::IntegrationTimeoutException;
+    using core::make_timeout_integrator;
+    using core::integrate_with_timeout;
+    
+    // Note: ParallelTimeoutIntegrator was removed in favor of composable architecture
+    // Use make_builder(base).with_timeout().with_parallel().build() instead
+    
+    // Re-export composable integration facilities
+    using core::composable::IntegratorDecorator;
+    using core::composable::TimeoutDecorator;
+    using core::composable::ParallelDecorator;
+    using core::composable::AsyncDecorator;
+    using core::composable::OutputDecorator;
+    using core::composable::SignalDecorator;
+    using core::composable::IntegratorBuilder;
+    using core::composable::make_builder;
+    using core::composable::with_timeout_only;
+    using core::composable::with_parallel_only;
+    using core::composable::with_async_only;
+    using core::composable::TimeoutConfig;
+    using core::composable::TimeoutResult;
+    using core::composable::ParallelConfig;
+    using core::composable::AsyncConfig;
+    using core::composable::OutputConfig;
+    using core::composable::OutputMode;
+    using core::composable::SignalConfig;
     
     // Re-export integrator classes for convenience
     using integrators::ode::EulerIntegrator;
