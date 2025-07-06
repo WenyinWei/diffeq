@@ -368,10 +368,7 @@ private:
         auto end_time = std::chrono::high_resolution_clock::now();
         
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-        if (duration.count() > 2000) {  // 2-second timeout
-            std::cout << "     Signal-aware integration took too long: " << duration.count() << "ms" << std::endl;
-            return false;
-        }
+        ASSERT_LE(duration.count(), 2000) << "Signal-aware integration took too long: " << duration.count() << "ms";
         
         std::cout << "     Signal-aware integration result: [" << state[0] << ", " << state[1] << "]" << std::endl;
         
