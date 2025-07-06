@@ -11,6 +11,7 @@ This directory contains comprehensive examples demonstrating how to use the diff
 - **`advanced_integrators_usage.cpp`** - Advanced integrator features and configurations
 - **`state_concept_usage.cpp`** - Shows how to use different state types (vectors, arrays, custom types)
 - **`timeout_integration_demo.cpp`** - Timeout-protected integration for robust applications
+- **`seamless_parallel_timeout_demo.cpp`** - Seamless integration of timeout + async + parallel execution
 
 ### Parallelism Examples
 
@@ -128,15 +129,18 @@ For complex applications:
 - **Hardware Optimization**: Automatic backend selection
 - **Timeout Protection**: Prevents hanging integrations with configurable timeouts
 - **Progress Monitoring**: Real-time integration progress tracking and cancellation
+- **Seamless Parallelization**: Automatic hardware utilization without configuration
+- **Execution Strategy Selection**: Auto-chooses optimal approach based on problem and hardware
 
 ## Best Practices
 
 1. **Start Simple**: Begin with `working_integrators_demo.cpp` to understand basic usage
 2. **Choose the Right Integrator**: Use RK45 for general problems, BDF for stiff systems
-3. **Leverage Parallelism**: Use parallel examples for performance-critical applications
+3. **Leverage Auto-Optimization**: Use `diffeq::integrate_auto()` for automatic hardware utilization
 4. **Handle Real-time Requirements**: Use interface examples for systems with external signals
-5. **Use Timeout Protection**: Add timeout protection for production applications with `timeout_integration_demo.cpp`
-6. **Validate Results**: Compare with analytical solutions when available
+5. **Use Timeout Protection**: Add timeout protection for production applications
+6. **Scale Seamlessly**: From single integration to batch processing with `seamless_parallel_timeout_demo.cpp`
+7. **Validate Results**: Compare with analytical solutions when available
 
 ## Troubleshooting
 

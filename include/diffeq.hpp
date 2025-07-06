@@ -5,6 +5,7 @@
 #include <core/abstract_integrator.hpp>
 #include <core/adaptive_integrator.hpp>
 #include <core/timeout_integrator.hpp>
+#include <core/parallel_timeout_integrator.hpp>
 
 // ODE integrator implementations (organized by method type)
 #include <integrators/ode/euler.hpp>           // Simple Euler method
@@ -291,6 +292,16 @@ namespace diffeq {
     using core::IntegrationTimeoutException;
     using core::make_timeout_integrator;
     using core::integrate_with_timeout;
+    
+    // Re-export parallel timeout functionality
+    using core::ParallelTimeoutIntegrator;
+    using core::ParallelTimeoutConfig;
+    using core::ParallelIntegrationResult;
+    using core::HardwareCapabilities;
+    using core::ExecutionStrategy;
+    using core::PerformanceHint;
+    using core::integrate_auto;
+    using core::integrate_batch_auto;
     
     // Re-export integrator classes for convenience
     using integrators::ode::EulerIntegrator;
