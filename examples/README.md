@@ -43,6 +43,14 @@ This directory contains comprehensive examples demonstrating how to use the diff
   - Stochastic Lotka-Volterra ecosystem models
 - **`advanced_gpu_async_demo.cpp`** - GPU acceleration with async processing
 - **`realtime_signal_processing.cpp`** - Real-time signal processing integration
+- **`composable_facilities_demo.cpp`** 🎯 **NEW: Solves Combinatorial Explosion** - Composable architecture demonstration:
+  - High cohesion, low coupling design principles
+  - Independent facilities: Timeout, Parallel, Async, Signals, Output
+  - Flexible composition using decorator pattern
+  - Order-independent facility stacking
+  - Linear scaling (N classes for N facilities, not 2^N)
+  - Extensibility without modifying existing code
+  - Real-world usage scenarios and performance analysis
 
 ### Testing and Validation
 
@@ -140,7 +148,12 @@ For complex applications:
 4. **Handle Real-time Requirements**: Use interface examples for systems with external signals
 5. **Use Timeout Protection**: Add timeout protection for production applications
 6. **Scale Seamlessly**: From single integration to batch processing with `seamless_parallel_timeout_demo.cpp`
-7. **Validate Results**: Compare with analytical solutions when available
+7. **Compose Facilities**: Use the composable architecture for flexible combinations of capabilities
+   - Start with `make_builder(base_integrator)`
+   - Add only the facilities you need: `.with_timeout()`, `.with_parallel()`, etc.
+   - Avoid combinatorial explosion - compose instead of inheriting
+   - Order doesn't matter - decorators work in any sequence
+8. **Validate Results**: Compare with analytical solutions when available
 
 ## Troubleshooting
 
