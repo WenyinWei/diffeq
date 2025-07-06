@@ -37,10 +37,10 @@ public:
             gS[0] = sigma * S[0];
         };
         
-        auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
-            drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
+        auto problem = diffeq::factory::make_sde_problem<std::vector<double>, double>(
+            drift_func, diffusion_func, diffeq::NoiseType::DIAGONAL_NOISE);
         
-        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 12345);
+        auto wiener = diffeq::factory::make_wiener_process<std::vector<double>, double>(1, 12345);
         
         double S0 = 100.0;  // Initial stock price
         double T = 1.0;     // Time to maturity
@@ -57,7 +57,7 @@ public:
         
         // Euler-Maruyama
         {
-            diffeq::sde::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
             integrator.set_time(0.0);
             wiener->set_seed(12345);
@@ -70,7 +70,7 @@ public:
         
         // Milstein
         {
-            diffeq::sde::MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
             integrator.set_time(0.0);
             wiener->set_seed(12345);
@@ -83,7 +83,7 @@ public:
         
         // SRA1
         {
-            diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
             integrator.set_time(0.0);
             wiener->set_seed(12345);
@@ -96,7 +96,7 @@ public:
         
         // SOSRA
         {
-            diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
             integrator.set_time(0.0);
             wiener->set_seed(12345);
@@ -109,7 +109,7 @@ public:
         
         // SRIW1
         {
-            diffeq::sde::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
             integrator.set_time(0.0);
             wiener->set_seed(12345);
@@ -122,7 +122,7 @@ public:
         
         // SOSRI
         {
-            diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
             std::vector<double> S = {S0};
             integrator.set_time(0.0);
             wiener->set_seed(12345);
@@ -174,10 +174,10 @@ public:
             gx[1] = sigma * std::sqrt(V);
         };
         
-        auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
-            drift_func, diffusion_func, diffeq::sde::NoiseType::GENERAL_NOISE);
+        auto problem = diffeq::factory::make_sde_problem<std::vector<double>, double>(
+            drift_func, diffusion_func, diffeq::NoiseType::GENERAL_NOISE);
         
-        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 54321);
+        auto wiener = diffeq::factory::make_wiener_process<std::vector<double>, double>(2, 54321);
         
         // Set correlated noise
         auto correlated_noise_func = [this](double /*t*/, const std::vector<double>& /*x*/, 
@@ -198,7 +198,7 @@ public:
         int steps = static_cast<int>(T / dt);
         
         // Use high-order SDE integrator for better accuracy
-        diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
         integrator.set_time(0.0);
         
         std::cout << "Initial state: S = " << x[0] << ", V = " << x[1] << std::endl;
@@ -266,11 +266,11 @@ public:
             gstate[1] = sigma; // Noise in velocity (acceleration)
         };
         
-        auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
-            drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
+        auto problem = diffeq::factory::make_sde_problem<std::vector<double>, double>(
+            drift_func, diffusion_func, diffeq::NoiseType::DIAGONAL_NOISE);
         
-        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 67890);
-        diffeq::sde::MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        auto wiener = diffeq::factory::make_wiener_process<std::vector<double>, double>(1, 67890);
+        diffeq::MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
         
         std::vector<double> state = {0.0, 0.0};  // Initial [x, xdot]
         double dt = 0.01;
@@ -352,11 +352,11 @@ public:
             gpop[1] = sigma2 * y;  // Multiplicative noise for predator
         };
         
-        auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
-            drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
+        auto problem = diffeq::factory::make_sde_problem<std::vector<double>, double>(
+            drift_func, diffusion_func, diffeq::NoiseType::DIAGONAL_NOISE);
         
-        auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 11111);
-        diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
+        auto wiener = diffeq::factory::make_wiener_process<std::vector<double>, double>(2, 11111);
+        diffeq::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
         
         std::vector<double> population = {2.0, 1.0};  // Initial [prey, predator]
         double dt = 0.01;
@@ -419,11 +419,11 @@ void demonstrate_async_sde_integration() {
         gx[1] = 0.05 * x[1];
     };
     
-    auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
-        drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
+    auto problem = diffeq::factory::make_sde_problem<std::vector<double>, double>(
+        drift_func, diffusion_func, diffeq::NoiseType::DIAGONAL_NOISE);
     
-    auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(2, 22222);
-    diffeq::sde::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
+    auto wiener = diffeq::factory::make_wiener_process<std::vector<double>, double>(2, 22222);
+    diffeq::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
     
     // Note: Async integrator functionality is not currently available
     // For now, we'll use the regular integrator

@@ -43,7 +43,7 @@ bool test_rk4_double() {
     std::cout << "\n=== Testing RK4 with double precision ===" << std::endl;
     
     // Test exponential decay
-    diffeq::integrators::ode::RK4Integrator<std::vector<double>, double> integrator(exponential_decay);
+    diffeq::RK4Integrator<std::vector<double>> integrator(exponential_decay);
     
     std::vector<double> state = {1.0}; // Initial condition: y(0) = 1
     double dt = 0.1;
@@ -68,7 +68,7 @@ bool test_rk4_float() {
     std::cout << "\n=== Testing RK4 with float precision ===" << std::endl;
     
     // Test exponential decay with float
-    diffeq::integrators::ode::RK4Integrator<std::vector<float>, float> integrator(exponential_decay_float);
+    diffeq::RK4Integrator<std::vector<float>> integrator(exponential_decay_float);
     
     std::vector<float> state = {1.0f}; // Initial condition: y(0) = 1
     float dt = 0.1f;
@@ -92,7 +92,7 @@ bool test_rk4_float() {
 bool test_rk4_harmonic_oscillator() {
     std::cout << "\n=== Testing RK4 with harmonic oscillator ===" << std::endl;
     
-    diffeq::integrators::ode::RK4Integrator<std::vector<double>, double> integrator(harmonic_oscillator);
+    diffeq::RK4Integrator<std::vector<double>> integrator(harmonic_oscillator);
     
     // Initial conditions: x(0) = 1, v(0) = 0
     std::vector<double> state = {1.0, 0.0};
@@ -120,7 +120,7 @@ bool test_inheritance() {
     std::cout << "\n=== Testing inheritance and polymorphism ===" << std::endl;
     
     // Test that RK4Integrator can be used polymorphically
-    auto rk4 = std::make_unique<diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>>(exponential_decay);
+    auto rk4 = std::make_unique<diffeq::RK4Integrator<std::vector<double>>>(exponential_decay);
     AbstractIntegrator<std::vector<double>, double>* base_ptr = rk4.get();
     
     std::vector<double> state = {1.0};
@@ -146,7 +146,7 @@ bool test_array_state() {
         dydt[1] = -y[0]; // Simple harmonic oscillator
     };
     
-    diffeq::integrators::ode::RK4Integrator<std::array<double, 2>, double> integrator(array_sys);
+    diffeq::RK4Integrator<std::array<double, 2>> integrator(array_sys);
     
     std::array<double, 2> state = {1.0, 0.0};
     double dt = 0.01;

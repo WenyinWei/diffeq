@@ -70,7 +70,7 @@ protected:
 };
 
 TEST_F(IntegratorTest, RK4IntegratorVector) {
-    diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(exponential_decay);
+    diffeq::RK4Integrator<std::vector<double>> integrator(exponential_decay);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -81,7 +81,7 @@ TEST_F(IntegratorTest, RK4IntegratorVector) {
 }
 
 TEST_F(IntegratorTest, RK4IntegratorArray) {
-    diffeq::integrators::ode::RK4Integrator<std::array<double, 1>> integrator(exponential_decay_array);
+    diffeq::RK4Integrator<std::array<double, 1>> integrator(exponential_decay_array);
     
     auto y = y0_array_;
     integrator.set_time(t_start_);
@@ -92,7 +92,7 @@ TEST_F(IntegratorTest, RK4IntegratorArray) {
 }
 
 TEST_F(IntegratorTest, RK23IntegratorAdaptive) {
-    diffeq::integrators::ode::RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -103,7 +103,7 @@ TEST_F(IntegratorTest, RK23IntegratorAdaptive) {
 }
 
 TEST_F(IntegratorTest, RK45IntegratorAdaptive) {
-    diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -114,7 +114,7 @@ TEST_F(IntegratorTest, RK45IntegratorAdaptive) {
 }
 
 TEST_F(IntegratorTest, DOP853IntegratorAdaptive) {
-    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -129,7 +129,7 @@ TEST_F(IntegratorTest, BDFIntegratorStiff) {
     // Test with a mildly stiff system
     VanderPolOscillator vdp(5.0);  // Moderately stiff
     
-    diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(
+    diffeq::BDFIntegrator<std::vector<double>> integrator(
         [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
             vdp(t, y, dydt);
         }, 1e-6, 1e-9);
@@ -148,7 +148,7 @@ TEST_F(IntegratorTest, BDFIntegratorStiff) {
 }
 
 TEST_F(IntegratorTest, BDFIntegratorMultistep) {
-    diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9, 3);
+    diffeq::BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9, 3);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -159,7 +159,7 @@ TEST_F(IntegratorTest, BDFIntegratorMultistep) {
 }
 
 TEST_F(IntegratorTest, LSODAIntegratorAutomatic) {
-    diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::LSODAIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -176,7 +176,7 @@ TEST_F(IntegratorTest, LSODAStiffnessSwitching) {
     // Test with Van der Pol oscillator that becomes stiff
     VanderPolOscillator vdp(10.0);  // Stiff system
     
-    diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(
+    diffeq::LSODAIntegrator<std::vector<double>> integrator(
         [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
             vdp(t, y, dydt);
         }, 1e-6, 1e-9);
@@ -204,7 +204,7 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
     
     // RK4
     {
-        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::RK4Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
@@ -216,7 +216,7 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
     
     // RK45
     {
-        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
@@ -227,7 +227,7 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
     
     // LSODA
     {
-        diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::LSODAIntegrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
@@ -238,7 +238,7 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
 }
 
 TEST_F(IntegratorTest, ToleranceSettings) {
-    diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(exponential_decay);
+    diffeq::RK45Integrator<std::vector<double>> integrator(exponential_decay);
     
     // Test different tolerance levels
     std::vector<std::pair<double, double>> tolerances = {
@@ -268,35 +268,35 @@ TEST_F(IntegratorTest, PerformanceComparison) {
     
     // Test that all integrators can handle the same problem
     {
-        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::RK4Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
     }
     
     {
-        diffeq::integrators::ode::RK23Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::RK23Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
     }
     
     {
-        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::RK45Integrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
     }
     
     {
-        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::BDFIntegrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
     }
     
     {
-        diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::LSODAIntegrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));

@@ -4,7 +4,7 @@
 #include <core/state_creator.hpp>
 #include <stdexcept>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief RK23 (Bogacki-Shampine) adaptive integrator
@@ -136,4 +136,4 @@ private:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

@@ -7,7 +7,7 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief BDF (Backward Differentiation Formula) integrator
@@ -321,4 +321,4 @@ private:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

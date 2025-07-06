@@ -4,7 +4,7 @@
 #include <core/state_creator.hpp>
 #include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief Euler-Maruyama method for SDEs
@@ -62,4 +62,4 @@ public:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

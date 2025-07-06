@@ -191,7 +191,7 @@ void demonstrate_usage(StateType initial_state) {
     auto signal_aware_ode = interface->make_signal_aware_ode(portfolio_ode);
     
     // Create integrator and run
-    auto integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<StateType>>(signal_aware_ode);
+    auto integrator = std::make_unique<diffeq::RK45Integrator<StateType>>(signal_aware_ode);
     
     // Simulate some signals during integration
     auto signal_proc = interface->get_signal_processor();
@@ -239,7 +239,7 @@ int main() {
     };
     
     auto signal_aware_robot_ode = robotics_interface->make_signal_aware_ode(robot_ode);
-    auto robot_integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(signal_aware_robot_ode);
+    auto robot_integrator = std::make_unique<diffeq::RK45Integrator<std::vector<double>>>(signal_aware_robot_ode);
     
     std::vector<double> robot_state = {0.1, 0.0}; // [angle, angular_velocity]
     auto robot_signal_proc = robotics_interface->get_signal_processor();
@@ -274,7 +274,7 @@ int main() {
     };
     
     auto signal_aware_chemical_ode = scientific_interface->make_signal_aware_ode(chemical_ode);
-    auto chemical_integrator = std::make_unique<diffeq::integrators::ode::RK45Integrator<std::vector<double>>>(signal_aware_chemical_ode);
+    auto chemical_integrator = std::make_unique<diffeq::RK45Integrator<std::vector<double>>>(signal_aware_chemical_ode);
     
     std::vector<double> chemical_state = {1.0, 0.0}; // [A, B]
     auto chemical_signal_proc = scientific_interface->get_signal_processor();

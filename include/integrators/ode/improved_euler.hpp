@@ -3,7 +3,7 @@
 #include <core/abstract_integrator.hpp>
 #include <core/state_creator.hpp>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief Improved Euler (Heun's method) integrator
@@ -56,4 +56,4 @@ public:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

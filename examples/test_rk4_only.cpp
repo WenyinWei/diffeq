@@ -11,7 +11,7 @@ int main() {
     
     try {
         std::vector<double> y = {1.0};
-        auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>>(exponential_decay);
+        auto integrator = diffeq::RK4Integrator<std::vector<double>>(exponential_decay);
         integrator.set_time(0.0);
         integrator.integrate(y, 0.1, 1.0);
         std::cout << "RK4 result: " << y[0] << " (expected: " << std::exp(-1.0) << ")" << std::endl;

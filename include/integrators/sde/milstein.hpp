@@ -4,7 +4,7 @@
 #include <core/state_creator.hpp>
 #include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief Milstein method for SDEs
@@ -82,4 +82,4 @@ private:
     diffusion_derivative_function diffusion_derivative_;
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

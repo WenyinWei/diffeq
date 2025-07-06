@@ -82,37 +82,37 @@ void demonstrate_exponential_decay() {
     // Test all integrators
     {
         std::vector<double> y = {1.0};
-        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(exponential_decay);
+        diffeq::RK4Integrator<std::vector<double>> integrator(exponential_decay);
         time_integrator(integrator, y, t_start, dt, t_end, "RK4");
     }
     
     {
         std::vector<double> y = {1.0};
-        diffeq::integrators::ode::RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+        diffeq::RK23Integrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "RK23");
     }
     
     {
         std::vector<double> y = {1.0};
-        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-8, 1e-12);
+        diffeq::RK45Integrator<std::vector<double>> integrator(exponential_decay, 1e-8, 1e-12);
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");
     }
     
     {
         std::vector<double> y = {1.0};
-        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-3, 1e-6);
+        diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay, 1e-3, 1e-6);
         time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
     }
     
     {
         std::vector<double> y = {1.0};
-        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+        diffeq::BDFIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "BDF");
     }
     
     {
         std::vector<double> y = {1.0};
-        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+        diffeq::LSODAIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
     }
 }
@@ -127,7 +127,7 @@ void demonstrate_van_der_pol() {
     
     {
         std::vector<double> y = {1.0, 0.0};
-        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(
+        diffeq::RK4Integrator<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             });
@@ -136,7 +136,7 @@ void demonstrate_van_der_pol() {
     
     {
         std::vector<double> y = {1.0, 0.0};
-        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(
+        diffeq::RK45Integrator<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             }, 1e-6, 1e-9);
@@ -155,7 +155,7 @@ void demonstrate_van_der_pol() {
     
     {
         std::vector<double> y = {1.0, 0.0};
-        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(
+        diffeq::BDFIntegrator<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             }, 1e-6, 1e-9);
@@ -164,13 +164,13 @@ void demonstrate_van_der_pol() {
     
     {
         std::vector<double> y = {1.0, 0.0};
-        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(
+        diffeq::LSODAIntegrator<std::vector<double>> integrator(
             [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                 vdp(t, y, dydt);
             }, 1e-6, 1e-9);
         double timing = time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
         std::cout << "        Final method: " << 
-            (integrator.get_current_method() == diffeq::integrators::ode::LSODA<std::vector<double>>::MethodType::ADAMS ? 
+            (integrator.get_current_method() == diffeq::LSODAIntegrator<std::vector<double>>::MethodType::ADAMS ? 
              "Adams (non-stiff)" : "BDF (stiff)") << std::endl;
     }
 }
@@ -185,25 +185,25 @@ void demonstrate_lorenz_system() {
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        diffeq::integrators::ode::RK4Integrator<std::vector<double>> integrator(lorenz_system);
+        diffeq::RK4Integrator<std::vector<double>> integrator(lorenz_system);
         time_integrator(integrator, y, t_start, dt, t_end, "RK4");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-3, 1e-6);
+        diffeq::DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-3, 1e-6);
         time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::LSODAIntegrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
         time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
     }
 }
@@ -232,7 +232,7 @@ void demonstrate_stiff_robertson() {
     
     try {
         std::vector<double> y = {1.0, 0.0, 0.0};
-        diffeq::integrators::ode::BDFIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
+        diffeq::BDFIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
         time_integrator(integrator, y, t_start, dt, t_end, "BDF");
     } catch (const std::exception& e) {
         std::cout << std::setw(15) << "BDF" << ": Failed - " << e.what() << std::endl;
@@ -240,10 +240,10 @@ void demonstrate_stiff_robertson() {
     
     try {
         std::vector<double> y = {1.0, 0.0, 0.0};
-        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
+        diffeq::LSODAIntegrator<std::vector<double>> integrator(robertson_kinetics, 1e-6, 1e-9);
         double timing = time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
         std::cout << "        Final method: " << 
-            (integrator.get_current_method() == diffeq::integrators::ode::LSODA<std::vector<double>>::MethodType::ADAMS ? 
+            (integrator.get_current_method() == diffeq::LSODAIntegrator<std::vector<double>>::MethodType::ADAMS ? 
              "Adams (non-stiff)" : "BDF (stiff)") << std::endl;
     } catch (const std::exception& e) {
         std::cout << std::setw(15) << "LSODA" << ": Failed - " << e.what() << std::endl;
@@ -265,7 +265,7 @@ void demonstrate_adaptive_features() {
     
     for (auto [rtol, atol] : tolerances) {
         std::vector<double> y = {1.0};
-        diffeq::integrators::ode::RK45Integrator<std::vector<double>> integrator(exponential_decay, rtol, atol);
+        diffeq::RK45Integrator<std::vector<double>> integrator(exponential_decay, rtol, atol);
         
         std::cout << "Tolerances: rtol = " << rtol << ", atol = " << atol << std::endl;
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");

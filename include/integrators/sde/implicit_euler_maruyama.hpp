@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief Implicit Euler-Maruyama method
@@ -113,4 +113,4 @@ private:
     value_type tolerance_;
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

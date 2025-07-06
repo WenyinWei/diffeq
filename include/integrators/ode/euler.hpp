@@ -3,7 +3,7 @@
 #include <core/abstract_integrator.hpp>
 #include <core/state_creator.hpp>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief Forward Euler integrator
@@ -44,4 +44,4 @@ public:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

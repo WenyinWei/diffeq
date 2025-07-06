@@ -5,7 +5,7 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 template<system_state S>
 class DOP853Integrator;
@@ -368,4 +368,4 @@ private:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

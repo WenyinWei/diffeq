@@ -8,7 +8,7 @@
 #include <memory>
 #include <cmath>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief LSODA integrator - automatically switches between stiff and non-stiff methods
@@ -233,4 +233,4 @@ private:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

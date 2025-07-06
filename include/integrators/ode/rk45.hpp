@@ -4,7 +4,7 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief RK45 (Runge-Kutta-Fehlberg 4(5)) adaptive integrator
@@ -186,4 +186,4 @@ public:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

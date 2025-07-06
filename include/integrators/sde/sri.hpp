@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief Tableau coefficients for SRI methods
@@ -238,4 +238,4 @@ private:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq
