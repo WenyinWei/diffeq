@@ -4,6 +4,7 @@
 #include <integrators/ode/dop853_coefficients.hpp>
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 namespace diffeq::integrators::ode {
 
@@ -165,9 +166,12 @@ public:
             current_dt = compute_initial_step(state, t, this->sys_, t_end);
             // Clamp to allowed min/max
             current_dt = std::max(dt_min_, std::min(dt_max_, current_dt));
+            std::cout << "[DOP853 DEBUG] Initial step computed: dt=" << current_dt << std::endl;
         }
         int attempt = 0;
         for (; attempt < nmax_; ++attempt) {
+            std::cout << "[DOP853 DEBUG] Step " << attempt << ": t=" << t << ", dt=" << current_dt << std::endl;
+            
             state_type y_new = StateCreator<state_type>::create(state);
             state_type error = StateCreator<state_type>::create(state);
             dop853_step(state, y_new, error, current_dt);
@@ -183,17 +187,40 @@ public:
                 err += (error[i] / sk) * (error[i] / sk); // Fortran's ERR
             }
             time_type deno = err + 0.01 * err2;
-            if (deno <= 0.0) deno = 1.0;
+            if (deno <= 0.0 || std::isnan(deno) || std::isinf(deno)) {
+                std::cout << "[DOP853 DEBUG] WARNING: Invalid deno in error norm: " << deno << ", setting to 1.0" << std::endl;
+                deno = 1.0;
+            }
             err = std::abs(current_dt) * err * std::sqrt(1.0 / (state.size() * deno));
+            if (std::isnan(err) || std::isinf(err)) {
+                std::cout << "[DOP853 DEBUG] WARNING: Invalid err in error norm: " << err << ", setting to 1.0" << std::endl;
+                err = 1.0;
+            }
+
+            std::cout << "[DOP853 DEBUG] Error norms: err=" << err << ", err2=" << err2 << ", deno=" << deno << std::endl;
+            std::cout << "[DOP853 DEBUG] Final error: " << err << " (target: 1.0)" << std::endl;
 
             // Fortran: FAC11 = ERR**EXPO1, FAC = FAC11 / FACOLD**BETA
             time_type expo1 = 1.0 / 8.0 - beta_ * 0.2;
             time_type fac11 = std::pow(std::max(err, 1e-16), expo1);
             time_type fac = fac11 / std::pow(facold_, beta_);
-            fac = std::max(fac2_, std::min(fac1_, fac / safety_factor_));
+            // Clamp fac between fac1_ (min, <1) and fac2_ (max, >1)
+            fac = std::min(fac2_, std::max(fac1_, fac / safety_factor_));
+            if (std::isnan(fac) || std::isinf(fac)) {
+                std::cout << "[DOP853 DEBUG] WARNING: Invalid fac in step control: " << fac << ", setting to 1.0" << std::endl;
+                fac = 1.0;
+            }
             time_type next_dt = current_dt / fac;
+            if (next_dt <= 0.0 || std::isnan(next_dt) || std::isinf(next_dt)) {
+                std::cout << "[DOP853 DEBUG] WARNING: Invalid next_dt: " << next_dt << ", setting to dt_min_=" << dt_min_ << std::endl;
+                next_dt = dt_min_;
+            }
+
+            std::cout << "[DOP853 DEBUG] Step control: expo1=" << expo1 << ", fac11=" << fac11 << ", fac=" << fac << std::endl;
+            std::cout << "[DOP853 DEBUG] Next dt: " << next_dt << " (current: " << current_dt << ")" << std::endl;
 
             if (err <= 1.0) {
+                std::cout << "[DOP853 DEBUG] Step ACCEPTED" << std::endl;
                 facold_ = std::max(err, static_cast<time_type>(1e-4));
                 naccpt_++;
                 nstep_++;
@@ -221,14 +248,29 @@ public:
                 }
                 // Clamp next step size
                 next_dt = std::max(dt_min_, std::min(dt_max_, next_dt));
+                std::cout << "[DOP853 DEBUG] Final next dt: " << next_dt << std::endl;
                 // Accept and return next step size
                 return next_dt;
             } else {
                 // Step rejected
+                std::cout << "[DOP853 DEBUG] Step REJECTED" << std::endl;
                 nrejct_++;
                 nstep_++;
                 next_dt = current_dt / std::min(fac1_, fac11 / safety_factor_);
                 current_dt = std::max(dt_min_, next_dt);
+                std::cout << "[DOP853 DEBUG] New dt after rejection: " << current_dt << std::endl;
+                
+                // Check if step size is too small
+                if (current_dt <= dt_min_) {
+                    std::cout << "[DOP853 DEBUG] WARNING: Step size at minimum (" << dt_min_ << ")" << std::endl;
+                    std::cout << "[DOP853 DEBUG] Error was " << err << " (needs to be <= 1.0)" << std::endl;
+                    std::cout << "[DOP853 DEBUG] Current state: ";
+                    for (std::size_t i = 0; i < std::min(state.size(), size_t(3)); ++i) {
+                        std::cout << state[i] << " ";
+                    }
+                    if (state.size() > 3) std::cout << "...";
+                    std::cout << std::endl;
+                }
             }
         }
         throw std::runtime_error("DOP853: Maximum number of step size reductions or steps exceeded");
@@ -313,6 +355,12 @@ private:
         // 5th order error estimate (embedded)
         for (std::size_t i = 0; i < y.size(); ++i) {
             error[i] = dt * (get_e5(0) * k[0][i] + get_e5(5) * k[5][i] + get_e5(6) * k[6][i] + get_e5(7) * k[7][i] + get_e5(8) * k[8][i] + get_e5(9) * k[9][i] + get_e5(10) * k[10][i] + get_e5(11) * k[11][i]);
+        }
+        
+        // Debug output for error estimation
+        if (y.size() > 0) {
+            std::cout << "[DOP853 DEBUG] Error estimate sample: error[0]=" << error[0] << ", y[0]=" << y[0] << ", y_new[0]=" << y_new[0] << std::endl;
+            std::cout << "[DOP853 DEBUG] E5 coefficients used: " << get_e5(0) << ", " << get_e5(5) << ", " << get_e5(6) << ", " << get_e5(7) << ", " << get_e5(8) << ", " << get_e5(9) << ", " << get_e5(10) << ", " << get_e5(11) << std::endl;
         }
     }
 };
