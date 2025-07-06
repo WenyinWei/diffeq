@@ -6,18 +6,18 @@
 namespace diffeq::integrators::ode {
 
 /**
- * @brief Simple Euler integrator: y_{n+1} = y_n + h * f(t_n, y_n)
+ * @brief Forward Euler integrator
  * 
- * First-order explicit method for ODEs.
- * Simple but not very accurate - mainly for educational purposes.
+ * First-order explicit method. Simple but often unstable.
  * 
  * Order: 1
- * Stability: Conditionally stable
+ * Stability: Poor for stiff problems
+ * Usage: Educational purposes, simple problems
  */
-template<system_state S, can_be_time T = double>
-class EulerIntegrator : public AbstractIntegrator<S, T> {
+template<system_state S>
+class EulerIntegrator : public AbstractIntegrator<S> {
 public:
-    using base_type = AbstractIntegrator<S, T>;
+    using base_type = AbstractIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -28,17 +28,16 @@ public:
 
     void step(state_type& state, time_type dt) override {
         // Create temporary state for derivative
-        state_type dydt = StateCreator<state_type>::create(state);
+        state_type derivative = StateCreator<state_type>::create(state);
         
-        // Compute derivative: dydt = f(t, y)
-        this->sys_(this->current_time_, state, dydt);
+        // Compute derivative: f(t, y)
+        this->sys_(this->current_time_, state, derivative);
         
-        // Update state: y_new = y + dt * dydt
+        // Update state: y_{n+1} = y_n + dt * f(t_n, y_n)
         for (std::size_t i = 0; i < state.size(); ++i) {
             auto state_it = state.begin();
-            auto dydt_it = dydt.begin();
-            
-            state_it[i] = state_it[i] + dt * dydt_it[i];
+            auto deriv_it = derivative.begin();
+            state_it[i] += dt * deriv_it[i];
         }
         
         this->advance_time(dt);

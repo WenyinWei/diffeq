@@ -159,7 +159,7 @@ TEST_F(IntegratorTest, BDFIntegratorMultistep) {
 }
 
 TEST_F(IntegratorTest, LSODAIntegratorAutomatic) {
-    diffeq::integrators::ode::LSODA<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
+    diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(exponential_decay, 1e-6, 1e-9);
     
     auto y = y0_vector_;
     integrator.set_time(t_start_);
@@ -176,7 +176,7 @@ TEST_F(IntegratorTest, LSODAStiffnessSwitching) {
     // Test with Van der Pol oscillator that becomes stiff
     VanderPolOscillator vdp(10.0);  // Stiff system
     
-    diffeq::integrators::ode::LSODA<std::vector<double>> integrator(
+    diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(
         [&vdp](double t, const std::vector<double>& y, std::vector<double>& dydt) {
             vdp(t, y, dydt);
         }, 1e-6, 1e-9);
@@ -227,7 +227,7 @@ TEST_F(IntegratorTest, LorenzSystemChaotic) {
     
     // LSODA
     {
-        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));
@@ -296,7 +296,7 @@ TEST_F(IntegratorTest, PerformanceComparison) {
     }
     
     {
-        diffeq::integrators::ode::LSODA<std::vector<double>> integrator(lorenz_system);
+        diffeq::integrators::ode::LSODAIntegrator<std::vector<double>> integrator(lorenz_system);
         auto y = y0;
         integrator.set_time(0.0);
         EXPECT_NO_THROW(integrator.integrate(y, dt, t_end));

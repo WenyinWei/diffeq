@@ -6,21 +6,18 @@
 namespace diffeq::integrators::ode {
 
 /**
- * @brief Improved Euler (Heun's method): y_{n+1} = y_n + h/2 * (k1 + k2)
+ * @brief Improved Euler (Heun's method) integrator
  * 
- * Second-order explicit method where:
- * - k1 = f(t_n, y_n) 
- * - k2 = f(t_n + h, y_n + h*k1)
- * 
- * Also known as Heun's method or the explicit trapezoidal method.
+ * Second-order explicit method. Better than basic Euler.
  * 
  * Order: 2
- * Stability: Better than Euler for most problems
+ * Stability: Better than Euler, but still poor for stiff problems
+ * Usage: Simple problems where RK4 is overkill
  */
-template<system_state S, can_be_time T = double>
-class ImprovedEulerIntegrator : public AbstractIntegrator<S, T> {
+template<system_state S>
+class ImprovedEulerIntegrator : public AbstractIntegrator<S> {
 public:
-    using base_type = AbstractIntegrator<S, T>;
+    using base_type = AbstractIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -34,20 +31,17 @@ public:
         state_type k1 = StateCreator<state_type>::create(state);
         state_type k2 = StateCreator<state_type>::create(state);
         state_type temp_state = StateCreator<state_type>::create(state);
-        
+
         // k1 = f(t, y)
         this->sys_(this->current_time_, state, k1);
         
-        // temp_state = y + dt * k1
+        // k2 = f(t + dt, y + dt*k1)
         for (std::size_t i = 0; i < state.size(); ++i) {
             auto state_it = state.begin();
             auto k1_it = k1.begin();
             auto temp_it = temp_state.begin();
-            
             temp_it[i] = state_it[i] + dt * k1_it[i];
         }
-        
-        // k2 = f(t + dt, temp_state)
         this->sys_(this->current_time_ + dt, temp_state, k2);
         
         // y_new = y + dt/2 * (k1 + k2)
@@ -55,8 +49,7 @@ public:
             auto state_it = state.begin();
             auto k1_it = k1.begin();
             auto k2_it = k2.begin();
-            
-            state_it[i] = state_it[i] + dt * (k1_it[i] + k2_it[i]) / static_cast<time_type>(2);
+            state_it[i] += dt * (k1_it[i] + k2_it[i]) / static_cast<time_type>(2);
         }
         
         this->advance_time(dt);

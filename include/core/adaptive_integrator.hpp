@@ -13,10 +13,10 @@
 #include <core/state_creator.hpp>
 
 // Abstract adaptive integrator with error control
-template<system_state S, can_be_time T = double>
-class AdaptiveIntegrator : public AbstractIntegrator<S, T> {
+template<system_state S>
+class AdaptiveIntegrator : public AbstractIntegrator<S> {
 public:
-    using base_type = AbstractIntegrator<S, T>;
+    using base_type = AbstractIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

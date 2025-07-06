@@ -1,4 +1,5 @@
 #pragma once
+#include <core/concepts.hpp>
 #include <core/adaptive_integrator.hpp>
 #include <core/state_creator.hpp>
 #include <stdexcept>
@@ -16,10 +17,10 @@ namespace diffeq::integrators::ode {
  * Stages: 4
  * Adaptive: Yes
  */
-template<system_state S, can_be_time T = double>
-class RK23Integrator : public AdaptiveIntegrator<S, T> {
+template<system_state S>
+class RK23Integrator : public AdaptiveIntegrator<S> {
 public:
-    using base_type = AdaptiveIntegrator<S, T>;
+    using base_type = AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../../core/adaptive_integrator.hpp"
+#include <core/concepts.hpp>
+#include <core/adaptive_integrator.hpp>
+#include <core/state_creator.hpp>
 #include "rk45.hpp"
 #include "bdf.hpp"
 #include <memory>
@@ -14,10 +16,10 @@ namespace diffeq::integrators::ode {
  * Automatically switches between non-stiff (Adams, approximated by RK45) and stiff (BDF) methods
  * based on stiffness detection. This is a simplified version inspired by the original LSODA algorithm.
  */
-template<system_state S, can_be_time T = double>
-class LSODA : public AdaptiveIntegrator<S, T> {
+template<system_state S>
+class LSODAIntegrator : public AdaptiveIntegrator<S> {
 public:
-    using base_type = AdaptiveIntegrator<S, T>;
+    using base_type = AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -28,7 +30,7 @@ public:
         BDF       // Stiff method
     };
 
-    explicit LSODA(system_function sys, 
+    explicit LSODAIntegrator(system_function sys, 
                    time_type rtol = static_cast<time_type>(1e-6),
                    time_type atol = static_cast<time_type>(1e-9))
         : base_type(std::move(sys), rtol, atol),
@@ -41,12 +43,12 @@ public:
           has_previous_values_(false) {
         
         // Create internal integrators
-        rk45_integrator_ = std::make_unique<RK45Integrator<S, T>>(
+        rk45_integrator_ = std::make_unique<RK45Integrator<S>>(
             [this](time_type t, const state_type& y, state_type& dydt) {
                 this->sys_(t, y, dydt);
             }, rtol, atol);
             
-        bdf_integrator_ = std::make_unique<BDFIntegrator<S, T>>(
+        bdf_integrator_ = std::make_unique<BDFIntegrator<S>>(
             [this](time_type t, const state_type& y, state_type& dydt) {
                 this->sys_(t, y, dydt);
             }, rtol, atol);
@@ -61,7 +63,7 @@ public:
         // Real LSODA would have more sophisticated switching logic
         
         if (!rk45_integrator_) {
-            rk45_integrator_ = std::make_unique<RK45Integrator<S, T>>(
+            rk45_integrator_ = std::make_unique<RK45Integrator<S>>(
                 [this](time_type t, const state_type& y, state_type& dydt) {
                     this->sys_(t, y, dydt);
                 }, this->rtol_, this->atol_);
@@ -109,8 +111,8 @@ public:
 
 private:
     MethodType current_method_;
-    std::unique_ptr<RK45Integrator<S, T>> rk45_integrator_;
-    std::unique_ptr<BDFIntegrator<S, T>> bdf_integrator_;
+    std::unique_ptr<RK45Integrator<S>> rk45_integrator_;
+    std::unique_ptr<BDFIntegrator<S>> bdf_integrator_;
     
     int stiffness_detection_frequency_;
     int step_count_;
@@ -198,40 +200,36 @@ private:
         }
         
         if (f_norm < static_cast<time_type>(1e-12)) {
-            return static_cast<time_type>(0);  // Avoid division by zero
+            return static_cast<time_type>(0);
         }
         
         return jacobian_norm / f_norm;
     }
     
     void switch_to_bdf(const state_type& y) {
-        if (current_method_ == MethodType::BDF) return;
-        
         current_method_ = MethodType::BDF;
         
-        // Reset BDF integrator state
-        bdf_integrator_ = std::make_unique<BDFIntegrator<S, T>>(
-            [this](time_type t, const state_type& y, state_type& dydt) {
-                this->sys_(t, y, dydt);
-            }, this->rtol_, this->atol_);
-        bdf_integrator_->set_time(this->current_time_);
+        if (!bdf_integrator_) {
+            bdf_integrator_ = std::make_unique<BDFIntegrator<S>>(
+                [this](time_type t, const state_type& y, state_type& dydt) {
+                    this->sys_(t, y, dydt);
+                }, this->rtol_, this->atol_);
+        }
         
-        consecutive_stiff_steps_ = 0;
+        bdf_integrator_->set_time(this->current_time_);
     }
     
     void switch_to_adams(const state_type& y) {
-        if (current_method_ == MethodType::ADAMS) return;
-        
         current_method_ = MethodType::ADAMS;
         
-        // Reset RK45 integrator state  
-        rk45_integrator_ = std::make_unique<RK45Integrator<S, T>>(
-            [this](time_type t, const state_type& y, state_type& dydt) {
-                this->sys_(t, y, dydt);
-            }, this->rtol_, this->atol_);
-        rk45_integrator_->set_time(this->current_time_);
+        if (!rk45_integrator_) {
+            rk45_integrator_ = std::make_unique<RK45Integrator<S>>(
+                [this](time_type t, const state_type& y, state_type& dydt) {
+                    this->sys_(t, y, dydt);
+                }, this->rtol_, this->atol_);
+        }
         
-        consecutive_nonstiff_steps_ = 0;
+        rk45_integrator_->set_time(this->current_time_);
     }
 };
 
