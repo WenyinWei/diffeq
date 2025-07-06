@@ -94,6 +94,7 @@ public:
         run_test("Finance Domain Usage", [this]() { return test_finance_domain(); });
         run_test("Robotics Domain Usage", [this]() { return test_robotics_domain(); });
         run_test("Async Integration", [this]() { return test_async_integration(); });
+        run_test("Async Timeout Failure Path", [this]() { return test_async_timeout_failure(); });
         run_test("Signal-Aware ODE Integration", [this]() { return test_signal_aware_ode(); });
         run_test("Template Concepts Compliance", [this]() { return test_concepts_compliance(); });
         
@@ -335,6 +336,62 @@ private:
             return true;
         } catch (const std::exception& e) {
             std::cout << "     Async integration failed: " << e.what() << std::endl;
+            return false;
+        }
+    }
+    
+    bool test_async_timeout_failure() {
+        // Test: Async integration timeout failure path (addressing Sourcery bot suggestion)
+        try {
+            // Create a very slow system to force timeout
+            auto slow_system = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+                // Artificially slow system with small time scales
+                for (size_t i = 0; i < y.size(); ++i) {
+                    dydt[i] = 1e-8 * y[i];  // Very slow dynamics
+                }
+                // Add artificial delay to make integration very slow
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            };
+            
+            auto async_integrator = async::factory::make_async_rk45<std::vector<double>>(
+                slow_system,
+                async::AsyncIntegrator<std::vector<double>>::Config{
+                    .enable_async_stepping = true,
+                    .enable_state_monitoring = false
+                });
+            
+            std::vector<double> timeout_state = {1.0, 0.0};
+            // Set integration duration much longer than timeout to force timeout
+            auto timeout_future = async_integrator->integrate_async(timeout_state, 0.01, 10.0);
+            
+            // Use very short timeout to force timeout condition
+            const std::chrono::milliseconds SHORT_TIMEOUT{50};  // 50ms timeout
+            auto start_time = std::chrono::high_resolution_clock::now();
+            
+            if (timeout_future.wait_for(SHORT_TIMEOUT) == std::future_status::timeout) {
+                auto end_time = std::chrono::high_resolution_clock::now();
+                auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+                
+                std::cout << "     [TEST] Async integration timeout failure path triggered as expected after "
+                         << elapsed.count() << "ms (timeout was " << SHORT_TIMEOUT.count() << "ms)" << std::endl;
+                
+                // Verify timing is approximately correct
+                bool timing_correct = (elapsed.count() >= SHORT_TIMEOUT.count() - 10) && 
+                                     (elapsed.count() <= SHORT_TIMEOUT.count() + 50);
+                
+                if (!timing_correct) {
+                    std::cout << "     [ERROR] Timeout timing was incorrect" << std::endl;
+                    return false;
+                }
+                
+                return true;  // Timeout occurred as expected
+            } else {
+                std::cout << "     [TEST] ERROR: Async integration did not timeout as expected" << std::endl;
+                return false;
+            }
+            
+        } catch (const std::exception& e) {
+            std::cout << "     Async timeout test failed with exception: " << e.what() << std::endl;
             return false;
         }
     }

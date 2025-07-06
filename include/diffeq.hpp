@@ -5,7 +5,6 @@
 #include <core/abstract_integrator.hpp>
 #include <core/adaptive_integrator.hpp>
 #include <core/timeout_integrator.hpp>
-#include <core/parallel_timeout_integrator.hpp>
 #include <core/composable_integration.hpp>
 
 // ODE integrator implementations (organized by method type)
@@ -294,15 +293,8 @@ namespace diffeq {
     using core::make_timeout_integrator;
     using core::integrate_with_timeout;
     
-    // Re-export parallel timeout functionality
-    using core::ParallelTimeoutIntegrator;
-    using core::ParallelTimeoutConfig;
-    using core::ParallelIntegrationResult;
-    using core::HardwareCapabilities;
-    using core::ExecutionStrategy;
-    using core::PerformanceHint;
-    using core::integrate_auto;
-    using core::integrate_batch_auto;
+    // Note: ParallelTimeoutIntegrator was removed in favor of composable architecture
+    // Use make_builder(base).with_timeout().with_parallel().build() instead
     
     // Re-export composable integration facilities
     using core::composable::IntegratorDecorator;

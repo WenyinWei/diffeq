@@ -246,6 +246,40 @@ TEST_F(DOP853Test, PerformanceBaseline) {
     }
 }
 
+TEST_F(DOP853Test, TimeoutFailureHandling) {
+    // Test timeout expiration with DOP853 integrator (addressing Sourcery bot suggestion)
+    auto stiff_system = [](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+        // Very stiff system that should take a long time to integrate
+        double lambda = -100000.0;  // Extremely stiff
+        dydt[0] = lambda * y[0];
+        dydt[1] = -lambda * y[1];
+    };
+    
+    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(stiff_system, 1e-12, 1e-15);  // Very tight tolerances
+    
+    std::vector<double> y = {1.0, 1.0};
+    integrator.set_time(0.0);
+    
+    // Use very short timeout to force timeout condition
+    const std::chrono::milliseconds SHORT_TIMEOUT{10};  // 10ms timeout - should definitely timeout
+    
+    auto start_time = std::chrono::high_resolution_clock::now();
+    bool completed = diffeq::integrate_with_timeout(integrator, y, 1e-8, 1.0, SHORT_TIMEOUT);
+    auto end_time = std::chrono::high_resolution_clock::now();
+    
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    
+    std::cout << "[TEST] DOP853 timeout test: completed=" << completed 
+              << ", elapsed=" << elapsed.count() << "ms, timeout=" << SHORT_TIMEOUT.count() << "ms" << std::endl;
+    
+    // Should have timed out
+    EXPECT_FALSE(completed) << "DOP853 integration should have timed out with very short timeout";
+    
+    // Should have taken approximately the timeout duration (with some tolerance)
+    EXPECT_GE(elapsed.count(), SHORT_TIMEOUT.count() - 5) << "Timeout should have been close to specified duration";
+    EXPECT_LE(elapsed.count(), SHORT_TIMEOUT.count() + 100) << "Timeout should not have exceeded specified duration by much";
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
