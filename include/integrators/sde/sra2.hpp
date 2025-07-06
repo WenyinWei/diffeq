@@ -1,8 +1,11 @@
 #pragma once
 
 #include <integrators/sde/sra.hpp>
+#include <sde/sde_base.hpp>
+#include <core/state_creator.hpp>
+#include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief SRA2 integrator variant
@@ -53,4 +56,4 @@ private:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

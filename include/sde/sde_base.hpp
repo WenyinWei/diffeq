@@ -28,11 +28,11 @@ enum class NoiseType {
  * - g is the diffusion function  
  * - dW is the Wiener process (Brownian motion)
  */
-template<system_state StateType, can_be_time TimeType>
+template<system_state StateType>
 class SDEProblem {
 public:
     using state_type = StateType;
-    using time_type = TimeType;
+    using time_type = typename StateType::value_type;
     using value_type = typename StateType::value_type;
     
     // Function signatures
@@ -107,11 +107,11 @@ private:
 /**
  * @brief Wiener process (Brownian motion) generator
  */
-template<system_state StateType, can_be_time TimeType>
+template<system_state StateType>
 class WienerProcess {
 public:
     using state_type = StateType;
-    using time_type = TimeType;
+    using time_type = typename StateType::value_type;
     using value_type = typename StateType::value_type;
     
     explicit WienerProcess(size_t dimension, uint32_t seed = 0)
@@ -143,14 +143,14 @@ private:
 /**
  * @brief Abstract base class for SDE integrators
  */
-template<system_state StateType, can_be_time TimeType>
+template<system_state StateType>
 class AbstractSDEIntegrator {
 public:
     using state_type = StateType;
-    using time_type = TimeType;
+    using time_type = typename StateType::value_type;
     using value_type = typename StateType::value_type;
-    using sde_problem_type = SDEProblem<StateType, TimeType>;
-    using wiener_process_type = WienerProcess<StateType, TimeType>;
+    using sde_problem_type = SDEProblem<StateType>;
+    using wiener_process_type = WienerProcess<StateType>;
     
     explicit AbstractSDEIntegrator(std::shared_ptr<sde_problem_type> problem,
                                   std::shared_ptr<wiener_process_type> wiener = nullptr)
@@ -201,18 +201,17 @@ protected:
  */
 namespace factory {
 
-template<system_state StateType, can_be_time TimeType>
+template<system_state StateType>
 auto make_sde_problem(
-    typename SDEProblem<StateType, TimeType>::drift_function drift,
-    typename SDEProblem<StateType, TimeType>::diffusion_function diffusion,
+    typename SDEProblem<StateType>::drift_function drift,
+    typename SDEProblem<StateType>::diffusion_function diffusion,
     NoiseType noise_type = NoiseType::DIAGONAL_NOISE) {
-    return std::make_shared<SDEProblem<StateType, TimeType>>(
-        std::move(drift), std::move(diffusion), noise_type);
+    return std::make_shared<SDEProblem<StateType>>(std::move(drift), std::move(diffusion), noise_type);
 }
 
-template<system_state StateType, can_be_time TimeType>
+template<system_state StateType>
 auto make_wiener_process(size_t dimension, uint32_t seed = 0) {
-    return std::make_shared<WienerProcess<StateType, TimeType>>(dimension, seed);
+    return std::make_shared<WienerProcess<StateType>>(dimension, seed);
 }
 
 } // namespace factory

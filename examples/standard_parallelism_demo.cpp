@@ -68,7 +68,7 @@ public:
                      initial_conditions.begin(), 
                      initial_conditions.end(),
                      [&](State& state) {
-                         auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                         auto integrator = diffeq::RK4Integrator<State, Time>(system);
                          for (int i = 0; i < steps; ++i) {
                              integrator.step(state, dt);
                          }
@@ -109,7 +109,7 @@ public:
                              system_template(t, y, dydt, param);  // Pass parameter
                          };
                          
-                         auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                         auto integrator = diffeq::RK4Integrator<State, Time>(system);
                          for (int step = 0; step < steps; ++step) {
                              integrator.step(state, dt);
                          }
@@ -138,7 +138,7 @@ public:
         // Simple OpenMP parallel loop - no custom classes needed!
         #pragma omp parallel for
         for (size_t i = 0; i < states.size(); ++i) {
-            auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+            auto integrator = diffeq::RK4Integrator<State, Time>(system);
             for (int step = 0; step < steps; ++step) {
                 integrator.step(states[i], dt);
             }
@@ -169,7 +169,7 @@ public:
                 // RK4 integration
                 #pragma omp parallel for
                 for (int i = 0; i < num_runs; ++i) {
-                    auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                    auto integrator = diffeq::RK4Integrator<State, Time>(system);
                     for (int step = 0; step < steps; ++step) {
                         integrator.step(rk4_results[i], dt);
                     }
@@ -181,7 +181,7 @@ public:
                 // Euler integration (for comparison)
                 #pragma omp parallel for
                 for (int i = 0; i < num_runs; ++i) {
-                    auto integrator = diffeq::integrators::ode::EulerIntegrator<State, Time>(system);
+                    auto integrator = diffeq::EulerIntegrator<State, Time>(system);
                     for (int step = 0; step < steps; ++step) {
                         integrator.step(euler_results[i], dt);
                     }
@@ -211,7 +211,7 @@ public:
         tbb::parallel_for(tbb::blocked_range<size_t>(0, states.size()),
                          [&](const tbb::blocked_range<size_t>& range) {
                              for (size_t i = range.begin(); i != range.end(); ++i) {
-                                 auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                                 auto integrator = diffeq::RK4Integrator<State, Time>(system);
                                  for (int step = 0; step < steps; ++step) {
                                      integrator.step(states[i], dt);
                                  }
@@ -231,7 +231,7 @@ public:
         tbb::parallel_for(tbb::blocked_range<size_t>(0, states.size(), block_size),
                          [&](const tbb::blocked_range<size_t>& range) {
                              for (size_t i = range.begin(); i != range.end(); ++i) {
-                                 auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+                                 auto integrator = diffeq::RK4Integrator<State, Time>(system);
                                  for (int step = 0; step < steps; ++step) {
                                      integrator.step(states[i], dt);
                                  }
@@ -276,7 +276,7 @@ public:
                     steps,
                     promise]() mutable {
             State state = initial_state;
-            auto integrator = diffeq::integrators::ode::RK4Integrator<State, Time>(system);
+            auto integrator = diffeq::RK4Integrator<State, Time>(system);
             
             for (int i = 0; i < steps; ++i) {
                 integrator.step(state, dt);

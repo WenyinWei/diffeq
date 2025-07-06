@@ -3,7 +3,7 @@
 #include <core/abstract_integrator.hpp>
 #include <core/state_creator.hpp>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief Classical 4th-order Runge-Kutta integrator
@@ -15,10 +15,10 @@ namespace diffeq::integrators::ode {
  * Stability: Good for non-stiff problems
  * Usage: General-purpose ODE integration
  */
-template<system_state S, can_be_time T = double>
-class RK4Integrator : public AbstractIntegrator<S, T> {
+template<system_state S>
+class RK4Integrator : public AbstractIntegrator<S> {
 public:
-    using base_type = AbstractIntegrator<S, T>;
+    using base_type = AbstractIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -84,4 +84,4 @@ public:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

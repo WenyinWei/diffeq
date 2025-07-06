@@ -42,7 +42,7 @@ protected:
 
 TEST_F(DOP853Test, BasicFunctionality) {
     // Test basic construction and parameter consistency
-    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
+    diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
     
     std::vector<double> y = {1.0};
     integrator.set_time(0.0);
@@ -57,7 +57,7 @@ TEST_F(DOP853Test, BasicFunctionality) {
 
 TEST_F(DOP853Test, HighPrecisionAccuracy) {
     // Test high precision accuracy
-    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-12, 1e-15);
+    diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-12, 1e-15);
     
     std::vector<double> y = {1.0};
     integrator.set_time(0.0);
@@ -78,7 +78,7 @@ TEST_F(DOP853Test, HighPrecisionAccuracy) {
 
 TEST_F(DOP853Test, StandardPrecisionAccuracy) {
     // Test standard precision accuracy
-    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
+    diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
     
     std::vector<double> y = {1.0};
     integrator.set_time(0.0);
@@ -99,7 +99,7 @@ TEST_F(DOP853Test, StandardPrecisionAccuracy) {
 
 TEST_F(DOP853Test, ArrayStateType) {
     // Test with std::array state type
-    diffeq::integrators::ode::DOP853Integrator<std::array<double, 1>> integrator(exponential_decay_array, 1e-6, 1e-9);
+    diffeq::DOP853Integrator<std::array<double, 1>> integrator(exponential_decay_array, 1e-6, 1e-9);
     
     std::array<double, 1> y = {1.0};
     integrator.set_time(0.0);
@@ -122,7 +122,7 @@ TEST_F(DOP853Test, NonlinearSystems) {
     // Test nonlinear systems to verify robustness
     {
         // Van der Pol oscillator
-        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(van_der_pol_func, 1e-6, 1e-9);
+        diffeq::DOP853Integrator<std::vector<double>> integrator(van_der_pol_func, 1e-6, 1e-9);
         std::vector<double> y = {2.0, 0.0};
         integrator.set_time(0.0);
         
@@ -142,7 +142,7 @@ TEST_F(DOP853Test, NonlinearSystems) {
     
     {
         // Lorenz system - use very tight tolerances and short integration time
-        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(lorenz_func, 1e-10, 1e-13);
+        diffeq::DOP853Integrator<std::vector<double>> integrator(lorenz_func, 1e-10, 1e-13);
         std::vector<double> y = {1.0, 1.0, 1.0};
         integrator.set_time(0.0);
         
@@ -164,7 +164,7 @@ TEST_F(DOP853Test, NonlinearSystems) {
 
 TEST_F(DOP853Test, AdaptiveStepControl) {
     // Test that adaptive step size control works correctly
-    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
+    diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
     
     std::vector<double> y = {1.0};
     integrator.set_time(0.0);
@@ -188,7 +188,7 @@ TEST_F(DOP853Test, ToleranceSettings) {
     // Test different tolerance settings
     {
         // Loose tolerances
-        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-3, 1e-6);
+        diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-3, 1e-6);
         std::vector<double> y = {1.0};
         integrator.set_time(0.0);
         
@@ -203,7 +203,7 @@ TEST_F(DOP853Test, ToleranceSettings) {
     
     {
         // Tight tolerances (but not too extreme)
-        diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-8, 1e-11);
+        diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-8, 1e-11);
         std::vector<double> y = {1.0};
         integrator.set_time(0.0);
         
@@ -218,8 +218,8 @@ TEST_F(DOP853Test, ToleranceSettings) {
 }
 
 TEST_F(DOP853Test, PerformanceBaseline) {
-    // Basic performance test with timeout protection
-    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
+    // Basic performance test 
+    diffeq::DOP853Integrator<std::vector<double>> integrator(exponential_decay_func, 1e-6, 1e-9);
     
     std::vector<double> y = {1.0};
     integrator.set_time(0.0);

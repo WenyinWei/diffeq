@@ -187,7 +187,7 @@ void test_advanced_sde_solvers() {
     
     // Test SRA1
     {
-        diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRA1Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
         integrator.set_time(0.0);
@@ -202,7 +202,7 @@ void test_advanced_sde_solvers() {
     
     // Test SRA2
     {
-        diffeq::sde::SRA2Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRA2Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
         integrator.set_time(0.0);
@@ -217,7 +217,7 @@ void test_advanced_sde_solvers() {
     
     // Test SOSRA
     {
-        diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SOSRAIntegrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
         integrator.set_time(0.0);
@@ -232,7 +232,7 @@ void test_advanced_sde_solvers() {
     
     // Test SRIW1
     {
-        diffeq::sde::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRIW1Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
         integrator.set_time(0.0);
@@ -247,7 +247,7 @@ void test_advanced_sde_solvers() {
     
     // Test SOSRI
     {
-        diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SOSRIIntegrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = initial_state;
         
         integrator.set_time(0.0);
@@ -290,7 +290,7 @@ void test_additive_noise_sra() {
     
     // SRA1
     {
-        diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRA1Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> X = initial_state;
         
         integrator.set_time(0.0);
@@ -306,7 +306,7 @@ void test_additive_noise_sra() {
     
     // SRA2
     {
-        diffeq::sde::SRA2Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRA2Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> X = initial_state;
         
         integrator.set_time(0.0);
@@ -322,7 +322,7 @@ void test_additive_noise_sra() {
     
     // SOSRA
     {
-        diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SOSRAIntegrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> X = initial_state;
         
         integrator.set_time(0.0);
@@ -367,7 +367,7 @@ void test_stiff_sde_stability() {
     try {
         // SOSRA
         {
-            diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SOSRAIntegrator<std::vector<double>> integrator(problem, wiener);
             std::vector<double> X = initial_state;
             
             integrator.set_time(0.0);
@@ -382,7 +382,7 @@ void test_stiff_sde_stability() {
         
         // SOSRI
         {
-            diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SOSRIIntegrator<std::vector<double>> integrator(problem, wiener);
             std::vector<double> X = initial_state;
             
             integrator.set_time(0.0);
@@ -448,7 +448,7 @@ void test_convergence_order() {
         
         // SRA1
         {
-            diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SRA1Integrator<std::vector<double>> integrator(problem, wiener);
             std::vector<double> S = initial_state;
             integrator.set_time(0.0);
             wiener->set_seed(11111);
@@ -461,7 +461,7 @@ void test_convergence_order() {
         
         // SRIW1
         {
-            diffeq::sde::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SRIW1Integrator<std::vector<double>> integrator(problem, wiener);
             std::vector<double> S = initial_state;
             integrator.set_time(0.0);
             wiener->set_seed(11111);
@@ -474,7 +474,7 @@ void test_convergence_order() {
         
         // SOSRI
         {
-            diffeq::sde::SOSRIIntegrator<std::vector<double>, double> integrator(problem, wiener);
+            diffeq::SOSRIIntegrator<std::vector<double>> integrator(problem, wiener);
             std::vector<double> S = initial_state;
             integrator.set_time(0.0);
             wiener->set_seed(11111);

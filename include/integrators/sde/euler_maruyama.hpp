@@ -4,7 +4,7 @@
 #include <core/state_creator.hpp>
 #include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief Euler-Maruyama method for SDEs
@@ -15,10 +15,10 @@ namespace diffeq::sde {
  * Strong order: 0.5
  * Weak order: 1.0
  */
-template<system_state StateType, can_be_time TimeType>
-class EulerMaruyamaIntegrator : public AbstractSDEIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class EulerMaruyamaIntegrator : public AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = AbstractSDEIntegrator<StateType, TimeType>;
+    using base_type = AbstractSDEIntegrator<StateType>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -62,4 +62,4 @@ public:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

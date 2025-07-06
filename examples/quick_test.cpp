@@ -21,7 +21,7 @@ int main() {
     try {
         std::cout << "RK4 (fixed step):     ";
         auto y = y0;
-        auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>>(exponential_decay);
+        auto integrator = diffeq::RK4Integrator<std::vector<double>>(exponential_decay);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << std::endl;
@@ -32,7 +32,7 @@ int main() {
     try {
         std::cout << "RK23 (adaptive):      ";
         auto y = y0;
-        auto integrator = diffeq::integrators::ode::RK23Integrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+        auto integrator = diffeq::RK23Integrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << std::endl;
@@ -43,7 +43,7 @@ int main() {
     try {
         std::cout << "RK45 (adaptive):      ";
         auto y = y0;
-        auto integrator = diffeq::integrators::ode::RK45Integrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+        auto integrator = diffeq::RK45Integrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << std::endl;
@@ -54,7 +54,7 @@ int main() {
     try {
         std::cout << "DOP853 (high-acc):    ";
         auto y = y0;
-        auto integrator = diffeq::integrators::ode::DOP853Integrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+        auto integrator = diffeq::DOP853Integrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << std::endl;
@@ -65,7 +65,7 @@ int main() {
     try {
         std::cout << "BDF (stiff):           ";
         auto y = y0;
-        auto integrator = diffeq::integrators::ode::BDFIntegrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+        auto integrator = diffeq::BDFIntegrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << std::endl;
@@ -76,11 +76,11 @@ int main() {
     try {
         std::cout << "LSODA (automatic):    ";
         auto y = y0;
-        auto integrator = diffeq::integrators::ode::LSODA<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+        auto integrator = diffeq::LSODA<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << " (Method: " << 
-            (integrator.get_current_method() == diffeq::integrators::ode::LSODA<std::vector<double>>::MethodType::ADAMS ? 
+            (integrator.get_current_method() == diffeq::LSODA<std::vector<double>>::MethodType::ADAMS ? 
              "Adams)" : "BDF)") << std::endl;
     } catch (const std::exception& e) {
         std::cout << "Failed: " << e.what() << std::endl;

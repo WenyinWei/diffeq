@@ -5,15 +5,15 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
-template<system_state S, can_be_time T>
+template<system_state S>
 class DOP853Integrator;
 
-template<system_state S, can_be_time T>
+template<system_state S>
 class DOP853DenseOutputHelper {
 public:
-    using value_type = typename DOP853Integrator<S, T>::value_type;
+    using value_type = typename DOP853Integrator<S>::value_type;
     
     // Dense output for DOP853: ported from Fortran CONTD8
     // CON: continuous output coefficients, size 8*nd
@@ -47,12 +47,12 @@ public:
  * Eighth-order method with embedded 5th and 3rd order error estimation.
  * Reference: Hairer, Norsett, Wanner, "Solving Ordinary Differential Equations I"
  */
-template<system_state S, can_be_time T = double>
-class DOP853Integrator : public AdaptiveIntegrator<S, T> {
+template<system_state S>
+class DOP853Integrator : public AdaptiveIntegrator<S> {
     
 
 public:
-    using base_type = AdaptiveIntegrator<S, T>;
+    using base_type = AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -368,4 +368,4 @@ private:
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

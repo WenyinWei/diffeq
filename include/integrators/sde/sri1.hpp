@@ -4,7 +4,7 @@
 #include <core/state_creator.hpp>
 #include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief Stochastic Runge-Kutta method (SRI1)
@@ -98,4 +98,4 @@ public:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

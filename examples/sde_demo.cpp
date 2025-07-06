@@ -14,12 +14,12 @@ int main() {
             gx[0] = 0.1 * x[0];
         };
         
-        auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
+        auto problem = diffeq::factory::make_sde_problem<std::vector<double>, double>(
             drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);
         
         auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 12345);
         // auto integrator = diffeq::sde::factory::make_euler_maruyama_integrator<std::vector<double>, double>(problem, wiener);
-        diffeq::sde::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
         
         std::vector<double> state = {1.0};  // Initial condition
         double dt = 0.01;

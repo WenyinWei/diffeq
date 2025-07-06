@@ -1,8 +1,10 @@
 #pragma once
 
-#include <integrators/sde/sra.hpp>
+#include <sde/sde_base.hpp>
+#include <core/state_creator.hpp>
+#include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief SOSRA (Stability-Optimized SRA) integrator
@@ -10,10 +12,10 @@ namespace diffeq::sde {
  * SRA integrator with stability-optimized tableau coefficients.
  * Enhanced stability for stiff additive noise SDEs with strong order 1.5.
  */
-template<system_state StateType, can_be_time TimeType>
-class SOSRAIntegrator : public SRAIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class SOSRAIntegrator : public AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = SRAIntegrator<StateType, TimeType>;
+    using base_type = AbstractSDEIntegrator<StateType>;
     
     explicit SOSRAIntegrator(std::shared_ptr<typename base_type::sde_problem_type> problem,
                             std::shared_ptr<typename base_type::wiener_process_type> wiener = nullptr)
@@ -47,4 +49,4 @@ private:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

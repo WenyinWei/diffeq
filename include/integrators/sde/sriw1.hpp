@@ -1,8 +1,10 @@
 #pragma once
 
-#include <integrators/sde/sri.hpp>
+#include <sde/sde_base.hpp>
+#include <core/state_creator.hpp>
+#include <cmath>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief SRIW1 integrator variant
@@ -10,10 +12,10 @@ namespace diffeq::sde {
  * SRI integrator configured with SRIW1 tableau coefficients.
  * Weak order 2.0 method for general Itô SDEs with strong order 1.5.
  */
-template<system_state StateType, can_be_time TimeType>
-class SRIW1Integrator : public SRIIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class SRIW1Integrator : public AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = SRIIntegrator<StateType, TimeType>;
+    using base_type = AbstractSDEIntegrator<StateType>;
     
     explicit SRIW1Integrator(std::shared_ptr<typename base_type::sde_problem_type> problem,
                             std::shared_ptr<typename base_type::wiener_process_type> wiener = nullptr)
@@ -50,4 +52,4 @@ private:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq

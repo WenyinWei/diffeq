@@ -37,7 +37,7 @@ void test_std_execution_parallelism() {
                  states.begin(), 
                  states.end(),
                  [&](std::vector<double>& state) {
-                     auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+                     auto integrator = diffeq::RK4Integrator<std::vector<double>, double>(system);
                      for (int i = 0; i < 100; ++i) {
                          integrator.step(state, 0.01);
                      }
@@ -57,7 +57,7 @@ void test_basic_ode_integration() {
     auto system = simple_harmonic_oscillator(1.0);
     std::vector<double> state = {1.0, 0.0};
     
-    auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+    auto integrator = diffeq::RK4Integrator<std::vector<double>, double>(system);
     
     std::cout << "Initial state: [" << state[0] << ", " << state[1] << "]\n";
     

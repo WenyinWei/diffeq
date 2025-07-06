@@ -38,7 +38,7 @@ void demo_std_execution_parallelism() {
                      states.begin(), 
                      states.end(),
                      [&](std::vector<double>& state) {
-                         auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+                         auto integrator = diffeq::RK4Integrator<std::vector<double>, double>(system);
                          for (int i = 0; i < 1000; ++i) {
                              integrator.step(state, 0.01);
                          }
@@ -82,7 +82,7 @@ void demo_std_execution_parallelism() {
                              system_template(t, y, dydt, omega);
                          };
                          
-                         auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+                         auto integrator = diffeq::RK4Integrator<std::vector<double>, double>(system);
                          for (int step = 0; step < 1000; ++step) {
                              integrator.step(results[i], 0.01);
                          }
@@ -113,19 +113,19 @@ void demo_std_execution_parallelism() {
                      [&](size_t i) {
                          if (i == 0) {
                              // RK4
-                             auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+                             auto integrator = diffeq::RK4Integrator<std::vector<double>, double>(system);
                              for (int step = 0; step < 1000; ++step) {
                                  integrator.step(results[i], 0.01);
                              }
                          } else if (i == 1) {
                              // Euler
-                             auto integrator = diffeq::integrators::ode::EulerIntegrator<std::vector<double>, double>(system);
+                             auto integrator = diffeq::EulerIntegrator<std::vector<double>, double>(system);
                              for (int step = 0; step < 1000; ++step) {
                                  integrator.step(results[i], 0.01);
                              }
                          } else if (i == 2) {
                              // Improved Euler
-                             auto integrator = diffeq::integrators::ode::ImprovedEulerIntegrator<std::vector<double>, double>(system);
+                             auto integrator = diffeq::ImprovedEulerIntegrator<std::vector<double>, double>(system);
                              for (int step = 0; step < 1000; ++step) {
                                  integrator.step(results[i], 0.01);
                              }
@@ -153,7 +153,7 @@ void demo_openmp_parallelism() {
         // OpenMP parallel loop
         #pragma omp parallel for
         for (int i = 0; i < static_cast<int>(states.size()); ++i) {
-            auto integrator = diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>(system);
+            auto integrator = diffeq::RK4Integrator<std::vector<double>, double>(system);
             for (int step = 0; step < 1000; ++step) {
                 integrator.step(states[i], 0.01);
             }

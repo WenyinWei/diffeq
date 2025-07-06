@@ -5,16 +5,16 @@
 #include "concepts.hpp"
 
 // Abstract integrator base class
-template<system_state S, can_be_time T = double>
+template<system_state S>
 class AbstractIntegrator {
 public:
     using state_type = S;
-    using time_type = T;
+    using time_type = typename S::value_type;
     using value_type = typename S::value_type;
     using system_function = std::function<void(time_type, const state_type&, state_type&)>;
 
     explicit AbstractIntegrator(system_function sys) 
-        : sys_(std::move(sys)), current_time_(T{0}) {}
+        : sys_(std::move(sys)), current_time_(time_type{0}) {}
 
     virtual ~AbstractIntegrator() = default;
 

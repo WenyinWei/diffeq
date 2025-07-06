@@ -50,7 +50,7 @@ int main() {
     std::cout << "\n1. Exponential Decay (dy/dt = -0.5*y)" << std::endl;
     std::cout << "-------------------------------------" << std::endl;
     
-    diffeq::integrators::ode::RK4Integrator<std::vector<double>, double> decay_integrator(exponential_decay);
+    diffeq::RK4Integrator<std::vector<double>, double> decay_integrator(exponential_decay);
     std::vector<double> decay_state = {2.0}; // y(0) = 2
     
     std::cout << "Time\tValue" << std::endl;
@@ -65,7 +65,7 @@ int main() {
     std::cout << "\n2. Lorenz Attractor (first 20 steps)" << std::endl;
     std::cout << "------------------------------------" << std::endl;
     
-    diffeq::integrators::ode::RK4Integrator<std::vector<double>, double> lorenz_integrator(lorenz_system);
+    diffeq::RK4Integrator<std::vector<double>, double> lorenz_integrator(lorenz_system);
     std::vector<double> lorenz_state = {1.0, 1.0, 1.0}; // Initial conditions
     
     std::cout << "Time\tX\t\tY\t\tZ" << std::endl;
@@ -85,7 +85,7 @@ int main() {
     std::cout << "\n3. Damped Harmonic Oscillator (float precision)" << std::endl;
     std::cout << "----------------------------------------------" << std::endl;
     
-    diffeq::integrators::ode::RK4Integrator<std::array<float, 2>, float> oscillator_integrator(damped_oscillator);
+    diffeq::RK4Integrator<std::array<float, 2>, float> oscillator_integrator(damped_oscillator);
     std::array<float, 2> oscillator_state = {1.0f, 0.0f}; // x(0) = 1, v(0) = 0
     
     std::cout << "Time\tPosition\tVelocity" << std::endl;
@@ -104,7 +104,7 @@ int main() {
     std::cout << "\n4. Polymorphic Usage" << std::endl;
     std::cout << "-------------------" << std::endl;
     
-    auto integrator = std::make_unique<diffeq::integrators::ode::RK4Integrator<std::vector<double>, double>>(exponential_decay);
+    auto integrator = std::make_unique<diffeq::RK4Integrator<std::vector<double>, double>>(exponential_decay);
     AbstractIntegrator<std::vector<double>, double>* base_ptr = integrator.get();
     
     std::vector<double> poly_state = {5.0};

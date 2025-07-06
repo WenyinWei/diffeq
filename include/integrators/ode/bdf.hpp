@@ -1,4 +1,5 @@
 #pragma once
+#include <core/concepts.hpp>
 #include <core/adaptive_integrator.hpp>
 #include <core/state_creator.hpp>
 #include <vector>
@@ -6,7 +7,7 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace diffeq::integrators::ode {
+namespace diffeq {
 
 /**
  * @brief BDF (Backward Differentiation Formula) integrator
@@ -20,10 +21,10 @@ namespace diffeq::integrators::ode {
  * Adaptive: Yes
  * Stiff: Excellent
  */
-template<system_state S, can_be_time T = double>
-class BDFIntegrator : public AdaptiveIntegrator<S, T> {
+template<system_state S>
+class BDFIntegrator : public AdaptiveIntegrator<S> {
 public:
-    using base_type = AdaptiveIntegrator<S, T>;
+    using base_type = AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -198,12 +199,12 @@ private:
                     residual_it[i] += alpha_coeffs_[current_order_][j] * y_hist_it[i];
                 }
                 
-                // Subtract beta*h*f term
+                // Subtract the f term
                 residual_it[i] -= beta_coeffs_[current_order_] * dt * f_new_it[i];
             }
             
             // Check convergence
-            time_type residual_norm = static_cast<time_type>(0);
+            time_type residual_norm = 0;
             for (std::size_t i = 0; i < residual.size(); ++i) {
                 auto residual_it = residual.begin();
                 residual_norm += residual_it[i] * residual_it[i];
@@ -211,81 +212,113 @@ private:
             residual_norm = std::sqrt(residual_norm);
             
             if (residual_norm < newton_tolerance_) {
-                // Converged - calculate error estimate using lower order method
+                // Newton iteration converged
                 calculate_error_estimate(y_new, error, dt);
                 return true;
             }
             
-            // Update y_new using simplified Newton update
-            // This is a simplified approach - a full implementation would compute the Jacobian
+            // Update y_new using simplified Newton step
+            // For simplicity, we use a diagonal approximation of the Jacobian
             for (std::size_t i = 0; i < y_new.size(); ++i) {
                 auto y_new_it = y_new.begin();
                 auto residual_it = residual.begin();
+                auto f_new_it = f_new.begin();
                 
-                y_new_it[i] = y_new_it[i] - residual_it[i] / alpha_coeffs_[current_order_][0];
+                // Simplified Newton update: y_new -= residual / (alpha[0] - beta*h*df/dy)
+                // We approximate df/dy using finite differences
+                time_type df_dy = estimate_jacobian_diagonal(i, y_new, dt);
+                time_type denominator = alpha_coeffs_[current_order_][0] - beta_coeffs_[current_order_] * dt * df_dy;
+                
+                if (std::abs(denominator) > newton_tolerance_) {
+                    y_new_it[i] -= residual_it[i] / denominator;
+                }
             }
         }
         
-        return false;  // Newton iteration failed to converge
+        // Newton iteration failed to converge
+        return false;
+    }
+    
+    time_type estimate_jacobian_diagonal(std::size_t i, const state_type& y, time_type dt) {
+        // Estimate diagonal element of Jacobian using finite differences
+        time_type epsilon = static_cast<time_type>(1e-8);
+        state_type y_pert = StateCreator<state_type>::create(y);
+        state_type f_orig = StateCreator<state_type>::create(y);
+        state_type f_pert = StateCreator<state_type>::create(y);
+        
+        // Evaluate f at original point
+        this->sys_(this->current_time_ + dt, y, f_orig);
+        
+        // Perturb y[i] and evaluate f
+        y_pert = y;
+        auto y_pert_it = y_pert.begin();
+        y_pert_it[i] += epsilon;
+        this->sys_(this->current_time_ + dt, y_pert, f_pert);
+        
+        // Estimate ∂f_i/∂y_i
+        auto f_orig_it = f_orig.begin();
+        auto f_pert_it = f_pert.begin();
+        return (f_pert_it[i] - f_orig_it[i]) / epsilon;
     }
     
     void calculate_error_estimate(const state_type& y_new, state_type& error, time_type dt) {
-        // Improved error estimate using difference between current and lower order methods
-        if (current_order_ > 1 && y_history_.size() >= static_cast<size_t>(current_order_)) {
-            // Use difference between current order and order-1 solution
-            state_type y_lower = StateCreator<state_type>::create(y_new);
+        // Simple error estimate based on the difference between current and previous order solutions
+        if (y_history_.size() >= 2 && current_order_ > 1) {
+            // Use the difference between current order and previous order as error estimate
+            state_type y_prev_order = StateCreator<state_type>::create(y_new);
             
-            // Calculate order-1 solution (backward Euler)
+            // Reconstruct solution using previous order
             for (std::size_t i = 0; i < y_new.size(); ++i) {
-                auto y_lower_it = y_lower.begin();
-                auto y_hist_it = y_history_[0].begin();
-                y_lower_it[i] = y_hist_it[i];
-            }
-            
-            // Simple backward Euler step
-            state_type f_lower = StateCreator<state_type>::create(y_lower);
-            this->sys_(this->current_time_ + dt, y_lower, f_lower);
-            
-            for (std::size_t i = 0; i < y_new.size(); ++i) {
-                auto y_lower_it = y_lower.begin();
-                auto f_lower_it = f_lower.begin();
-                y_lower_it[i] += dt * f_lower_it[i];
-            }
-            
-            // Error estimate is the difference
-            for (std::size_t i = 0; i < error.size(); ++i) {
-                auto error_it = error.begin();
+                auto y_prev_order_it = y_prev_order.begin();
                 auto y_new_it = y_new.begin();
-                auto y_lower_it = y_lower.begin();
-                error_it[i] = y_new_it[i] - y_lower_it[i];
+                
+                y_prev_order_it[i] = alpha_coeffs_[current_order_ - 1][0] * y_new_it[i];
+                
+                // Add history terms for previous order
+                for (int j = 1; j < current_order_ && j < static_cast<int>(y_history_.size()); ++j) {
+                    auto y_hist_it = y_history_[j].begin();
+                    y_prev_order_it[i] += alpha_coeffs_[current_order_ - 1][j] * y_hist_it[i];
+                }
+                
+                // Calculate error as difference
+                auto error_it = error.begin();
+                error_it[i] = std::abs(y_new_it[i] - y_prev_order_it[i]);
             }
         } else {
             // Fallback error estimate
-            for (std::size_t i = 0; i < error.size(); ++i) {
+            for (std::size_t i = 0; i < y_new.size(); ++i) {
                 auto error_it = error.begin();
-                error_it[i] = dt * static_cast<time_type>(1e-6);
+                error_it[i] = static_cast<time_type>(1e-6);
             }
         }
     }
     
     time_type fallback_step(state_type& state, time_type dt) {
-        // Fallback to simple backward Euler when BDF fails
-        // This ensures the integrator doesn't crash on very stiff problems
+        // Fallback to backward Euler with very small step
+        time_type small_dt = std::min(dt, static_cast<time_type>(1e-6));
         
-        time_type actual_dt = std::min(dt, static_cast<time_type>(1e-6));  // Very small step
+        state_type y_new = StateCreator<state_type>::create(state);
+        state_type f_new = StateCreator<state_type>::create(state);
         
-        state_type f = StateCreator<state_type>::create(state);
-        this->sys_(this->current_time_ + actual_dt, state, f);
-        
-        for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto f_it = f.begin();
-            state_it[i] += actual_dt * f_it[i];
+        // Simple backward Euler iteration
+        y_new = state;
+        for (int iter = 0; iter < 5; ++iter) {
+            this->sys_(this->current_time_ + small_dt, y_new, f_new);
+            
+            for (std::size_t i = 0; i < state.size(); ++i) {
+                auto y_new_it = y_new.begin();
+                auto f_new_it = f_new.begin();
+                auto state_it = state.begin();
+                
+                y_new_it[i] = state_it[i] + small_dt * f_new_it[i];
+            }
         }
         
-        this->advance_time(actual_dt);
-        return actual_dt * static_cast<time_type>(2.0);  // Suggest doubling for next step
+        state = y_new;
+        this->advance_time(small_dt);
+        
+        return small_dt;
     }
 };
 
-} // namespace diffeq::integrators::ode
+} // namespace diffeq

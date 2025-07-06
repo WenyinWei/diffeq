@@ -5,7 +5,7 @@
 #include <cmath>
 #include <vector>
 
-namespace diffeq::sde {
+namespace diffeq {
 
 /**
  * @brief Tableau coefficients for SRA methods
@@ -195,4 +195,4 @@ private:
     }
 };
 
-} // namespace diffeq::sde
+} // namespace diffeq
