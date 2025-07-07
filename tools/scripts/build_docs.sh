@@ -91,7 +91,7 @@ generate_sphinx() {
         cd "$DOCS_DIR/sphinx"
         
         # Initialize Sphinx project
-        sphinx-quickstart -q -p "DiffEq" -a "DiffEq Team" -v "1.0.0" -r "1.0.0" -l "en" -n
+        sphinx-quickstart -q -p "DiffEq" -a "DiffEq Team" -v "1.0.0" -r "1.0.0" -l "en" --no-sep
         
         # Configure for C++ and Breathe
         cat > conf.py << 'EOF'
@@ -166,7 +166,7 @@ EOF
     
     # Generate Sphinx documentation
     cd "$DOCS_DIR/sphinx"
-    make html
+    sphinx-build -b html . _build/html
     
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✓ Sphinx documentation generated successfully${NC}"
