@@ -30,6 +30,10 @@ public:
     std::size_t size() const { return data.size(); }
     auto begin() { return data.begin(); }
     auto end() { return data.end(); }
+    
+    // Add indexing operator for compatibility with system_state concept
+    double& operator[](std::size_t index) { return data[index]; }
+    const double& operator[](std::size_t index) const { return data[index]; }
 };
 
 class InvalidStateNoValueType {
@@ -198,7 +202,7 @@ int main() {
         
         std::cout << "\n=== Test Results ===" << std::endl;
         if (all_passed) {
-            std::cout << "🎉 All tests PASSED!" << std::endl;
+            std::cout << "✅ All tests PASSED!" << std::endl;
             return 0;
         } else {
             std::cout << "❌ Some tests FAILED!" << std::endl;
