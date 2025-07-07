@@ -255,7 +255,7 @@ TEST_F(DOP853Test, TimeoutFailureHandling) {
         dydt[1] = -lambda * y[1];
     };
     
-    diffeq::integrators::ode::DOP853Integrator<std::vector<double>> integrator(stiff_system, 1e-12, 1e-15);  // Very tight tolerances
+    diffeq::DOP853Integrator<std::vector<double>> integrator(stiff_system, 1e-12, 1e-15);  // Very tight tolerances
     
     std::vector<double> y = {1.0, 1.0};
     integrator.set_time(0.0);
