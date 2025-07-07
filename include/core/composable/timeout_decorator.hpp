@@ -96,8 +96,8 @@ struct TimeoutResult {
  * - Robust Error Handling: Graceful failure modes
  * - User Control: Progress callbacks and cancellation support
  */
-template<system_state S, can_be_time T = double>
-class TimeoutDecorator : public IntegratorDecorator<S, T> {
+template<system_state S>
+class TimeoutDecorator : public IntegratorDecorator<S> {
 private:
     TimeoutConfig config_;
 
@@ -108,9 +108,9 @@ public:
      * @param config Timeout configuration (validated on construction)
      * @throws std::invalid_argument if config is invalid
      */
-    explicit TimeoutDecorator(std::unique_ptr<AbstractIntegrator<S, T>> integrator, 
+    explicit TimeoutDecorator(std::unique_ptr<AbstractIntegrator<S>> integrator, 
                              TimeoutConfig config = {})
-        : IntegratorDecorator<S, T>(std::move(integrator)), config_(std::move(config)) {
+        : IntegratorDecorator<S>(std::move(integrator)), config_(std::move(config)) {
         config_.validate();
     }
 
@@ -121,8 +121,9 @@ public:
      * @param end_time Final integration time
      * @return Detailed result with timing and status information
      */
-    TimeoutResult integrate_with_timeout(typename IntegratorDecorator<S, T>::state_type& state, 
-                                        T dt, T end_time) {
+    TimeoutResult integrate_with_timeout(typename IntegratorDecorator<S>::state_type& state, 
+                                        typename IntegratorDecorator<S>::time_type dt, 
+                                        typename IntegratorDecorator<S>::time_type end_time) {
         const auto start_time = std::chrono::high_resolution_clock::now();
         TimeoutResult result;
         result.final_time = this->current_time();
@@ -154,7 +155,9 @@ public:
     /**
      * @brief Override standard integrate to use timeout protection
      */
-    void integrate(typename IntegratorDecorator<S, T>::state_type& state, T dt, T end_time) override {
+    void integrate(typename IntegratorDecorator<S>::state_type& state, 
+                   typename IntegratorDecorator<S>::time_type dt, 
+                   typename IntegratorDecorator<S>::time_type end_time) override {
         auto result = integrate_with_timeout(state, dt, end_time);
         if (!result.is_success() && config_.throw_on_timeout) {
             throw std::runtime_error(result.status_description());
@@ -182,8 +185,9 @@ private:
      * @brief Simple timeout without progress monitoring
      */
     TimeoutResult integrate_with_simple_timeout(
-        typename IntegratorDecorator<S, T>::state_type& state,
-        T dt, T end_time,
+        typename IntegratorDecorator<S>::state_type& state,
+        typename IntegratorDecorator<S>::time_type dt, 
+        typename IntegratorDecorator<S>::time_type end_time,
         std::chrono::high_resolution_clock::time_point start_time) {
         
         TimeoutResult result;
@@ -209,8 +213,9 @@ private:
      * @brief Integration with progress monitoring and user cancellation
      */
     TimeoutResult integrate_with_progress_monitoring(
-        typename IntegratorDecorator<S, T>::state_type& state,
-        T dt, T end_time,
+        typename IntegratorDecorator<S>::state_type& state,
+        typename IntegratorDecorator<S>::time_type dt, 
+        typename IntegratorDecorator<S>::time_type end_time,
         std::chrono::high_resolution_clock::time_point start_time) {
         
         TimeoutResult result;

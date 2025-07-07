@@ -87,8 +87,8 @@ struct AsyncResult {
  * - Non-blocking: All operations return immediately with futures
  * - Cancellable: Support for graceful cancellation
  */
-template<system_state S, can_be_time T = double>
-class AsyncDecorator : public IntegratorDecorator<S, T> {
+template<system_state S>
+class AsyncDecorator : public IntegratorDecorator<S> {
 private:
     AsyncConfig config_;
     mutable std::mutex state_mutex_;
@@ -102,9 +102,9 @@ public:
      * @param config Async configuration (validated on construction)
      * @throws std::invalid_argument if config is invalid
      */
-    explicit AsyncDecorator(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+    explicit AsyncDecorator(std::unique_ptr<AbstractIntegrator<S>> integrator,
                            AsyncConfig config = {})
-        : IntegratorDecorator<S, T>(std::move(integrator)), config_(std::move(config)) {
+        : IntegratorDecorator<S>(std::move(integrator)), config_(std::move(config)) {
         
         config_.validate();
         
@@ -121,8 +121,9 @@ public:
      * @param end_time Final integration time
      * @return Future that will contain the integration result
      */
-    std::future<AsyncResult> integrate_async(typename IntegratorDecorator<S, T>::state_type& state, 
-                                           T dt, T end_time) {
+    std::future<AsyncResult> integrate_async(typename IntegratorDecorator<S>::state_type& state, 
+                                           typename IntegratorDecorator<S>::time_type dt, 
+                                           typename IntegratorDecorator<S>::time_type end_time) {
         return std::async(std::launch::async, [this, &state, dt, end_time]() -> AsyncResult {
             ++active_operations_;
             auto operation_guard = make_scope_guard([this] { --active_operations_; });
@@ -159,7 +160,8 @@ public:
      * @param dt Time step
      * @return Future that will contain the step result
      */
-    std::future<AsyncResult> step_async(typename IntegratorDecorator<S, T>::state_type& state, T dt) {
+    std::future<AsyncResult> step_async(typename IntegratorDecorator<S>::state_type& state, 
+                                       typename IntegratorDecorator<S>::time_type dt) {
         return std::async(std::launch::async, [this, &state, dt]() -> AsyncResult {
             ++active_operations_;
             auto operation_guard = make_scope_guard([this] { --active_operations_; });
@@ -252,8 +254,9 @@ private:
     /**
      * @brief Simple async integration without monitoring
      */
-    AsyncResult integrate_simple(typename IntegratorDecorator<S, T>::state_type& state, 
-                                T dt, T end_time) {
+    AsyncResult integrate_simple(typename IntegratorDecorator<S>::state_type& state, 
+                                typename IntegratorDecorator<S>::time_type dt, 
+                                typename IntegratorDecorator<S>::time_type end_time) {
         AsyncResult result;
         
         if (cancellation_requested_.load()) {
@@ -268,13 +271,14 @@ private:
     /**
      * @brief Async integration with progress monitoring
      */
-    AsyncResult integrate_with_monitoring(typename IntegratorDecorator<S, T>::state_type& state,
-                                         T dt, T end_time,
+    AsyncResult integrate_with_monitoring(typename IntegratorDecorator<S>::state_type& state,
+                                         typename IntegratorDecorator<S>::time_type dt, 
+                                         typename IntegratorDecorator<S>::time_type end_time,
                                          std::chrono::high_resolution_clock::time_point start_time) {
         AsyncResult result;
         
         // For monitoring, we need to do step-by-step integration
-        T current_time = this->current_time();
+        typename IntegratorDecorator<S>::time_type current_time = this->current_time();
         auto last_check = start_time;
         
         while (current_time < end_time && !cancellation_requested_.load()) {
@@ -287,7 +291,7 @@ private:
             }
             
             // Perform one step
-            T step_size = std::min(dt, end_time - current_time);
+            typename IntegratorDecorator<S>::time_type step_size = std::min(dt, end_time - current_time);
             this->wrapped_integrator_->step(state, step_size);
             current_time = this->current_time();
         }

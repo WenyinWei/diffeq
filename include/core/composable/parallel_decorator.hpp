@@ -66,8 +66,8 @@ struct ParallelConfig {
  * 
  * Note: This decorator requires integrator factory support for thread-local copies.
  */
-template<system_state S, can_be_time T = double>
-class ParallelDecorator : public IntegratorDecorator<S, T> {
+template<system_state S>
+class ParallelDecorator : public IntegratorDecorator<S> {
 private:
     ParallelConfig config_;
 
@@ -78,9 +78,9 @@ public:
      * @param config Parallel configuration (validated on construction)
      * @throws std::invalid_argument if config is invalid
      */
-    explicit ParallelDecorator(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+    explicit ParallelDecorator(std::unique_ptr<AbstractIntegrator<S>> integrator,
                               ParallelConfig config = {})
-        : IntegratorDecorator<S, T>(std::move(integrator)), config_(std::move(config)) {
+        : IntegratorDecorator<S>(std::move(integrator)), config_(std::move(config)) {
         
         config_.validate();
         
@@ -102,7 +102,8 @@ public:
      * @throws std::runtime_error if integrator copying is not implemented
      */
     template<typename StateRange>
-    void integrate_batch(StateRange&& states, T dt, T end_time) {
+    void integrate_batch(StateRange&& states, typename IntegratorDecorator<S>::time_type dt, 
+                        typename IntegratorDecorator<S>::time_type end_time) {
         const size_t batch_size = std::ranges::size(states);
         
         if (batch_size == 0) {
@@ -148,7 +149,8 @@ public:
      */
     template<typename Generator, typename Processor>
     auto integrate_monte_carlo(size_t num_simulations, Generator&& generator, 
-                              Processor&& processor, T dt, T end_time) {
+                              Processor&& processor, typename IntegratorDecorator<S>::time_type dt, 
+                              typename IntegratorDecorator<S>::time_type end_time) {
         using result_type = std::invoke_result_t<Processor, S>;
         std::vector<result_type> results(num_simulations);
 
@@ -197,7 +199,8 @@ public:
      * @param end_time Final integration time
      */
     template<typename StateRange>
-    void integrate_batch_chunked(StateRange&& states, T dt, T end_time) {
+    void integrate_batch_chunked(StateRange&& states, typename IntegratorDecorator<S>::time_type dt, 
+                                typename IntegratorDecorator<S>::time_type end_time) {
         const size_t batch_size = std::ranges::size(states);
         
         if (batch_size <= config_.chunk_size || config_.max_threads == 1) {
@@ -261,7 +264,7 @@ private:
      * Note: This requires integrator factory support or copyable integrators.
      * Future implementation should use a factory pattern or registry.
      */
-    std::unique_ptr<AbstractIntegrator<S, T>> create_copy() {
+    std::unique_ptr<AbstractIntegrator<S>> create_copy() {
         // This is a placeholder - actual implementation would depend on integrator type
         // Could use a factory pattern, registry, or require integrators to be copyable
         throw std::runtime_error("Integrator copying not implemented - need factory pattern");

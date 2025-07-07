@@ -222,15 +222,15 @@ private:
  * - Flexible: Multiple interpolation methods
  * - Robust: Handles edge cases and extrapolation
  */
-template<system_state S, can_be_time T = double>
-class InterpolationDecorator : public IntegratorDecorator<S, T> {
+template<system_state S>
+class InterpolationDecorator : public IntegratorDecorator<S> {
 private:
     InterpolationConfig config_;
-    std::map<T, S> state_history_;
-    std::unique_ptr<CubicSplineInterpolator<T>> spline_interpolator_;
+    std::map<typename IntegratorDecorator<S>::time_type, S> state_history_;
+    std::unique_ptr<CubicSplineInterpolator<typename IntegratorDecorator<S>::time_type>> spline_interpolator_;
     InterpolationStats stats_;
     mutable std::mutex history_mutex_;
-    T last_query_time_{};
+    typename IntegratorDecorator<S>::time_type last_query_time_{};
     bool history_compressed_{false};
 
 public:
@@ -240,11 +240,11 @@ public:
      * @param config Interpolation configuration (validated on construction)
      * @throws std::invalid_argument if config is invalid
      */
-    explicit InterpolationDecorator(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+    explicit InterpolationDecorator(std::unique_ptr<AbstractIntegrator<S>> integrator,
                                    InterpolationConfig config = {})
-        : IntegratorDecorator<S, T>(std::move(integrator))
+        : IntegratorDecorator<S>(std::move(integrator))
         , config_(std::move(config))
-        , spline_interpolator_(std::make_unique<CubicSplineInterpolator<T>>()) {
+        , spline_interpolator_(std::make_unique<CubicSplineInterpolator<typename IntegratorDecorator<S>::time_type>>()) {
         
         config_.validate();
     }
@@ -252,7 +252,7 @@ public:
     /**
      * @brief Override step to record state history
      */
-    void step(typename IntegratorDecorator<S, T>::state_type& state, T dt) override {
+    void step(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt) override {
         this->wrapped_integrator_->step(state, dt);
         record_state(state, this->current_time());
     }
@@ -260,7 +260,8 @@ public:
     /**
      * @brief Override integrate to maintain history during integration
      */
-    void integrate(typename IntegratorDecorator<S, T>::state_type& state, T dt, T end_time) override {
+    void integrate(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt, 
+                   typename IntegratorDecorator<S>::time_type end_time) override {
         // Record initial state
         record_state(state, this->current_time());
         
@@ -282,7 +283,7 @@ public:
      * @return Interpolated state
      * @throws std::runtime_error if interpolation fails
      */
-    S interpolate_at(T t) {
+    S interpolate_at(typename IntegratorDecorator<S>::time_type t) {
         std::lock_guard<std::mutex> lock(history_mutex_);
         
         auto start_time = std::chrono::high_resolution_clock::now();
@@ -323,11 +324,11 @@ public:
      * @param time_points Vector of time points
      * @return Vector of interpolated states
      */
-    std::vector<S> interpolate_at_multiple(const std::vector<T>& time_points) {
+    std::vector<S> interpolate_at_multiple(const std::vector<typename IntegratorDecorator<S>::time_type>& time_points) {
         std::vector<S> results;
         results.reserve(time_points.size());
         
-        for (T t : time_points) {
+        for (typename IntegratorDecorator<S>::time_type t : time_points) {
             results.push_back(interpolate_at(t));
         }
         
@@ -341,18 +342,21 @@ public:
      * @param num_points Number of interpolation points
      * @return Pair of time vector and state vector
      */
-    std::pair<std::vector<T>, std::vector<S>> get_dense_output(T start_time, T end_time, size_t num_points) {
+    std::pair<std::vector<typename IntegratorDecorator<S>::time_type>, std::vector<S>> get_dense_output(
+        typename IntegratorDecorator<S>::time_type start_time, 
+        typename IntegratorDecorator<S>::time_type end_time, 
+        size_t num_points) {
         if (num_points < 2) {
             throw std::invalid_argument("num_points must be at least 2");
         }
         
-        std::vector<T> times;
+        std::vector<typename IntegratorDecorator<S>::time_type> times;
         std::vector<S> states;
         
-        T dt = (end_time - start_time) / (num_points - 1);
+        typename IntegratorDecorator<S>::time_type dt = (end_time - start_time) / (num_points - 1);
         
         for (size_t i = 0; i < num_points; ++i) {
-            T t = start_time + i * dt;
+            typename IntegratorDecorator<S>::time_type t = start_time + i * dt;
             times.push_back(t);
             states.push_back(interpolate_at(t));
         }
@@ -378,10 +382,10 @@ public:
      * @brief Get time bounds of available history
      * @return Pair of (min_time, max_time)
      */
-    std::pair<T, T> get_time_bounds() const {
+    std::pair<typename IntegratorDecorator<S>::time_type, typename IntegratorDecorator<S>::time_type> get_time_bounds() const {
         std::lock_guard<std::mutex> lock(history_mutex_);
         if (state_history_.empty()) {
-            return {T{}, T{}};
+            return {typename IntegratorDecorator<S>::time_type{}, typename IntegratorDecorator<S>::time_type{}};
         }
         return {state_history_.begin()->first, state_history_.rbegin()->first};
     }
@@ -413,7 +417,7 @@ private:
     /**
      * @brief Record state at given time
      */
-    void record_state(const S& state, T time) {
+    void record_state(const S& state, typename IntegratorDecorator<S>::time_type time) {
         std::lock_guard<std::mutex> lock(history_mutex_);
         
         // Check if we need to make room
@@ -428,7 +432,7 @@ private:
     /**
      * @brief Perform interpolation using configured method
      */
-    S perform_interpolation(T t) {
+    S perform_interpolation(typename IntegratorDecorator<S>::time_type t) {
         switch (config_.method) {
             case InterpolationMethod::LINEAR:
                 return linear_interpolation(t);
@@ -446,7 +450,7 @@ private:
     /**
      * @brief Linear interpolation
      */
-    S linear_interpolation(T t) {
+    S linear_interpolation(typename IntegratorDecorator<S>::time_type t) {
         auto it = state_history_.lower_bound(t);
         
         if (it == state_history_.begin()) {
@@ -459,12 +463,12 @@ private:
         
         auto prev_it = std::prev(it);
         
-        T t1 = prev_it->first;
-        T t2 = it->first;
+        typename IntegratorDecorator<S>::time_type t1 = prev_it->first;
+        typename IntegratorDecorator<S>::time_type t2 = it->first;
         const S& s1 = prev_it->second;
         const S& s2 = it->second;
         
-        T alpha = (t - t1) / (t2 - t1);
+        typename IntegratorDecorator<S>::time_type alpha = (t - t1) / (t2 - t1);
         
         S result = s1;
         for (size_t i = 0; i < result.size(); ++i) {
@@ -477,9 +481,9 @@ private:
     /**
      * @brief Cubic spline interpolation
      */
-    S cubic_spline_interpolation(T t) {
+    S cubic_spline_interpolation(typename IntegratorDecorator<S>::time_type t) {
         // Prepare data for spline interpolator
-        std::vector<T> times;
+        std::vector<typename IntegratorDecorator<S>::time_type> times;
         std::vector<std::vector<typename S::value_type>> states;
         
         times.reserve(state_history_.size());
@@ -508,7 +512,7 @@ private:
     /**
      * @brief Hermite interpolation (placeholder - can be extended)
      */
-    S hermite_interpolation(T t) {
+    S hermite_interpolation(typename IntegratorDecorator<S>::time_type t) {
         // For now, fall back to cubic spline
         return cubic_spline_interpolation(t);
     }
@@ -516,7 +520,7 @@ private:
     /**
      * @brief Akima interpolation (placeholder - can be extended)
      */
-    S akima_interpolation(T t) {
+    S akima_interpolation(typename IntegratorDecorator<S>::time_type t) {
         // For now, fall back to cubic spline
         return cubic_spline_interpolation(t);
     }
@@ -553,9 +557,11 @@ private:
     /**
      * @brief Check if a point is redundant for compression
      */
-    bool is_point_redundant(const std::pair<T, S>& p1, const std::pair<T, S>& p2, const std::pair<T, S>& p3) {
+    bool is_point_redundant(const std::pair<typename IntegratorDecorator<S>::time_type, S>& p1, 
+                           const std::pair<typename IntegratorDecorator<S>::time_type, S>& p2, 
+                           const std::pair<typename IntegratorDecorator<S>::time_type, S>& p3) {
         // Simple linear interpolation error check
-        T alpha = (p2.first - p1.first) / (p3.first - p1.first);
+        typename IntegratorDecorator<S>::time_type alpha = (p2.first - p1.first) / (p3.first - p1.first);
         
         for (size_t i = 0; i < p2.second.size(); ++i) {
             double interpolated = (1 - alpha) * p1.second[i] + alpha * p3.second[i];

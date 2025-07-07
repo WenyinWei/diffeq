@@ -246,6 +246,14 @@ target("test_advanced_parallelism")
     set_rundir("$(projectdir)")
     set_group("examples")
 
+-- Performance benchmarking
+target("performance_benchmark")
+    set_kind("binary")
+    add_files("examples/quick_test.cpp")  -- Use quick_test as a simple benchmark for now
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("performance")
+
 -- ============================================================================
 -- CUSTOM TASKS
 -- ============================================================================

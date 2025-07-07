@@ -93,12 +93,12 @@ struct OutputStats {
  * - Flexible: Multiple output modes and configurations
  * - Efficient: Minimal performance impact on integration
  */
-template<system_state S, can_be_time T = double>
-class OutputDecorator : public IntegratorDecorator<S, T> {
+template<system_state S>
+class OutputDecorator : public IntegratorDecorator<S> {
 private:
     OutputConfig config_;
-    std::function<void(const S&, T, size_t)> output_handler_;
-    std::vector<std::tuple<S, T, size_t>> output_buffer_;
+    std::function<void(const S&, typename IntegratorDecorator<S>::time_type, size_t)> output_handler_;
+    std::vector<std::tuple<S, typename IntegratorDecorator<S>::time_type, size_t>> output_buffer_;
     std::chrono::steady_clock::time_point last_output_;
     size_t step_count_{0};
     OutputStats stats_;
@@ -112,10 +112,10 @@ public:
      * @param handler Optional output handler function
      * @throws std::invalid_argument if config is invalid
      */
-    explicit OutputDecorator(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+    explicit OutputDecorator(std::unique_ptr<AbstractIntegrator<S>> integrator,
                             OutputConfig config = {},
-                            std::function<void(const S&, T, size_t)> handler = nullptr)
-        : IntegratorDecorator<S, T>(std::move(integrator))
+                            std::function<void(const S&, typename IntegratorDecorator<S>::time_type, size_t)> handler = nullptr)
+        : IntegratorDecorator<S>(std::move(integrator))
         , config_(std::move(config))
         , output_handler_(std::move(handler))
         , last_output_(std::chrono::steady_clock::now()) {
@@ -141,7 +141,7 @@ public:
     /**
      * @brief Override step to add output handling
      */
-    void step(typename IntegratorDecorator<S, T>::state_type& state, T dt) override {
+    void step(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt) override {
         this->wrapped_integrator_->step(state, dt);
         ++step_count_;
         
@@ -151,7 +151,8 @@ public:
     /**
      * @brief Override integrate to handle different output modes
      */
-    void integrate(typename IntegratorDecorator<S, T>::state_type& state, T dt, T end_time) override {
+    void integrate(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt, 
+                   typename IntegratorDecorator<S>::time_type end_time) override {
         if (config_.mode == OutputMode::OFFLINE) {
             // Just integrate and buffer final result
             this->wrapped_integrator_->integrate(state, dt, end_time);
@@ -159,7 +160,7 @@ public:
         } else {
             // Step-by-step with online output
             while (this->current_time() < end_time) {
-                T step_size = std::min(dt, end_time - this->current_time());
+                typename IntegratorDecorator<S>::time_type step_size = std::min(dt, end_time - this->current_time());
                 this->step(state, step_size);
             }
         }
@@ -173,7 +174,7 @@ public:
      * @brief Set or change output handler function
      * @param handler New output handler function
      */
-    void set_output_handler(std::function<void(const S&, T, size_t)> handler) {
+    void set_output_handler(std::function<void(const S&, typename IntegratorDecorator<S>::time_type, size_t)> handler) {
         output_handler_ = std::move(handler);
     }
 
@@ -181,7 +182,7 @@ public:
      * @brief Get current output buffer contents
      * @return Reference to the output buffer
      */
-    const std::vector<std::tuple<S, T, size_t>>& get_buffer() const { 
+    const std::vector<std::tuple<S, typename IntegratorDecorator<S>::time_type, size_t>>& get_buffer() const { 
         return output_buffer_; 
     }
     
@@ -259,7 +260,7 @@ private:
     /**
      * @brief Handle output based on current mode and configuration
      */
-    void handle_output(const S& state, T time) {
+    void handle_output(const S& state, typename IntegratorDecorator<S>::time_type time) {
         auto now = std::chrono::steady_clock::now();
         
         if (config_.mode == OutputMode::ONLINE || config_.mode == OutputMode::HYBRID) {
@@ -286,7 +287,7 @@ private:
     /**
      * @brief Add data to output buffer
      */
-    void buffer_output(const S& state, T time, size_t step) {
+    void buffer_output(const S& state, typename IntegratorDecorator<S>::time_type time, size_t step) {
         if (output_buffer_.size() >= config_.buffer_size) {
             output_buffer_.erase(output_buffer_.begin());
             stats_.buffer_overflows++;

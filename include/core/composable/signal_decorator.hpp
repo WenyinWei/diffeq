@@ -32,9 +32,9 @@ enum class SignalPriority {
 /**
  * @brief Signal information structure
  */
-template<system_state S, can_be_time T>
+template<system_state S>
 struct SignalInfo {
-    std::function<void(S&, T)> handler;
+    std::function<void(S&, typename S::value_type)> handler;
     SignalPriority priority{SignalPriority::NORMAL};
     std::chrono::steady_clock::time_point timestamp;
     bool processed{false};
@@ -124,12 +124,12 @@ struct SignalStats {
  * - Real-time: Minimal latency signal handling
  * - Thread-safe: Safe concurrent signal registration and processing
  */
-template<system_state S, can_be_time T = double>
-class SignalDecorator : public IntegratorDecorator<S, T> {
+template<system_state S>
+class SignalDecorator : public IntegratorDecorator<S> {
 private:
     SignalConfig config_;
-    std::vector<std::function<void(S&, T)>> signal_handlers_;
-    std::queue<SignalInfo<S, T>> signal_queue_;
+    std::vector<std::function<void(S&, typename IntegratorDecorator<S>::time_type)>> signal_handlers_;
+    std::queue<SignalInfo<S>> signal_queue_;
     std::chrono::steady_clock::time_point last_signal_check_;
     mutable std::mutex signal_mutex_;
     SignalStats stats_;
@@ -142,9 +142,9 @@ public:
      * @param config Signal configuration (validated on construction)
      * @throws std::invalid_argument if config is invalid
      */
-    explicit SignalDecorator(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+    explicit SignalDecorator(std::unique_ptr<AbstractIntegrator<S>> integrator,
                             SignalConfig config = {})
-        : IntegratorDecorator<S, T>(std::move(integrator)), config_(std::move(config))
+        : IntegratorDecorator<S>(std::move(integrator)), config_(std::move(config))
         , last_signal_check_(std::chrono::steady_clock::now()) {
         
         config_.validate();
@@ -153,7 +153,7 @@ public:
     /**
      * @brief Override step to add signal processing
      */
-    void step(typename IntegratorDecorator<S, T>::state_type& state, T dt) override {
+    void step(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt) override {
         // Process signals before step
         if (config_.enable_real_time_processing) {
             process_signals(state, this->current_time());
@@ -170,7 +170,8 @@ public:
     /**
      * @brief Override integrate to handle signal processing during integration
      */
-    void integrate(typename IntegratorDecorator<S, T>::state_type& state, T dt, T end_time) override {
+    void integrate(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt, 
+                   typename IntegratorDecorator<S>::time_type end_time) override {
         processing_active_.store(true);
         auto processing_guard = make_scope_guard([this] { processing_active_.store(false); });
         
@@ -190,14 +191,14 @@ public:
      * @param signal_id Optional identifier for the signal
      * @param priority Signal priority level
      */
-    void register_signal_handler(std::function<void(S&, T)> handler, 
+    void register_signal_handler(std::function<void(S&, typename IntegratorDecorator<S>::time_type)> handler, 
                                  const std::string& signal_id = "",
                                  SignalPriority priority = SignalPriority::NORMAL) {
         std::lock_guard<std::mutex> lock(signal_mutex_);
         
         if (config_.enable_priority_queue) {
             // Add to priority queue
-            SignalInfo<S, T> signal_info;
+            SignalInfo<S> signal_info;
             signal_info.handler = std::move(handler);
             signal_info.priority = priority;
             signal_info.signal_id = signal_id;
@@ -216,7 +217,7 @@ public:
      * @brief Register multiple signal handlers at once
      * @param handlers Vector of signal handler functions
      */
-    void register_signal_handlers(const std::vector<std::function<void(S&, T)>>& handlers) {
+    void register_signal_handlers(const std::vector<std::function<void(S&, typename IntegratorDecorator<S>::time_type)>>& handlers) {
         std::lock_guard<std::mutex> lock(signal_mutex_);
         
         for (const auto& handler : handlers) {
@@ -251,7 +252,7 @@ public:
      * @param state Current state
      * @param time Current time
      */
-    void process_signals_now(S& state, T time) {
+    void process_signals_now(S& state, typename IntegratorDecorator<S>::time_type time) {
         process_signals(state, time);
     }
 
@@ -297,7 +298,7 @@ private:
     /**
      * @brief Process all pending signals
      */
-    void process_signals(S& state, T time) {
+    void process_signals(S& state, typename IntegratorDecorator<S>::time_type time) {
         auto now = std::chrono::steady_clock::now();
         
         // Check if it's time for signal processing
@@ -336,7 +337,7 @@ private:
     /**
      * @brief Process signals in batch mode
      */
-    void process_signal_batch(S& state, T time) {
+    void process_signal_batch(S& state, typename IntegratorDecorator<S>::time_type time) {
         if (signal_handlers_.empty() && signal_queue_.empty()) {
             return;
         }
@@ -370,7 +371,7 @@ private:
     /**
      * @brief Process signals from priority queue
      */
-    void process_priority_signals(S& state, T time) {
+    void process_priority_signals(S& state, typename IntegratorDecorator<S>::time_type time) {
         // For simplicity, process all signals in queue order
         // A real implementation might sort by priority first
         while (!signal_queue_.empty()) {

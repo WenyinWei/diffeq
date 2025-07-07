@@ -562,8 +562,8 @@ public:
  * - Robust: Error handling and reliability features
  * - Performance: Optimized for low-latency communication
  */
-template<system_state S, can_be_time T = double>
-class InterprocessDecorator : public IntegratorDecorator<S, T> {
+template<system_state S>
+class InterprocessDecorator : public IntegratorDecorator<S> {
 private:
     InterprocessConfig config_;
     std::unique_ptr<IPCChannel<T>> channel_;
@@ -594,9 +594,9 @@ public:
      * @param config Interprocess configuration (validated on construction)
      * @throws std::invalid_argument if config is invalid
      */
-    explicit InterprocessDecorator(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+    explicit InterprocessDecorator(std::unique_ptr<AbstractIntegrator<S>> integrator,
                                   InterprocessConfig config = {})
-        : IntegratorDecorator<S, T>(std::move(integrator)), config_(std::move(config)) {
+        : IntegratorDecorator<S>(std::move(integrator)), config_(std::move(config)) {
         
         config_.validate();
         initialize_channel();
