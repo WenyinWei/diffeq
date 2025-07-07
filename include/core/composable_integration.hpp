@@ -33,6 +33,11 @@
 #include "composable/async_decorator.hpp"
 #include "composable/output_decorator.hpp"
 #include "composable/signal_decorator.hpp"
+#include "composable/interpolation_decorator.hpp"
+#include "composable/interprocess_decorator.hpp"
+#include "composable/event_decorator.hpp"
+#include "composable/sde_synchronization.hpp"
+#include "composable/sde_multithreading.hpp"
 #include "composable/integrator_builder.hpp"
 
 namespace diffeq::core::composable {
@@ -53,6 +58,9 @@ namespace diffeq::core::composable {
  *    - AsyncDecorator: Asynchronous execution
  *    - OutputDecorator: Online/offline/hybrid output
  *    - SignalDecorator: Real-time signal processing
+ *    - InterpolationDecorator: Dense output and interpolation
+ *    - InterprocessDecorator: IPC communication
+ *    - EventDecorator: Event-driven feedback and control
  * 
  * 3. **Composition Builder (integrator_builder.hpp)**
  *    - Fluent interface for combining decorators

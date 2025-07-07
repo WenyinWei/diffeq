@@ -6,6 +6,9 @@
 #include "async_decorator.hpp"
 #include "output_decorator.hpp"
 #include "signal_decorator.hpp"
+#include "interpolation_decorator.hpp"
+#include "interprocess_decorator.hpp"
+#include "event_decorator.hpp"
 #include <memory>
 
 namespace diffeq::core::composable {
@@ -115,6 +118,42 @@ public:
     }
 
     /**
+     * @brief Add interpolation/dense output facility
+     * @param config Interpolation configuration (uses defaults if not specified)
+     * @return Reference to this builder for chaining
+     * @throws std::invalid_argument if config is invalid
+     */
+    IntegratorBuilder& with_interpolation(InterpolationConfig config = {}) {
+        integrator_ = std::make_unique<InterpolationDecorator<S, T>>(
+            std::move(integrator_), std::move(config));
+        return *this;
+    }
+
+    /**
+     * @brief Add interprocess communication facility
+     * @param config Interprocess configuration (uses defaults if not specified)
+     * @return Reference to this builder for chaining
+     * @throws std::invalid_argument if config is invalid
+     */
+    IntegratorBuilder& with_interprocess(InterprocessConfig config = {}) {
+        integrator_ = std::make_unique<InterprocessDecorator<S, T>>(
+            std::move(integrator_), std::move(config));
+        return *this;
+    }
+
+    /**
+     * @brief Add event-driven feedback facility
+     * @param config Event configuration (uses defaults if not specified)
+     * @return Reference to this builder for chaining
+     * @throws std::invalid_argument if config is invalid
+     */
+    IntegratorBuilder& with_events(EventConfig config = {}) {
+        integrator_ = std::make_unique<EventDecorator<S, T>>(
+            std::move(integrator_), std::move(config));
+        return *this;
+    }
+
+    /**
      * @brief Build the final composed integrator
      * @return Unique pointer to the composed integrator
      * 
@@ -187,6 +226,15 @@ public:
         }
         if (dynamic_cast<SignalDecorator<S, T>*>(integrator_.get())) {
             info += "Signal -> ";
+        }
+        if (dynamic_cast<InterpolationDecorator<S, T>*>(integrator_.get())) {
+            info += "Interpolation -> ";
+        }
+        if (dynamic_cast<InterprocessDecorator<S, T>*>(integrator_.get())) {
+            info += "Interprocess -> ";
+        }
+        if (dynamic_cast<EventDecorator<S, T>*>(integrator_.get())) {
+            info += "Events -> ";
         }
         
         info += "Base";
@@ -267,6 +315,48 @@ template<system_state S, can_be_time T = double>
 auto with_async_only(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
                      AsyncConfig config = {}) {
     return make_builder(std::move(integrator)).with_async(std::move(config)).build();
+}
+
+/**
+ * @brief Create integrator with only interpolation/dense output
+ * @tparam S State type
+ * @tparam T Time type
+ * @param integrator Base integrator
+ * @param config Interpolation configuration
+ * @return Interpolation-enabled integrator
+ */
+template<system_state S, can_be_time T = double>
+auto with_interpolation_only(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+                             InterpolationConfig config = {}) {
+    return make_builder(std::move(integrator)).with_interpolation(std::move(config)).build();
+}
+
+/**
+ * @brief Create integrator with only interprocess communication
+ * @tparam S State type
+ * @tparam T Time type
+ * @param integrator Base integrator
+ * @param config Interprocess configuration
+ * @return Interprocess-enabled integrator
+ */
+template<system_state S, can_be_time T = double>
+auto with_interprocess_only(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+                            InterprocessConfig config = {}) {
+    return make_builder(std::move(integrator)).with_interprocess(std::move(config)).build();
+}
+
+/**
+ * @brief Create integrator with only event-driven feedback
+ * @tparam S State type
+ * @tparam T Time type
+ * @param integrator Base integrator
+ * @param config Event configuration
+ * @return Event-enabled integrator
+ */
+template<system_state S, can_be_time T = double>
+auto with_events_only(std::unique_ptr<AbstractIntegrator<S, T>> integrator,
+                      EventConfig config = {}) {
+    return make_builder(std::move(integrator)).with_events(std::move(config)).build();
 }
 
 /**
