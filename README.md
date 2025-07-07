@@ -452,3 +452,7 @@ See [`LICENSE`](LICENSE) file for details.
 ## Contributing
 
 Contributions welcome! Please ensure all tests pass and maintain the pure C++ design philosophy.
+
+## Documentation
+
+Complete documentation is available online at: [https://WenyinWei.github.io/diffeq/](https://WenyinWei.github.io/diffeq/)
