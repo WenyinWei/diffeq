@@ -187,27 +187,21 @@ private:
             
             // Calculate residual: R = alpha[0]*y_{n+1} + sum(alpha[j]*y_{n+1-j}) - beta*h*f(t_{n+1}, y_{n+1})
             for (std::size_t i = 0; i < y_new.size(); ++i) {
-                auto residual_it = residual.begin();
-                auto y_new_it = y_new.begin();
-                auto f_new_it = f_new.begin();
-                
-                residual_it[i] = alpha_coeffs_[current_order_][0] * y_new_it[i];
+                residual[i] = alpha_coeffs_[current_order_][0] * y_new[i];
                 
                 // Add history terms
                 for (int j = 1; j <= current_order_ && j < static_cast<int>(y_history_.size()); ++j) {
-                    auto y_hist_it = y_history_[j].begin();
-                    residual_it[i] += alpha_coeffs_[current_order_][j] * y_hist_it[i];
+                    residual[i] += alpha_coeffs_[current_order_][j] * y_history_[j][i];
                 }
                 
                 // Subtract the f term
-                residual_it[i] -= beta_coeffs_[current_order_] * dt * f_new_it[i];
+                residual[i] -= beta_coeffs_[current_order_] * dt * f_new[i];
             }
             
             // Check convergence
             time_type residual_norm = 0;
             for (std::size_t i = 0; i < residual.size(); ++i) {
-                auto residual_it = residual.begin();
-                residual_norm += residual_it[i] * residual_it[i];
+                residual_norm += residual[i] * residual[i];
             }
             residual_norm = std::sqrt(residual_norm);
             
@@ -220,17 +214,13 @@ private:
             // Update y_new using simplified Newton step
             // For simplicity, we use a diagonal approximation of the Jacobian
             for (std::size_t i = 0; i < y_new.size(); ++i) {
-                auto y_new_it = y_new.begin();
-                auto residual_it = residual.begin();
-                auto f_new_it = f_new.begin();
-                
                 // Simplified Newton update: y_new -= residual / (alpha[0] - beta*h*df/dy)
                 // We approximate df/dy using finite differences
                 time_type df_dy = estimate_jacobian_diagonal(i, y_new, dt);
                 time_type denominator = alpha_coeffs_[current_order_][0] - beta_coeffs_[current_order_] * dt * df_dy;
                 
                 if (std::abs(denominator) > newton_tolerance_) {
-                    y_new_it[i] -= residual_it[i] / denominator;
+                    y_new[i] -= residual[i] / denominator;
                 }
             }
         }
@@ -251,14 +241,11 @@ private:
         
         // Perturb y[i] and evaluate f
         y_pert = y;
-        auto y_pert_it = y_pert.begin();
-        y_pert_it[i] += epsilon;
+        y_pert[i] += epsilon;
         this->sys_(this->current_time_ + dt, y_pert, f_pert);
         
         // Estimate ∂f_i/∂y_i
-        auto f_orig_it = f_orig.begin();
-        auto f_pert_it = f_pert.begin();
-        return (f_pert_it[i] - f_orig_it[i]) / epsilon;
+        return (f_pert[i] - f_orig[i]) / epsilon;
     }
     
     void calculate_error_estimate(const state_type& y_new, state_type& error, time_type dt) {
@@ -269,26 +256,20 @@ private:
             
             // Reconstruct solution using previous order
             for (std::size_t i = 0; i < y_new.size(); ++i) {
-                auto y_prev_order_it = y_prev_order.begin();
-                auto y_new_it = y_new.begin();
-                
-                y_prev_order_it[i] = alpha_coeffs_[current_order_ - 1][0] * y_new_it[i];
+                y_prev_order[i] = alpha_coeffs_[current_order_ - 1][0] * y_new[i];
                 
                 // Add history terms for previous order
                 for (int j = 1; j < current_order_ && j < static_cast<int>(y_history_.size()); ++j) {
-                    auto y_hist_it = y_history_[j].begin();
-                    y_prev_order_it[i] += alpha_coeffs_[current_order_ - 1][j] * y_hist_it[i];
+                    y_prev_order[i] += alpha_coeffs_[current_order_ - 1][j] * y_history_[j][i];
                 }
                 
                 // Calculate error as difference
-                auto error_it = error.begin();
-                error_it[i] = std::abs(y_new_it[i] - y_prev_order_it[i]);
+                error[i] = std::abs(y_new[i] - y_prev_order[i]);
             }
         } else {
             // Fallback error estimate
             for (std::size_t i = 0; i < y_new.size(); ++i) {
-                auto error_it = error.begin();
-                error_it[i] = static_cast<time_type>(1e-6);
+                error[i] = static_cast<time_type>(1e-6);
             }
         }
     }
@@ -306,11 +287,7 @@ private:
             this->sys_(this->current_time_ + small_dt, y_new, f_new);
             
             for (std::size_t i = 0; i < state.size(); ++i) {
-                auto y_new_it = y_new.begin();
-                auto f_new_it = f_new.begin();
-                auto state_it = state.begin();
-                
-                y_new_it[i] = state_it[i] + small_dt * f_new_it[i];
+                y_new[i] = state[i] + small_dt * f_new[i];
             }
         }
         

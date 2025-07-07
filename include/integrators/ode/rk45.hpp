@@ -81,89 +81,50 @@ public:
         constexpr time_type c4_4 = static_cast<time_type>(393.0/640.0);
         constexpr time_type c5_4 = static_cast<time_type>(-92097.0/339200.0);
         constexpr time_type c6_4 = static_cast<time_type>(187.0/2100.0);
-        constexpr time_type c7_4 = static_cast<time_type>(1.0/40.0);
+        // Note: c7_4 = 1.0/40.0 is not used in RK45 (only in RK45 with FSAL)
 
         // k1 = f(t, y)
         this->sys_(this->current_time_, state, k1);
         
         // k2 = f(t + a2*dt, y + dt*(b21*k1))
         for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto k1_it = k1.begin();
-            auto temp_it = temp_state.begin();
-            temp_it[i] = state_it[i] + dt * b21 * k1_it[i];
+            temp_state[i] = state[i] + dt * b21 * k1[i];
         }
         this->sys_(this->current_time_ + a2 * dt, temp_state, k2);
         
         // k3 = f(t + a3*dt, y + dt*(b31*k1 + b32*k2))
         for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto temp_it = temp_state.begin();
-            temp_it[i] = state_it[i] + dt * (b31 * k1_it[i] + b32 * k2_it[i]);
+            temp_state[i] = state[i] + dt * (b31 * k1[i] + b32 * k2[i]);
         }
         this->sys_(this->current_time_ + a3 * dt, temp_state, k3);
         
         // k4 = f(t + a4*dt, y + dt*(b41*k1 + b42*k2 + b43*k3))
         for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto temp_it = temp_state.begin();
-            temp_it[i] = state_it[i] + dt * (b41 * k1_it[i] + b42 * k2_it[i] + b43 * k3_it[i]);
+            temp_state[i] = state[i] + dt * (b41 * k1[i] + b42 * k2[i] + b43 * k3[i]);
         }
         this->sys_(this->current_time_ + a4 * dt, temp_state, k4);
         
         // k5 = f(t + a5*dt, y + dt*(b51*k1 + b52*k2 + b53*k3 + b54*k4))
         for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto k4_it = k4.begin();
-            auto temp_it = temp_state.begin();
-            temp_it[i] = state_it[i] + dt * (b51 * k1_it[i] + b52 * k2_it[i] + b53 * k3_it[i] + b54 * k4_it[i]);
+            temp_state[i] = state[i] + dt * (b51 * k1[i] + b52 * k2[i] + b53 * k3[i] + b54 * k4[i]);
         }
         this->sys_(this->current_time_ + a5 * dt, temp_state, k5);
         
         // k6 = f(t + dt, y + dt*(b61*k1 + b62*k2 + b63*k3 + b64*k4 + b65*k5))
         for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto k1_it = k1.begin();
-            auto k2_it = k2.begin();
-            auto k3_it = k3.begin();
-            auto k4_it = k4.begin();
-            auto k5_it = k5.begin();
-            auto temp_it = temp_state.begin();
-            temp_it[i] = state_it[i] + dt * (b61 * k1_it[i] + b62 * k2_it[i] + b63 * k3_it[i] + b64 * k4_it[i] + b65 * k5_it[i]);
+            temp_state[i] = state[i] + dt * (b61 * k1[i] + b62 * k2[i] + b63 * k3[i] + b64 * k4[i] + b65 * k5[i]);
         }
         this->sys_(this->current_time_ + dt, temp_state, k6);
         
         // 5th order solution: y_new = y + dt*(c1*k1 + c3*k3 + c4*k4 + c5*k5 + c6*k6)
         for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto k1_it = k1.begin();
-            auto k3_it = k3.begin();
-            auto k4_it = k4.begin();
-            auto k5_it = k5.begin();
-            auto k6_it = k6.begin();
-            auto y_new_it = y_new.begin();
-            y_new_it[i] = state_it[i] + dt * (c1 * k1_it[i] + c3 * k3_it[i] + c4 * k4_it[i] + c5 * k5_it[i] + c6 * k6_it[i]);
+            y_new[i] = state[i] + dt * (c1 * k1[i] + c3 * k3[i] + c4 * k4[i] + c5 * k5[i] + c6 * k6[i]);
         }
         
         // 4th order solution for error estimation
         for (std::size_t i = 0; i < state.size(); ++i) {
-            auto state_it = state.begin();
-            auto k1_it = k1.begin();
-            auto k3_it = k3.begin();
-            auto k4_it = k4.begin();
-            auto k5_it = k5.begin();
-            auto k6_it = k6.begin();
-            auto error_it = error.begin();
-            error_it[i] = dt * ((c1 - c1_4) * k1_it[i] + (c3 - c3_4) * k3_it[i] + (c4 - c4_4) * k4_it[i] + 
-                               (c5 - c5_4) * k5_it[i] + (c6 - c6_4) * k6_it[i]);
+            error[i] = dt * ((c1 - c1_4) * k1[i] + (c3 - c3_4) * k3[i] + (c4 - c4_4) * k4[i] + 
+                            (c5 - c5_4) * k5[i] + (c6 - c6_4) * k6[i]);
         }
         
         // Calculate error norm
