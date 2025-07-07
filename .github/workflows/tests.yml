@@ -87,15 +87,7 @@ jobs:
       
     - name: Install xmake
       run: |
-        # Try chocolatey first, then fallback to official installer
-        try {
-          choco install xmake -y
-        } catch {
-          Write-Host "Chocolatey installation failed, trying official installer..."
-          Invoke-Expression (Invoke-Webrequest 'https://xmake.io/psget.text' -UseBasicParsing).Content
-          $env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"
-          echo "$env:USERPROFILE\.local\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        }
+        Invoke-Expression (Invoke-Webrequest 'https://xmake.io/psget.text' -UseBasicParsing).Content
         
     - name: Verify xmake installation
       run: |

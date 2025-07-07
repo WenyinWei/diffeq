@@ -46,6 +46,9 @@
 .xmake/
 build/
 
+# Generated documentation
+docs/generated/
+
 # vscode config
 .vscode/
 

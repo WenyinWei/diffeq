@@ -49,7 +49,7 @@ HTML_EXTRA_FILES       =
 HTML_COLORSTYLE_HUE    = 220
 HTML_COLORSTYLE_SAT    = 100
 HTML_COLORSTYLE_GAMMA  = 80
-HTML_TIMESTAMP         = NO
+# HTML_TIMESTAMP is obsolete in newer Doxygen versions
 HTML_DYNAMIC_MENUS     = YES
 HTML_DYNAMIC_SECTIONS  = NO
 GENERATE_LATEX         = NO
@@ -61,20 +61,20 @@ LATEX_FOOTER           =
 LATEX_EXTRA_STYLESHEET = 
 LATEX_EXTRA_FILES      = 
 LATEX_BIB_STYLE        = plain
-LATEX_TIMESTAMP        = NO
+# LATEX_TIMESTAMP is obsolete in newer Doxygen versions
 LATEX_EMOJI_DIRECTORY  = 
 GENERATE_RTF           = NO
 RTF_OUTPUT             = rtf
 RTF_EXTENSIONS_FILE    = 
 RTF_STYLESHEET_FILE    = 
-RTF_LATEX_FONTSIZE     = 10
-RTF_TIMESTAMP          = NO
+# RTF_LATEX_FONTSIZE is obsolete in newer Doxygen versions
+# RTF_TIMESTAMP is obsolete in newer Doxygen versions
 GENERATE_MAN           = NO
 MAN_OUTPUT             = man
 MAN_EXTENSION          = .3
 MAN_SUBDIR             = 
 MAN_LINKS              = NO
-GENERATE_XML           = NO
+GENERATE_XML           = YES
 XML_OUTPUT             = xml
 XML_PROGRAMLISTING     = YES
 XML_NS_MEMB_FILE_SCOPE = NO
@@ -178,7 +178,7 @@ DISABLE_INDEX          = NO
 ENUM_VALUES_PER_LINE   = 4
 GENERATE_HTML          = YES
 HTML_DYNAMIC_SECTIONS  = NO
-HTML_TIMESTAMP         = NO
+# HTML_TIMESTAMP is obsolete in newer Doxygen versions
 GENERATE_TREEVIEW      = YES
 TREEVIEW_WIDTH         = 250
 
@@ -242,7 +242,7 @@ HTML_OUTPUT            = html
 GENERATE_LATEX         = NO
 GENERATE_RTF           = NO
 GENERATE_MAN           = NO
-GENERATE_XML           = NO
+GENERATE_XML           = YES
 GENERATE_DOCBOOK       = NO
 
 # Search options
