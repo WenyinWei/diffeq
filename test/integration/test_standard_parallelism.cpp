@@ -1,11 +1,17 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <execution>
 #include <cassert>
 #include <chrono>
 #include <functional>
 #include <cmath>
+#include <numeric>
+
+// Check for parallel execution support
+#if defined(__cpp_lib_execution) && __cpp_lib_execution >= 201902L
+    #include <execution>
+    #define PARALLEL_EXECUTION_AVAILABLE
+#endif
 
 /**
  * @brief Test standard library parallelism integration
@@ -58,16 +64,29 @@ void test_std_execution_multiple_conditions() {
     std::iota(indices.begin(), indices.end(), 0);
     
     // Parallel execution using std::execution::par (no custom classes!)
+#ifdef PARALLEL_EXECUTION_AVAILABLE
     std::for_each(std::execution::par, indices.begin(), indices.end(),
-                 [&](size_t i) {
-                     auto ode_function = [&](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+                 [&system, &states, &times, dt, steps](size_t i) {
+                     auto ode_function = [&system](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                          system(t, y, dydt);
                      };
                      
-                     for (int step = 0; step < steps; ++step) {
+                     for (int j = 0; j < steps; ++j) {
                          euler_step(ode_function, states[i], times[i], dt);
                      }
                  });
+#else
+    // Sequential fallback for platforms without parallel execution support
+    for (size_t i : indices) {
+        auto ode_function = [&system](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+            system(t, y, dydt);
+        };
+        
+        for (int j = 0; j < steps; ++j) {
+            euler_step(ode_function, states[i], times[i], dt);
+        }
+    }
+#endif
     
     // Verify exponential decay
     double expected = 1.0 * std::exp(-system.decay_rate * steps * dt);
@@ -94,8 +113,9 @@ void test_parameter_sweep() {
     std::iota(indices.begin(), indices.end(), 0);
     
     // Parallel parameter sweep using std::execution
+#ifdef PARALLEL_EXECUTION_AVAILABLE
     std::for_each(std::execution::par, indices.begin(), indices.end(),
-                 [&](size_t i) {
+                 [&decay_rates, &results, &times, &initial_state, dt, steps](size_t i) {
                      results[i] = initial_state;
                      times[i] = 0.0;
                      
@@ -104,10 +124,26 @@ void test_parameter_sweep() {
                          dydt[0] = -decay_rate * y[0];  // Parameterized decay rate
                      };
                      
-                     for (int step = 0; step < steps; ++step) {
+                     for (int j = 0; j < steps; ++j) {
                          euler_step(ode_function, results[i], times[i], dt);
                      }
                  });
+#else
+    // Sequential fallback for platforms without parallel execution support
+    for (size_t i : indices) {
+        results[i] = initial_state;
+        times[i] = 0.0;
+        
+        double decay_rate = decay_rates[i];
+        auto ode_function = [decay_rate](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+            dydt[0] = -decay_rate * y[0];  // Parameterized decay rate
+        };
+        
+        for (int j = 0; j < steps; ++j) {
+            euler_step(ode_function, results[i], times[i], dt);
+        }
+    }
+#endif
     
     // Verify that different parameters give different results
     assert(results.size() == decay_rates.size());
@@ -140,21 +176,22 @@ void test_different_integrators() {
     std::iota(indices.begin(), indices.end(), 0);
     
     // Compare different integration methods in parallel
+#ifdef PARALLEL_EXECUTION_AVAILABLE
     std::for_each(std::execution::par, indices.begin(), indices.end(),
-                 [&](size_t i) {
+                 [&system, &euler_results, &rk2_results, dt, steps](size_t i) {
                      double time_euler = 0.0, time_rk2 = 0.0;
                      
-                     auto ode_function = [&](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+                     auto ode_function = [&system](double t, const std::vector<double>& y, std::vector<double>& dydt) {
                          system(t, y, dydt);
                      };
                      
                      // Euler method
-                     for (int step = 0; step < steps; ++step) {
+                     for (int j = 0; j < steps; ++j) {
                          euler_step(ode_function, euler_results[i], time_euler, dt);
                      }
                      
                      // Simple RK2 (midpoint method)
-                     for (int step = 0; step < steps; ++step) {
+                     for (int k = 0; k < steps; ++k) {
                          std::vector<double> k1(1), k2(1), temp_state(1);
                          double temp_time = time_rk2;
                          
@@ -166,6 +203,34 @@ void test_different_integrators() {
                          time_rk2 += dt;
                      }
                  });
+#else
+    // Sequential fallback for platforms without parallel execution support
+    for (size_t i : indices) {
+        double time_euler = 0.0, time_rk2 = 0.0;
+        
+        auto ode_function = [&system](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+            system(t, y, dydt);
+        };
+        
+        // Euler method
+        for (int j = 0; j < steps; ++j) {
+            euler_step(ode_function, euler_results[i], time_euler, dt);
+        }
+        
+        // Simple RK2 (midpoint method)
+        for (int k = 0; k < steps; ++k) {
+            std::vector<double> k1(1), k2(1), temp_state(1);
+            double temp_time = time_rk2;
+            
+            ode_function(temp_time, rk2_results[i], k1);
+            temp_state[0] = rk2_results[i][0] + dt * k1[0] / 2.0;
+            temp_time += dt / 2.0;
+            ode_function(temp_time, temp_state, k2);
+            rk2_results[i][0] += dt * k2[0];
+            time_rk2 += dt;
+        }
+    }
+#endif
     
     // Verify both methods give reasonable results
     assert(euler_results[0][0] > 0.1 && euler_results[0][0] < 1.0);
@@ -195,11 +260,11 @@ void test_openmp() {
     // OpenMP parallel loop - no custom classes needed!
     #pragma omp parallel for
     for (int i = 0; i < num_conditions; ++i) {
-        auto ode_function = [&](double t, const std::vector<double>& y, std::vector<double>& dydt) {
+        auto ode_function = [&system](double t, const std::vector<double>& y, std::vector<double>& dydt) {
             system(t, y, dydt);
         };
         
-        for (int step = 0; step < steps; ++step) {
+        for (int j = 0; j < steps; ++j) {
             euler_step(ode_function, states[i], times[i], dt);
         }
     }
@@ -217,7 +282,7 @@ void test_hardware_detection() {
     std::cout << "Testing standard library hardware detection...\n";
     
     // std::execution availability
-    #ifdef __cpp_lib_execution
+    #ifdef PARALLEL_EXECUTION_AVAILABLE
     bool std_execution_available = true;
     #else
     bool std_execution_available = false;
