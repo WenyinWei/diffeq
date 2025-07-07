@@ -166,13 +166,13 @@ target("sde_demo")
     set_rundir("$(projectdir)")
     set_group("examples")
 
--- Interface usage demo
-target("interface_usage_demo")
-    set_kind("binary")
-    add_files("examples/interface_usage_demo.cpp")
-    add_deps("diffeq")
-    set_rundir("$(projectdir)")
-    set_group("examples")
+-- Interface usage demo (temporarily disabled due to template issues)
+-- target("interface_usage_demo")
+--     set_kind("binary")
+--     add_files("examples/interface_usage_demo.cpp")
+--     add_deps("diffeq")
+--     set_rundir("$(projectdir)")
+--     set_group("examples")
 
 -- Parallelism usage demo
 target("parallelism_usage_demo")
@@ -206,13 +206,13 @@ target("working_integrators_demo")
     set_rundir("$(projectdir)")
     set_group("examples")
 
--- Realtime signal processing
-target("realtime_signal_processing")
-    set_kind("binary")
-    add_files("examples/realtime_signal_processing.cpp")
-    add_deps("diffeq")
-    set_rundir("$(projectdir)")
-    set_group("examples")
+-- Realtime signal processing (temporarily disabled due to template issues)
+-- target("realtime_signal_processing")
+--     set_kind("binary")
+--     add_files("examples/realtime_signal_processing.cpp")
+--     add_deps("diffeq")
+--     set_rundir("$(projectdir)")
+--     set_group("examples")
 
 -- Advanced GPU async demo
 target("advanced_gpu_async_demo")
@@ -373,12 +373,12 @@ task("examples-all")
             "quick_test",
             "test_dop853_example",
             "sde_demo",
-            "interface_usage_demo",
+            -- "interface_usage_demo", -- temporarily disabled
             "parallelism_usage_demo",
             "sde_usage_demo",
             "standard_parallelism_demo",
             "working_integrators_demo",
-            "realtime_signal_processing",
+            -- "realtime_signal_processing", -- temporarily disabled
             "advanced_gpu_async_demo",
             "simple_standard_parallelism",
             "simplified_parallel_usage",

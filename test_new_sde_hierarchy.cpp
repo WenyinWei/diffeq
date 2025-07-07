@@ -15,9 +15,9 @@ int main() {
     };
     
     // Create SDE problem and Wiener process
-    auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>, double>(
+    auto problem = diffeq::sde::factory::make_sde_problem<std::vector<double>>(
         drift, diffusion, diffeq::sde::NoiseType::DIAGONAL_NOISE);
-    auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>, double>(1, 42);
+    auto wiener = diffeq::sde::factory::make_wiener_process<std::vector<double>>(1, 42);
     
     std::vector<double> state = {100.0};  // Initial state
     double dt = 0.01;
@@ -27,7 +27,7 @@ int main() {
     // Test Euler-Maruyama
     {
         std::cout << "\n=== Testing Euler-Maruyama ===" << std::endl;
-        diffeq::sde::EulerMaruyamaIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = state;
         integrator.set_time(0.0);
         wiener->set_seed(12345);
@@ -41,7 +41,7 @@ int main() {
     // Test Milstein
     {
         std::cout << "\n=== Testing Milstein ===" << std::endl;
-        diffeq::sde::MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::MilsteinIntegrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = state;
         integrator.set_time(0.0);
         wiener->set_seed(12345);
@@ -55,7 +55,7 @@ int main() {
     // Test SRI1
     {
         std::cout << "\n=== Testing SRI1 ===" << std::endl;
-        diffeq::sde::SRI1Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRI1Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = state;
         integrator.set_time(0.0);
         wiener->set_seed(12345);
@@ -69,7 +69,7 @@ int main() {
     // Test SRA1
     {
         std::cout << "\n=== Testing SRA1 ===" << std::endl;
-        diffeq::sde::SRA1Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRA1Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = state;
         integrator.set_time(0.0);
         wiener->set_seed(12345);
@@ -83,7 +83,7 @@ int main() {
     // Test SOSRA
     {
         std::cout << "\n=== Testing SOSRA ===" << std::endl;
-        diffeq::sde::SOSRAIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SOSRAIntegrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = state;
         integrator.set_time(0.0);
         wiener->set_seed(12345);
@@ -97,7 +97,7 @@ int main() {
     // Test SRIW1
     {
         std::cout << "\n=== Testing SRIW1 ===" << std::endl;
-        diffeq::sde::SRIW1Integrator<std::vector<double>, double> integrator(problem, wiener);
+        diffeq::SRIW1Integrator<std::vector<double>> integrator(problem, wiener);
         std::vector<double> S = state;
         integrator.set_time(0.0);
         wiener->set_seed(12345);
