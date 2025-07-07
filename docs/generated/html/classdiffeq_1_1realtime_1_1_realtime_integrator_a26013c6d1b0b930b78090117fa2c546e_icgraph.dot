@@ -1,0 +1,11 @@
+digraph "diffeq::realtime::RealtimeIntegrator::send_control_signal"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="diffeq::realtime::Realtime\lIntegrator::send_control_signal",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Send control signal (for robotics applications)"];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="diffeq::realtime::Realtime\lIntegrator::emergency_stop",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1realtime_1_1_realtime_integrator.html#a58520790b3f41e41efdb11f21b663830",tooltip="Emergency stop - immediately halt integration."];
+}

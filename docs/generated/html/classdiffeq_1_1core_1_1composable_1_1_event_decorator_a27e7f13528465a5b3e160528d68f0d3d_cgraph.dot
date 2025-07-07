@@ -1,0 +1,11 @@
+digraph "diffeq::core::composable::EventDecorator::EventDecorator"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="diffeq::core::composable\l::EventDecorator::EventDecorator",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Construct event decorator."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="diffeq::core::composable\l::EventDecorator::config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_event_decorator.html#a3ea77cb0e1faf49d2627d4a166c3a1f8",tooltip="Access and modify event configuration."];
+}

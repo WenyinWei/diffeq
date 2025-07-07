@@ -1,0 +1,14 @@
+digraph "diffeq::realtime::RealtimeIntegrator::integrate"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="diffeq::realtime::Realtime\lIntegrator::integrate",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Enhanced integrate function with real-time capabilities."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="diffeq::realtime::Realtime\lIntegrator::start_realtime",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1realtime_1_1_realtime_integrator.html#a273084dcec6162edbf87f0ec23508703",tooltip="Start real-time operation."];
+  Node2 -> Node2 [id="edge2_Node000002_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node1 -> Node3 [id="edge3_Node000001_Node000003",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="diffeq::realtime::Realtime\lIntegrator::step",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1realtime_1_1_realtime_integrator.html#a801cfdb3a4ad32a6f9b243518d7ebdcc",tooltip="Enhanced step function with signal processing."];
+}

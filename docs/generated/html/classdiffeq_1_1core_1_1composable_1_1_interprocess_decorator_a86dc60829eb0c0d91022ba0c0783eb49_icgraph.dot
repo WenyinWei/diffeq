@@ -1,0 +1,13 @@
+digraph "diffeq::core::composable::InterprocessDecorator::send_state"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="diffeq::core::composable\l::InterprocessDecorator\l::send_state",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Send state data to other processes."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="diffeq::core::composable\l::InterprocessDecorator\l::integrate",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html#a37bd5f1fb898f63a5ab723ca35d87b86",tooltip="Override integrate to handle IPC during integration."];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="diffeq::core::composable\l::InterprocessDecorator::step",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html#af3e5a129a40be44a3b0ea2f474837c00",tooltip="Override step to handle IPC during integration."];
+}
