@@ -4,6 +4,10 @@
 #include <iterator>
 #include <string>
 
+// Time type concept - basic arithmetic types that can represent time
+template<typename T>
+concept can_be_time = std::is_arithmetic_v<T>;
+
 // State concept - supports vectors, matrices, multi-dimensional tensors, etc.
 template<typename T>
 concept system_state = requires(T state) {

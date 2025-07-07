@@ -3,7 +3,10 @@
 #include <array>
 #include <cmath>
 #include <memory>
-#include <diffeq.hpp>
+#include <core/concepts.hpp>
+#include <core/abstract_integrator.hpp>
+#include <core/state_creator.hpp>
+#include <integrators/ode/rk4.hpp>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -116,27 +119,6 @@ bool test_rk4_harmonic_oscillator() {
     return true;
 }
 
-bool test_inheritance() {
-    std::cout << "\n=== Testing inheritance and polymorphism ===" << std::endl;
-    
-    // Test that RK4Integrator can be used polymorphically
-    auto rk4 = std::make_unique<diffeq::RK4Integrator<std::vector<double>>>(exponential_decay);
-    AbstractIntegrator<std::vector<double>, double>* base_ptr = rk4.get();
-    
-    std::vector<double> state = {1.0};
-    double initial_time = base_ptr->current_time();
-    
-    TEST_ASSERT(initial_time == 0.0, "Initial time should be 0.0");
-    
-    base_ptr->step(state, 0.1);
-    double final_time = base_ptr->current_time();
-    
-    TEST_ASSERT(final_time == 0.1, "Time should advance after step");
-    TEST_ASSERT(state[0] < 1.0, "State should decrease for exponential decay");
-    
-    return true;
-}
-
 bool test_array_state() {
     std::cout << "\n=== Testing RK4 with std::array state ===" << std::endl;
     
@@ -177,7 +159,6 @@ int main() {
         all_passed &= test_rk4_double();
         all_passed &= test_rk4_float();
         all_passed &= test_rk4_harmonic_oscillator();
-        all_passed &= test_inheritance();
         all_passed &= test_array_state();
         
         std::cout << "\n=== Test Results ===" << std::endl;

@@ -18,10 +18,10 @@ namespace diffeq::core::composable {
  * - Delegation: Forwards calls to wrapped integrator by default
  * - Extensibility: Easy to add new decorators without modification
  */
-template<system_state S, can_be_time T = double>
-class IntegratorDecorator : public AbstractIntegrator<S, T> {
+template<system_state S>
+class IntegratorDecorator : public AbstractIntegrator<S> {
 public:
-    using base_type = AbstractIntegrator<S, T>;
+    using base_type = AbstractIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using system_function = typename base_type::system_function;
