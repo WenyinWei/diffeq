@@ -125,7 +125,12 @@ void test_basic_sde_solvers() {
     
     // Test Milstein
     {
-        diffeq::MilsteinIntegrator<std::vector<double>> integrator(problem, wiener);
+        // For Geometric Brownian Motion g(t, S) = σ * S, so g'(t, S) = σ
+        auto diffusion_derivative = [&gbm](double t, const std::vector<double>& S, std::vector<double>& dgS) {
+            dgS[0] = gbm.sigma;  // Derivative of σ * S with respect to S is σ
+        };
+        
+        diffeq::MilsteinIntegrator<std::vector<double>> integrator(problem, diffusion_derivative, wiener);
         std::vector<double> S = {100.0};
         
         double dt = 0.01;

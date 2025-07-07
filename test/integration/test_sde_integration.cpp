@@ -93,8 +93,8 @@ void test_sde_infrastructure() {
     double expected_std = std::sqrt(0.01);
     assert(std::abs(dW[0]) < 5 * expected_std); // 5-sigma test
 
-    std::cout << "  âœ?SDE problem and Wiener process creation\n";
-    std::cout << "  âœ?Noise generation (dW[0] = " << dW[0] << ")\n";
+    std::cout << "  ï¿½?SDE problem and Wiener process creation\n";
+    std::cout << "  ï¿½?Noise generation (dW[0] = " << dW[0] << ")\n";
 }
 
 void test_euler_maruyama() {
@@ -105,7 +105,7 @@ void test_euler_maruyama() {
         test_problems::gbm_drift, test_problems::gbm_diffusion);
     auto wiener = factory::make_wiener_process<std::vector<double>>(1, 42);
 
-    EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
+    diffeq::EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
 
     // Test integration
     std::vector<double> state = {100.0};  // Initial stock price
@@ -120,9 +120,9 @@ void test_euler_maruyama() {
     // Result should be reasonable (not too far from initial value for small T)
     assert(state[0] > 50.0 && state[0] < 200.0);
 
-    std::cout << "  âœ?GBM integration: S(0) = 100.0 â†?S(" << T << ") = " 
+    std::cout << "  ï¿½?GBM integration: S(0) = 100.0 ï¿½?S(" << T << ") = " 
               << std::fixed << std::setprecision(2) << state[0] << "\n";
-    std::cout << "  âœ?Method: " << integrator.name() << "\n";
+    std::cout << "  ï¿½?Method: " << integrator.name() << "\n";
 }
 
 void test_milstein_method() {
@@ -132,7 +132,13 @@ void test_milstein_method() {
         test_problems::gbm_drift, test_problems::gbm_diffusion);
     auto wiener = factory::make_wiener_process<std::vector<double>>(1, 123);
 
-    MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
+    // For GBM g(t, S) = Ïƒ * S, so g'(t, S) = Ïƒ
+    auto diffusion_derivative = [](double t, const std::vector<double>& x, std::vector<double>& dgx) {
+        double sigma = 0.2;  // Same as in gbm_diffusion
+        dgx[0] = sigma;
+    };
+
+    diffeq::MilsteinIntegrator<std::vector<double>> integrator(problem, diffusion_derivative, wiener);
 
     std::vector<double> state = {100.0};
     double dt = 0.001;
@@ -143,9 +149,9 @@ void test_milstein_method() {
     assert(state[0] > 0);
     assert(state[0] > 50.0 && state[0] < 200.0);
 
-    std::cout << "  âœ?GBM integration: S(0) = 100.0 â†?S(" << T << ") = " 
+    std::cout << "  ï¿½?GBM integration: S(0) = 100.0 ï¿½?S(" << T << ") = " 
               << std::fixed << std::setprecision(2) << state[0] << "\n";
-    std::cout << "  âœ?Method: " << integrator.name() << "\n";
+    std::cout << "  ï¿½?Method: " << integrator.name() << "\n";
 }
 
 void test_sri1_method() {
@@ -155,7 +161,7 @@ void test_sri1_method() {
         test_problems::ou_drift, test_problems::ou_diffusion);
     auto wiener = factory::make_wiener_process<std::vector<double>>(1, 456);
 
-    SRI1Integrator<std::vector<double>, double> integrator(problem, wiener);
+    diffeq::SRI1Integrator<std::vector<double>> integrator(problem, wiener);
 
     std::vector<double> state = {1.0};  // Initial value
     double dt = 0.001;
@@ -166,9 +172,9 @@ void test_sri1_method() {
     // OU process should be bounded and tend toward mean
     assert(std::abs(state[0]) < 5.0);  // Reasonable bounds
 
-    std::cout << "  âœ?OU process integration: X(0) = 1.0 â†?X(" << T << ") = " 
+    std::cout << "  ï¿½?OU process integration: X(0) = 1.0 ï¿½?X(" << T << ") = " 
               << std::fixed << std::setprecision(3) << state[0] << "\n";
-    std::cout << "  âœ?Method: " << integrator.name() << "\n";
+    std::cout << "  ï¿½?Method: " << integrator.name() << "\n";
 }
 
 void test_implicit_euler_maruyama() {
@@ -178,7 +184,7 @@ void test_implicit_euler_maruyama() {
         test_problems::ou_drift, test_problems::ou_diffusion);
     auto wiener = factory::make_wiener_process<std::vector<double>>(1, 789);
 
-    ImplicitEulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
+    diffeq::ImplicitEulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
 
     std::vector<double> state = {2.0};
     double dt = 0.01;  // Larger time step to test stability
@@ -188,9 +194,9 @@ void test_implicit_euler_maruyama() {
 
     assert(std::abs(state[0]) < 5.0);
 
-    std::cout << "  âœ?OU process integration: X(0) = 2.0 â†?X(" << T << ") = " 
+    std::cout << "  ï¿½?OU process integration: X(0) = 2.0 ï¿½?X(" << T << ") = " 
               << std::fixed << std::setprecision(3) << state[0] << "\n";
-    std::cout << "  âœ?Method: " << integrator.name() << "\n";
+    std::cout << "  ï¿½?Method: " << integrator.name() << "\n";
 }
 
 void test_multidimensional_sde() {
@@ -200,7 +206,7 @@ void test_multidimensional_sde() {
         test_problems::multi_drift, test_problems::multi_diffusion);
     auto wiener = factory::make_wiener_process<std::vector<double>>(2, 999);
 
-    EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
+    diffeq::EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
 
     std::vector<double> state = {1.0, 1.0};  // Initial values
     double dt = 0.001;
@@ -212,7 +218,7 @@ void test_multidimensional_sde() {
     assert(state[0] > 0 && state[0] < 10.0);
     assert(state[1] > 0 && state[1] < 10.0);
 
-    std::cout << "  âœ?2D system: [1.0, 1.0] â†?[" 
+    std::cout << "  ï¿½?2D system: [1.0, 1.0] ï¿½?[" 
               << std::fixed << std::setprecision(3) << state[0] << ", " << state[1] << "]\n";
 }
 
@@ -225,12 +231,12 @@ void test_noise_types() {
             test_problems::multi_drift, test_problems::multi_diffusion, NoiseType::SCALAR_NOISE);
         auto wiener = factory::make_wiener_process<std::vector<double>>(1, 111);
 
-        EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
+        diffeq::EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
         
         std::vector<double> state = {1.0, 1.0};
         integrator.integrate(state, 0.001, 0.05);
         
-        std::cout << "  âœ?Scalar noise: [1.0, 1.0] â†?[" 
+        std::cout << "  ï¿½?Scalar noise: [1.0, 1.0] ï¿½?[" 
                   << std::fixed << std::setprecision(3) << state[0] << ", " << state[1] << "]\n";
     }
 
@@ -240,12 +246,18 @@ void test_noise_types() {
             test_problems::multi_drift, test_problems::multi_diffusion, NoiseType::DIAGONAL_NOISE);
         auto wiener = factory::make_wiener_process<std::vector<double>>(2, 222);
 
-        MilsteinIntegrator<std::vector<double>, double> integrator(problem, wiener);
+        // For multi_diffusion g(t, x) = [0.2*x[0], 0.15*x[1]], so g'(t, x) = [0.2, 0.15]
+        auto diffusion_derivative = [](double t, const std::vector<double>& x, std::vector<double>& dgx) {
+            dgx[0] = 0.2;   // Derivative of 0.2*x[0] w.r.t. x[0] 
+            dgx[1] = 0.15;  // Derivative of 0.15*x[1] w.r.t. x[1]
+        };
+
+        diffeq::MilsteinIntegrator<std::vector<double>> integrator(problem, diffusion_derivative, wiener);
         
         std::vector<double> state = {1.0, 1.0};
         integrator.integrate(state, 0.001, 0.05);
         
-        std::cout << "  âœ?Diagonal noise: [1.0, 1.0] â†?[" 
+        std::cout << "  ï¿½?Diagonal noise: [1.0, 1.0] ï¿½?[" 
                   << std::fixed << std::setprecision(3) << state[0] << ", " << state[1] << "]\n";
     }
 }
@@ -267,8 +279,15 @@ void test_convergence_properties() {
         auto wiener_em = factory::make_wiener_process<std::vector<double>>(1, 42);
         auto wiener_mil = factory::make_wiener_process<std::vector<double>>(1, 42);
 
-        EulerMaruyamaIntegrator<std::vector<double>> em_integrator(problem, wiener_em);
-        MilsteinIntegrator<std::vector<double>, double> mil_integrator(problem, wiener_mil);
+        diffeq::EulerMaruyamaIntegrator<std::vector<double>> em_integrator(problem, wiener_em);
+        
+        // For GBM g(t, S) = Ïƒ * S, so g'(t, S) = Ïƒ
+        auto diffusion_derivative = [](double t, const std::vector<double>& x, std::vector<double>& dgx) {
+            double sigma = 0.2;  // Same as in gbm_diffusion
+            dgx[0] = sigma;
+        };
+        
+        diffeq::MilsteinIntegrator<std::vector<double>> mil_integrator(problem, diffusion_derivative, wiener_mil);
 
         std::vector<double> state_em = {100.0};
         std::vector<double> state_mil = {100.0};
@@ -282,8 +301,8 @@ void test_convergence_properties() {
         errors_milstein.push_back(std::abs(state_mil[0] - 100.0));
     }
 
-    std::cout << "  âœ?Convergence test completed for dt values: 0.01, 0.005, 0.0025\n";
-    std::cout << "  âœ?Both methods show expected convergence behavior\n";
+    std::cout << "  ï¿½?Convergence test completed for dt values: 0.01, 0.005, 0.0025\n";
+    std::cout << "  ï¿½?Both methods show expected convergence behavior\n";
 }
 
 void test_step_by_step_integration() {
@@ -293,7 +312,7 @@ void test_step_by_step_integration() {
         test_problems::gbm_drift, test_problems::gbm_diffusion);
     auto wiener = factory::make_wiener_process<std::vector<double>>(1, 314);
 
-    EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
+    diffeq::EulerMaruyamaIntegrator<std::vector<double>> integrator(problem, wiener);
 
     std::vector<double> state = {100.0};
     double dt = 0.01;
@@ -308,7 +327,7 @@ void test_step_by_step_integration() {
     }
 
     assert(state[0] > 0);
-    std::cout << "  âœ?Step-by-step integration maintains positivity\n";
+    std::cout << "  ï¿½?Step-by-step integration maintains positivity\n";
 }
 
 int main() {
