@@ -203,22 +203,15 @@ void demonstrate_monte_carlo_simulation() {
             std::mt19937 rng(i);  // Seed with simulation index
             std::normal_distribution<double> normal(0.0, 1.0);
             
-            // Create SDE system
-            auto drift = [](double t, const std::vector<double>& x, std::vector<double>& fx) {
-                double mu = 0.05;
-                fx[0] = mu * x[0];
-            };
-            
-            auto diffusion = [](double t, const std::vector<double>& x, std::vector<double>& gx) {
-                double sigma = 0.2;
-                gx[0] = sigma * x[0];
-            };
+            // Define SDE parameters
+            const double mu = 0.05;    // drift coefficient
+            const double sigma = 0.2;  // volatility coefficient
             
             // Simple Euler-Maruyama implementation
             std::vector<double> state = {initial_price};
             for (double t = 0.0; t < t_final; t += dt) {
                 double dW = normal(rng) * std::sqrt(dt);
-                state[0] += 0.05 * state[0] * dt + 0.2 * state[0] * dW;
+                state[0] += mu * state[0] * dt + sigma * state[0] * dW;
             }
             
             final_prices[i] = state[0];

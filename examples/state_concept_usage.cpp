@@ -64,6 +64,10 @@ int main() {
         auto begin() const { return data.begin(); }
         auto end() const { return data.end(); }
         
+        // Add array indexing access required by system_state concept
+        double& operator[](std::size_t index) { return data[index]; }
+        const double& operator[](std::size_t index) const { return data[index]; }
+        
         const std::string& get_name() const { return name; }
     };
     
