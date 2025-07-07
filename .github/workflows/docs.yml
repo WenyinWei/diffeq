@@ -49,19 +49,19 @@ jobs:
         ./tools/scripts/build_docs.sh all
         
     - name: Upload Doxygen artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: doxygen-docs
         path: docs/generated/html/
         
     - name: Upload Sphinx artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: sphinx-docs
         path: docs/sphinx/_build/html/
         
     - name: Upload API docs artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: api-docs
         path: docs/api/
@@ -76,19 +76,19 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Download Doxygen artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: doxygen-docs
         path: docs/generated/html/
         
     - name: Download Sphinx artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: sphinx-docs
         path: docs/sphinx/_build/html/
         
     - name: Download API docs artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: api-docs
         path: docs/api/
