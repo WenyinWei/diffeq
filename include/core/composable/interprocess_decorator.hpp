@@ -13,6 +13,7 @@
 #include <functional>
 #include <fstream>
 #include <queue>
+#include <cstring>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -344,7 +345,7 @@ public:
         std::unique_lock<std::mutex> lock(*mutex_);
         
         // For simplicity, we'll use a timeout-based approach
-        if (!condition_->wait_for(lock, std::chrono::milliseconds(100))) {
+        if (condition_->wait_for(lock, std::chrono::milliseconds(100)) == std::cv_status::timeout) {
             return false;
         }
         
