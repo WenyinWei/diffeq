@@ -19,9 +19,9 @@ namespace diffeq {
  * Note: Requires derivative of diffusion function g'(t, X)
  */
 template<system_state StateType>
-class MilsteinIntegrator : public AbstractSDEIntegrator<StateType> {
+class MilsteinIntegrator : public sde::AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = AbstractSDEIntegrator<StateType>;
+    using base_type = sde::AbstractSDEIntegrator<StateType>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

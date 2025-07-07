@@ -76,11 +76,11 @@ int main() {
     try {
         std::cout << "LSODA (automatic):    ";
         auto y = y0;
-        auto integrator = diffeq::LSODA<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+        auto integrator = diffeq::LSODAIntegrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << " (Method: " << 
-            (integrator.get_current_method() == diffeq::LSODA<std::vector<double>>::MethodType::ADAMS ? 
+            (integrator.get_current_method() == diffeq::LSODAIntegrator<std::vector<double>>::MethodType::ADAMS ? 
              "Adams)" : "BDF)") << std::endl;
     } catch (const std::exception& e) {
         std::cout << "Failed: " << e.what() << std::endl;

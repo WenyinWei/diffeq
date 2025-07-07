@@ -138,7 +138,7 @@ private:
         if (dnf > 1e-10 && dny > 1e-10) {
             h = std::sqrt(dny / dnf) * 0.01;
         }
-        h = std::min(h, std::abs(t_end - t));
+        h = std::min<time_type>(h, std::abs(t_end - t));
         h = std::copysign(h, t_end - t);
 
         // Perform an explicit Euler step
@@ -157,12 +157,12 @@ private:
         der2 = std::sqrt(der2) / h;
 
         // Step size is computed such that h^order * max(norm(f0), norm(der2)) = 0.01
-        time_type der12 = std::max(std::abs(der2), std::sqrt(dnf));
+        time_type der12 = std::max<time_type>(std::abs(der2), std::sqrt(dnf));
         time_type h1 = h;
         if (der12 > 1e-15) {
             h1 = std::pow(0.01 / der12, 1.0 / 8.0);
         } else {
-            h1 = std::max(1e-6, std::abs(h) * 1e-3);
+            h1 = std::max<time_type>(1e-6, std::abs(h) * 1e-3);
         }
         // Avoid std::min(a, b, c) which is not standard C++
         time_type hmax = 100 * std::abs(h);
@@ -196,7 +196,7 @@ public:
             // Use the system function and current state to estimate initial step
             current_dt = compute_initial_step(state, t, this->sys_, t_end);
             // Clamp to allowed min/max
-            current_dt = std::max(dt_min_, std::min(dt_max_, current_dt));
+            current_dt = std::max<time_type>(dt_min_, std::min<time_type>(dt_max_, current_dt));
         }
         int attempt = 0;
         for (; attempt < nmax_; ++attempt) {
@@ -212,7 +212,7 @@ public:
             // Fortran error norm (ERR, ERR2, DENO, etc.)
             time_type err = 0.0, err2 = 0.0;
             for (std::size_t i = 0; i < state.size(); ++i) {
-                time_type sk = this->atol_ + this->rtol_ * std::max(std::abs(state[i]), std::abs(y_new[i]));
+                time_type sk = this->atol_ + this->rtol_ * std::max<time_type>(std::abs(state[i]), std::abs(y_new[i]));
                 // Fortran: ERRI=K4(I)-BHH1*K1(I)-BHH2*K9(I)-BHH3*K3(I)  (here, error[i] is 8th-5th order diff)
                 // We use error[i] as the embedded error estimate, so for full Fortran, you may need to store all k's
                 err2 += (error[i] / sk) * (error[i] / sk); // proxy for Fortran's ERR2
@@ -232,10 +232,10 @@ public:
 
             // Fortran: FAC11 = ERR**EXPO1, FAC = FAC11 / FACOLD**BETA
             time_type expo1 = 1.0 / 8.0 - beta_ * 0.2;
-            time_type fac11 = std::pow(std::max(err, 1e-16), expo1);
+            time_type fac11 = std::pow(std::max<time_type>(err, static_cast<time_type>(1e-16)), expo1);
             time_type fac = fac11 / std::pow(facold_, beta_);
             // Clamp fac between fac1_ (min, <1) and fac2_ (max, >1)
-            fac = std::min(fac2_, std::max(fac1_, fac / safety_factor_));
+            fac = std::min<time_type>(fac2_, std::max<time_type>(fac1_, fac / safety_factor_));
             if (std::isnan(fac) || std::isinf(fac)) {
                 fac = 1.0;
             }
@@ -245,7 +245,7 @@ public:
             }
 
             if (err <= 1.0) {
-                facold_ = std::max(err, static_cast<time_type>(1e-4));
+                facold_ = std::max<time_type>(err, static_cast<time_type>(1e-4));
                 naccpt_++;
                 nstep_++;
                 state = y_new;
@@ -272,14 +272,14 @@ public:
                     }
                 }
                 // Clamp next step size
-                next_dt = std::max(dt_min_, std::min(dt_max_, next_dt));
+                next_dt = std::max<time_type>(dt_min_, std::min<time_type>(dt_max_, next_dt));
                 return next_dt;
             } else {
                 // Step rejected
                 nrejct_++;
                 nstep_++;
-                next_dt = current_dt / std::min(fac1_, fac11 / safety_factor_);
-                current_dt = std::max(dt_min_, next_dt);
+                next_dt = current_dt / std::min<time_type>(fac1_, fac11 / safety_factor_);
+                current_dt = std::max<time_type>(dt_min_, next_dt);
             }
         }
         throw std::runtime_error("DOP853: Maximum number of step size reductions or steps exceeded");

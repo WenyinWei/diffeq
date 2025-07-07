@@ -167,7 +167,7 @@ public:
     // Integration interface
     void integrate(state_type& state, time_type dt, time_type end_time) {
         while (current_time_ < end_time) {
-            time_type step_size = std::min(dt, end_time - current_time_);
+            time_type step_size = std::min<time_type>(dt, end_time - current_time_);
             step(state, step_size);
         }
     }

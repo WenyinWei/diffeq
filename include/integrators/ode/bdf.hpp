@@ -35,7 +35,7 @@ public:
                           time_type atol = static_cast<time_type>(1e-9),
                           int max_order = 5)
         : base_type(std::move(sys), rtol, atol), 
-          max_order_(std::min(max_order, 6)),
+          max_order_(std::min<int>(max_order, 6)),
           current_order_(1),
           max_newton_iterations_(10),
           newton_tolerance_(static_cast<time_type>(1e-12)),
@@ -75,17 +75,17 @@ public:
                     
                     // Suggest next step size
                     time_type next_dt = this->suggest_step_size(current_dt, err_norm, current_order_ + 1);
-                    return std::max(this->dt_min_, std::min(this->dt_max_, next_dt));
+                    return std::max<time_type>(this->dt_min_, std::min<time_type>(this->dt_max_, next_dt));
                 } else {
                     // Reject step and reduce step size
-                    current_dt *= std::max(this->safety_factor_ * std::pow(err_norm, -1.0/(current_order_ + 1)), 
-                                         static_cast<time_type>(0.1));
-                    current_dt = std::max(current_dt, this->dt_min_);
+                    current_dt *= std::max<time_type>(this->safety_factor_ * std::pow(err_norm, -1.0/(current_order_ + 1)), 
+                                                     static_cast<time_type>(0.1));
+                    current_dt = std::max<time_type>(current_dt, this->dt_min_);
                 }
             } else {
                 // Newton iteration failed, reduce step size
                 current_dt *= static_cast<time_type>(0.5);
-                current_dt = std::max(current_dt, this->dt_min_);
+                current_dt = std::max<time_type>(current_dt, this->dt_min_);
             }
         }
         
@@ -295,7 +295,7 @@ private:
     
     time_type fallback_step(state_type& state, time_type dt) {
         // Fallback to backward Euler with very small step
-        time_type small_dt = std::min(dt, static_cast<time_type>(1e-6));
+        time_type small_dt = std::min<time_type>(dt, static_cast<time_type>(1e-6));
         
         state_type y_new = StateCreator<state_type>::create(state);
         state_type f_new = StateCreator<state_type>::create(state);

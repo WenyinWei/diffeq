@@ -15,10 +15,10 @@ namespace diffeq {
  * 
  * Uses fixed-point iteration to solve the implicit equation.
  */
-template<system_state StateType, can_be_time TimeType>
-class ImplicitEulerMaruyamaIntegrator : public AbstractSDEIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class ImplicitEulerMaruyamaIntegrator : public sde::AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = AbstractSDEIntegrator<StateType, TimeType>;
+    using base_type = sde::AbstractSDEIntegrator<StateType>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -79,7 +79,7 @@ public:
                 
                 value_type new_val = state_it[i] + drift_it[i] * dt + diffusion_it[i];
                 value_type change = std::abs(new_val - x_old_it[i]);
-                max_change = std::max(max_change, change);
+                max_change = std::max<value_type>(max_change, change);
                 x_new_it[i] = new_val;
             }
             

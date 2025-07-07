@@ -302,7 +302,7 @@ public:
             }
             
             // Check extrapolation warning threshold
-            T range = bounds.second - bounds.first;
+            typename IntegratorDecorator<S>::time_type range = bounds.second - bounds.first;
             if (std::abs(t - bounds.first) > config_.extrapolation_warning_threshold * range ||
                 std::abs(t - bounds.second) > config_.extrapolation_warning_threshold * range) {
                 stats_.extrapolation_warnings++;

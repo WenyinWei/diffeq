@@ -15,10 +15,10 @@ namespace diffeq {
  * Strong order: 1.0
  * Weak order: 2.0
  */
-template<system_state StateType, can_be_time TimeType>
-class SRI1Integrator : public AbstractSDEIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class SRI1Integrator : public sde::AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = AbstractSDEIntegrator<StateType, TimeType>;
+    using base_type = sde::AbstractSDEIntegrator<StateType>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

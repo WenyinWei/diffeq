@@ -13,9 +13,9 @@ namespace diffeq {
  * Weak order 2.0 method for general Itô SDEs with strong order 1.5.
  */
 template<system_state StateType>
-class SRIW1Integrator : public AbstractSDEIntegrator<StateType> {
+class SRIW1Integrator : public sde::AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = AbstractSDEIntegrator<StateType>;
+    using base_type = sde::AbstractSDEIntegrator<StateType>;
     
     explicit SRIW1Integrator(std::shared_ptr<typename base_type::sde_problem_type> problem,
                             std::shared_ptr<typename base_type::wiener_process_type> wiener = nullptr)

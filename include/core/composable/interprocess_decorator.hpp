@@ -566,7 +566,7 @@ template<system_state S>
 class InterprocessDecorator : public IntegratorDecorator<S> {
 private:
     InterprocessConfig config_;
-    std::unique_ptr<IPCChannel<T>> channel_;
+    std::unique_ptr<IPCChannel<typename IntegratorDecorator<S>::time_type>> channel_;
     std::atomic<uint32_t> sequence_number_{0};
     IPCStats stats_;
     
@@ -575,11 +575,11 @@ private:
     std::atomic<bool> running_{false};
     std::mutex message_queue_mutex_;
     std::condition_variable message_queue_cv_;
-    std::queue<IPCMessage<T>> outgoing_messages_;
-    std::queue<IPCMessage<T>> incoming_messages_;
+    std::queue<IPCMessage<typename IntegratorDecorator<S>::time_type>> outgoing_messages_;
+    std::queue<IPCMessage<typename IntegratorDecorator<S>::time_type>> incoming_messages_;
     
     // Callbacks for received data
-    std::function<void(const S&, T)> receive_callback_;
+    std::function<void(const S&, typename IntegratorDecorator<S>::time_type)> receive_callback_;
     
     // SDE synchronization
     std::mutex sde_sync_mutex_;
@@ -619,7 +619,7 @@ public:
     /**
      * @brief Override step to handle IPC during integration
      */
-    void step(typename IntegratorDecorator<S, T>::state_type& state, T dt) override {
+    void step(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt) override {
         // Handle SDE synchronization if needed
         if (config_.direction == IPCDirection::CONSUMER) {
             wait_for_noise_data();
@@ -642,7 +642,7 @@ public:
     /**
      * @brief Override integrate to handle IPC during integration
      */
-    void integrate(typename IntegratorDecorator<S, T>::state_type& state, T dt, T end_time) override {
+    void integrate(typename IntegratorDecorator<S>::state_type& state, typename IntegratorDecorator<S>::time_type dt, typename IntegratorDecorator<S>::time_type end_time) override {
         // Send initial state
         if (config_.direction == IPCDirection::PRODUCER || config_.direction == IPCDirection::BIDIRECTIONAL) {
             send_state(state, this->current_time());
@@ -661,7 +661,7 @@ public:
      * @brief Set callback for received data
      * @param callback Function to call when data is received
      */
-    void set_receive_callback(std::function<void(const S&, T)> callback) {
+    void set_receive_callback(std::function<void(const S&, typename IntegratorDecorator<S>::time_type)> callback) {
         receive_callback_ = std::move(callback);
     }
 
@@ -671,14 +671,14 @@ public:
      * @param time Current time
      * @return true if successful
      */
-    bool send_state(const S& state, T time) {
+    bool send_state(const S& state, typename IntegratorDecorator<S>::time_type time) {
         if (!channel_ || !channel_->is_connected()) {
             return false;
         }
         
         auto start_time = std::chrono::high_resolution_clock::now();
         
-        IPCMessage<T> message;
+        IPCMessage<typename IntegratorDecorator<S>::time_type> message;
         message.sequence_number = sequence_number_++;
         message.timestamp = time;
         message.serialize_state(state);
@@ -749,10 +749,10 @@ private:
     void initialize_channel() {
         switch (config_.method) {
             case IPCMethod::SHARED_MEMORY:
-                channel_ = std::make_unique<SharedMemoryChannel<T>>(config_.channel_name, config_.buffer_size);
+                channel_ = std::make_unique<SharedMemoryChannel<typename IntegratorDecorator<S>::time_type>>(config_.channel_name, config_.buffer_size);
                 break;
             case IPCMethod::NAMED_PIPES:
-                channel_ = std::make_unique<NamedPipeChannel<T>>(config_.channel_name, 
+                channel_ = std::make_unique<NamedPipeChannel<typename IntegratorDecorator<S>::time_type>>(config_.channel_name, 
                     config_.direction == IPCDirection::PRODUCER);
                 break;
             case IPCMethod::MEMORY_MAPPED_FILE:
@@ -780,7 +780,7 @@ private:
         running_ = true;
         communication_thread_ = std::thread([this]() {
             while (running_) {
-                IPCMessage<T> message;
+                IPCMessage<typename IntegratorDecorator<S>::time_type> message;
                 if (channel_->receive_message(message)) {
                     std::lock_guard<std::mutex> lock(message_queue_mutex_);
                     incoming_messages_.push(message);

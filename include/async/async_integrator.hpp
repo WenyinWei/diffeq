@@ -145,10 +145,10 @@ struct Event {
  * It uses only standard C++ facilities and focuses on the core integration
  * functionality with minimal external dependencies.
  */
-template<system_state S, can_be_time T = double>
+template<system_state S>
 class AsyncIntegrator {
 public:
-    using base_integrator_type = AbstractIntegrator<S, T>;
+    using base_integrator_type = AbstractIntegrator<S>;
     using state_type = typename base_integrator_type::state_type;
     using time_type = typename base_integrator_type::time_type;
     using value_type = typename base_integrator_type::value_type;
@@ -240,7 +240,7 @@ public:
     std::future<void> integrate_async(state_type& state, time_type dt, time_type end_time) {
         return executor_.submit([this, &state, dt, end_time]() {
             while (base_integrator_->current_time() < end_time && !emergency_stop_.load()) {
-                time_type step_size = std::min(dt, end_time - base_integrator_->current_time());
+                time_type step_size = std::min<time_type>(dt, end_time - base_integrator_->current_time());
                 
                 {
                     std::lock_guard<std::mutex> lock(integration_mutex_);
@@ -390,37 +390,37 @@ private:
  */
 namespace factory {
 
-template<system_state S, can_be_time T = double>
+template<system_state S>
 auto make_async_rk45(
-    typename AbstractIntegrator<S, T>::system_function sys,
-    typename AsyncIntegrator<S, T>::Config config = {},
-    T rtol = static_cast<T>(1e-6),
-    T atol = static_cast<T>(1e-9)
+    typename AbstractIntegrator<S>::system_function sys,
+    typename AsyncIntegrator<S>::Config config = {},
+    typename S::value_type rtol = static_cast<typename S::value_type>(1e-6),
+    typename S::value_type atol = static_cast<typename S::value_type>(1e-9)
 ) {
-    auto base = std::make_unique<diffeq::integrators::ode::RK45Integrator<S, T>>(std::move(sys), rtol, atol);
-    return std::make_unique<AsyncIntegrator<S, T>>(std::move(base), config);
+    auto base = std::make_unique<diffeq::RK45Integrator<S>>(std::move(sys), rtol, atol);
+    return std::make_unique<AsyncIntegrator<S>>(std::move(base), config);
 }
 
-template<system_state S, can_be_time T = double>
+template<system_state S>
 auto make_async_dop853(
-    typename AbstractIntegrator<S, T>::system_function sys,
-    typename AsyncIntegrator<S, T>::Config config = {},
-    T rtol = static_cast<T>(1e-10),
-    T atol = static_cast<T>(1e-15)
+    typename AbstractIntegrator<S>::system_function sys,
+    typename AsyncIntegrator<S>::Config config = {},
+    typename S::value_type rtol = static_cast<typename S::value_type>(1e-10),
+    typename S::value_type atol = static_cast<typename S::value_type>(1e-15)
 ) {
-    auto base = std::make_unique<diffeq::integrators::ode::DOP853Integrator<S, T>>(std::move(sys), rtol, atol);
-    return std::make_unique<AsyncIntegrator<S, T>>(std::move(base), config);
+    auto base = std::make_unique<diffeq::DOP853Integrator<S>>(std::move(sys), rtol, atol);
+    return std::make_unique<AsyncIntegrator<S>>(std::move(base), config);
 }
 
-template<system_state S, can_be_time T = double>
+template<system_state S>
 auto make_async_bdf(
-    typename AbstractIntegrator<S, T>::system_function sys,
-    typename AsyncIntegrator<S, T>::Config config = {},
-    T rtol = static_cast<T>(1e-6),
-    T atol = static_cast<T>(1e-9)
+    typename AbstractIntegrator<S>::system_function sys,
+    typename AsyncIntegrator<S>::Config config = {},
+    typename S::value_type rtol = static_cast<typename S::value_type>(1e-6),
+    typename S::value_type atol = static_cast<typename S::value_type>(1e-9)
 ) {
-    auto base = std::make_unique<diffeq::integrators::ode::BDFIntegrator<S, T>>(std::move(sys), rtol, atol);
-    return std::make_unique<AsyncIntegrator<S, T>>(std::move(base), config);
+    auto base = std::make_unique<diffeq::BDFIntegrator<S>>(std::move(sys), rtol, atol);
+    return std::make_unique<AsyncIntegrator<S>>(std::move(base), config);
 }
 
 } // namespace factory

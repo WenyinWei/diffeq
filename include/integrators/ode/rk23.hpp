@@ -55,12 +55,12 @@ public:
                 
                 // Suggest next step size
                 time_type next_dt = this->suggest_step_size(current_dt, err_norm, 3);
-                return std::max(this->dt_min_, std::min(this->dt_max_, next_dt));
+                return std::max<time_type>(this->dt_min_, std::min<time_type>(this->dt_max_, next_dt));
             } else {
                 // Reject step and reduce step size
-                current_dt *= std::max(this->safety_factor_ * std::pow(err_norm, -1.0/3.0), 
-                                     static_cast<time_type>(0.1));
-                current_dt = std::max(current_dt, this->dt_min_);
+                current_dt *= std::max<time_type>(this->safety_factor_ * std::pow(err_norm, -1.0/3.0), 
+                                                 static_cast<time_type>(0.1));
+                current_dt = std::max<time_type>(current_dt, this->dt_min_);
             }
         }
         

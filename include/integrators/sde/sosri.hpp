@@ -12,10 +12,10 @@ namespace diffeq {
  * SRI integrator with stability-optimized tableau coefficients.
  * Enhanced stability for stiff general Itô SDEs with strong order 1.5.
  */
-template<system_state StateType, can_be_time TimeType>
-class SOSRIIntegrator : public SRIIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class SOSRIIntegrator : public SRIIntegrator<StateType> {
 public:
-    using base_type = SRIIntegrator<StateType, TimeType>;
+    using base_type = SRIIntegrator<StateType>;
     
     explicit SOSRIIntegrator(std::shared_ptr<typename base_type::sde_problem_type> problem,
                             std::shared_ptr<typename base_type::wiener_process_type> wiener = nullptr)

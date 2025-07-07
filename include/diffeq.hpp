@@ -287,7 +287,6 @@ namespace diffeq {
     
     // Re-export core functionality
     using core::TimeoutIntegrator;
-    using core::TimeoutConfig;
     using core::IntegrationResult;
     using core::IntegrationTimeoutException;
     using core::make_timeout_integrator;
@@ -317,26 +316,10 @@ namespace diffeq {
     using core::composable::SignalConfig;
     
     // Re-export integrator classes for convenience
-    using integrators::ode::EulerIntegrator;
-    using integrators::ode::ImprovedEulerIntegrator;
-    using integrators::ode::RK4Integrator;
-    using integrators::ode::RK23Integrator;
-    using integrators::ode::RK45Integrator;
-    using integrators::ode::DOP853Integrator;
-    using integrators::ode::BDFIntegrator;
+    // Note: Integrators are already in diffeq namespace, no need to re-export
     
     // Re-export SDE integrators
-    using sde::EulerMaruyamaIntegrator;
-    using sde::MilsteinIntegrator;
-    using sde::SRI1Integrator;
-    using sde::ImplicitEulerMaruyamaIntegrator;
-    using sde::SRAIntegrator;
-    using sde::SRA1Integrator;
-    using sde::SRA2Integrator;
-    using sde::SOSRAIntegrator;
-    using sde::SRIIntegrator;
-    using sde::SRIW1Integrator;
-    using sde::SOSRIIntegrator;
+    // Note: SDE integrators are already in diffeq namespace, no need to re-export
     
     // Common type aliases for system_state concept
     template<typename T>

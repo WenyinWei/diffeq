@@ -40,10 +40,10 @@ struct SRITableau {
  * of Solutions of Stochastic Differential Equations, SIAM J. Numer. Anal., 
  * 48 (3), pp. 922–952. DOI:10.1137/09076636X
  */
-template<system_state StateType, can_be_time TimeType>
-class SRIIntegrator : public AbstractSDEIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class SRIIntegrator : public sde::AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = AbstractSDEIntegrator<StateType, TimeType>;
+    using base_type = sde::AbstractSDEIntegrator<StateType>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

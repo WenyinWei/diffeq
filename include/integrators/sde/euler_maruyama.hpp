@@ -16,9 +16,9 @@ namespace diffeq {
  * Weak order: 1.0
  */
 template<system_state StateType>
-class EulerMaruyamaIntegrator : public AbstractSDEIntegrator<StateType> {
+class EulerMaruyamaIntegrator : public sde::AbstractSDEIntegrator<StateType> {
 public:
-    using base_type = AbstractSDEIntegrator<StateType>;
+    using base_type = sde::AbstractSDEIntegrator<StateType>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

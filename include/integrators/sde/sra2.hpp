@@ -13,10 +13,10 @@ namespace diffeq {
  * SRA integrator configured with SRA2 tableau coefficients.
  * Alternative SRA tableau for additive noise SDEs with strong order 1.5.
  */
-template<system_state StateType, can_be_time TimeType>
-class SRA2Integrator : public SRAIntegrator<StateType, TimeType> {
+template<system_state StateType>
+class SRA2Integrator : public SRAIntegrator<StateType> {
 public:
-    using base_type = SRAIntegrator<StateType, TimeType>;
+    using base_type = SRAIntegrator<StateType>;
     
     explicit SRA2Integrator(std::shared_ptr<typename base_type::sde_problem_type> problem,
                            std::shared_ptr<typename base_type::wiener_process_type> wiener = nullptr)

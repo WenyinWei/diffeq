@@ -33,8 +33,8 @@
 #include "composable/async_decorator.hpp"
 #include "composable/output_decorator.hpp"
 #include "composable/signal_decorator.hpp"
-// #include "composable/interpolation_decorator.hpp"  // TODO: Fix remaining T template parameter references
-// #include "composable/interprocess_decorator.hpp"   // TODO: Fix remaining T template parameter references  
+#include "composable/interpolation_decorator.hpp"  // Fixed template parameter issues
+#include "composable/interprocess_decorator.hpp"   // Fixed template parameter issues  
 // #include "composable/event_decorator.hpp"          // TODO: Fix remaining T template parameter references
 // #include "composable/sde_synchronization.hpp"     // TODO: Fix remaining T template parameter references
 // #include "composable/sde_multithreading.hpp"      // TODO: Fix remaining T template parameter references
