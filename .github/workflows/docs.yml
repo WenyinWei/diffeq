@@ -18,6 +18,11 @@ on:
       - 'Doxyfile'
       - 'tools/scripts/build_docs.sh'
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -70,6 +75,10 @@ jobs:
     needs: build-docs
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     
     steps:
     - name: Checkout code
@@ -93,19 +102,48 @@ jobs:
         name: api-docs
         path: docs/api/
         
+    - name: Create combined documentation site
+      run: |
+        mkdir -p gh-pages
+        cp -r docs/generated/html/* gh-pages/
+        mkdir -p gh-pages/sphinx
+        cp -r docs/sphinx/_build/html/* gh-pages/sphinx/
+        mkdir -p gh-pages/api
+        cp -r docs/api/* gh-pages/api/
+        
+        # Create a main index.html that redirects to the Doxygen docs
+        cat > gh-pages/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>DiffEq Documentation</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 40px; }
+                .nav { background: #f5f5f5; padding: 20px; border-radius: 5px; }
+                .nav h1 { color: #333; }
+                .nav a { display: block; margin: 10px 0; padding: 10px; background: #007acc; color: white; text-decoration: none; border-radius: 3px; }
+                .nav a:hover { background: #005a99; }
+            </style>
+        </head>
+        <body>
+            <div class="nav">
+                <h1>DiffEq Documentation</h1>
+                <a href="./index.html">📚 API Reference (Doxygen)</a>
+                <a href="./sphinx/index.html">📖 User Guide (Sphinx)</a>
+                <a href="./api/README.md">🔧 API Documentation</a>
+                <a href="https://github.com/WenyinWei/diffeq/tree/main/examples">💡 Examples</a>
+            </div>
+        </body>
+        </html>
+        EOF
+        
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/generated/html
-        destination_dir: ./doxygen
-        
-    - name: Deploy Sphinx to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/sphinx/_build/html
-        destination_dir: ./sphinx
+        publish_dir: ./gh-pages
+        force_orphan: true
 
   docs-check:
     runs-on: ubuntu-latest
