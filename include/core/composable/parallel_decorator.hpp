@@ -2,11 +2,16 @@
 
 #include "integrator_decorator.hpp"
 #include <vector>
-#include <execution>
 #include <thread>
 #include <algorithm>
 #include <ranges>
 #include <type_traits>
+
+// Check for parallel execution support
+#if defined(__cpp_lib_execution) && __cpp_lib_execution >= 201902L
+    #include <execution>
+    #define PARALLEL_EXECUTION_AVAILABLE
+#endif
 
 namespace diffeq::core::composable {
 
@@ -120,6 +125,7 @@ public:
         
         // Parallel processing
         try {
+#ifdef PARALLEL_EXECUTION_AVAILABLE
             std::for_each(std::execution::par_unseq, 
                 std::ranges::begin(states), std::ranges::end(states),
                 [this, dt, end_time](auto& state) {
@@ -127,6 +133,12 @@ public:
                     auto local_integrator = this->create_copy();
                     local_integrator->integrate(state, dt, end_time);
                 });
+#else
+            // Sequential fallback for platforms without parallel execution support
+            for (auto& state : states) {
+                this->wrapped_integrator_->integrate(state, dt, end_time);
+            }
+#endif
         } catch (const std::exception& e) {
             // Fall back to sequential processing if parallel fails
             for (auto& state : states) {
@@ -170,6 +182,7 @@ public:
 
         // Parallel processing
         try {
+#ifdef PARALLEL_EXECUTION_AVAILABLE
             std::for_each(std::execution::par_unseq,
                 std::views::iota(0UL, num_simulations).begin(),
                 std::views::iota(0UL, num_simulations).end(),
@@ -179,6 +192,14 @@ public:
                     local_integrator->integrate(state, dt, end_time);
                     results[i] = processor(state);
                 });
+#else
+            // Sequential fallback for platforms without parallel execution support
+            for (size_t i = 0; i < num_simulations; ++i) {
+                auto state = generator(i);
+                this->wrapped_integrator_->integrate(state, dt, end_time);
+                results[i] = processor(state);
+            }
+#endif
         } catch (const std::exception& e) {
             // Fall back to sequential processing if parallel fails
             for (size_t i = 0; i < num_simulations; ++i) {
@@ -222,11 +243,19 @@ public:
                 static_cast<size_t>(std::distance(chunk_start, states_end))));
             
             // Create range for this chunk and process in parallel
+#ifdef PARALLEL_EXECUTION_AVAILABLE
             std::for_each(std::execution::par_unseq, chunk_start, chunk_end,
                 [this, dt, end_time](auto& state) {
                     auto local_integrator = this->create_copy();
                     local_integrator->integrate(state, dt, end_time);
                 });
+#else
+            // Sequential fallback for platforms without parallel execution support
+            std::for_each(chunk_start, chunk_end,
+                [this, dt, end_time](auto& state) {
+                    this->wrapped_integrator_->integrate(state, dt, end_time);
+                });
+#endif
             
             chunk_start = chunk_end;
         }
