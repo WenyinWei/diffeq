@@ -114,6 +114,46 @@ target("test_standard_parallelism")
     set_rundir("$(projectdir)")
     set_group("integration_tests")
 
+-- Simple interface test
+target("test_simple_interface")
+    set_kind("binary")
+    add_files("test/integration/test_simple_interface.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("integration_tests")
+
+-- Concepts only test
+target("test_concepts_only")
+    set_kind("binary")
+    add_files("test/integration/test_concepts_only.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("integration_tests")
+
+-- Signal only test
+target("test_signal_only")
+    set_kind("binary")
+    add_files("test/integration/test_signal_only.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("integration_tests")
+
+-- Interface basic test
+target("test_interface_basic")
+    set_kind("binary")
+    add_files("test/integration/test_interface_basic.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("integration_tests")
+
+-- Interface factory test
+target("test_interface_factory")
+    set_kind("binary")
+    add_files("test/integration/test_interface_factory.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("integration_tests")
+
 -- ============================================================================
 -- EXAMPLES
 -- ============================================================================
