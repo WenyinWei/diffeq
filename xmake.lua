@@ -222,13 +222,13 @@ target("parallelism_usage_demo")
     set_rundir("$(projectdir)")
     set_group("examples")
 
--- SDE usage demo
-target("sde_usage_demo")
-    set_kind("binary")
-    add_files("examples/sde_usage_demo.cpp")
-    add_deps("diffeq")
-    set_rundir("$(projectdir)")
-    set_group("examples")
+-- SDE usage demo (temporarily disabled due to API issues)
+-- target("sde_usage_demo")
+--     set_kind("binary")
+--     add_files("examples/sde_usage_demo.cpp")
+--     add_deps("diffeq")
+--     set_rundir("$(projectdir)")
+--     set_group("examples")
 
 -- Standard parallelism demo
 target("standard_parallelism_demo")

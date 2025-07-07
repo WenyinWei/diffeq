@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <diffeq.hpp>
 #include <interfaces/integration_interface.hpp>
+#include <signal/signal_processor.hpp>
 
 using namespace diffeq;
 
