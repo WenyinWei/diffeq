@@ -1,0 +1,282 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'include/**'
+      - 'test/**'
+      - 'examples/**'
+      - 'xmake.lua'
+      - '.github/workflows/tests.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'include/**'
+      - 'test/**'
+      - 'examples/**'
+      - 'xmake.lua'
+      - '.github/workflows/tests.yml'
+
+jobs:
+  test-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+        include:
+          - compiler: gcc
+            cc: gcc-11
+            cxx: g++-11
+          - compiler: clang
+            cc: clang-13
+            cxx: clang++-13
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+        sudo apt-get install -y gcc-11 g++-11 clang-13 clang++-13
+        sudo apt-get install -y libeigen3-dev
+        
+    - name: Install xmake
+      run: |
+        curl -fsSL https://xmake.io/shget.text | bash
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+    - name: Configure xmake
+      run: |
+        xmake config --toolchain=${{ matrix.compiler }} --cc=${{ matrix.cc }} --cxx=${{ matrix.cxx }}
+        
+    - name: Build tests
+      run: |
+        xmake build -g tests
+        xmake build -g integration_tests
+        
+    - name: Run unit tests
+      run: |
+        xmake run test_state_concept
+        xmake run test_rk4_integrator
+        xmake run test_advanced_integrators
+        xmake run test_dop853
+        
+    - name: Run integration tests
+      run: |
+        xmake run test_sde_solvers
+        xmake run test_sde_integration
+        xmake run test_modernized_interface
+        xmake run test_standard_parallelism
+        
+    - name: Run comprehensive test suite
+      run: |
+        xmake test-all --verbose
+
+  test-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      
+    - name: Install xmake
+      run: |
+        Invoke-Expression (Invoke-Webrequest 'https://xmake.io/psget.text' -UseBasicParsing).Content
+        
+    - name: Configure xmake
+      run: |
+        xmake config --toolchain=msvc --arch=x64
+        
+    - name: Build tests
+      run: |
+        xmake build -g tests
+        xmake build -g integration_tests
+        
+    - name: Run unit tests
+      run: |
+        xmake run test_state_concept
+        xmake run test_rk4_integrator
+        xmake run test_advanced_integrators
+        xmake run test_dop853
+        
+    - name: Run integration tests
+      run: |
+        xmake run test_sde_solvers
+        xmake run test_sde_integration
+        xmake run test_modernized_interface
+        xmake run test_standard_parallelism
+        
+    - name: Run comprehensive test suite
+      run: |
+        xmake test-all --verbose
+
+  test-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install system dependencies
+      run: |
+        brew install eigen
+        
+    - name: Install xmake
+      run: |
+        curl -fsSL https://xmake.io/shget.text | bash
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+    - name: Configure xmake
+      run: |
+        xmake config --toolchain=clang
+        
+    - name: Build tests
+      run: |
+        xmake build -g tests
+        xmake build -g integration_tests
+        
+    - name: Run unit tests
+      run: |
+        xmake run test_state_concept
+        xmake run test_rk4_integrator
+        xmake run test_advanced_integrators
+        xmake run test_dop853
+        
+    - name: Run integration tests
+      run: |
+        xmake run test_sde_solvers
+        xmake run test_sde_integration
+        xmake run test_modernized_interface
+        xmake run test_standard_parallelism
+        
+    - name: Run comprehensive test suite
+      run: |
+        xmake test-all --verbose
+
+  test-examples:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+        sudo apt-get install -y gcc-11 g++-11
+        sudo apt-get install -y libeigen3-dev
+        
+    - name: Install xmake
+      run: |
+        curl -fsSL https://xmake.io/shget.text | bash
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+    - name: Configure xmake
+      run: |
+        xmake config --toolchain=gcc --cc=gcc-11 --cxx=g++-11
+        
+    - name: Build examples
+      run: |
+        xmake build -g examples
+        
+    - name: Run examples
+      run: |
+        xmake run basic_ode_example
+        xmake run lorenz_system_example
+        xmake run parallel_integration_example
+        xmake run sde_example
+        xmake run state_concept_example
+        xmake run signal_aware_example
+        xmake run async_integration_example
+        xmake run modernized_interface_example
+        xmake run standard_parallelism_example
+
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+        sudo apt-get install -y gcc-11 g++-11
+        sudo apt-get install -y libeigen3-dev
+        
+    - name: Install xmake
+      run: |
+        curl -fsSL https://xmake.io/shget.text | bash
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+    - name: Configure xmake for performance
+      run: |
+        xmake config --toolchain=gcc --cc=gcc-11 --cxx=g++-11 --mode=release
+        
+    - name: Build performance tests
+      run: |
+        xmake build -g performance_tests
+        
+    - name: Run performance benchmarks
+      run: |
+        xmake run performance_benchmark
+        
+    - name: Upload performance results
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-results
+        path: performance_results.txt
+        retention-days: 30
+
+  test-coverage:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+        sudo apt-get install -y gcc-11 g++-11
+        sudo apt-get install -y libeigen3-dev
+        sudo apt-get install -y lcov
+        
+    - name: Install xmake
+      run: |
+        curl -fsSL https://xmake.io/shget.text | bash
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+    - name: Configure xmake with coverage
+      run: |
+        xmake config --toolchain=gcc --cc=gcc-11 --cxx=g++-11 --mode=debug
+        xmake config --enable_coverage=true
+        
+    - name: Build and run tests with coverage
+      run: |
+        xmake build -g tests
+        xmake build -g integration_tests
+        xmake test-all --coverage
+        
+    - name: Generate coverage report
+      run: |
+        lcov --capture --directory . --output-file coverage.info
+        lcov --remove coverage.info '/usr/*' --output-file coverage.info
+        lcov --remove coverage.info '*/test/*' --output-file coverage.info
+        lcov --list coverage.info
+        
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage.info
+        retention-days: 30 
