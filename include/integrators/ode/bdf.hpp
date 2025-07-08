@@ -45,13 +45,13 @@ public:
                           time_type atol = static_cast<time_type>(1e-6),
                           int max_order = 5)
         : base_type(std::move(sys), rtol, atol),
-          max_order_(std::min<int>(max_order, MAX_ORDER)),
+          max_order_((max_order < MAX_ORDER) ? max_order : MAX_ORDER),
           current_order_(1),
           newton_tolerance_(static_cast<time_type>(1e-3)),
           is_initialized_(false),
-          h_abs_(0.0),
-          h_abs_old_(0.0),
-          error_norm_old_(0.0),
+          h_abs_(static_cast<time_type>(0.0)),
+          h_abs_old_(static_cast<time_type>(0.0)),
+          error_norm_old_(static_cast<time_type>(0.0)),
           n_equal_steps_(0) {
 
         // Initialize BDF coefficients (SciPy style)
@@ -137,21 +137,24 @@ public:
             state_type y_new = StateCreator<state_type>::create(state);
             state_type error = StateCreator<state_type>::create(state);
 
-            if (bdf_step(state, y_new, error, h)) {
+            time_type factor = static_cast<time_type>(1.0); // Declare here for all branches
+
+            bool bdf_success = bdf_step(state, y_new, error, h);
+            if (bdf_success) {
                 // Calculate error norm with proper scaling
                 state_type scale = StateCreator<state_type>::create(y_new);
                 for (std::size_t i = 0; i < scale.size(); ++i) {
                     scale[i] = this->atol_ + this->rtol_ * std::abs(y_new[i]);
                 }
 
-                time_type error_norm = 0.0;
+                time_type error_norm = static_cast<time_type>(0.0);
                 for (std::size_t i = 0; i < error.size(); ++i) {
                     time_type scaled_error = error[i] / scale[i];
                     error_norm += scaled_error * scaled_error;
                 }
-                error_norm = std::sqrt(error_norm / error.size());
+                error_norm = std::sqrt(error_norm / static_cast<time_type>(error.size()));
 
-                if (error_norm <= 1.0) {
+                if (error_norm <= static_cast<time_type>(1.0)) {
                     // Accept step
                     step_accepted = true;
                     n_equal_steps_++;
@@ -165,41 +168,28 @@ public:
                     // Adjust order if we have enough equal steps
                     adjust_order(error_norm, scale);
 
-                    // Calculate next step size with proper adaptive logic
-                    time_type safety = 0.9;
-                    time_type factor;
-
-                    if (error_norm < 0.1) {
-                        // Error is very small, increase step size
-                        factor = safety * 1.2;  // Increase by 20%
-                    } else if (error_norm < 0.5) {
-                        // Error is small, keep step size or increase slightly
-                        factor = safety * 1.1;  // Increase by 10%
-                    } else if (error_norm < 0.8) {
-                        // Error is moderate, keep step size
-                        factor = safety * 1.0;  // Keep same
-                    } else {
-                        // Error is large but acceptable, reduce slightly
-                        factor = safety * 0.9;  // Reduce by 10%
-                    }
-
-                    factor = (factor > MAX_FACTOR) ? static_cast<time_type>(MAX_FACTOR) : factor;
-                    factor = (factor < 0.1) ? static_cast<time_type>(0.1) : factor;
+                    // Calculate next step size with SciPy-style adaptive logic
+                    time_type safety = static_cast<time_type>(0.8);  // More conservative safety factor
+                    time_type factor = safety * std::pow(error_norm, static_cast<time_type>(-1.0) / static_cast<time_type>(current_order_ + 1));
+                    
+                    // Apply SciPy-style step size bounds (more conservative)
+                    time_type max_factor_limit = static_cast<time_type>(1.5);  // Even more conservative step size growth
+                    if (factor > max_factor_limit) factor = max_factor_limit;
+                    if (factor < static_cast<time_type>(MIN_FACTOR)) factor = static_cast<time_type>(MIN_FACTOR);
 
                     h_abs_ *= factor;
                     change_D(current_order_, factor);
                     n_equal_steps_ = 0;
-
                 } else {
                     // Reject step - be more conservative
-                    time_type factor = static_cast<time_type>(0.5);  // Fixed reduction factor
+                    factor = static_cast<time_type>(0.5);  // Fixed reduction factor
                     h_abs *= factor;
                     change_D(current_order_, factor);
                     n_equal_steps_ = 0;
                 }
             } else {
                 // Newton failed - try smaller step
-                time_type factor = static_cast<time_type>(0.25);  // More aggressive reduction for Newton failure
+                factor = static_cast<time_type>(0.25);  // More aggressive reduction for Newton failure
                 h_abs *= factor;
                 change_D(current_order_, factor);
                 n_equal_steps_ = 0;
@@ -239,53 +229,62 @@ private:
     
     void initialize_bdf_coefficients() {
         // SciPy BDF coefficients - exactly matching the Python implementation
-        std::array<time_type, MAX_ORDER + 1> kappa = {0, -0.1850, -1.0/9.0, -0.0823, -0.0415, 0};
+        std::array<time_type, MAX_ORDER + 1> kappa = {
+            static_cast<time_type>(0), 
+            static_cast<time_type>(-0.1850), 
+            static_cast<time_type>(-1.0/9.0), 
+            static_cast<time_type>(-0.0823), 
+            static_cast<time_type>(-0.0415), 
+            static_cast<time_type>(0)
+        };
 
         // Initialize gamma array: gamma[0] = 0, gamma[k] = sum(1/j for j=1..k)
-        gamma_[0] = 0.0;
+        gamma_[0] = static_cast<time_type>(0.0);
         for (int k = 1; k <= MAX_ORDER; ++k) {
-            gamma_[k] = gamma_[k-1] + 1.0 / k;
+            gamma_[k] = gamma_[k-1] + static_cast<time_type>(1.0) / static_cast<time_type>(k);
         }
 
         // Initialize alpha array: alpha = (1 - kappa) * gamma
         for (int k = 0; k <= MAX_ORDER; ++k) {
-            alpha_[k] = (1.0 - kappa[k]) * gamma_[k];
+            alpha_[k] = (static_cast<time_type>(1.0) - kappa[k]) * gamma_[k];
         }
 
         // Initialize error constants: error_const = kappa * gamma + 1/(k+1)
         for (int k = 0; k <= MAX_ORDER; ++k) {
-            error_const_[k] = kappa[k] * gamma_[k] + 1.0 / (k + 1);
+            error_const_[k] = kappa[k] * gamma_[k] + static_cast<time_type>(1.0) / static_cast<time_type>(k + 1);
         }
     }
 
     // SciPy-style helper functions for differences array
     std::vector<std::vector<time_type>> compute_R(int order, time_type factor) {
-        std::vector<std::vector<time_type>> R(order + 1, std::vector<time_type>(order + 1, 0.0));
-
-        // Initialize R matrix for changing differences array
+        std::vector<std::vector<time_type>> M(order + 1, std::vector<time_type>(order + 1, static_cast<time_type>(0.0)));
+        
+        // Initialize M matrix for changing differences array
         for (int i = 1; i <= order; ++i) {
             for (int j = 1; j <= order; ++j) {
-                R[i][j] = (i - 1 - factor * j) / i;
+                M[i][j] = (static_cast<time_type>(i - 1) - factor * static_cast<time_type>(j)) / static_cast<time_type>(i);
             }
         }
-        R[0][0] = 1.0;
-
-        // Compute cumulative product
-        for (int i = 1; i <= order; ++i) {
-            for (int j = 0; j <= order; ++j) {
-                R[i][j] *= R[i-1][j];
+        M[0][0] = static_cast<time_type>(1.0);
+        
+        // Compute cumulative product along rows (SciPy style)
+        std::vector<std::vector<time_type>> R(order + 1, std::vector<time_type>(order + 1, static_cast<time_type>(0.0)));
+        for (int i = 0; i <= order; ++i) {
+            R[i][0] = M[i][0];
+            for (int j = 1; j <= order; ++j) {
+                R[i][j] = R[i][j-1] * M[i][j];
             }
         }
-
+        
         return R;
     }
 
     void change_D(int order, time_type factor) {
         auto R = compute_R(order, factor);
-        auto U = compute_R(order, 1.0);
+        auto U = compute_R(order, static_cast<time_type>(1.0));
 
         // Compute RU = R * U
-        std::vector<std::vector<time_type>> RU(order + 1, std::vector<time_type>(order + 1, 0.0));
+        std::vector<std::vector<time_type>> RU(order + 1, std::vector<time_type>(order + 1, static_cast<time_type>(0.0)));
         for (int i = 0; i <= order; ++i) {
             for (int j = 0; j <= order; ++j) {
                 for (int k = 0; k <= order; ++k) {
@@ -299,7 +298,7 @@ private:
         for (int i = 0; i <= order; ++i) {
             D_new[i] = StateCreator<state_type>::create(D_[0]);
             for (std::size_t k = 0; k < D_[0].size(); ++k) {
-                D_new[i][k] = 0.0;
+                D_new[i][k] = static_cast<time_type>(0.0);
                 for (int j = 0; j <= order; ++j) {
                     D_new[i][k] += RU[j][i] * D_[j][k];
                 }
@@ -321,19 +320,23 @@ private:
             D_[i] = StateCreator<state_type>::create(y0);
             // Initialize all to zero except D[0]
             for (std::size_t j = 0; j < y0.size(); ++j) {
-                D_[i][j] = 0.0;
+                D_[i][j] = static_cast<time_type>(0.0);
             }
         }
 
         // D[0] = y0
         D_[0] = y0;
 
-        // D[1] will be computed in the first step as h * f(t0, y0)
-        // Initialize other differences to zero
+        // Initialize D[1] = h * f(t0, y0) for the first step
+        state_type f0 = StateCreator<state_type>::create(y0);
+        this->sys_(this->current_time_, y0, f0);
+        for (std::size_t i = 0; i < y0.size(); ++i) {
+            D_[1][i] = dt * f0[i];
+        }
 
         current_order_ = 1;
         n_equal_steps_ = 0;
-        h_abs_ = (dt < static_cast<time_type>(0.1)) ? dt : static_cast<time_type>(0.1);
+        h_abs_ = dt;
     }
 
     void update_history(const state_type& y_new, time_type dt) {
@@ -354,39 +357,39 @@ private:
 
         if (current_order_ > 1) {
             // Error estimate for order-1
-            time_type error_m = 0.0;
+            time_type error_m = static_cast<time_type>(0.0);
             for (std::size_t i = 0; i < D_[0].size(); ++i) {
                 time_type err = error_const_[current_order_ - 1] * D_[current_order_][i] / scale[i];
                 error_m += err * err;
             }
-            error_m_norm = std::sqrt(error_m / D_[0].size());
+            error_m_norm = std::sqrt(error_m / static_cast<time_type>(D_[0].size()));
         }
 
-        if (current_order_ < MAX_ORDER) {
+        if (current_order_ < max_order_ && current_order_ + 2 < static_cast<int>(D_.size())) {
             // Error estimate for order+1
-            time_type error_p = 0.0;
+            time_type error_p = static_cast<time_type>(0.0);
             for (std::size_t i = 0; i < D_[0].size(); ++i) {
                 time_type err = error_const_[current_order_ + 1] * D_[current_order_ + 2][i] / scale[i];
                 error_p += err * err;
             }
-            error_p_norm = std::sqrt(error_p / D_[0].size());
+            error_p_norm = std::sqrt(error_p / static_cast<time_type>(D_[0].size()));
         }
 
-        // Calculate factors for order selection
+        // Calculate factors for order selection (SciPy style)
         std::array<time_type, 3> error_norms = {error_m_norm, error_norm, error_p_norm};
         std::array<time_type, 3> factors;
 
         for (int i = 0; i < 3; ++i) {
-            if (error_norms[i] > 0) {
-                factors[i] = std::pow(error_norms[i], -1.0 / (current_order_ + i));
+            if (error_norms[i] > static_cast<time_type>(0) && std::isfinite(error_norms[i])) {
+                factors[i] = std::pow(error_norms[i], static_cast<time_type>(-1.0) / static_cast<time_type>(current_order_ + i - 1));
             } else {
-                factors[i] = std::numeric_limits<time_type>::infinity();
+                factors[i] = static_cast<time_type>(0.0);  // Prefer current order if error estimate is invalid
             }
         }
 
         // Select order with maximum factor
-        int best_order_idx = 0;
-        for (int i = 1; i < 3; ++i) {
+        int best_order_idx = 1;  // Default to current order
+        for (int i = 0; i < 3; ++i) {
             if (factors[i] > factors[best_order_idx]) {
                 best_order_idx = i;
             }
@@ -394,9 +397,14 @@ private:
 
         int delta_order = best_order_idx - 1;
         int new_order = current_order_ + delta_order;
-        if (new_order < 1) new_order = 1;
-        if (new_order > MAX_ORDER) new_order = MAX_ORDER;
-        current_order_ = new_order;
+        
+        // Ensure order is within bounds
+        new_order = (new_order < 1) ? 1 : ((new_order > max_order_) ? max_order_ : new_order);
+        
+        if (new_order != current_order_) {
+            current_order_ = new_order;
+            n_equal_steps_ = 0;  // Reset step counter when order changes
+        }
     }
     
     // SciPy-style BDF system solver
@@ -417,7 +425,7 @@ private:
 
         // Initialize d to zero
         for (std::size_t i = 0; i < result.d.size(); ++i) {
-            result.d[i] = 0.0;
+            result.d[i] = static_cast<time_type>(0.0);
         }
 
         // Newton iteration to solve: d - c * f(t_new, y_predict + d) = -psi
@@ -445,12 +453,12 @@ private:
             }
 
             // Check convergence
-            time_type norm = 0.0;
+            time_type norm = static_cast<time_type>(0.0);
             for (std::size_t i = 0; i < residual.size(); ++i) {
                 time_type scaled_res = residual[i] / scale[i];
                 norm += scaled_res * scaled_res;
             }
-            norm = std::sqrt(norm / residual.size());
+            norm = std::sqrt(norm / static_cast<time_type>(residual.size()));
 
             if (norm < newton_tolerance_) {
                 result.converged = true;
@@ -463,7 +471,7 @@ private:
             for (std::size_t i = 0; i < result.d.size(); ++i) {
                 // Approximate Jacobian diagonal element
                 time_type jac_diag = estimate_jacobian_diagonal(i, result.y, t_new);
-                time_type denominator = 1.0 - c * jac_diag;
+                time_type denominator = static_cast<time_type>(1.0) - c * jac_diag;
                 if (std::abs(denominator) > static_cast<time_type>(1e-12)) {
                     dd[i] = -residual[i] / denominator;
                 } else {
@@ -492,7 +500,7 @@ private:
         // Calculate y_predict = sum(D[:order+1])
         state_type y_predict = StateCreator<state_type>::create(D_[0]);
         for (std::size_t i = 0; i < y_predict.size(); ++i) {
-            y_predict[i] = 0.0;
+            y_predict[i] = static_cast<time_type>(0.0);
             for (int j = 0; j <= current_order_; ++j) {
                 y_predict[i] += D_[j][i];
             }
@@ -507,7 +515,7 @@ private:
         // Calculate psi = dot(D[1:order+1].T, gamma[1:order+1]) / alpha[order]
         state_type psi = StateCreator<state_type>::create(y_predict);
         for (std::size_t i = 0; i < psi.size(); ++i) {
-            psi[i] = 0.0;
+            psi[i] = static_cast<time_type>(0.0);
             for (int j = 1; j <= current_order_; ++j) {
                 psi[i] += D_[j][i] * gamma_[j];
             }
@@ -529,21 +537,24 @@ private:
         }
 
         // Calculate error norm
-        time_type error_norm = 0.0;
+        time_type error_norm = static_cast<time_type>(0.0);
         for (std::size_t i = 0; i < error.size(); ++i) {
             time_type scaled_error = error[i] / scale[i];
             error_norm += scaled_error * scaled_error;
         }
-        error_norm = std::sqrt(error_norm / error.size());
+        error_norm = std::sqrt(error_norm / static_cast<time_type>(error.size()));
 
-        if (error_norm > 1.0) {
+        if (error_norm > static_cast<time_type>(1.0)) {
             return false;  // Step rejected
         }
 
         // Step accepted - update differences array (SciPy style)
-        // D[0] should be the new solution
-        D_[0] = result.y;
+        // Store the new solution
         y_new = result.y;
+        
+        // Update differences array according to SciPy's algorithm
+        // D[0] should be the new solution
+        D_[0] = y_new;
 
         // Update differences: D[order+2] = d - D[order+1], D[order+1] = d
         if (current_order_ + 2 < static_cast<int>(D_.size())) {
@@ -590,7 +601,7 @@ private:
 
     time_type fallback_step(state_type& state, time_type dt) {
         // Fallback to simple forward Euler for problematic cases
-        time_type small_dt = (this->dt_min_ * 2.0 > dt * static_cast<time_type>(0.1)) ? this->dt_min_ * 2.0 : dt * static_cast<time_type>(0.1);
+        time_type small_dt = (this->dt_min_ * static_cast<time_type>(2.0) > dt * static_cast<time_type>(0.1)) ? this->dt_min_ * static_cast<time_type>(2.0) : dt * static_cast<time_type>(0.1);
 
         state_type f_current = StateCreator<state_type>::create(state);
 
