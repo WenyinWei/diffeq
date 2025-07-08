@@ -15,6 +15,7 @@
 #include <integrators/ode/rk45.hpp>            // RK45 (adaptive, Dormand-Prince)
 #include <integrators/ode/dop853.hpp>          // DOP853 (8th order, high accuracy)
 #include <integrators/ode/bdf.hpp>             // BDF (multistep, stiff systems)
+#include <integrators/ode/bdf_scipy.hpp>       // SciPy-compatible BDF implementation
 #include <integrators/ode/lsoda.hpp>           // LSODA (automatic stiff/non-stiff switching)
 
 // SDE (Stochastic Differential Equation) integrators (organized by method type)

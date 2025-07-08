@@ -160,8 +160,7 @@ public:
                     this->advance_time(h);
                     h_abs_ = h_abs;
 
-                    // Update differences array
-                    update_differences_array(y_new, h);
+                    // Differences array is updated in bdf_step
 
                     // Adjust order if we have enough equal steps
                     adjust_order(error_norm, scale);
@@ -320,17 +319,17 @@ private:
 
         for (int i = 0; i < MAX_ORDER + 3; ++i) {
             D_[i] = StateCreator<state_type>::create(y0);
+            // Initialize all to zero except D[0]
+            for (std::size_t j = 0; j < y0.size(); ++j) {
+                D_[i][j] = 0.0;
+            }
         }
 
         // D[0] = y0
         D_[0] = y0;
 
-        // D[1] = h * f(t0, y0) * direction (we'll compute this in the first step)
-        state_type f0 = StateCreator<state_type>::create(y0);
-        this->sys_(this->current_time_, y0, f0);
-        for (std::size_t i = 0; i < y0.size(); ++i) {
-            D_[1][i] = dt * f0[i];
-        }
+        // D[1] will be computed in the first step as h * f(t0, y0)
+        // Initialize other differences to zero
 
         current_order_ = 1;
         n_equal_steps_ = 0;
@@ -409,7 +408,7 @@ private:
     };
 
     NewtonResult solve_bdf_system(time_type t_new, const state_type& y_predict,
-                                 time_type h_gamma, const state_type& scale) {
+                                 time_type c, const state_type& psi, const state_type& scale) {
         NewtonResult result;
         result.converged = false;
         result.iterations = 0;
@@ -421,13 +420,11 @@ private:
             result.d[i] = 0.0;
         }
 
-        time_type dy_norm_old = 0.0;
-        bool has_old_norm = false;
-
+        // Newton iteration to solve: d - c * f(t_new, y_predict + d) = -psi
         for (int k = 0; k < NEWTON_MAXITER; ++k) {
             result.iterations = k + 1;
 
-            // Evaluate f at current y
+            // Evaluate f at current y = y_predict + d
             state_type f = StateCreator<state_type>::create(result.y);
             this->sys_(t_new, result.y, f);
 
@@ -441,95 +438,10 @@ private:
             }
             if (!f_finite) break;
 
-            // BDF Newton system: F(y) = y - y_predict - h*gamma*f(t_new, y) = 0
-            // Newton step: dy = -F(y) / F'(y) = -F(y) / (I - h*gamma*J)
-            // So: (I - h*gamma*J) * dy = -(y - y_predict - h*gamma*f)
-            //     (I - h*gamma*J) * dy = y_predict - y + h*gamma*f
-            state_type rhs = StateCreator<state_type>::create(result.y);
-            for (std::size_t i = 0; i < rhs.size(); ++i) {
-                rhs[i] = y_predict[i] - result.y[i] + h_gamma * f[i];
-            }
-
-            // Simplified solver (diagonal approximation)
-            state_type dy = StateCreator<state_type>::create(result.y);
-            for (std::size_t i = 0; i < dy.size(); ++i) {
-                // Approximate Jacobian diagonal element
-                time_type jac_diag = estimate_jacobian_diagonal(i, result.y, t_new);
-                time_type denominator = 1.0 - h_gamma * jac_diag;
-                dy[i] = (std::abs(denominator) > static_cast<time_type>(1e-12)) ? rhs[i] / denominator : 0.0;
-            }
-
-            // Compute dy norm
-            time_type dy_norm = 0.0;
-            for (std::size_t i = 0; i < dy.size(); ++i) {
-                time_type scaled_dy = dy[i] / scale[i];
-                dy_norm += scaled_dy * scaled_dy;
-            }
-            dy_norm = std::sqrt(dy_norm / dy.size());
-
-            // Check convergence rate (simplified)
-            if (has_old_norm) {
-                time_type rate = dy_norm / dy_norm_old;
-                if (rate >= 0.9) {  // Less strict convergence rate check
-                    break;
-                }
-            }
-
-            // Update solution
-            for (std::size_t i = 0; i < result.y.size(); ++i) {
-                result.y[i] += dy[i];
-                result.d[i] += dy[i];
-            }
-
-            // Check convergence (simplified)
-            if (dy_norm < newton_tolerance_) {
-                result.converged = true;
-                break;
-            }
-
-            dy_norm_old = dy_norm;
-            has_old_norm = true;
-        }
-
-        return result;
-    }
-
-    bool bdf_step(const state_type& y_current, state_type& y_new, state_type& error, time_type dt) {
-        // Simple BDF1 (backward Euler) implementation
-        // Solve: y_new = y_current + dt * f(t_new, y_new)
-        // Rearranged: y_new - dt * f(t_new, y_new) = y_current
-        // Newton iteration to solve F(y_new) = y_new - dt * f(t_new, y_new) - y_current = 0
-
-        time_type t_new = this->current_time_ + dt;
-
-        // Initial guess: explicit Euler step
-        state_type f_current = StateCreator<state_type>::create(y_current);
-        this->sys_(this->current_time_, y_current, f_current);
-
-        y_new = y_current;
-        for (std::size_t i = 0; i < y_new.size(); ++i) {
-            y_new[i] = y_current[i] + dt * f_current[i];
-        }
-
-        // Compute scale for error control
-        state_type scale = StateCreator<state_type>::create(y_new);
-        for (std::size_t i = 0; i < scale.size(); ++i) {
-            time_type abs_y_current = std::abs(y_current[i]);
-            time_type abs_y_new = std::abs(y_new[i]);
-            time_type max_abs = (abs_y_current > abs_y_new) ? abs_y_current : abs_y_new;
-            scale[i] = this->atol_ + this->rtol_ * max_abs;
-        }
-
-        // Newton iteration
-        for (int iter = 0; iter < NEWTON_MAXITER; ++iter) {
-            // Evaluate function at current guess
-            state_type f = StateCreator<state_type>::create(y_new);
-            this->sys_(t_new, y_new, f);
-
-            // Compute residual: F(y_new) = y_new - dt * f(t_new, y_new) - y_current
-            state_type residual = StateCreator<state_type>::create(y_new);
+            // Compute residual: F(d) = d - c * f(t_new, y_predict + d) + psi
+            state_type residual = StateCreator<state_type>::create(result.d);
             for (std::size_t i = 0; i < residual.size(); ++i) {
-                residual[i] = y_new[i] - dt * f[i] - y_current[i];
+                residual[i] = result.d[i] - c * f[i] + psi[i];
             }
 
             // Check convergence
@@ -541,31 +453,114 @@ private:
             norm = std::sqrt(norm / residual.size());
 
             if (norm < newton_tolerance_) {
-                // Converged - estimate error
-                for (std::size_t i = 0; i < error.size(); ++i) {
-                    error[i] = residual[i];
-                }
-                return true;
+                result.converged = true;
+                break;
             }
 
-            // Newton step: solve (I - dt*J) * dy = -residual for dy
-            // Then update: y_new = y_new + dy
-            state_type dy = StateCreator<state_type>::create(y_new);
-            for (std::size_t i = 0; i < y_new.size(); ++i) {
-                time_type jac_diag = estimate_jacobian_diagonal(i, y_new, t_new);
-                time_type denominator = 1.0 - dt * jac_diag;
+            // Newton step: solve (I - c*J) * dd = -residual for dd
+            // Then update: d = d + dd, y = y_predict + d
+            state_type dd = StateCreator<state_type>::create(result.d);
+            for (std::size_t i = 0; i < result.d.size(); ++i) {
+                // Approximate Jacobian diagonal element
+                time_type jac_diag = estimate_jacobian_diagonal(i, result.y, t_new);
+                time_type denominator = 1.0 - c * jac_diag;
                 if (std::abs(denominator) > static_cast<time_type>(1e-12)) {
-                    dy[i] = -residual[i] / denominator;
-                    y_new[i] += dy[i];
+                    dd[i] = -residual[i] / denominator;
                 } else {
-                    // Singular Jacobian - use simple step
-                    dy[i] = -residual[i];
-                    y_new[i] += dy[i];
+                    dd[i] = -residual[i];
                 }
+                result.d[i] += dd[i];
+                result.y[i] = y_predict[i] + result.d[i];
             }
         }
 
-        return false;  // Newton failed to converge
+        return result;
+    }
+
+    bool bdf_step(const state_type& y_current, state_type& y_new, state_type& error, time_type dt) {
+        // SciPy-style BDF step implementation using differences array
+        time_type t_new = this->current_time_ + dt;
+
+        // Update D[1] for the current step size
+        // D[1] = h * f(t_current, y_current)
+        state_type f_current = StateCreator<state_type>::create(D_[0]);
+        this->sys_(this->current_time_, D_[0], f_current);
+        for (std::size_t i = 0; i < D_[0].size(); ++i) {
+            D_[1][i] = dt * f_current[i];
+        }
+
+        // Calculate y_predict = sum(D[:order+1])
+        state_type y_predict = StateCreator<state_type>::create(D_[0]);
+        for (std::size_t i = 0; i < y_predict.size(); ++i) {
+            y_predict[i] = 0.0;
+            for (int j = 0; j <= current_order_; ++j) {
+                y_predict[i] += D_[j][i];
+            }
+        }
+
+        // Calculate scale = atol + rtol * abs(y_predict)
+        state_type scale = StateCreator<state_type>::create(y_predict);
+        for (std::size_t i = 0; i < scale.size(); ++i) {
+            scale[i] = this->atol_ + this->rtol_ * std::abs(y_predict[i]);
+        }
+
+        // Calculate psi = dot(D[1:order+1].T, gamma[1:order+1]) / alpha[order]
+        state_type psi = StateCreator<state_type>::create(y_predict);
+        for (std::size_t i = 0; i < psi.size(); ++i) {
+            psi[i] = 0.0;
+            for (int j = 1; j <= current_order_; ++j) {
+                psi[i] += D_[j][i] * gamma_[j];
+            }
+            psi[i] /= alpha_[current_order_];
+        }
+
+        // Calculate c = h / alpha[order]
+        time_type c = dt / alpha_[current_order_];
+
+        // Solve BDF system
+        auto result = solve_bdf_system(t_new, y_predict, c, psi, scale);
+        if (!result.converged) {
+            return false;
+        }
+
+        // Calculate error = error_const[order] * d
+        for (std::size_t i = 0; i < error.size(); ++i) {
+            error[i] = error_const_[current_order_] * result.d[i];
+        }
+
+        // Calculate error norm
+        time_type error_norm = 0.0;
+        for (std::size_t i = 0; i < error.size(); ++i) {
+            time_type scaled_error = error[i] / scale[i];
+            error_norm += scaled_error * scaled_error;
+        }
+        error_norm = std::sqrt(error_norm / error.size());
+
+        if (error_norm > 1.0) {
+            return false;  // Step rejected
+        }
+
+        // Step accepted - update differences array (SciPy style)
+        // D[0] should be the new solution
+        D_[0] = result.y;
+        y_new = result.y;
+
+        // Update differences: D[order+2] = d - D[order+1], D[order+1] = d
+        if (current_order_ + 2 < static_cast<int>(D_.size())) {
+            for (std::size_t i = 0; i < result.d.size(); ++i) {
+                D_[current_order_ + 2][i] = result.d[i] - D_[current_order_ + 1][i];
+            }
+        }
+        D_[current_order_ + 1] = result.d;
+
+        // Update differences: D[i] += D[i+1] for i = order, order-1, ..., 1 (not 0!)
+        for (int i = current_order_; i >= 1; --i) {
+            for (std::size_t j = 0; j < D_[i].size(); ++j) {
+                D_[i][j] += D_[i + 1][j];
+            }
+        }
+
+        return true;
     }
     
     time_type estimate_jacobian_diagonal(std::size_t i, const state_type& y, time_type t) {
@@ -591,30 +586,7 @@ private:
         return (static_cast<time_type>(-100.0) > jac) ? static_cast<time_type>(-100.0) : ((jac > static_cast<time_type>(100.0)) ? static_cast<time_type>(100.0) : jac);
     }
 
-    void update_differences_array(const state_type& y_new, time_type h) {
-        // Update differences array after successful step (SciPy style)
-        // The principal relation: D^{j+1} y_n = D^j y_n - D^j y_{n-1}
-
-        // Calculate the correction d = y_new - y_predicted
-        state_type d = StateCreator<state_type>::create(y_new);
-        for (std::size_t i = 0; i < d.size(); ++i) {
-            d[i] = y_new[i];
-            for (int j = 0; j <= current_order_; ++j) {
-                d[i] -= D_[j][i];
-            }
-        }
-
-        // Update differences array from highest to lowest order
-        // D[j] += d for j = 0, 1, ..., order+1
-        for (int j = 0; j <= current_order_ + 1; ++j) {
-            for (std::size_t i = 0; i < y_new.size(); ++i) {
-                D_[j][i] += d[i];
-            }
-        }
-
-        // Update D[0] to the new solution
-        D_[0] = y_new;
-    }
+    // Note: update_differences_array is now handled directly in bdf_step
 
     time_type fallback_step(state_type& state, time_type dt) {
         // Fallback to simple forward Euler for problematic cases
