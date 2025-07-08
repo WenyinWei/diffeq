@@ -108,36 +108,37 @@ $(function(){initNavTree('sde__demo_8cpp_source.html','',''); });
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            gx[0] = 0.1 * x[0];</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        };</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keyword">auto</span> problem = diffeq::factory::make_sde_problem&lt;std::vector&lt;double&gt;, <span class="keywordtype">double</span>&gt;(</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keyword">auto</span> wiener = diffeq::sde::factory::make_wiener_process&lt;std::vector&lt;double&gt;, <span class="keywordtype">double</span>&gt;(1, 12345);</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="comment">// auto integrator = diffeq::sde::factory::make_euler_maruyama_integrator&lt;std::vector&lt;double&gt;, double&gt;(problem, wiener);</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <a class="code hl_class" href="classdiffeq_1_1_euler_maruyama_integrator.html">diffeq::EulerMaruyamaIntegrator&lt;std::vector&lt;double&gt;</a>, <span class="keywordtype">double</span>&gt; integrator(problem, wiener);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        std::vector&lt;double&gt; state = {1.0};  <span class="comment">// Initial condition</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordtype">double</span> dt = 0.01;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordtype">double</span> T = 1.0;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordtype">int</span> steps = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(T / dt);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Initial state: &quot;</span> &lt;&lt; state[0] &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; steps; ++i) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            integrator.step(state, dt);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            <span class="keywordflow">if</span> (i % 25 == 0) {  <span class="comment">// Output every quarter</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                std::cout &lt;&lt; <span class="stringliteral">&quot;t = &quot;</span> &lt;&lt; (i * dt) &lt;&lt; <span class="stringliteral">&quot;: X = &quot;</span> &lt;&lt; state[0] &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        }</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Final state: &quot;</span> &lt;&lt; state[0] &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;SDE integration completed successfully!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;❌ Error: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="comment">// Create SDE problem and Wiener process directly without factory functions</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keyword">auto</span> problem = std::make_shared&lt;diffeq::sde::SDEProblem&lt;std::vector&lt;double&gt;&gt;&gt;(</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            drift_func, diffusion_func, diffeq::sde::NoiseType::DIAGONAL_NOISE);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">auto</span> wiener = std::make_shared&lt;diffeq::sde::WienerProcess&lt;std::vector&lt;double&gt;&gt;&gt;(1, 12345);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <a class="code hl_class" href="classdiffeq_1_1_euler_maruyama_integrator.html">diffeq::EulerMaruyamaIntegrator&lt;std::vector&lt;double&gt;</a>&gt; integrator(problem, wiener);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        std::vector&lt;double&gt; state = {1.0};  <span class="comment">// Initial condition</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordtype">double</span> dt = 0.01;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordtype">double</span> T = 1.0;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keywordtype">int</span> steps = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(T / dt);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Initial state: &quot;</span> &lt;&lt; state[0] &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; steps; ++i) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            integrator.step(state, dt);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            <span class="keywordflow">if</span> (i % 25 == 0) {  <span class="comment">// Output every quarter</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                std::cout &lt;&lt; <span class="stringliteral">&quot;t = &quot;</span> &lt;&lt; (i * dt) &lt;&lt; <span class="stringliteral">&quot;: X = &quot;</span> &lt;&lt; state[0] &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Final state: &quot;</span> &lt;&lt; state[0] &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;SDE integration completed successfully!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;❌ Error: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
 <div class="ttc" id="aclassdiffeq_1_1_euler_maruyama_integrator_html"><div class="ttname"><a href="classdiffeq_1_1_euler_maruyama_integrator.html">diffeq::EulerMaruyamaIntegrator</a></div><div class="ttdoc">Euler-Maruyama method for SDEs.</div><div class="ttdef"><b>Definition</b> <a href="euler__maruyama_8hpp_source.html#l00019">euler_maruyama.hpp:19</a></div></div>
 <div class="ttc" id="adiffeq_8hpp_html"><div class="ttname"><a href="diffeq_8hpp.html">diffeq.hpp</a></div><div class="ttdoc">Modern C++ ODE Integration Library with Real-time Signal Processing.</div></div>
 </div><!-- fragment --></div><!-- contents -->

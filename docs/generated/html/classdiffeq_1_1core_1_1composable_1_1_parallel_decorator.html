@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::ParallelDecorator&lt; S, T &gt; Class Template Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::ParallelDecorator&lt; S &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('classdiffeq_1_1core_1_1composable_1_1_parallel_decorat
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::core::composable::ParallelDecorator&lt; S, T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::core::composable::ParallelDecorator&lt; S &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -98,51 +98,51 @@ $(function(){initNavTree('classdiffeq_1_1core_1_1composable_1_1_parallel_decorat
 
 <p><code>#include &lt;<a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for diffeq::core::composable::ParallelDecorator&lt; S, T &gt;:</div>
+Inheritance diagram for diffeq::core::composable::ParallelDecorator&lt; S &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator__inherit__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_parallel_decorator_3_01_s_00_01_t_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator__inherit__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_parallel_decorator_3_01_s_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for diffeq::core::composable::ParallelDecorator&lt; S, T &gt;:</div>
+Collaboration diagram for diffeq::core::composable::ParallelDecorator&lt; S &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_parallel_decorator_3_01_s_00_01_t_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_parallel_decorator_3_01_s_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac607570279bfd61f1fbdf7904982d34f" id="r_ac607570279bfd61f1fbdf7904982d34f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac607570279bfd61f1fbdf7904982d34f">ParallelDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt; integrator, <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> <a class="el" href="#a40086ef1ccfed03ea3d4b4fd20706c26">config</a>={})</td></tr>
-<tr class="memdesc:ac607570279bfd61f1fbdf7904982d34f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct parallel decorator.  <br /></td></tr>
-<tr class="memitem:aa10ec445b191b2af1f6fdc73ac4a5a98" id="r_aa10ec445b191b2af1f6fdc73ac4a5a98"><td class="memTemplParams" colspan="2">template&lt;typename StateRange&gt; </td></tr>
-<tr class="memitem:aa10ec445b191b2af1f6fdc73ac4a5a98 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa10ec445b191b2af1f6fdc73ac4a5a98">integrate_batch</a> (StateRange &amp;&amp;states, T dt, T end_time)</td></tr>
-<tr class="memdesc:aa10ec445b191b2af1f6fdc73ac4a5a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate multiple states in parallel.  <br /></td></tr>
-<tr class="memitem:a632833a9912009bfca27418792674ffc" id="r_a632833a9912009bfca27418792674ffc"><td class="memTemplParams" colspan="2">template&lt;typename Generator, typename Processor&gt; </td></tr>
-<tr class="memitem:a632833a9912009bfca27418792674ffc template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a632833a9912009bfca27418792674ffc">integrate_monte_carlo</a> (size_t num_simulations, Generator &amp;&amp;generator, Processor &amp;&amp;processor, T dt, T end_time)</td></tr>
-<tr class="memdesc:a632833a9912009bfca27418792674ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monte Carlo integration with parallel execution.  <br /></td></tr>
-<tr class="memitem:adc707ddbfd21ff5368bee6e811980ac9" id="r_adc707ddbfd21ff5368bee6e811980ac9"><td class="memTemplParams" colspan="2">template&lt;typename StateRange&gt; </td></tr>
-<tr class="memitem:adc707ddbfd21ff5368bee6e811980ac9 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc707ddbfd21ff5368bee6e811980ac9">integrate_batch_chunked</a> (StateRange &amp;&amp;states, T dt, T end_time)</td></tr>
-<tr class="memdesc:adc707ddbfd21ff5368bee6e811980ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chunked parallel processing with load balancing.  <br /></td></tr>
-<tr class="memitem:a40086ef1ccfed03ea3d4b4fd20706c26" id="r_a40086ef1ccfed03ea3d4b4fd20706c26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40086ef1ccfed03ea3d4b4fd20706c26">config</a> ()</td></tr>
-<tr class="memdesc:a40086ef1ccfed03ea3d4b4fd20706c26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access and modify parallel configuration.  <br /></td></tr>
-<tr class="memitem:aa8b27c11c33082eb0290fa49a785ed29" id="r_aa8b27c11c33082eb0290fa49a785ed29"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8b27c11c33082eb0290fa49a785ed29">config</a> () const</td></tr>
-<tr class="memitem:a9fd6fd41ddfa00f183f0ab42f29b0f6c" id="r_a9fd6fd41ddfa00f183f0ab42f29b0f6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9fd6fd41ddfa00f183f0ab42f29b0f6c">update_config</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> new_config)</td></tr>
-<tr class="memdesc:a9fd6fd41ddfa00f183f0ab42f29b0f6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update parallel configuration with validation.  <br /></td></tr>
-<tr class="memitem:a14fd773c4777563efda557391b9ae961" id="r_a14fd773c4777563efda557391b9ae961"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14fd773c4777563efda557391b9ae961">get_optimal_thread_count</a> () const</td></tr>
-<tr class="memdesc:a14fd773c4777563efda557391b9ae961"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get optimal number of threads for current configuration.  <br /></td></tr>
-<tr class="inherit_header pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a04b5844ea5ead3d0a5c22dd53be40231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt; integrator)</td></tr>
+<tr class="memitem:a5f7b39df5001c07b46f84d3c6659c8a4" id="r_a5f7b39df5001c07b46f84d3c6659c8a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f7b39df5001c07b46f84d3c6659c8a4">ParallelDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt; integrator, <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> <a class="el" href="#affecc5461cdd822106b8d0be0955247f">config</a>={})</td></tr>
+<tr class="memdesc:a5f7b39df5001c07b46f84d3c6659c8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct parallel decorator.  <br /></td></tr>
+<tr class="memitem:a2d455834c7afddaf6960f9b371c39828" id="r_a2d455834c7afddaf6960f9b371c39828"><td class="memTemplParams" colspan="2">template&lt;typename StateRange&gt; </td></tr>
+<tr class="memitem:a2d455834c7afddaf6960f9b371c39828 template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d455834c7afddaf6960f9b371c39828">integrate_batch</a> (StateRange &amp;&amp;states, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type dt, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type end_time)</td></tr>
+<tr class="memdesc:a2d455834c7afddaf6960f9b371c39828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate multiple states in parallel.  <br /></td></tr>
+<tr class="memitem:ac9b197df6695db0fe413867ad497ebf4" id="r_ac9b197df6695db0fe413867ad497ebf4"><td class="memTemplParams" colspan="2">template&lt;typename Generator, typename Processor&gt; </td></tr>
+<tr class="memitem:ac9b197df6695db0fe413867ad497ebf4 template"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9b197df6695db0fe413867ad497ebf4">integrate_monte_carlo</a> (size_t num_simulations, Generator &amp;&amp;generator, Processor &amp;&amp;processor, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type dt, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type end_time)</td></tr>
+<tr class="memdesc:ac9b197df6695db0fe413867ad497ebf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monte Carlo integration with parallel execution.  <br /></td></tr>
+<tr class="memitem:a64c5e128593d42ae9e4755bfb858401b" id="r_a64c5e128593d42ae9e4755bfb858401b"><td class="memTemplParams" colspan="2">template&lt;typename StateRange&gt; </td></tr>
+<tr class="memitem:a64c5e128593d42ae9e4755bfb858401b template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64c5e128593d42ae9e4755bfb858401b">integrate_batch_chunked</a> (StateRange &amp;&amp;states, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type dt, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type end_time)</td></tr>
+<tr class="memdesc:a64c5e128593d42ae9e4755bfb858401b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chunked parallel processing with load balancing.  <br /></td></tr>
+<tr class="memitem:affecc5461cdd822106b8d0be0955247f" id="r_affecc5461cdd822106b8d0be0955247f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affecc5461cdd822106b8d0be0955247f">config</a> ()</td></tr>
+<tr class="memdesc:affecc5461cdd822106b8d0be0955247f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access and modify parallel configuration.  <br /></td></tr>
+<tr class="memitem:aa0b66881b0822db139c42be7f7eb0a2c" id="r_aa0b66881b0822db139c42be7f7eb0a2c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0b66881b0822db139c42be7f7eb0a2c">config</a> () const</td></tr>
+<tr class="memitem:a2a1e5a083c3ba2498d570d5ff2b61281" id="r_a2a1e5a083c3ba2498d570d5ff2b61281"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a1e5a083c3ba2498d570d5ff2b61281">update_config</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> new_config)</td></tr>
+<tr class="memdesc:a2a1e5a083c3ba2498d570d5ff2b61281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update parallel configuration with validation.  <br /></td></tr>
+<tr class="memitem:a250d8609478a52fdbd502ebe5299620b" id="r_a250d8609478a52fdbd502ebe5299620b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a250d8609478a52fdbd502ebe5299620b">get_optimal_thread_count</a> () const</td></tr>
+<tr class="memdesc:a250d8609478a52fdbd502ebe5299620b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get optimal number of threads for current configuration.  <br /></td></tr>
+<tr class="inherit_header pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a04b5844ea5ead3d0a5c22dd53be40231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt; integrator)</td></tr>
 <tr class="memdesc:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct decorator wrapping another integrator.  <br /></td></tr>
 <tr class="memitem:a30c7042edc84721a3966659a78c69a50 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a30c7042edc84721a3966659a78c69a50"><td class="memItemLeft" align="right" valign="top">
 virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IntegratorDecorator</b> ()=default</td></tr>
 <tr class="memdesc:a30c7042edc84721a3966659a78c69a50 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor for proper cleanup. <br /></td></tr>
-<tr class="memitem:a15815918bd3b018ad4d2776ff0d829d9 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a15815918bd3b018ad4d2776ff0d829d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a15815918bd3b018ad4d2776ff0d829d9">step</a> (state_type &amp;state, time_type dt) override</td></tr>
-<tr class="memitem:a4172632cd523510dee78bb4bd4900c6a inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a4172632cd523510dee78bb4bd4900c6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a4172632cd523510dee78bb4bd4900c6a">integrate</a> (state_type &amp;state, time_type dt, time_type end_time) override</td></tr>
-<tr class="memitem:a1056104ad90e22a73fdef15574217190 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a1056104ad90e22a73fdef15574217190"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a1056104ad90e22a73fdef15574217190">current_time</a> () const override</td></tr>
-<tr class="memitem:a7e1042f6d239fd0df26de651c39d44ef inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a7e1042f6d239fd0df26de651c39d44ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a7e1042f6d239fd0df26de651c39d44ef">set_time</a> (time_type t) override</td></tr>
-<tr class="memitem:a630d1d6556c6bc39157daa133a1b61ad inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a630d1d6556c6bc39157daa133a1b61ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a630d1d6556c6bc39157daa133a1b61ad">set_system</a> (system_function sys) override</td></tr>
-<tr class="memitem:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a6c1ea268b50ff65e9429ee6aa077d9fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a6c1ea268b50ff65e9429ee6aa077d9fe">wrapped</a> ()</td></tr>
+<tr class="memitem:a15815918bd3b018ad4d2776ff0d829d9 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a15815918bd3b018ad4d2776ff0d829d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a15815918bd3b018ad4d2776ff0d829d9">step</a> (state_type &amp;state, time_type dt) override</td></tr>
+<tr class="memitem:a4172632cd523510dee78bb4bd4900c6a inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a4172632cd523510dee78bb4bd4900c6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a4172632cd523510dee78bb4bd4900c6a">integrate</a> (state_type &amp;state, time_type dt, time_type end_time) override</td></tr>
+<tr class="memitem:a1056104ad90e22a73fdef15574217190 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a1056104ad90e22a73fdef15574217190"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a1056104ad90e22a73fdef15574217190">current_time</a> () const override</td></tr>
+<tr class="memitem:a7e1042f6d239fd0df26de651c39d44ef inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a7e1042f6d239fd0df26de651c39d44ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a7e1042f6d239fd0df26de651c39d44ef">set_time</a> (time_type t) override</td></tr>
+<tr class="memitem:a630d1d6556c6bc39157daa133a1b61ad inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a630d1d6556c6bc39157daa133a1b61ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a630d1d6556c6bc39157daa133a1b61ad">set_system</a> (system_function sys) override</td></tr>
+<tr class="memitem:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a6c1ea268b50ff65e9429ee6aa077d9fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a6c1ea268b50ff65e9429ee6aa077d9fe">wrapped</a> ()</td></tr>
 <tr class="memdesc:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to wrapped integrator for advanced use.  <br /></td></tr>
-<tr class="memitem:add1039eccda7d12c21dab0506984fd5e inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_add1039eccda7d12c21dab0506984fd5e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#add1039eccda7d12c21dab0506984fd5e">wrapped</a> () const</td></tr>
-<tr class="memitem:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_ab3c5041cd7aef8dba3c812770a56e945"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#ab3c5041cd7aef8dba3c812770a56e945">has_wrapped_integrator</a> () const</td></tr>
+<tr class="memitem:add1039eccda7d12c21dab0506984fd5e inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_add1039eccda7d12c21dab0506984fd5e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#add1039eccda7d12c21dab0506984fd5e">wrapped</a> () const</td></tr>
+<tr class="memitem:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_ab3c5041cd7aef8dba3c812770a56e945"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#ab3c5041cd7aef8dba3c812770a56e945">has_wrapped_integrator</a> () const</td></tr>
 <tr class="memdesc:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if wrapped integrator exists.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:a6249475d8952f1d1f1a25f39f6569047 inherit pub_methods_class_abstract_integrator" id="r_a6249475d8952f1d1f1a25f39f6569047"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#a6249475d8952f1d1f1a25f39f6569047">AbstractIntegrator</a> (system_function sys)</td></tr>
@@ -152,11 +152,11 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IntegratorDecorat
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a56aa07bbc317b0f195014ff433d64d75 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a56aa07bbc317b0f195014ff433d64d75"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a56aa07bbc317b0f195014ff433d64d75">base_type</a></td></tr>
-<tr class="memitem:a367284ba34e9632fbcf11686c5bee95c inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a367284ba34e9632fbcf11686c5bee95c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a367284ba34e9632fbcf11686c5bee95c">state_type</a></td></tr>
-<tr class="memitem:a16e0db720d1e33056b12e22444c61955 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a16e0db720d1e33056b12e22444c61955"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a16e0db720d1e33056b12e22444c61955">time_type</a></td></tr>
-<tr class="memitem:a468975224e8d36ddb467ec3ae81d9c90 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a468975224e8d36ddb467ec3ae81d9c90"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a468975224e8d36ddb467ec3ae81d9c90">system_function</a></td></tr>
+<tr class="inherit_header pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a56aa07bbc317b0f195014ff433d64d75 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a56aa07bbc317b0f195014ff433d64d75"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a56aa07bbc317b0f195014ff433d64d75">base_type</a> = <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt;S&gt;</td></tr>
+<tr class="memitem:a367284ba34e9632fbcf11686c5bee95c inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a367284ba34e9632fbcf11686c5bee95c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a367284ba34e9632fbcf11686c5bee95c">state_type</a> = typename base_type::state_type</td></tr>
+<tr class="memitem:a16e0db720d1e33056b12e22444c61955 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a16e0db720d1e33056b12e22444c61955"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a16e0db720d1e33056b12e22444c61955">time_type</a> = typename base_type::time_type</td></tr>
+<tr class="memitem:a468975224e8d36ddb467ec3ae81d9c90 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a468975224e8d36ddb467ec3ae81d9c90"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a468975224e8d36ddb467ec3ae81d9c90">system_function</a> = typename base_type::system_function</td></tr>
 <tr class="inherit_header pub_types_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:ada247cd905dbeb5b5db250a6d18e42b6 inherit pub_types_class_abstract_integrator" id="r_ada247cd905dbeb5b5db250a6d18e42b6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ada247cd905dbeb5b5db250a6d18e42b6">state_type</a> = S</td></tr>
 <tr class="memitem:aa4647f8aa130c44f1a05768d6f71c33c inherit pub_types_class_abstract_integrator" id="r_aa4647f8aa130c44f1a05768d6f71c33c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#aa4647f8aa130c44f1a05768d6f71c33c">time_type</a> = typename S::value_type</td></tr>
@@ -164,15 +164,15 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:ab86e8a5aba69e18b3a90de9add75435f inherit pub_types_class_abstract_integrator" id="r_ab86e8a5aba69e18b3a90de9add75435f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ab86e8a5aba69e18b3a90de9add75435f">system_function</a> = std::function&lt;void(time_type, const state_type&amp;, state_type&amp;)&gt;</td></tr>
 <tr class="inherit_header pro_methods_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:adaeb48b22ac522144547c63fdd71dfcd inherit pro_methods_class_abstract_integrator" id="r_adaeb48b22ac522144547c63fdd71dfcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#adaeb48b22ac522144547c63fdd71dfcd">advance_time</a> (time_type dt)</td></tr>
-<tr class="inherit_header pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a705cdcf548a89681290384b2df198172 inherit pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a705cdcf548a89681290384b2df198172"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a705cdcf548a89681290384b2df198172">wrapped_integrator_</a></td></tr>
+<tr class="inherit_header pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a705cdcf548a89681290384b2df198172 inherit pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a705cdcf548a89681290384b2df198172"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a705cdcf548a89681290384b2df198172">wrapped_integrator_</a></td></tr>
 <tr class="inherit_header pro_attribs_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:ae1565729bb4dd970471f94946eb5763d inherit pro_attribs_class_abstract_integrator" id="r_ae1565729bb4dd970471f94946eb5763d"><td class="memItemLeft" align="right" valign="top">system_function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ae1565729bb4dd970471f94946eb5763d">sys_</a></td></tr>
 <tr class="memitem:a600d2a4194ef4fdd50eadaa4222b4a19 inherit pro_attribs_class_abstract_integrator" id="r_a600d2a4194ef4fdd50eadaa4222b4a19"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#a600d2a4194ef4fdd50eadaa4222b4a19">current_time_</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt;<br />
-class diffeq::core::composable::ParallelDecorator&lt; S, T &gt;</div><p>Parallel execution decorator - adds batch processing to any integrator. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt;<br />
+class diffeq::core::composable::ParallelDecorator&lt; S &gt;</div><p>Parallel execution decorator - adds batch processing to any integrator. </p>
 <p>This decorator provides parallel execution capabilities with the following features:</p><ul>
 <li>Batch processing of multiple states</li>
 <li>Monte Carlo simulation support</li>
@@ -187,23 +187,23 @@ class diffeq::core::composable::ParallelDecorator&lt; S, T &gt;</div><p>Parallel
 </ul>
 <p>Note: This decorator requires integrator factory support for thread-local copies. </p>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00070">70</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00075">75</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac607570279bfd61f1fbdf7904982d34f" name="ac607570279bfd61f1fbdf7904982d34f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac607570279bfd61f1fbdf7904982d34f">&#9670;&#160;</a></span>ParallelDecorator()</h2>
+<a id="a5f7b39df5001c07b46f84d3c6659c8a4" name="a5f7b39df5001c07b46f84d3c6659c8a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f7b39df5001c07b46f84d3c6659c8a4">&#9670;&#160;</a></span>ParallelDecorator()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::ParallelDecorator </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::ParallelDecorator </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span>, </td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -233,29 +233,29 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00081">81</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00086">86</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_ac607570279bfd61f1fbdf7904982d34f_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_ac607570279bfd61f1fbdf7904982d34f_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a5f7b39df5001c07b46f84d3c6659c8a4_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a5f7b39df5001c07b46f84d3c6659c8a4_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a40086ef1ccfed03ea3d4b4fd20706c26" name="a40086ef1ccfed03ea3d4b4fd20706c26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40086ef1ccfed03ea3d4b4fd20706c26">&#9670;&#160;</a></span>config() <span class="overload">[1/2]</span></h2>
+<a id="affecc5461cdd822106b8d0be0955247f" name="affecc5461cdd822106b8d0be0955247f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affecc5461cdd822106b8d0be0955247f">&#9670;&#160;</a></span>config() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::config </td>
+          <td class="memname"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::config </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -270,28 +270,28 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Access and modify parallel configuration. </p>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00235">235</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00267">267</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a40086ef1ccfed03ea3d4b4fd20706c26_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a40086ef1ccfed03ea3d4b4fd20706c26_icgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_affecc5461cdd822106b8d0be0955247f_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_affecc5461cdd822106b8d0be0955247f_icgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="aa8b27c11c33082eb0290fa49a785ed29" name="aa8b27c11c33082eb0290fa49a785ed29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8b27c11c33082eb0290fa49a785ed29">&#9670;&#160;</a></span>config() <span class="overload">[2/2]</span></h2>
+<a id="aa0b66881b0822db139c42be7f7eb0a2c" name="aa0b66881b0822db139c42be7f7eb0a2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b66881b0822db139c42be7f7eb0a2c">&#9670;&#160;</a></span>config() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::config </td>
+          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::config </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -304,23 +304,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00236">236</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00268">268</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a14fd773c4777563efda557391b9ae961" name="a14fd773c4777563efda557391b9ae961"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14fd773c4777563efda557391b9ae961">&#9670;&#160;</a></span>get_optimal_thread_count()</h2>
+<a id="a250d8609478a52fdbd502ebe5299620b" name="a250d8609478a52fdbd502ebe5299620b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a250d8609478a52fdbd502ebe5299620b">&#9670;&#160;</a></span>get_optimal_thread_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::get_optimal_thread_count </td>
+          <td class="memname">size_t <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::get_optimal_thread_count </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -335,17 +335,17 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Get optimal number of threads for current configuration. </p>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00251">251</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00283">283</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aa10ec445b191b2af1f6fdc73ac4a5a98" name="aa10ec445b191b2af1f6fdc73ac4a5a98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa10ec445b191b2af1f6fdc73ac4a5a98">&#9670;&#160;</a></span>integrate_batch()</h2>
+<a id="a2d455834c7afddaf6960f9b371c39828" name="a2d455834c7afddaf6960f9b371c39828"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d455834c7afddaf6960f9b371c39828">&#9670;&#160;</a></span>integrate_batch()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <div class="memtemplate">
 template&lt;typename StateRange&gt; </div>
 <table class="mlabels">
@@ -353,19 +353,19 @@ template&lt;typename StateRange&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::integrate_batch </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::integrate_batch </td>
           <td>(</td>
           <td class="paramtype">StateRange &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>states</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -397,22 +397,22 @@ template&lt;typename StateRange&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00105">105</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00110">110</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_aa10ec445b191b2af1f6fdc73ac4a5a98_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_aa10ec445b191b2af1f6fdc73ac4a5a98_icgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a2d455834c7afddaf6960f9b371c39828_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a2d455834c7afddaf6960f9b371c39828_icgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="adc707ddbfd21ff5368bee6e811980ac9" name="adc707ddbfd21ff5368bee6e811980ac9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc707ddbfd21ff5368bee6e811980ac9">&#9670;&#160;</a></span>integrate_batch_chunked()</h2>
+<a id="a64c5e128593d42ae9e4755bfb858401b" name="a64c5e128593d42ae9e4755bfb858401b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64c5e128593d42ae9e4755bfb858401b">&#9670;&#160;</a></span>integrate_batch_chunked()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <div class="memtemplate">
 template&lt;typename StateRange&gt; </div>
 <table class="mlabels">
@@ -420,19 +420,19 @@ template&lt;typename StateRange&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::integrate_batch_chunked </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::integrate_batch_chunked </td>
           <td>(</td>
           <td class="paramtype">StateRange &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>states</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -458,22 +458,22 @@ template&lt;typename StateRange&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00200">200</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00223">223</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_adc707ddbfd21ff5368bee6e811980ac9_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_adc707ddbfd21ff5368bee6e811980ac9_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a64c5e128593d42ae9e4755bfb858401b_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a64c5e128593d42ae9e4755bfb858401b_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="a632833a9912009bfca27418792674ffc" name="a632833a9912009bfca27418792674ffc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a632833a9912009bfca27418792674ffc">&#9670;&#160;</a></span>integrate_monte_carlo()</h2>
+<a id="ac9b197df6695db0fe413867ad497ebf4" name="ac9b197df6695db0fe413867ad497ebf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9b197df6695db0fe413867ad497ebf4">&#9670;&#160;</a></span>integrate_monte_carlo()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <div class="memtemplate">
 template&lt;typename Generator, typename Processor&gt; </div>
 <table class="mlabels">
@@ -481,7 +481,7 @@ template&lt;typename Generator, typename Processor&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::integrate_monte_carlo </td>
+          <td class="memname">auto <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::integrate_monte_carlo </td>
           <td>(</td>
           <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>num_simulations</em></span>, </td>
         </tr>
@@ -498,12 +498,12 @@ template&lt;typename Generator, typename Processor&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -539,23 +539,23 @@ template&lt;typename Generator, typename Processor&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00150">150</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00163">163</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a9fd6fd41ddfa00f183f0ab42f29b0f6c" name="a9fd6fd41ddfa00f183f0ab42f29b0f6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fd6fd41ddfa00f183f0ab42f29b0f6c">&#9670;&#160;</a></span>update_config()</h2>
+<a id="a2a1e5a083c3ba2498d570d5ff2b61281" name="a2a1e5a083c3ba2498d570d5ff2b61281"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a1e5a083c3ba2498d570d5ff2b61281">&#9670;&#160;</a></span>update_config()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S, T &gt;::update_config </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html">diffeq::core::composable::ParallelDecorator</a>&lt; S &gt;::update_config </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a></td>          <td class="paramname"><span class="paramname"><em>new_config</em></span></td><td>)</td>
           <td></td>
@@ -582,11 +582,11 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00243">243</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parallel__decorator_8hpp_source.html#l00275">275</a> of file <a class="el" href="parallel__decorator_8hpp_source.html">parallel_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a9fd6fd41ddfa00f183f0ab42f29b0f6c_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a9fd6fd41ddfa00f183f0ab42f29b0f6c_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a2a1e5a083c3ba2498d570d5ff2b61281_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_parallel_decorator_a2a1e5a083c3ba2498d570d5ff2b61281_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>

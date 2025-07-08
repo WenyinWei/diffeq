@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::async::AsyncIntegrator&lt; S, T &gt;::Config Struct Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::async::AsyncIntegrator&lt; S &gt;::Config Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('structdiffeq_1_1async_1_1_async_integrator_1_1_config.
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::async::AsyncIntegrator&lt; S, T &gt;::Config Struct Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::async::AsyncIntegrator&lt; S &gt;::Config Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -100,27 +100,27 @@ $(function(){initNavTree('structdiffeq_1_1async_1_1_async_integrator_1_1_config.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a5f74e7c378ba7658aeea54a9d89b5b19" id="r_a5f74e7c378ba7658aeea54a9d89b5b19"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f74e7c378ba7658aeea54a9d89b5b19">enable_async_stepping</a> = false</td></tr>
-<tr class="memitem:ae6a197f90f524505872c2999dabc6273" id="r_ae6a197f90f524505872c2999dabc6273"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6a197f90f524505872c2999dabc6273">enable_state_monitoring</a> = false</td></tr>
-<tr class="memitem:a6b424f3daa75c75e82689a15e28d8cba" id="r_a6b424f3daa75c75e82689a15e28d8cba"><td class="memItemLeft" align="right" valign="top">std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b424f3daa75c75e82689a15e28d8cba">monitoring_interval</a> {1000}</td></tr>
-<tr class="memitem:a771025e5b86648c836cf6a06ecd451b5" id="r_a771025e5b86648c836cf6a06ecd451b5"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a771025e5b86648c836cf6a06ecd451b5">max_concurrent_operations</a> = 4</td></tr>
+<tr class="memitem:a108c6e1ed1ce45f5fb5a31e13508854b" id="r_a108c6e1ed1ce45f5fb5a31e13508854b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a108c6e1ed1ce45f5fb5a31e13508854b">enable_async_stepping</a> = false</td></tr>
+<tr class="memitem:a1aac5b547e4f5ac28a168dc0ad7b8221" id="r_a1aac5b547e4f5ac28a168dc0ad7b8221"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1aac5b547e4f5ac28a168dc0ad7b8221">enable_state_monitoring</a> = false</td></tr>
+<tr class="memitem:a5a6e82dc537d9c978c71df774d21e3cd" id="r_a5a6e82dc537d9c978c71df774d21e3cd"><td class="memItemLeft" align="right" valign="top">std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a6e82dc537d9c978c71df774d21e3cd">monitoring_interval</a> {1000}</td></tr>
+<tr class="memitem:a0b536066e73a35f209e9612cd77e6849" id="r_a0b536066e73a35f209e9612cd77e6849"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b536066e73a35f209e9612cd77e6849">max_concurrent_operations</a> = 4</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt;<br />
-struct diffeq::async::AsyncIntegrator&lt; S, T &gt;::Config</div><p>Configuration for async operation. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt;<br />
+struct diffeq::async::AsyncIntegrator&lt; S &gt;::Config</div><p>Configuration for async operation. </p>
 
 <p class="definition">Definition at line <a class="el" href="async__integrator_8hpp_source.html#l00165">165</a> of file <a class="el" href="async__integrator_8hpp_source.html">async_integrator.hpp</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a5f74e7c378ba7658aeea54a9d89b5b19" name="a5f74e7c378ba7658aeea54a9d89b5b19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f74e7c378ba7658aeea54a9d89b5b19">&#9670;&#160;</a></span>enable_async_stepping</h2>
+<a id="a108c6e1ed1ce45f5fb5a31e13508854b" name="a108c6e1ed1ce45f5fb5a31e13508854b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a108c6e1ed1ce45f5fb5a31e13508854b">&#9670;&#160;</a></span>enable_async_stepping</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S, T &gt;::Config::enable_async_stepping = false</td>
+          <td class="memname">bool <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S &gt;::Config::enable_async_stepping = false</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -129,16 +129,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="ae6a197f90f524505872c2999dabc6273" name="ae6a197f90f524505872c2999dabc6273"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6a197f90f524505872c2999dabc6273">&#9670;&#160;</a></span>enable_state_monitoring</h2>
+<a id="a1aac5b547e4f5ac28a168dc0ad7b8221" name="a1aac5b547e4f5ac28a168dc0ad7b8221"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1aac5b547e4f5ac28a168dc0ad7b8221">&#9670;&#160;</a></span>enable_state_monitoring</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S, T &gt;::Config::enable_state_monitoring = false</td>
+          <td class="memname">bool <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S &gt;::Config::enable_state_monitoring = false</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -147,16 +147,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a771025e5b86648c836cf6a06ecd451b5" name="a771025e5b86648c836cf6a06ecd451b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a771025e5b86648c836cf6a06ecd451b5">&#9670;&#160;</a></span>max_concurrent_operations</h2>
+<a id="a0b536066e73a35f209e9612cd77e6849" name="a0b536066e73a35f209e9612cd77e6849"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b536066e73a35f209e9612cd77e6849">&#9670;&#160;</a></span>max_concurrent_operations</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S, T &gt;::Config::max_concurrent_operations = 4</td>
+          <td class="memname">size_t <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S &gt;::Config::max_concurrent_operations = 4</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -165,16 +165,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a6b424f3daa75c75e82689a15e28d8cba" name="a6b424f3daa75c75e82689a15e28d8cba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b424f3daa75c75e82689a15e28d8cba">&#9670;&#160;</a></span>monitoring_interval</h2>
+<a id="a5a6e82dc537d9c978c71df774d21e3cd" name="a5a6e82dc537d9c978c71df774d21e3cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a6e82dc537d9c978c71df774d21e3cd">&#9670;&#160;</a></span>monitoring_interval</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::chrono::microseconds <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S, T &gt;::Config::monitoring_interval {1000}</td>
+          <td class="memname">std::chrono::microseconds <a class="el" href="classdiffeq_1_1async_1_1_async_integrator.html">diffeq::async::AsyncIntegrator</a>&lt; S &gt;::Config::monitoring_interval {1000}</td>
         </tr>
       </table>
 </div><div class="memdoc">

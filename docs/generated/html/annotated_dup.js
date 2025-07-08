@@ -111,7 +111,7 @@ var annotated_dup =
       [ "SRIIntegrator", "classdiffeq_1_1_s_r_i_integrator.html", null ],
       [ "SRITableau", "structdiffeq_1_1_s_r_i_tableau.html", null ],
       [ "SRIW1Integrator", "classdiffeq_1_1_s_r_i_w1_integrator.html", null ],
-      [ "TimeoutConfig", "structdiffeq_1_1_timeout_config.html", null ],
+      [ "TimeoutConfig", "structdiffeq_1_1_timeout_config.html", "structdiffeq_1_1_timeout_config" ],
       [ "TimeoutDecorator", "classdiffeq_1_1_timeout_decorator.html", "classdiffeq_1_1_timeout_decorator" ],
       [ "TimeoutIntegrator", "classdiffeq_1_1_timeout_integrator.html", "classdiffeq_1_1_timeout_integrator" ],
       [ "TimeoutResult", "structdiffeq_1_1_timeout_result.html", "structdiffeq_1_1_timeout_result" ],

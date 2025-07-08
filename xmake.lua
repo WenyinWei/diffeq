@@ -294,6 +294,84 @@ target("performance_benchmark")
     set_rundir("$(projectdir)")
     set_group("performance")
 
+-- BDF debug test
+target("debug_bdf")
+    set_kind("binary")
+    add_files("debug_bdf.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- BDF fixed step test
+target("test_bdf_fixed")
+    set_kind("binary")
+    add_files("test_bdf_fixed.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- BDF Newton debug test
+target("debug_newton")
+    set_kind("binary")
+    add_files("debug_newton.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- BDF mathematical analysis test
+target("test_bdf_math")
+    set_kind("binary")
+    add_files("test_bdf_math.cpp")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- BDF detection debug test
+target("debug_detection")
+    set_kind("binary")
+    add_files("debug_detection.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- BDF Newton detailed debug test
+target("debug_newton_detailed")
+    set_kind("binary")
+    add_files("debug_newton_detailed.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- BDF Jacobian debug test
+target("debug_jacobian")
+    set_kind("binary")
+    add_files("debug_jacobian.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- Simple fixed BDF debug test
+target("debug_fixed_bdf")
+    set_kind("binary")
+    add_files("debug_fixed_bdf.cpp")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- Simple fixed step test
+target("test_fixed_simple")
+    set_kind("binary")
+    add_files("test_fixed_simple.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- BDF adaptive step debug test
+target("debug_adaptive_bdf")
+    set_kind("binary")
+    add_files("debug_adaptive_bdf.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
 -- ============================================================================
 -- CUSTOM TASKS
 -- ============================================================================

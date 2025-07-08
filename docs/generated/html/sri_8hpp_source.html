@@ -120,11 +120,11 @@ $(function(){initNavTree('sri_8hpp_source.html','',''); });
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>};</div>
 </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">template</span>&lt;system_state StateType, can_be_time TimeType&gt;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">template</span>&lt;system_state StateType&gt;</div>
 <div class="foldopen" id="foldopen00044" data-start="{" data-end="};">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classdiffeq_1_1_s_r_i_integrator.html">   44</a></span><span class="keyword">class </span>SRIIntegrator : <span class="keyword">public</span> AbstractSDEIntegrator&lt;StateType, TimeType&gt; {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classdiffeq_1_1_s_r_i_integrator.html">   44</a></span><span class="keyword">class </span>SRIIntegrator : <span class="keyword">public</span> <a class="code hl_class" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">sde::AbstractSDEIntegrator</a>&lt;StateType&gt; {</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">using </span>base_type = AbstractSDEIntegrator&lt;StateType, TimeType&gt;;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">using </span>base_type = <a class="code hl_class" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">sde::AbstractSDEIntegrator&lt;StateType&gt;</a>;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">using </span>state_type = <span class="keyword">typename</span> base_type::state_type;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">using </span>time_type = <span class="keyword">typename</span> base_type::time_type;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">using </span>value_type = <span class="keyword">typename</span> base_type::value_type;</div>
@@ -321,6 +321,7 @@ $(function(){initNavTree('sri_8hpp_source.html','',''); });
 </div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>} <span class="comment">// namespace diffeq</span></div>
+<div class="ttc" id="aclassdiffeq_1_1sde_1_1_abstract_s_d_e_integrator_html"><div class="ttname"><a href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator</a></div><div class="ttdoc">Abstract base class for SDE integrators.</div><div class="ttdef"><b>Definition</b> <a href="sde__base_8hpp_source.html#l00147">sde_base.hpp:147</a></div></div>
 <div class="ttc" id="astructdiffeq_1_1_s_r_i_tableau_html"><div class="ttname"><a href="structdiffeq_1_1_s_r_i_tableau.html">diffeq::SRITableau</a></div><div class="ttdoc">Tableau coefficients for SRI methods.</div><div class="ttdef"><b>Definition</b> <a href="#l00015">sri.hpp:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

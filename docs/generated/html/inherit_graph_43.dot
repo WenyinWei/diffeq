@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="diffeq::core::composable\l::SIMDNoiseGenerator",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_s_i_m_d_noise_generator.html",tooltip="SIMD-accelerated noise generation."];
+  Node0 [id="Node000000",label="diffeq::core::composable\l::TimeoutConfig",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$structdiffeq_1_1core_1_1composable_1_1_timeout_config.html",tooltip="Timeout configuration for integration protection."];
 }

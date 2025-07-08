@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::SRI1Integrator&lt; StateType, TimeType &gt; Class Template Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::SRI1Integrator&lt; StateType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('classdiffeq_1_1_s_r_i1_integrator.html','','classdiffe
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::SRI1Integrator&lt; StateType, TimeType &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::SRI1Integrator&lt; StateType &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -98,47 +98,71 @@ $(function(){initNavTree('classdiffeq_1_1_s_r_i1_integrator.html','','classdiffe
 
 <p><code>#include &lt;<a class="el" href="sri1_8hpp_source.html">sri1.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for diffeq::SRI1Integrator&lt; StateType, TimeType &gt;:</div>
+Inheritance diagram for diffeq::SRI1Integrator&lt; StateType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1_s_r_i1_integrator__inherit__graph.png" border="0" usemap="#adiffeq_1_1_s_r_i1_integrator_3_01_state_type_00_01_time_type_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
+<div class="center"><img src="classdiffeq_1_1_s_r_i1_integrator__inherit__graph.png" border="0" usemap="#adiffeq_1_1_s_r_i1_integrator_3_01_state_type_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for diffeq::SRI1Integrator&lt; StateType, TimeType &gt;:</div>
+Collaboration diagram for diffeq::SRI1Integrator&lt; StateType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1_s_r_i1_integrator__coll__graph.png" border="0" usemap="#adiffeq_1_1_s_r_i1_integrator_3_01_state_type_00_01_time_type_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<div class="center"><img src="classdiffeq_1_1_s_r_i1_integrator__coll__graph.png" border="0" usemap="#adiffeq_1_1_s_r_i1_integrator_3_01_state_type_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:afb800935a688ded2b9c581015207982c" id="r_afb800935a688ded2b9c581015207982c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb800935a688ded2b9c581015207982c">base_type</a> = AbstractSDEIntegrator&lt;StateType, TimeType&gt;</td></tr>
-<tr class="memitem:a46decf5f22f3c51a470679b28183ad75" id="r_a46decf5f22f3c51a470679b28183ad75"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46decf5f22f3c51a470679b28183ad75">state_type</a> = typename base_type::state_type</td></tr>
-<tr class="memitem:a3e9baee8af3ece9f0fe2e91301e261a7" id="r_a3e9baee8af3ece9f0fe2e91301e261a7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e9baee8af3ece9f0fe2e91301e261a7">time_type</a> = typename base_type::time_type</td></tr>
-<tr class="memitem:aec86c2ad8d3b5dfd056f4d73e5871292" id="r_aec86c2ad8d3b5dfd056f4d73e5871292"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec86c2ad8d3b5dfd056f4d73e5871292">value_type</a> = typename base_type::value_type</td></tr>
+<tr class="memitem:aa8496ffd1e999c151d8b070143bffd34" id="r_aa8496ffd1e999c151d8b070143bffd34"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8496ffd1e999c151d8b070143bffd34">base_type</a> = <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">sde::AbstractSDEIntegrator</a>&lt;StateType&gt;</td></tr>
+<tr class="memitem:a53a4ef167d77fe4b000e0e850e06c1bf" id="r_a53a4ef167d77fe4b000e0e850e06c1bf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53a4ef167d77fe4b000e0e850e06c1bf">state_type</a> = typename base_type::state_type</td></tr>
+<tr class="memitem:a66d169dd93d4d924bf1c4843e9e83a88" id="r_a66d169dd93d4d924bf1c4843e9e83a88"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66d169dd93d4d924bf1c4843e9e83a88">time_type</a> = typename base_type::time_type</td></tr>
+<tr class="memitem:aa8ef04e49f42a931def5139e38242007" id="r_aa8ef04e49f42a931def5139e38242007"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8ef04e49f42a931def5139e38242007">value_type</a> = typename base_type::value_type</td></tr>
+<tr class="inherit_header pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:a5029e642e0e8a1d26eb0f6e00c08c145 inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a5029e642e0e8a1d26eb0f6e00c08c145"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a5029e642e0e8a1d26eb0f6e00c08c145">state_type</a> = StateType</td></tr>
+<tr class="memitem:a2f23a72118e09bc51f5d464c984409f1 inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a2f23a72118e09bc51f5d464c984409f1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a2f23a72118e09bc51f5d464c984409f1">time_type</a> = typename StateType::value_type</td></tr>
+<tr class="memitem:a371e04a66fff46298ad37857d841146f inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a371e04a66fff46298ad37857d841146f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a371e04a66fff46298ad37857d841146f">value_type</a> = typename StateType::value_type</td></tr>
+<tr class="memitem:a5add7b902292a0083f9bc5a53cd05c3f inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a5add7b902292a0083f9bc5a53cd05c3f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a5add7b902292a0083f9bc5a53cd05c3f">sde_problem_type</a> = <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">SDEProblem</a>&lt;StateType&gt;</td></tr>
+<tr class="memitem:afa2dbbd8012a15cd3f3f3788b372439c inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_afa2dbbd8012a15cd3f3f3788b372439c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#afa2dbbd8012a15cd3f3f3788b372439c">wiener_process_type</a> = <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">WienerProcess</a>&lt;StateType&gt;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af94fe8d3c6264beabbacd87e133b8e32" id="r_af94fe8d3c6264beabbacd87e133b8e32"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af94fe8d3c6264beabbacd87e133b8e32">SRI1Integrator</a> (std::shared_ptr&lt; typename base_type::sde_problem_type &gt; problem, std::shared_ptr&lt; typename base_type::wiener_process_type &gt; wiener=nullptr)</td></tr>
-<tr class="memitem:aedbc17474d9d73494863f55d7210e58b" id="r_aedbc17474d9d73494863f55d7210e58b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aedbc17474d9d73494863f55d7210e58b">step</a> (state_type &amp;state, time_type dt) override</td></tr>
-<tr class="memitem:afd4219d972373e210677fb061459d621" id="r_afd4219d972373e210677fb061459d621"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd4219d972373e210677fb061459d621">name</a> () const override</td></tr>
+<tr class="memitem:a9980f20b39c5cdbd00f44e0da579a7b4" id="r_a9980f20b39c5cdbd00f44e0da579a7b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9980f20b39c5cdbd00f44e0da579a7b4">SRI1Integrator</a> (std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">base_type::sde_problem_type</a> &gt; problem, std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">base_type::wiener_process_type</a> &gt; wiener=nullptr)</td></tr>
+<tr class="memitem:a644d84f80d5cbd7ce7426fb5184f137d" id="r_a644d84f80d5cbd7ce7426fb5184f137d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a644d84f80d5cbd7ce7426fb5184f137d">step</a> (state_type &amp;state, time_type dt) override</td></tr>
+<tr class="memitem:a652552c9e3f4d70031bcca9e1bb837d6" id="r_a652552c9e3f4d70031bcca9e1bb837d6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a652552c9e3f4d70031bcca9e1bb837d6">name</a> () const override</td></tr>
+<tr class="inherit_header pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:ac67ed0c141022e4e232bd674d74050dc inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ac67ed0c141022e4e232bd674d74050dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ac67ed0c141022e4e232bd674d74050dc">AbstractSDEIntegrator</a> (std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">sde_problem_type</a> &gt; problem, std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt; wiener=nullptr)</td></tr>
+<tr class="memitem:aa45abf106cb06a5c5387b07dc6291357 inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_aa45abf106cb06a5c5387b07dc6291357"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#aa45abf106cb06a5c5387b07dc6291357">integrate</a> (state_type &amp;state, time_type dt, time_type end_time)</td></tr>
+<tr class="memitem:ad9dc3c5a6b9ea3fada368d25cf5b480e inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ad9dc3c5a6b9ea3fada368d25cf5b480e"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ad9dc3c5a6b9ea3fada368d25cf5b480e">current_time</a> () const</td></tr>
+<tr class="memitem:a74e07e22915b99f2a1b99e4919c54708 inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a74e07e22915b99f2a1b99e4919c54708"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a74e07e22915b99f2a1b99e4919c54708">set_time</a> (time_type t)</td></tr>
+<tr class="memitem:af71b02d19401e231f27b3a6984559a5e inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_af71b02d19401e231f27b3a6984559a5e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">sde_problem_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#af71b02d19401e231f27b3a6984559a5e">get_problem</a> () const</td></tr>
+<tr class="memitem:af3138265d1dc473941f92a4e8987c985 inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_af3138265d1dc473941f92a4e8987c985"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#af3138265d1dc473941f92a4e8987c985">get_wiener_process</a> () const</td></tr>
+<tr class="memitem:ab2523a41950d38103d0bcab0f0b3e7eb inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ab2523a41950d38103d0bcab0f0b3e7eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ab2523a41950d38103d0bcab0f0b3e7eb">set_wiener_process</a> (std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt; wiener)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:ae2b06c56c31022015d5d8da912d0e8c9 inherit pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ae2b06c56c31022015d5d8da912d0e8c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ae2b06c56c31022015d5d8da912d0e8c9">advance_time</a> (time_type dt)</td></tr>
+<tr class="memitem:ad3faec2a8d021709e25540402a955515 inherit pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ad3faec2a8d021709e25540402a955515"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ad3faec2a8d021709e25540402a955515">get_default_dimension</a> ()</td></tr>
+<tr class="inherit_header pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:a4f3c505b6053d1e09cc5d5a0e2a1b61a inherit pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a4f3c505b6053d1e09cc5d5a0e2a1b61a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">sde_problem_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a4f3c505b6053d1e09cc5d5a0e2a1b61a">problem_</a></td></tr>
+<tr class="memitem:aea532152da7da82d088bf5c3b8582ee5 inherit pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_aea532152da7da82d088bf5c3b8582ee5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#aea532152da7da82d088bf5c3b8582ee5">wiener_</a></td></tr>
+<tr class="memitem:a4c330cceb02a65140c3536f0297fc0f0 inherit pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a4c330cceb02a65140c3536f0297fc0f0"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a4c330cceb02a65140c3536f0297fc0f0">current_time_</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt;<br />
-class diffeq::SRI1Integrator&lt; StateType, TimeType &gt;</div><p>Stochastic Runge-Kutta method (SRI1) </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt;<br />
+class diffeq::SRI1Integrator&lt; StateType &gt;</div><p>Stochastic Runge-Kutta method (SRI1) </p>
 <p>A second-order strong Taylor scheme for SDEs. More stable than Milstein for certain problems.</p>
 <p>Strong order: 1.0 Weak order: 2.0 </p>
 
 <p class="definition">Definition at line <a class="el" href="sri1_8hpp_source.html#l00019">19</a> of file <a class="el" href="sri1_8hpp_source.html">sri1.hpp</a>.</p>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
-<a id="afb800935a688ded2b9c581015207982c" name="afb800935a688ded2b9c581015207982c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb800935a688ded2b9c581015207982c">&#9670;&#160;</a></span>base_type</h2>
+<a id="aa8496ffd1e999c151d8b070143bffd34" name="aa8496ffd1e999c151d8b070143bffd34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8496ffd1e999c151d8b070143bffd34">&#9670;&#160;</a></span>base_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType, TimeType &gt;::base_type = AbstractSDEIntegrator&lt;StateType, TimeType&gt;</td>
+          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType &gt;::base_type = <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">sde::AbstractSDEIntegrator</a>&lt;StateType&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -147,16 +171,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
 
 </div>
 </div>
-<a id="a46decf5f22f3c51a470679b28183ad75" name="a46decf5f22f3c51a470679b28183ad75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46decf5f22f3c51a470679b28183ad75">&#9670;&#160;</a></span>state_type</h2>
+<a id="a53a4ef167d77fe4b000e0e850e06c1bf" name="a53a4ef167d77fe4b000e0e850e06c1bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53a4ef167d77fe4b000e0e850e06c1bf">&#9670;&#160;</a></span>state_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType, TimeType &gt;::state_type = typename base_type::state_type</td>
+          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType &gt;::state_type = typename base_type::state_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -165,16 +189,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
 
 </div>
 </div>
-<a id="a3e9baee8af3ece9f0fe2e91301e261a7" name="a3e9baee8af3ece9f0fe2e91301e261a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e9baee8af3ece9f0fe2e91301e261a7">&#9670;&#160;</a></span>time_type</h2>
+<a id="a66d169dd93d4d924bf1c4843e9e83a88" name="a66d169dd93d4d924bf1c4843e9e83a88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66d169dd93d4d924bf1c4843e9e83a88">&#9670;&#160;</a></span>time_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType, TimeType &gt;::time_type = typename base_type::time_type</td>
+          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType &gt;::time_type = typename base_type::time_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -183,16 +207,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
 
 </div>
 </div>
-<a id="aec86c2ad8d3b5dfd056f4d73e5871292" name="aec86c2ad8d3b5dfd056f4d73e5871292"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec86c2ad8d3b5dfd056f4d73e5871292">&#9670;&#160;</a></span>value_type</h2>
+<a id="aa8ef04e49f42a931def5139e38242007" name="aa8ef04e49f42a931def5139e38242007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8ef04e49f42a931def5139e38242007">&#9670;&#160;</a></span>value_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType, TimeType &gt;::value_type = typename base_type::value_type</td>
+          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType &gt;::value_type = typename base_type::value_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -202,26 +226,26 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
 </div>
 </div>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af94fe8d3c6264beabbacd87e133b8e32" name="af94fe8d3c6264beabbacd87e133b8e32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af94fe8d3c6264beabbacd87e133b8e32">&#9670;&#160;</a></span>SRI1Integrator()</h2>
+<a id="a9980f20b39c5cdbd00f44e0da579a7b4" name="a9980f20b39c5cdbd00f44e0da579a7b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9980f20b39c5cdbd00f44e0da579a7b4">&#9670;&#160;</a></span>SRI1Integrator()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType, TimeType &gt;::SRI1Integrator </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType &gt;::SRI1Integrator </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; typename base_type::sde_problem_type &gt;</td>          <td class="paramname"><span class="paramname"><em>problem</em></span>, </td>
+          <td class="paramtype">std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">base_type::sde_problem_type</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>problem</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; typename base_type::wiener_process_type &gt;</td>          <td class="paramname"><span class="paramname"><em>wiener</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
+          <td class="paramtype">std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">base_type::wiener_process_type</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>wiener</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -236,19 +260,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="afd4219d972373e210677fb061459d621" name="afd4219d972373e210677fb061459d621"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd4219d972373e210677fb061459d621">&#9670;&#160;</a></span>name()</h2>
+<a id="a652552c9e3f4d70031bcca9e1bb837d6" name="a652552c9e3f4d70031bcca9e1bb837d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a652552c9e3f4d70031bcca9e1bb837d6">&#9670;&#160;</a></span>name()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType, TimeType &gt;::name </td>
+          <td class="memname">std::string <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType &gt;::name </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -256,28 +280,30 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Implements <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="sri1_8hpp_source.html#l00096">96</a> of file <a class="el" href="sri1_8hpp_source.html">sri1.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aedbc17474d9d73494863f55d7210e58b" name="aedbc17474d9d73494863f55d7210e58b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedbc17474d9d73494863f55d7210e58b">&#9670;&#160;</a></span>step()</h2>
+<a id="a644d84f80d5cbd7ce7426fb5184f137d" name="a644d84f80d5cbd7ce7426fb5184f137d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a644d84f80d5cbd7ce7426fb5184f137d">&#9670;&#160;</a></span>step()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType, TimeType &gt;::step </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1_s_r_i1_integrator.html">diffeq::SRI1Integrator</a>&lt; StateType &gt;::step </td>
           <td>(</td>
           <td class="paramtype">state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
         </tr>
@@ -289,10 +315,12 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Implements <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="sri1_8hpp_source.html#l00030">30</a> of file <a class="el" href="sri1_8hpp_source.html">sri1.hpp</a>.</p>
 

@@ -6,6 +6,6 @@ var searchData=
   ['controlfeedback_3',['ControlFeedback',['../structdiffeq_1_1core_1_1composable_1_1_control_feedback.html',1,'diffeq::core::composable']]],
   ['controlfeedback_3c_20s_2c_20double_20_3e_4',['ControlFeedback&lt; S, double &gt;',['../structdiffeq_1_1core_1_1composable_1_1_control_feedback.html',1,'diffeq::core::composable']]],
   ['cubicsplineinterpolator_5',['CubicSplineInterpolator',['../classdiffeq_1_1core_1_1composable_1_1_cubic_spline_interpolator.html',1,'diffeq::core::composable']]],
-  ['cubicsplineinterpolator_3c_20double_20_3e_6',['CubicSplineInterpolator&lt; double &gt;',['../classdiffeq_1_1core_1_1composable_1_1_cubic_spline_interpolator.html',1,'diffeq::core::composable']]],
+  ['cubicsplineinterpolator_3c_20typename_20diffeq_3a_3acore_3a_3acomposable_3a_3aintegratordecorator_3c_20s_20_3e_3a_3atime_5ftype_20_3e_6',['CubicSplineInterpolator&lt; typename diffeq::core::composable::IntegratorDecorator&lt; S &gt;::time_type &gt;',['../classdiffeq_1_1core_1_1composable_1_1_cubic_spline_interpolator.html',1,'diffeq::core::composable']]],
   ['customexecutor_7',['CustomExecutor',['../classdiffeq_1_1realtime_1_1_custom_executor.html',1,'diffeq::realtime']]]
 ];

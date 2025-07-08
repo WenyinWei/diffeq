@@ -170,167 +170,172 @@ $(function(){initNavTree('timeout__decorator_8hpp_source.html','',''); });
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>};</div>
 </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">template</span>&lt;system_state S, can_be_time T = <span class="keywordtype">double</span>&gt;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">template</span>&lt;system_state S&gt;</div>
 <div class="foldopen" id="foldopen00100" data-start="{" data-end="};">
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html">  100</a></span><span class="keyword">class </span><a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ae6687bd160d4060cde34d1c10a8c7521">TimeoutDecorator</a> : <span class="keyword">public</span> <a class="code hl_function" href="classdiffeq_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a>&lt;S, T&gt; {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html">  100</a></span><span class="keyword">class </span><a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a74f73a08f41722c610a94b71cf72f78e">TimeoutDecorator</a> : <span class="keyword">public</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a>&lt;S&gt; {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a> config_;</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ae6687bd160d4060cde34d1c10a8c7521">  111</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ae6687bd160d4060cde34d1c10a8c7521">TimeoutDecorator</a>(std::unique_ptr&lt;AbstractIntegrator&lt;S, T&gt;&gt; integrator, </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                             <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a00220ac97edfc5a0701e36cfac4271d5">config</a> = {})</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        : <a class="code hl_class" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt;S, T&gt;(std::move(integrator)), config_(std::move(<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a00220ac97edfc5a0701e36cfac4271d5">config</a>)) {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a74f73a08f41722c610a94b71cf72f78e">  111</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a74f73a08f41722c610a94b71cf72f78e">TimeoutDecorator</a>(std::unique_ptr&lt;AbstractIntegrator&lt;S&gt;&gt; integrator, </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                             <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a897dac09ddfc72c83bc0405cd865116d">config</a> = {})</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        : <a class="code hl_class" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt;S&gt;(std::move(integrator)), config_(std::move(<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a897dac09ddfc72c83bc0405cd865116d">config</a>)) {</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        config_.<a class="code hl_function" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html#a06b68c7de89e8bcf7163427bae43cf0f">validate</a>();</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
 </div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span></div>
 <div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ab1d76fa1dbb957d4a1c007ab401cd876">  124</a></span>    <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ab1d76fa1dbb957d4a1c007ab401cd876">integrate_with_timeout</a>(<span class="keyword">typename</span> IntegratorDecorator&lt;S, T&gt;::state_type&amp; state, </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                                        T dt, T end_time) {</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keyword">const</span> <span class="keyword">auto</span> start_time = std::chrono::high_resolution_clock::now();</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> result;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        result.final_time = this-&gt;current_time();</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>            <span class="keywordflow">if</span> (config_.enable_progress_callback &amp;&amp; config_.progress_callback) {</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                result = integrate_with_progress_monitoring(state, dt, end_time, start_time);</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                result = integrate_with_simple_timeout(state, dt, end_time, start_time);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            }</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            result.completed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            result.error_message = <span class="stringliteral">&quot;Integration failed: &quot;</span> + std::string(e.what());</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        }</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keyword">const</span> <span class="keyword">auto</span> end_time_clock = std::chrono::high_resolution_clock::now();</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        result.elapsed_time = std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            end_time_clock - start_time);</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <span class="comment">// Handle timeout according to configuration</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="keywordflow">if</span> (!result.completed &amp;&amp; config_.throw_on_timeout &amp;&amp; result.is_timeout()) {</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <span class="keywordflow">throw</span> std::runtime_error(result.error_message);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        }</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a292293d0bd8e6f76c0b37787eb660449">  124</a></span>    <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a292293d0bd8e6f76c0b37787eb660449">integrate_with_timeout</a>(<span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::state_type&amp; state, </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                                        <span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::time_type dt, </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                                        <span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::time_type end_time) {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keyword">const</span> <span class="keyword">auto</span> start_time = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> result;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        result.final_time = this-&gt;current_time();</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            <span class="keywordflow">if</span> (config_.enable_progress_callback &amp;&amp; config_.progress_callback) {</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                result = integrate_with_progress_monitoring(state, dt, end_time, start_time);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                result = integrate_with_simple_timeout(state, dt, end_time, start_time);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>            </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            result.completed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            result.error_message = <span class="stringliteral">&quot;Integration failed: &quot;</span> + std::string(e.what());</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        }</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <span class="keyword">const</span> <span class="keyword">auto</span> end_time_clock = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        result.elapsed_time = std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            end_time_clock - start_time);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="comment">// Handle timeout according to configuration</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keywordflow">if</span> (!result.completed &amp;&amp; config_.throw_on_timeout &amp;&amp; result.is_timeout()) {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordflow">throw</span> std::runtime_error(result.error_message);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        }</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
 </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span></div>
-<div class="foldopen" id="foldopen00157" data-start="{" data-end="}">
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a2c8f6ebf00402e9d085a4b29db43858e">  157</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a2c8f6ebf00402e9d085a4b29db43858e">integrate</a>(<span class="keyword">typename</span> IntegratorDecorator&lt;S, T&gt;::state_type&amp; state, T dt, T end_time)<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <span class="keyword">auto</span> result = <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ab1d76fa1dbb957d4a1c007ab401cd876">integrate_with_timeout</a>(state, dt, end_time);</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="keywordflow">if</span> (!result.is_success() &amp;&amp; config_.throw_on_timeout) {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            <span class="keywordflow">throw</span> std::runtime_error(result.status_description());</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        }</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span></div>
+<div class="foldopen" id="foldopen00158" data-start="{" data-end="}">
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a4e86766d30c221ea3ec7a3ee75b7a170">  158</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a4e86766d30c221ea3ec7a3ee75b7a170">integrate</a>(<span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::state_type&amp; state, </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                   <span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::time_type dt, </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                   <span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::time_type end_time)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keyword">auto</span> result = <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a292293d0bd8e6f76c0b37787eb660449">integrate_with_timeout</a>(state, dt, end_time);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="keywordflow">if</span> (!result.is_success() &amp;&amp; config_.throw_on_timeout) {</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <span class="keywordflow">throw</span> std::runtime_error(result.status_description());</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    }</div>
 </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a00220ac97edfc5a0701e36cfac4271d5">  167</a></span>    <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a>&amp; <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a00220ac97edfc5a0701e36cfac4271d5">config</a>() { <span class="keywordflow">return</span> config_; }</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a>&amp; <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a00220ac97edfc5a0701e36cfac4271d5">config</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> config_; }</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    </div>
-<div class="foldopen" id="foldopen00175" data-start="{" data-end="}">
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a57e7d81da121bbec285b492d569d6278">  175</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a57e7d81da121bbec285b492d569d6278">update_config</a>(<a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a> new_config) {</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        new_config.<a class="code hl_function" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html#a06b68c7de89e8bcf7163427bae43cf0f">validate</a>();</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        config_ = std::move(new_config);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    }</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a897dac09ddfc72c83bc0405cd865116d">  170</a></span>    <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a>&amp; <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a897dac09ddfc72c83bc0405cd865116d">config</a>() { <span class="keywordflow">return</span> config_; }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a>&amp; <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a897dac09ddfc72c83bc0405cd865116d">config</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> config_; }</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    </div>
+<div class="foldopen" id="foldopen00178" data-start="{" data-end="}">
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a19d623276a25a2e28cc2064c03f3b139">  178</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a19d623276a25a2e28cc2064c03f3b139">update_config</a>(<a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a> new_config) {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        new_config.<a class="code hl_function" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html#a06b68c7de89e8bcf7163427bae43cf0f">validate</a>();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        config_ = std::move(new_config);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    }</div>
 </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> integrate_with_simple_timeout(</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        <span class="keyword">typename</span> IntegratorDecorator&lt;S, T&gt;::state_type&amp; state,</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        T dt, T end_time,</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        std::chrono::high_resolution_clock::time_point start_time) {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> result;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        <span class="keyword">auto</span> future = std::async(std::launch::async, [<span class="keyword">this</span>, &amp;state, dt, end_time]() {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            this-&gt;wrapped_integrator_-&gt;integrate(state, dt, end_time);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        });</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        <span class="keywordflow">if</span> (future.wait_for(config_.timeout_duration) == std::future_status::timeout) {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            result.completed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>            result.error_message = <span class="stringliteral">&quot;Integration timed out after &quot;</span> + </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                                 std::to_string(config_.timeout_duration.count()) + <span class="stringliteral">&quot;ms&quot;</span>;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>            future.get();  <span class="comment">// May throw if integration failed</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            result.completed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            result.final_time = this-&gt;current_time();</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    }</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    TimeoutResult integrate_with_progress_monitoring(</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="keyword">typename</span> <a class="code hl_function" href="classdiffeq_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator&lt;S, T&gt;::state_type</a>&amp; state,</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        T dt, T end_time,</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        std::chrono::high_resolution_clock::time_point start_time) {</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        TimeoutResult result;</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        </div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keyword">auto</span> future = std::async(std::launch::async, [<span class="keyword">this</span>, &amp;state, dt, end_time]() {</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            this-&gt;wrapped_integrator_-&gt;integrate(state, dt, end_time);</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        });</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="keyword">auto</span> last_progress_check = start_time;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <span class="keyword">auto</span> timeout_deadline = start_time + config_.timeout_duration;</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        <span class="comment">// Monitor progress until completion or timeout</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>        <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            <span class="keyword">auto</span> now = std::chrono::high_resolution_clock::now();</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>            <span class="keyword">auto</span> elapsed = std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(now - start_time);</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>            </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            <span class="comment">// Check if integration completed</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>            <span class="keywordflow">if</span> (future.wait_for(std::chrono::milliseconds{1}) == std::future_status::ready) {</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                future.get();  <span class="comment">// May throw if integration failed</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                result.completed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>                result.final_time = this-&gt;current_time();</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            }</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>            <span class="comment">// Check for timeout</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            <span class="keywordflow">if</span> (now &gt;= timeout_deadline) {</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                result.completed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>                result.error_message = <span class="stringliteral">&quot;Integration timed out after &quot;</span> + </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                                     std::to_string(config_.timeout_duration.count()) + <span class="stringliteral">&quot;ms&quot;</span>;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>            </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            <span class="comment">// Check if time for progress callback</span></div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            <span class="keywordflow">if</span> (now - last_progress_check &gt;= config_.progress_interval) {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                <span class="keywordtype">double</span> current_time = this-&gt;current_time();</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                <span class="keywordtype">bool</span> should_continue = config_.progress_callback(</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                    current_time, <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(end_time), elapsed);</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                result.progress_callbacks_made++;</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                last_progress_check = now;</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                <span class="comment">// Check for user cancellation</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                <span class="keywordflow">if</span> (!should_continue) {</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                    result.completed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                    result.user_cancelled = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                    result.error_message = <span class="stringliteral">&quot;Integration cancelled by user&quot;</span>;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                }</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>            }</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>            </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>            <span class="comment">// Brief sleep to avoid busy waiting</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>            std::this_thread::sleep_for(std::chrono::milliseconds{1});</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        }</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    }</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>};</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> integrate_with_simple_timeout(</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::state_type&amp; state,</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        <span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::time_type dt, </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keyword">typename</span> IntegratorDecorator&lt;S&gt;::time_type end_time,</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        std::chrono::high_resolution_clock::time_point start_time) {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        <a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">TimeoutResult</a> result;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        <span class="keyword">auto</span> future = std::async(std::launch::async, [<span class="keyword">this</span>, &amp;state, dt, end_time]() {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            this-&gt;wrapped_integrator_-&gt;integrate(state, dt, end_time);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        });</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        <span class="keywordflow">if</span> (future.wait_for(config_.timeout_duration) == std::future_status::timeout) {</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>            result.completed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            result.error_message = <span class="stringliteral">&quot;Integration timed out after &quot;</span> + </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                                 std::to_string(config_.timeout_duration.count()) + <span class="stringliteral">&quot;ms&quot;</span>;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>            future.get();  <span class="comment">// May throw if integration failed</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>            result.completed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>            result.final_time = this-&gt;current_time();</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    }</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    TimeoutResult integrate_with_progress_monitoring(</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        <span class="keyword">typename</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator&lt;S&gt;::state_type</a>&amp; state,</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="keyword">typename</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator&lt;S&gt;::time_type</a> dt, </div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keyword">typename</span> <a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator&lt;S&gt;::time_type</a> end_time,</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        std::chrono::high_resolution_clock::time_point start_time) {</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        TimeoutResult result;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        </div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <span class="keyword">auto</span> future = std::async(std::launch::async, [<span class="keyword">this</span>, &amp;state, dt, end_time]() {</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            this-&gt;wrapped_integrator_-&gt;integrate(state, dt, end_time);</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        });</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <span class="keyword">auto</span> last_progress_check = start_time;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        <span class="keyword">auto</span> timeout_deadline = start_time + config_.timeout_duration;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        </div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        <span class="comment">// Monitor progress until completion or timeout</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            <span class="keyword">auto</span> now = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="keyword">auto</span> elapsed = std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(now - start_time);</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            <span class="comment">// Check if integration completed</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="keywordflow">if</span> (future.wait_for(std::chrono::milliseconds{1}) == std::future_status::ready) {</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                future.get();  <span class="comment">// May throw if integration failed</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                result.completed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>                result.final_time = this-&gt;current_time();</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            }</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            <span class="comment">// Check for timeout</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            <span class="keywordflow">if</span> (now &gt;= timeout_deadline) {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                result.completed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                result.error_message = <span class="stringliteral">&quot;Integration timed out after &quot;</span> + </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>                                     std::to_string(config_.timeout_duration.count()) + <span class="stringliteral">&quot;ms&quot;</span>;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            }</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>            </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            <span class="comment">// Check if time for progress callback</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>            <span class="keywordflow">if</span> (now - last_progress_check &gt;= config_.progress_interval) {</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                <span class="keywordtype">double</span> current_time = this-&gt;current_time();</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                <span class="keywordtype">bool</span> should_continue = config_.progress_callback(</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                    current_time, <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(end_time), elapsed);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                result.progress_callbacks_made++;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                last_progress_check = now;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                <span class="comment">// Check for user cancellation</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                <span class="keywordflow">if</span> (!should_continue) {</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                    result.completed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                    result.user_cancelled = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                    result.error_message = <span class="stringliteral">&quot;Integration cancelled by user&quot;</span>;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                }</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>            }</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>            </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>            <span class="comment">// Brief sleep to avoid busy waiting</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>            std::this_thread::sleep_for(std::chrono::milliseconds{1});</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        }</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    }</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>};</div>
 </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>} <span class="comment">// namespace diffeq::core::composable</span></div>
-<div class="ttc" id="aclassdiffeq_1_1_integrator_decorator_html_a04b5844ea5ead3d0a5c22dd53be40231"><div class="ttname"><a href="classdiffeq_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;::IntegratorDecorator</a></div><div class="ttdeci">IntegratorDecorator(std::unique_ptr&lt; base_type &gt; integrator)</div><div class="ttdef"><b>Definition</b> <a href="integrator__decorator_8hpp_source.html#l00037">integrator_decorator.hpp:37</a></div></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>} <span class="comment">// namespace diffeq::core::composable</span></div>
 <div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_decorator_html"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator</a></div><div class="ttdoc">Base decorator interface for integrator enhancements.</div><div class="ttdef"><b>Definition</b> <a href="integrator__decorator_8hpp_source.html#l00022">integrator_decorator.hpp:22</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a00220ac97edfc5a0701e36cfac4271d5"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a00220ac97edfc5a0701e36cfac4271d5">diffeq::core::composable::TimeoutDecorator::config</a></div><div class="ttdeci">TimeoutConfig &amp; config()</div><div class="ttdoc">Access and modify timeout configuration.</div><div class="ttdef"><b>Definition</b> <a href="#l00167">timeout_decorator.hpp:167</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a2c8f6ebf00402e9d085a4b29db43858e"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a2c8f6ebf00402e9d085a4b29db43858e">diffeq::core::composable::TimeoutDecorator::integrate</a></div><div class="ttdeci">void integrate(typename IntegratorDecorator&lt; S, T &gt;::state_type &amp;state, T dt, T end_time) override</div><div class="ttdoc">Override standard integrate to use timeout protection.</div><div class="ttdef"><b>Definition</b> <a href="#l00157">timeout_decorator.hpp:157</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a57e7d81da121bbec285b492d569d6278"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a57e7d81da121bbec285b492d569d6278">diffeq::core::composable::TimeoutDecorator::update_config</a></div><div class="ttdeci">void update_config(TimeoutConfig new_config)</div><div class="ttdoc">Update timeout configuration with validation.</div><div class="ttdef"><b>Definition</b> <a href="#l00175">timeout_decorator.hpp:175</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_ab1d76fa1dbb957d4a1c007ab401cd876"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ab1d76fa1dbb957d4a1c007ab401cd876">diffeq::core::composable::TimeoutDecorator::integrate_with_timeout</a></div><div class="ttdeci">TimeoutResult integrate_with_timeout(typename IntegratorDecorator&lt; S, T &gt;::state_type &amp;state, T dt, T end_time)</div><div class="ttdoc">Main timeout-protected integration method.</div><div class="ttdef"><b>Definition</b> <a href="#l00124">timeout_decorator.hpp:124</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_ae6687bd160d4060cde34d1c10a8c7521"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#ae6687bd160d4060cde34d1c10a8c7521">diffeq::core::composable::TimeoutDecorator::TimeoutDecorator</a></div><div class="ttdeci">TimeoutDecorator(std::unique_ptr&lt; AbstractIntegrator&lt; S, T &gt; &gt; integrator, TimeoutConfig config={})</div><div class="ttdoc">Construct timeout decorator.</div><div class="ttdef"><b>Definition</b> <a href="#l00111">timeout_decorator.hpp:111</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_decorator_html_a04b5844ea5ead3d0a5c22dd53be40231"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">diffeq::core::composable::IntegratorDecorator::IntegratorDecorator</a></div><div class="ttdeci">IntegratorDecorator(std::unique_ptr&lt; base_type &gt; integrator)</div><div class="ttdoc">Construct decorator wrapping another integrator.</div><div class="ttdef"><b>Definition</b> <a href="integrator__decorator_8hpp_source.html#l00037">integrator_decorator.hpp:37</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a19d623276a25a2e28cc2064c03f3b139"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a19d623276a25a2e28cc2064c03f3b139">diffeq::core::composable::TimeoutDecorator::update_config</a></div><div class="ttdeci">void update_config(TimeoutConfig new_config)</div><div class="ttdoc">Update timeout configuration with validation.</div><div class="ttdef"><b>Definition</b> <a href="#l00178">timeout_decorator.hpp:178</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a292293d0bd8e6f76c0b37787eb660449"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a292293d0bd8e6f76c0b37787eb660449">diffeq::core::composable::TimeoutDecorator::integrate_with_timeout</a></div><div class="ttdeci">TimeoutResult integrate_with_timeout(typename IntegratorDecorator&lt; S &gt;::state_type &amp;state, typename IntegratorDecorator&lt; S &gt;::time_type dt, typename IntegratorDecorator&lt; S &gt;::time_type end_time)</div><div class="ttdoc">Main timeout-protected integration method.</div><div class="ttdef"><b>Definition</b> <a href="#l00124">timeout_decorator.hpp:124</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a4e86766d30c221ea3ec7a3ee75b7a170"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a4e86766d30c221ea3ec7a3ee75b7a170">diffeq::core::composable::TimeoutDecorator::integrate</a></div><div class="ttdeci">void integrate(typename IntegratorDecorator&lt; S &gt;::state_type &amp;state, typename IntegratorDecorator&lt; S &gt;::time_type dt, typename IntegratorDecorator&lt; S &gt;::time_type end_time) override</div><div class="ttdoc">Override standard integrate to use timeout protection.</div><div class="ttdef"><b>Definition</b> <a href="#l00158">timeout_decorator.hpp:158</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a74f73a08f41722c610a94b71cf72f78e"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a74f73a08f41722c610a94b71cf72f78e">diffeq::core::composable::TimeoutDecorator::TimeoutDecorator</a></div><div class="ttdeci">TimeoutDecorator(std::unique_ptr&lt; AbstractIntegrator&lt; S &gt; &gt; integrator, TimeoutConfig config={})</div><div class="ttdoc">Construct timeout decorator.</div><div class="ttdef"><b>Definition</b> <a href="#l00111">timeout_decorator.hpp:111</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html_a897dac09ddfc72c83bc0405cd865116d"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a897dac09ddfc72c83bc0405cd865116d">diffeq::core::composable::TimeoutDecorator::config</a></div><div class="ttdeci">TimeoutConfig &amp; config()</div><div class="ttdoc">Access and modify timeout configuration.</div><div class="ttdef"><b>Definition</b> <a href="#l00170">timeout_decorator.hpp:170</a></div></div>
 <div class="ttc" id="astructdiffeq_1_1core_1_1composable_1_1_timeout_config_html"><div class="ttname"><a href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">diffeq::core::composable::TimeoutConfig</a></div><div class="ttdoc">Timeout configuration for integration protection.</div><div class="ttdef"><b>Definition</b> <a href="#l00016">timeout_decorator.hpp:16</a></div></div>
 <div class="ttc" id="astructdiffeq_1_1core_1_1composable_1_1_timeout_config_html_a06b68c7de89e8bcf7163427bae43cf0f"><div class="ttname"><a href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html#a06b68c7de89e8bcf7163427bae43cf0f">diffeq::core::composable::TimeoutConfig::validate</a></div><div class="ttdeci">void validate() const</div><div class="ttdoc">Validate configuration parameters.</div><div class="ttdef"><b>Definition</b> <a href="#l00032">timeout_decorator.hpp:32</a></div></div>
 <div class="ttc" id="astructdiffeq_1_1core_1_1composable_1_1_timeout_result_html"><div class="ttname"><a href="structdiffeq_1_1core_1_1composable_1_1_timeout_result.html">diffeq::core::composable::TimeoutResult</a></div><div class="ttdoc">Result information for timeout-protected integration.</div><div class="ttdef"><b>Definition</b> <a href="#l00059">timeout_decorator.hpp:59</a></div></div>

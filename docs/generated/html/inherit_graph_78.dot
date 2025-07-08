@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="engineering::NoisyOscillator",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classengineering_1_1_noisy_oscillator.html",tooltip="Noisy oscillator with stochastic control."];
+  Node0 [id="Node000000",label="finance::BlackScholesModel",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classfinance_1_1_black_scholes_model.html",tooltip="Black-Scholes model: dS = μS dt + σS dW."];
 }

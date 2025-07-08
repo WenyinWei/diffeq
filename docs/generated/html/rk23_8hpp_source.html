@@ -139,12 +139,12 @@ $(function(){initNavTree('rk23_8hpp_source.html','',''); });
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                <span class="comment">// Suggest next step size</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                time_type next_dt = this-&gt;suggest_step_size(current_dt, err_norm, 3);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                <span class="keywordflow">return</span> std::max(this-&gt;dt_min_, std::min(this-&gt;dt_max_, next_dt));</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                <span class="keywordflow">return</span> std::max&lt;time_type&gt;(this-&gt;dt_min_, std::min&lt;time_type&gt;(this-&gt;dt_max_, next_dt));</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                <span class="comment">// Reject step and reduce step size</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                current_dt *= std::max(this-&gt;safety_factor_ * std::pow(err_norm, -1.0/3.0), </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                     <span class="keyword">static_cast&lt;</span>time_type<span class="keyword">&gt;</span>(0.1));</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                current_dt = std::max(current_dt, this-&gt;dt_min_);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                current_dt *= std::max&lt;time_type&gt;(this-&gt;safety_factor_ * std::pow(err_norm, -1.0/3.0), </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                                 <span class="keyword">static_cast&lt;</span>time_type<span class="keyword">&gt;</span>(0.1));</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                current_dt = std::max&lt;time_type&gt;(current_dt, this-&gt;dt_min_);</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            }</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        </div>

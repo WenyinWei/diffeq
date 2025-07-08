@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="diffeq::core::composable\l::ControlFeedback\< S, T \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$structdiffeq_1_1core_1_1composable_1_1_control_feedback.html",tooltip="Control feedback structure."];
+  Node0 [id="Node000000",label="diffeq::core::composable\l::CubicSplineInterpolator\< T \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_cubic_spline_interpolator.html",tooltip="Cubic spline interpolator implementation."];
 }

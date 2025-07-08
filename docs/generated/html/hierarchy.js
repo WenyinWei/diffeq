@@ -2,14 +2,7 @@ var hierarchy =
 [
     [ "AbstractIntegrator< S >", "class_abstract_integrator.html", [
       [ "diffeq::core::composable::IntegratorDecorator< S, double >", "classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html", [
-        [ "diffeq::core::composable::AsyncDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_async_decorator.html", null ],
-        [ "diffeq::core::composable::EventDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_event_decorator.html", null ],
-        [ "diffeq::core::composable::InterpolationDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_interpolation_decorator.html", null ],
-        [ "diffeq::core::composable::InterprocessDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html", null ],
-        [ "diffeq::core::composable::OutputDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_output_decorator.html", null ],
-        [ "diffeq::core::composable::ParallelDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html", null ],
-        [ "diffeq::core::composable::SignalDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html", null ],
-        [ "diffeq::core::composable::TimeoutDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html", null ]
+        [ "diffeq::core::composable::EventDecorator< S, T >", "classdiffeq_1_1core_1_1composable_1_1_event_decorator.html", null ]
       ] ],
       [ "AdaptiveIntegrator< S >", "class_adaptive_integrator.html", [
         [ "diffeq::BDFIntegrator< S >", "classdiffeq_1_1_b_d_f_integrator.html", null ],
@@ -21,35 +14,42 @@ var hierarchy =
       [ "diffeq::EulerIntegrator< S >", "classdiffeq_1_1_euler_integrator.html", null ],
       [ "diffeq::ImprovedEulerIntegrator< S >", "classdiffeq_1_1_improved_euler_integrator.html", null ],
       [ "diffeq::RK4Integrator< S >", "classdiffeq_1_1_r_k4_integrator.html", null ],
-      [ "diffeq::core::composable::IntegratorDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html", null ]
+      [ "diffeq::core::composable::IntegratorDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html", [
+        [ "diffeq::core::composable::AsyncDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_async_decorator.html", null ],
+        [ "diffeq::core::composable::InterpolationDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_interpolation_decorator.html", null ],
+        [ "diffeq::core::composable::InterprocessDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html", null ],
+        [ "diffeq::core::composable::OutputDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_output_decorator.html", null ],
+        [ "diffeq::core::composable::ParallelDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html", null ],
+        [ "diffeq::core::composable::SignalDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html", null ],
+        [ "diffeq::core::composable::TimeoutDecorator< S >", "classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html", null ]
+      ] ]
     ] ],
     [ "AbstractIntegrator< S, double >", "class_abstract_integrator.html", [
       [ "diffeq::realtime::RealtimeIntegrator< S, T >", "classdiffeq_1_1realtime_1_1_realtime_integrator.html", null ]
     ] ],
-    [ "AbstractSDEIntegrator", null, [
+    [ "diffeq::sde::AbstractSDEIntegrator< StateType >", "classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html", [
       [ "diffeq::EulerMaruyamaIntegrator< StateType >", "classdiffeq_1_1_euler_maruyama_integrator.html", null ],
-      [ "diffeq::ImplicitEulerMaruyamaIntegrator< StateType, TimeType >", "classdiffeq_1_1_implicit_euler_maruyama_integrator.html", null ],
+      [ "diffeq::ImplicitEulerMaruyamaIntegrator< StateType >", "classdiffeq_1_1_implicit_euler_maruyama_integrator.html", null ],
       [ "diffeq::MilsteinIntegrator< StateType >", "classdiffeq_1_1_milstein_integrator.html", null ],
       [ "diffeq::SOSRAIntegrator< StateType >", "classdiffeq_1_1_s_o_s_r_a_integrator.html", null ],
-      [ "diffeq::SRAIntegrator< StateType, TimeType >", "classdiffeq_1_1_s_r_a_integrator.html", [
-        [ "diffeq::SRA1Integrator< StateType, TimeType >", "classdiffeq_1_1_s_r_a1_integrator.html", null ],
-        [ "diffeq::SRA2Integrator< StateType, TimeType >", "classdiffeq_1_1_s_r_a2_integrator.html", null ]
+      [ "diffeq::SRAIntegrator< StateType >", "classdiffeq_1_1_s_r_a_integrator.html", [
+        [ "diffeq::SRA1Integrator< StateType >", "classdiffeq_1_1_s_r_a1_integrator.html", null ],
+        [ "diffeq::SRA2Integrator< StateType >", "classdiffeq_1_1_s_r_a2_integrator.html", null ]
       ] ],
-      [ "diffeq::SRI1Integrator< StateType, TimeType >", "classdiffeq_1_1_s_r_i1_integrator.html", null ],
-      [ "diffeq::SRIIntegrator< StateType, TimeType >", "classdiffeq_1_1_s_r_i_integrator.html", [
-        [ "diffeq::SOSRIIntegrator< StateType, TimeType >", "classdiffeq_1_1_s_o_s_r_i_integrator.html", null ]
+      [ "diffeq::SRI1Integrator< StateType >", "classdiffeq_1_1_s_r_i1_integrator.html", null ],
+      [ "diffeq::SRIIntegrator< StateType >", "classdiffeq_1_1_s_r_i_integrator.html", [
+        [ "diffeq::SOSRIIntegrator< StateType >", "classdiffeq_1_1_s_o_s_r_i_integrator.html", null ]
       ] ],
       [ "diffeq::SRIW1Integrator< StateType >", "classdiffeq_1_1_s_r_i_w1_integrator.html", null ]
     ] ],
-    [ "diffeq::sde::AbstractSDEIntegrator< StateType >", "classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html", null ],
     [ "diffeq::array< T >", "classdiffeq_1_1array.html", null ],
     [ "diffeq::AsyncConfig", "structdiffeq_1_1_async_config.html", null ],
     [ "diffeq::core::composable::AsyncConfig", "structdiffeq_1_1core_1_1composable_1_1_async_config.html", null ],
     [ "diffeq::async::AsyncExecutor", "classdiffeq_1_1async_1_1_async_executor.html", null ],
-    [ "diffeq::async::AsyncIntegrator< S, T >", "classdiffeq_1_1async_1_1_async_integrator.html", null ],
+    [ "diffeq::async::AsyncIntegrator< S >", "classdiffeq_1_1async_1_1_async_integrator.html", null ],
     [ "diffeq::core::composable::AsyncResult", "structdiffeq_1_1core_1_1composable_1_1_async_result.html", null ],
     [ "finance::BlackScholesModel", "classfinance_1_1_black_scholes_model.html", null ],
-    [ "diffeq::async::AsyncIntegrator< S, T >::Config", "structdiffeq_1_1async_1_1_async_integrator_1_1_config.html", null ],
+    [ "diffeq::async::AsyncIntegrator< S >::Config", "structdiffeq_1_1async_1_1_async_integrator_1_1_config.html", null ],
     [ "diffeq::array< T >::const_iterator", "classdiffeq_1_1array_1_1const__iterator.html", null ],
     [ "diffeq::vector< T >::const_iterator", "classdiffeq_1_1vector_1_1const__iterator.html", null ],
     [ "diffeq::array< T >::const_reverse_iterator", "classdiffeq_1_1array_1_1const__reverse__iterator.html", null ],
@@ -74,8 +74,8 @@ var hierarchy =
     [ "diffeq::interfaces::IntegrationInterface< StateType, TimeType >", "classdiffeq_1_1interfaces_1_1_integration_interface.html", null ],
     [ "diffeq::core::IntegrationResult", "structdiffeq_1_1core_1_1_integration_result.html", null ],
     [ "diffeq::IntegrationResult", "structdiffeq_1_1_integration_result.html", null ],
-    [ "diffeq::core::composable::IntegratorBuilder< S, T >", "classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html", null ],
-    [ "diffeq::IntegratorBuilder< S, T >", "classdiffeq_1_1_integrator_builder.html", null ],
+    [ "diffeq::core::composable::IntegratorBuilder< S >", "classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html", null ],
+    [ "diffeq::IntegratorBuilder< S >", "classdiffeq_1_1_integrator_builder.html", null ],
     [ "diffeq::core::composable::InterpolationConfig", "structdiffeq_1_1core_1_1composable_1_1_interpolation_config.html", null ],
     [ "diffeq::core::composable::InterpolationStats", "structdiffeq_1_1core_1_1composable_1_1_interpolation_stats.html", null ],
     [ "diffeq::core::composable::InterprocessConfig", "structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html", null ],
@@ -123,7 +123,7 @@ var hierarchy =
     [ "SignalDrivenODEProcessor", "class_signal_driven_o_d_e_processor.html", null ],
     [ "diffeq::signal::SignalGenerator< SignalType >", "classdiffeq_1_1signal_1_1_signal_generator.html", null ],
     [ "diffeq::interfaces::IntegrationInterface< StateType, TimeType >::SignalInfluence", "structdiffeq_1_1interfaces_1_1_integration_interface_1_1_signal_influence.html", null ],
-    [ "diffeq::core::composable::SignalInfo< S, T >", "structdiffeq_1_1core_1_1composable_1_1_signal_info.html", null ],
+    [ "diffeq::core::composable::SignalInfo< S >", "structdiffeq_1_1core_1_1composable_1_1_signal_info.html", null ],
     [ "diffeq::signal::SignalProcessor< S >", "classdiffeq_1_1signal_1_1_signal_processor.html", null ],
     [ "diffeq::core::composable::SignalStats", "structdiffeq_1_1core_1_1composable_1_1_signal_stats.html", null ],
     [ "diffeq::core::composable::SIMDNoiseGenerator", "classdiffeq_1_1core_1_1composable_1_1_s_i_m_d_noise_generator.html", null ],

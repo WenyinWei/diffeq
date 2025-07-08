@@ -10,7 +10,9 @@ digraph "diffeq::core::composable::IPCChannel&lt; T &gt;"
   Node2 [id="Node000002",label="diffeq::core::composable\l::NamedPipeChannel\< T \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_named_pipe_channel.html",tooltip="Named pipe IPC channel."];
   Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
   Node3 [id="Node000003",label="diffeq::core::composable\l::SharedMemoryChannel\< T \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_shared_memory_channel.html",tooltip="Shared memory IPC channel."];
-  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; double &gt;</TD></TR>
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; typename diffeq::</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;core::composable::Integrator</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;Decorator&lt; S &gt;::time_type &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node4 [id="Node000004",label="diffeq::core::composable\l::IPCChannel\< double \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_i_p_c_channel.html",tooltip=" "];
+  Node4 [id="Node000004",label="diffeq::core::composable\l::IPCChannel\< typename\l diffeq::core::composable\l::IntegratorDecorator\< S \>\l::time_type \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_i_p_c_channel.html",tooltip=" "];
 }

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::SOSRIIntegrator&lt; StateType, TimeType &gt; Class Template Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::SOSRIIntegrator&lt; StateType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('classdiffeq_1_1_s_o_s_r_i_integrator.html','','classdi
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::SOSRIIntegrator&lt; StateType, TimeType &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::SOSRIIntegrator&lt; StateType &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -98,53 +98,77 @@ $(function(){initNavTree('classdiffeq_1_1_s_o_s_r_i_integrator.html','','classdi
 
 <p><code>#include &lt;<a class="el" href="sosri_8hpp_source.html">sosri.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for diffeq::SOSRIIntegrator&lt; StateType, TimeType &gt;:</div>
+Inheritance diagram for diffeq::SOSRIIntegrator&lt; StateType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1_s_o_s_r_i_integrator__inherit__graph.png" border="0" usemap="#adiffeq_1_1_s_o_s_r_i_integrator_3_01_state_type_00_01_time_type_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
+<div class="center"><img src="classdiffeq_1_1_s_o_s_r_i_integrator__inherit__graph.png" border="0" usemap="#adiffeq_1_1_s_o_s_r_i_integrator_3_01_state_type_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for diffeq::SOSRIIntegrator&lt; StateType, TimeType &gt;:</div>
+Collaboration diagram for diffeq::SOSRIIntegrator&lt; StateType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1_s_o_s_r_i_integrator__coll__graph.png" border="0" usemap="#adiffeq_1_1_s_o_s_r_i_integrator_3_01_state_type_00_01_time_type_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<div class="center"><img src="classdiffeq_1_1_s_o_s_r_i_integrator__coll__graph.png" border="0" usemap="#adiffeq_1_1_s_o_s_r_i_integrator_3_01_state_type_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a962dfa43c0d5a2553b0a47573fc31111" id="r_a962dfa43c0d5a2553b0a47573fc31111"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a962dfa43c0d5a2553b0a47573fc31111">base_type</a> = <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">SRIIntegrator</a>&lt;StateType, TimeType&gt;</td></tr>
-<tr class="inherit_header pub_types_classdiffeq_1_1_s_r_i_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1_s_r_i_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">diffeq::SRIIntegrator&lt; StateType, TimeType &gt;</a></td></tr>
-<tr class="memitem:af2c76d7e5ce576761261ab0d0c757a0f inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_af2c76d7e5ce576761261ab0d0c757a0f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#af2c76d7e5ce576761261ab0d0c757a0f">base_type</a> = AbstractSDEIntegrator&lt;StateType, TimeType&gt;</td></tr>
-<tr class="memitem:a0a23318b320d924a8f00eb5e196a171f inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_a0a23318b320d924a8f00eb5e196a171f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a0a23318b320d924a8f00eb5e196a171f">state_type</a> = typename base_type::state_type</td></tr>
-<tr class="memitem:a2d0ebd094c235627d036831a4337e72d inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_a2d0ebd094c235627d036831a4337e72d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a2d0ebd094c235627d036831a4337e72d">time_type</a> = typename base_type::time_type</td></tr>
-<tr class="memitem:a164733d6eb74b603b4dcabe2f5399b41 inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_a164733d6eb74b603b4dcabe2f5399b41"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a164733d6eb74b603b4dcabe2f5399b41">value_type</a> = typename base_type::value_type</td></tr>
-<tr class="memitem:a41abb10bc769351c9fd9066743e209d8 inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_a41abb10bc769351c9fd9066743e209d8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a41abb10bc769351c9fd9066743e209d8">tableau_type</a> = <a class="el" href="structdiffeq_1_1_s_r_i_tableau.html">SRITableau</a>&lt;value_type&gt;</td></tr>
+<tr class="memitem:a120456502953995c4ae729b987329b14" id="r_a120456502953995c4ae729b987329b14"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a120456502953995c4ae729b987329b14">base_type</a> = <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">SRIIntegrator</a>&lt;StateType&gt;</td></tr>
+<tr class="inherit_header pub_types_classdiffeq_1_1_s_r_i_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1_s_r_i_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">diffeq::SRIIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:ac7b71c57fcebcb4148aec9bf2b42c1fd inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_ac7b71c57fcebcb4148aec9bf2b42c1fd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#ac7b71c57fcebcb4148aec9bf2b42c1fd">base_type</a> = <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">sde::AbstractSDEIntegrator</a>&lt;StateType&gt;</td></tr>
+<tr class="memitem:ab631dd694c3f2e0506eecce579dd5251 inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_ab631dd694c3f2e0506eecce579dd5251"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#ab631dd694c3f2e0506eecce579dd5251">state_type</a> = typename base_type::state_type</td></tr>
+<tr class="memitem:a2bca34146aa4776cdeddc87ad6aa058e inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_a2bca34146aa4776cdeddc87ad6aa058e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a2bca34146aa4776cdeddc87ad6aa058e">time_type</a> = typename base_type::time_type</td></tr>
+<tr class="memitem:a56ac7a05295bb2da7e9290262a3d1bbb inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_a56ac7a05295bb2da7e9290262a3d1bbb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a56ac7a05295bb2da7e9290262a3d1bbb">value_type</a> = typename base_type::value_type</td></tr>
+<tr class="memitem:a404f1310b7c5fde0a89cc9b558107989 inherit pub_types_classdiffeq_1_1_s_r_i_integrator" id="r_a404f1310b7c5fde0a89cc9b558107989"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a404f1310b7c5fde0a89cc9b558107989">tableau_type</a> = <a class="el" href="structdiffeq_1_1_s_r_i_tableau.html">SRITableau</a>&lt;value_type&gt;</td></tr>
+<tr class="inherit_header pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:a5029e642e0e8a1d26eb0f6e00c08c145 inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a5029e642e0e8a1d26eb0f6e00c08c145"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a5029e642e0e8a1d26eb0f6e00c08c145">state_type</a> = StateType</td></tr>
+<tr class="memitem:a2f23a72118e09bc51f5d464c984409f1 inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a2f23a72118e09bc51f5d464c984409f1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a2f23a72118e09bc51f5d464c984409f1">time_type</a> = typename StateType::value_type</td></tr>
+<tr class="memitem:a371e04a66fff46298ad37857d841146f inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a371e04a66fff46298ad37857d841146f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a371e04a66fff46298ad37857d841146f">value_type</a> = typename StateType::value_type</td></tr>
+<tr class="memitem:a5add7b902292a0083f9bc5a53cd05c3f inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a5add7b902292a0083f9bc5a53cd05c3f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a5add7b902292a0083f9bc5a53cd05c3f">sde_problem_type</a> = <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">SDEProblem</a>&lt;StateType&gt;</td></tr>
+<tr class="memitem:afa2dbbd8012a15cd3f3f3788b372439c inherit pub_types_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_afa2dbbd8012a15cd3f3f3788b372439c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#afa2dbbd8012a15cd3f3f3788b372439c">wiener_process_type</a> = <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">WienerProcess</a>&lt;StateType&gt;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a164aa283ad576394d8a99926f02ed5d2" id="r_a164aa283ad576394d8a99926f02ed5d2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a164aa283ad576394d8a99926f02ed5d2">SOSRIIntegrator</a> (std::shared_ptr&lt; typename base_type::sde_problem_type &gt; problem, std::shared_ptr&lt; typename base_type::wiener_process_type &gt; wiener=nullptr)</td></tr>
-<tr class="memitem:a789641bf85ee5b49b4c8305f89acb630" id="r_a789641bf85ee5b49b4c8305f89acb630"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a789641bf85ee5b49b4c8305f89acb630">name</a> () const override</td></tr>
-<tr class="inherit_header pub_methods_classdiffeq_1_1_s_r_i_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1_s_r_i_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">diffeq::SRIIntegrator&lt; StateType, TimeType &gt;</a></td></tr>
-<tr class="memitem:a1787ae8565580b64f2af19b6257220dd inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_a1787ae8565580b64f2af19b6257220dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a1787ae8565580b64f2af19b6257220dd">SRIIntegrator</a> (std::shared_ptr&lt; typename base_type::sde_problem_type &gt; problem, std::shared_ptr&lt; typename base_type::wiener_process_type &gt; wiener=nullptr, <a class="el" href="structdiffeq_1_1_s_r_i_tableau.html">tableau_type</a> tableau=SRIIntegrator::create_sriw1_tableau())</td></tr>
-<tr class="memitem:aa80235bea562268dda3439f491333d91 inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_aa80235bea562268dda3439f491333d91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#aa80235bea562268dda3439f491333d91">step</a> (state_type &amp;state, time_type dt) override</td></tr>
-<tr class="memitem:a5d9c95ac3896db0f4609cb5344aad86e inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_a5d9c95ac3896db0f4609cb5344aad86e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a5d9c95ac3896db0f4609cb5344aad86e">name</a> () const override</td></tr>
-<tr class="memitem:a611d4512cd488d2da804ef9e984fda6e inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_a611d4512cd488d2da804ef9e984fda6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a611d4512cd488d2da804ef9e984fda6e">set_tableau</a> (const <a class="el" href="structdiffeq_1_1_s_r_i_tableau.html">tableau_type</a> &amp;tableau)</td></tr>
+<tr class="memitem:a1d34b579bc69b83a88d666d6f773b6eb" id="r_a1d34b579bc69b83a88d666d6f773b6eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d34b579bc69b83a88d666d6f773b6eb">SOSRIIntegrator</a> (std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">base_type::sde_problem_type</a> &gt; problem, std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">base_type::wiener_process_type</a> &gt; wiener=nullptr)</td></tr>
+<tr class="memitem:a224e295e8041ca79d00db0c01452862e" id="r_a224e295e8041ca79d00db0c01452862e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a224e295e8041ca79d00db0c01452862e">name</a> () const override</td></tr>
+<tr class="inherit_header pub_methods_classdiffeq_1_1_s_r_i_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1_s_r_i_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">diffeq::SRIIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:a75caaabd98329c1a9c391b14d674d7da inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_a75caaabd98329c1a9c391b14d674d7da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a75caaabd98329c1a9c391b14d674d7da">SRIIntegrator</a> (std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">base_type::sde_problem_type</a> &gt; problem, std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">base_type::wiener_process_type</a> &gt; wiener=nullptr, <a class="el" href="structdiffeq_1_1_s_r_i_tableau.html">tableau_type</a> tableau=SRIIntegrator::create_sriw1_tableau())</td></tr>
+<tr class="memitem:a6be2f8d8235814078ad1fc2efdc1b41a inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_a6be2f8d8235814078ad1fc2efdc1b41a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#a6be2f8d8235814078ad1fc2efdc1b41a">step</a> (state_type &amp;state, time_type dt) override</td></tr>
+<tr class="memitem:aa255fd950de6cb2e9e2ce1c311b82eca inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_aa255fd950de6cb2e9e2ce1c311b82eca"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#aa255fd950de6cb2e9e2ce1c311b82eca">name</a> () const override</td></tr>
+<tr class="memitem:ab85a81b6eed96307c38dc48d67e36cd2 inherit pub_methods_classdiffeq_1_1_s_r_i_integrator" id="r_ab85a81b6eed96307c38dc48d67e36cd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_s_r_i_integrator.html#ab85a81b6eed96307c38dc48d67e36cd2">set_tableau</a> (const <a class="el" href="structdiffeq_1_1_s_r_i_tableau.html">tableau_type</a> &amp;tableau)</td></tr>
+<tr class="inherit_header pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:ac67ed0c141022e4e232bd674d74050dc inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ac67ed0c141022e4e232bd674d74050dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ac67ed0c141022e4e232bd674d74050dc">AbstractSDEIntegrator</a> (std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">sde_problem_type</a> &gt; problem, std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt; wiener=nullptr)</td></tr>
+<tr class="memitem:aa45abf106cb06a5c5387b07dc6291357 inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_aa45abf106cb06a5c5387b07dc6291357"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#aa45abf106cb06a5c5387b07dc6291357">integrate</a> (state_type &amp;state, time_type dt, time_type end_time)</td></tr>
+<tr class="memitem:ad9dc3c5a6b9ea3fada368d25cf5b480e inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ad9dc3c5a6b9ea3fada368d25cf5b480e"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ad9dc3c5a6b9ea3fada368d25cf5b480e">current_time</a> () const</td></tr>
+<tr class="memitem:a74e07e22915b99f2a1b99e4919c54708 inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a74e07e22915b99f2a1b99e4919c54708"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a74e07e22915b99f2a1b99e4919c54708">set_time</a> (time_type t)</td></tr>
+<tr class="memitem:af71b02d19401e231f27b3a6984559a5e inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_af71b02d19401e231f27b3a6984559a5e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">sde_problem_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#af71b02d19401e231f27b3a6984559a5e">get_problem</a> () const</td></tr>
+<tr class="memitem:af3138265d1dc473941f92a4e8987c985 inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_af3138265d1dc473941f92a4e8987c985"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#af3138265d1dc473941f92a4e8987c985">get_wiener_process</a> () const</td></tr>
+<tr class="memitem:ab2523a41950d38103d0bcab0f0b3e7eb inherit pub_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ab2523a41950d38103d0bcab0f0b3e7eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ab2523a41950d38103d0bcab0f0b3e7eb">set_wiener_process</a> (std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt; wiener)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:ae2b06c56c31022015d5d8da912d0e8c9 inherit pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ae2b06c56c31022015d5d8da912d0e8c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ae2b06c56c31022015d5d8da912d0e8c9">advance_time</a> (time_type dt)</td></tr>
+<tr class="memitem:ad3faec2a8d021709e25540402a955515 inherit pro_methods_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_ad3faec2a8d021709e25540402a955515"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#ad3faec2a8d021709e25540402a955515">get_default_dimension</a> ()</td></tr>
+<tr class="inherit_header pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a></td></tr>
+<tr class="memitem:a4f3c505b6053d1e09cc5d5a0e2a1b61a inherit pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a4f3c505b6053d1e09cc5d5a0e2a1b61a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">sde_problem_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a4f3c505b6053d1e09cc5d5a0e2a1b61a">problem_</a></td></tr>
+<tr class="memitem:aea532152da7da82d088bf5c3b8582ee5 inherit pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_aea532152da7da82d088bf5c3b8582ee5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">wiener_process_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#aea532152da7da82d088bf5c3b8582ee5">wiener_</a></td></tr>
+<tr class="memitem:a4c330cceb02a65140c3536f0297fc0f0 inherit pro_attribs_classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator" id="r_a4c330cceb02a65140c3536f0297fc0f0"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html#a4c330cceb02a65140c3536f0297fc0f0">current_time_</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt;<br />
-class diffeq::SOSRIIntegrator&lt; StateType, TimeType &gt;</div><p>SOSRI (Stability-Optimized SRI) integrator. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt;<br />
+class diffeq::SOSRIIntegrator&lt; StateType &gt;</div><p>SOSRI (Stability-Optimized SRI) integrator. </p>
 <p>SRI integrator with stability-optimized tableau coefficients. Enhanced stability for stiff general Itô SDEs with strong order 1.5. </p>
 
 <p class="definition">Definition at line <a class="el" href="sosri_8hpp_source.html#l00016">16</a> of file <a class="el" href="sosri_8hpp_source.html">sosri.hpp</a>.</p>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
-<a id="a962dfa43c0d5a2553b0a47573fc31111" name="a962dfa43c0d5a2553b0a47573fc31111"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a962dfa43c0d5a2553b0a47573fc31111">&#9670;&#160;</a></span>base_type</h2>
+<a id="a120456502953995c4ae729b987329b14" name="a120456502953995c4ae729b987329b14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a120456502953995c4ae729b987329b14">&#9670;&#160;</a></span>base_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">diffeq::SOSRIIntegrator</a>&lt; StateType, TimeType &gt;::base_type = <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">SRIIntegrator</a>&lt;StateType, TimeType&gt;</td>
+          <td class="memname">using <a class="el" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">diffeq::SOSRIIntegrator</a>&lt; StateType &gt;::base_type = <a class="el" href="classdiffeq_1_1_s_r_i_integrator.html">SRIIntegrator</a>&lt;StateType&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -154,26 +178,26 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
 </div>
 </div>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a164aa283ad576394d8a99926f02ed5d2" name="a164aa283ad576394d8a99926f02ed5d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a164aa283ad576394d8a99926f02ed5d2">&#9670;&#160;</a></span>SOSRIIntegrator()</h2>
+<a id="a1d34b579bc69b83a88d666d6f773b6eb" name="a1d34b579bc69b83a88d666d6f773b6eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d34b579bc69b83a88d666d6f773b6eb">&#9670;&#160;</a></span>SOSRIIntegrator()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">diffeq::SOSRIIntegrator</a>&lt; StateType, TimeType &gt;::SOSRIIntegrator </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">diffeq::SOSRIIntegrator</a>&lt; StateType &gt;::SOSRIIntegrator </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; typename base_type::sde_problem_type &gt;</td>          <td class="paramname"><span class="paramname"><em>problem</em></span>, </td>
+          <td class="paramtype">std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_s_d_e_problem.html">base_type::sde_problem_type</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>problem</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; typename base_type::wiener_process_type &gt;</td>          <td class="paramname"><span class="paramname"><em>wiener</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
+          <td class="paramtype">std::shared_ptr&lt; typename <a class="el" href="classdiffeq_1_1sde_1_1_wiener_process.html">base_type::wiener_process_type</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>wiener</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -188,19 +212,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a789641bf85ee5b49b4c8305f89acb630" name="a789641bf85ee5b49b4c8305f89acb630"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a789641bf85ee5b49b4c8305f89acb630">&#9670;&#160;</a></span>name()</h2>
+<a id="a224e295e8041ca79d00db0c01452862e" name="a224e295e8041ca79d00db0c01452862e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a224e295e8041ca79d00db0c01452862e">&#9670;&#160;</a></span>name()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType, <a class="el" href="conceptcan__be__time.html">can_be_time</a> TimeType&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> StateType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">diffeq::SOSRIIntegrator</a>&lt; StateType, TimeType &gt;::name </td>
+          <td class="memname">std::string <a class="el" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">diffeq::SOSRIIntegrator</a>&lt; StateType &gt;::name </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -208,10 +232,12 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> Stat
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Implements <a class="el" href="classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html">diffeq::sde::AbstractSDEIntegrator&lt; StateType &gt;</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="sosri_8hpp_source.html#l00024">24</a> of file <a class="el" href="sosri_8hpp_source.html">sosri.hpp</a>.</p>
 

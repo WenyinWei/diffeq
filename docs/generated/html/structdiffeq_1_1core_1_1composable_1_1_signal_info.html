@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::SignalInfo&lt; S, T &gt; Struct Template Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::SignalInfo&lt; S &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('structdiffeq_1_1core_1_1composable_1_1_signal_info.htm
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::core::composable::SignalInfo&lt; S, T &gt; Struct Template Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::core::composable::SignalInfo&lt; S &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -98,40 +98,35 @@ $(function(){initNavTree('structdiffeq_1_1core_1_1composable_1_1_signal_info.htm
 
 <p><code>#include &lt;<a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for diffeq::core::composable::SignalInfo&lt; S, T &gt;:</div>
+Collaboration diagram for diffeq::core::composable::SignalInfo&lt; S &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="structdiffeq_1_1core_1_1composable_1_1_signal_info__inherit__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_signal_info_3_01_s_00_01_t_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for diffeq::core::composable::SignalInfo&lt; S, T &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="structdiffeq_1_1core_1_1composable_1_1_signal_info__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_signal_info_3_01_s_00_01_t_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<div class="center"><img src="structdiffeq_1_1core_1_1composable_1_1_signal_info__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_signal_info_3_01_s_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a49a77547ceee7cc6e40129080a7a7843" id="r_a49a77547ceee7cc6e40129080a7a7843"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(S &amp;, T)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49a77547ceee7cc6e40129080a7a7843">handler</a></td></tr>
-<tr class="memitem:a414d4386fd861cf68125d74f405e8e5f" id="r_a414d4386fd861cf68125d74f405e8e5f"><td class="memItemLeft" align="right" valign="top">SignalPriority&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a414d4386fd861cf68125d74f405e8e5f">priority</a> {SignalPriority::NORMAL}</td></tr>
-<tr class="memitem:aaba03b215c7ae561defc9eefa4ffc91e" id="r_aaba03b215c7ae561defc9eefa4ffc91e"><td class="memItemLeft" align="right" valign="top">std::chrono::steady_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaba03b215c7ae561defc9eefa4ffc91e">timestamp</a></td></tr>
-<tr class="memitem:a75f0fc67e462706142dcae5702aa0683" id="r_a75f0fc67e462706142dcae5702aa0683"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75f0fc67e462706142dcae5702aa0683">processed</a> {false}</td></tr>
-<tr class="memitem:ae1d4591b9054661fdb9f8a56d97519b8" id="r_ae1d4591b9054661fdb9f8a56d97519b8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1d4591b9054661fdb9f8a56d97519b8">signal_id</a></td></tr>
+<tr class="memitem:a52028f1d1864220f6526ba25440a0048" id="r_a52028f1d1864220f6526ba25440a0048"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(S &amp;, typename S::value_type)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52028f1d1864220f6526ba25440a0048">handler</a></td></tr>
+<tr class="memitem:a35cce060dc2e9ede24de40d6be8096c0" id="r_a35cce060dc2e9ede24de40d6be8096c0"><td class="memItemLeft" align="right" valign="top">SignalPriority&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35cce060dc2e9ede24de40d6be8096c0">priority</a> {SignalPriority::NORMAL}</td></tr>
+<tr class="memitem:a24f0b2e341212ae878bead930bcca1bb" id="r_a24f0b2e341212ae878bead930bcca1bb"><td class="memItemLeft" align="right" valign="top">std::chrono::steady_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24f0b2e341212ae878bead930bcca1bb">timestamp</a></td></tr>
+<tr class="memitem:a3b768fe77335f41ebf9bb24c62bad3f8" id="r_a3b768fe77335f41ebf9bb24c62bad3f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b768fe77335f41ebf9bb24c62bad3f8">processed</a> {false}</td></tr>
+<tr class="memitem:a3dd35b17f164c2e3f9fa748a56685872" id="r_a3dd35b17f164c2e3f9fa748a56685872"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3dd35b17f164c2e3f9fa748a56685872">signal_id</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T&gt;<br />
-struct diffeq::core::composable::SignalInfo&lt; S, T &gt;</div><p>Signal information structure. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt;<br />
+struct diffeq::core::composable::SignalInfo&lt; S &gt;</div><p>Signal information structure. </p>
 
 <p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00036">36</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a49a77547ceee7cc6e40129080a7a7843" name="a49a77547ceee7cc6e40129080a7a7843"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49a77547ceee7cc6e40129080a7a7843">&#9670;&#160;</a></span>handler</h2>
+<a id="a52028f1d1864220f6526ba25440a0048" name="a52028f1d1864220f6526ba25440a0048"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52028f1d1864220f6526ba25440a0048">&#9670;&#160;</a></span>handler</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::function&lt;void(S&amp;, T)&gt; <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S, T &gt;::handler</td>
+          <td class="memname">std::function&lt;void(S&amp;, typename S::value_type)&gt; <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S &gt;::handler</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -140,16 +135,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a414d4386fd861cf68125d74f405e8e5f" name="a414d4386fd861cf68125d74f405e8e5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a414d4386fd861cf68125d74f405e8e5f">&#9670;&#160;</a></span>priority</h2>
+<a id="a35cce060dc2e9ede24de40d6be8096c0" name="a35cce060dc2e9ede24de40d6be8096c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35cce060dc2e9ede24de40d6be8096c0">&#9670;&#160;</a></span>priority</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">SignalPriority <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S, T &gt;::priority {SignalPriority::NORMAL}</td>
+          <td class="memname">SignalPriority <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S &gt;::priority {SignalPriority::NORMAL}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -158,16 +153,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a75f0fc67e462706142dcae5702aa0683" name="a75f0fc67e462706142dcae5702aa0683"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75f0fc67e462706142dcae5702aa0683">&#9670;&#160;</a></span>processed</h2>
+<a id="a3b768fe77335f41ebf9bb24c62bad3f8" name="a3b768fe77335f41ebf9bb24c62bad3f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b768fe77335f41ebf9bb24c62bad3f8">&#9670;&#160;</a></span>processed</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S, T &gt;::processed {false}</td>
+          <td class="memname">bool <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S &gt;::processed {false}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -176,16 +171,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="ae1d4591b9054661fdb9f8a56d97519b8" name="ae1d4591b9054661fdb9f8a56d97519b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1d4591b9054661fdb9f8a56d97519b8">&#9670;&#160;</a></span>signal_id</h2>
+<a id="a3dd35b17f164c2e3f9fa748a56685872" name="a3dd35b17f164c2e3f9fa748a56685872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dd35b17f164c2e3f9fa748a56685872">&#9670;&#160;</a></span>signal_id</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S, T &gt;::signal_id</td>
+          <td class="memname">std::string <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S &gt;::signal_id</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -194,16 +189,16 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="aaba03b215c7ae561defc9eefa4ffc91e" name="aaba03b215c7ae561defc9eefa4ffc91e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaba03b215c7ae561defc9eefa4ffc91e">&#9670;&#160;</a></span>timestamp</h2>
+<a id="a24f0b2e341212ae878bead930bcca1bb" name="a24f0b2e341212ae878bead930bcca1bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24f0b2e341212ae878bead930bcca1bb">&#9670;&#160;</a></span>timestamp</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::chrono::steady_clock::time_point <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S, T &gt;::timestamp</td>
+          <td class="memname">std::chrono::steady_clock::time_point <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_info.html">diffeq::core::composable::SignalInfo</a>&lt; S &gt;::timestamp</td>
         </tr>
       </table>
 </div><div class="memdoc">

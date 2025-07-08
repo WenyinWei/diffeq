@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="diffeq::async::AsyncIntegrator\l\< S, T \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1async_1_1_async_integrator.html",tooltip="Lightweight async integrator wrapper."];
+  Node0 [id="Node000000",label="diffeq::async::AsyncIntegrator\l\< S \>::Config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$structdiffeq_1_1async_1_1_async_integrator_1_1_config.html",tooltip="Configuration for async operation."];
 }

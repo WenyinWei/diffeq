@@ -124,7 +124,7 @@ $(function(){initNavTree('test__advanced__parallelism_8cpp_source.html','',''); 
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                 states.begin(), </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                 states.end(),</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                 [&amp;](std::vector&lt;double&gt;&amp; state) {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                     auto integrator = diffeq::RK4Integrator&lt;std::vector&lt;double&gt;, double&gt;(system);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                     auto integrator = diffeq::RK4Integrator&lt;std::vector&lt;double&gt;&gt;(system);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                     for (int i = 0; i &lt; 100; ++i) {</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                         integrator.step(state, 0.01);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                     }</div>
@@ -144,7 +144,7 @@ $(function(){initNavTree('test__advanced__parallelism_8cpp_source.html','',''); 
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">auto</span> system = simple_harmonic_oscillator(1.0);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    std::vector&lt;double&gt; state = {1.0, 0.0};</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">auto</span> integrator = <a class="code hl_class" href="classdiffeq_1_1_r_k4_integrator.html">diffeq::RK4Integrator&lt;std::vector&lt;double&gt;</a>, <span class="keywordtype">double</span>&gt;(system);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">auto</span> integrator = <a class="code hl_class" href="classdiffeq_1_1_r_k4_integrator.html">diffeq::RK4Integrator&lt;std::vector&lt;double&gt;</a>&gt;(system);</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Initial state: [&quot;</span> &lt;&lt; state[0] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; state[1] &lt;&lt; <span class="stringliteral">&quot;]\n&quot;</span>;</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    </div>

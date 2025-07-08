@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="ODEStdExecution\< State,\l Time \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_o_d_e_std_execution.html",tooltip="Example: Parallel ODE integration using std::execution policies."];
+  Node0 [id="Node000000",label="ODETaskDispatcher\<\l State, Time \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_o_d_e_task_dispatcher.html",tooltip="Advanced GPU and Asynchronous CPU Processing Demo."];
 }

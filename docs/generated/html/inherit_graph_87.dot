@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="science::StochasticLotka\lVolterra",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classscience_1_1_stochastic_lotka_volterra.html",tooltip="Stochastic Lotka-Volterra predator-prey model."];
+  Node0 [id="Node000000",label="SignalDrivenODEProcessor",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_signal_driven_o_d_e_processor.html",tooltip=" "];
 }

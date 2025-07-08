@@ -246,7 +246,7 @@ $(function(){initNavTree('sde__base_8hpp_source.html','',''); });
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="comment">// Integration interface</span></div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordtype">void</span> integrate(state_type&amp; state, time_type dt, time_type end_time) {</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        <span class="keywordflow">while</span> (current_time_ &lt; end_time) {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            time_type step_size = std::min(dt, end_time - current_time_);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            time_type step_size = std::min&lt;time_type&gt;(dt, end_time - current_time_);</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>            step(state, step_size);</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        }</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>

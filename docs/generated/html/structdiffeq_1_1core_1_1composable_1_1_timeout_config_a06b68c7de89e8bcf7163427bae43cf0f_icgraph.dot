@@ -7,5 +7,5 @@ digraph "diffeq::core::composable::TimeoutConfig::validate"
   rankdir="RL";
   Node1 [id="Node000001",label="diffeq::core::composable\l::TimeoutConfig::validate",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Validate configuration parameters."];
   Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node2 [id="Node000002",label="diffeq::core::composable\l::TimeoutDecorator::update_config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a57e7d81da121bbec285b492d569d6278",tooltip="Update timeout configuration with validation."];
+  Node2 [id="Node000002",label="diffeq::core::composable\l::TimeoutDecorator::update_config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html#a19d623276a25a2e28cc2064c03f3b139",tooltip="Update timeout configuration with validation."];
 }

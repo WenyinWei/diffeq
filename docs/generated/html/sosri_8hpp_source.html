@@ -100,11 +100,11 @@ $(function(){initNavTree('sosri_8hpp_source.html','',''); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span>diffeq {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">template</span>&lt;system_state StateType, can_be_time TimeType&gt;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">template</span>&lt;system_state StateType&gt;</div>
 <div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">   16</a></span><span class="keyword">class </span>SOSRIIntegrator : <span class="keyword">public</span> SRIIntegrator&lt;StateType, TimeType&gt; {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classdiffeq_1_1_s_o_s_r_i_integrator.html">   16</a></span><span class="keyword">class </span>SOSRIIntegrator : <span class="keyword">public</span> SRIIntegrator&lt;StateType&gt; {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">using </span>base_type = SRIIntegrator&lt;StateType, TimeType&gt;;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">using </span>base_type = SRIIntegrator&lt;StateType&gt;;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">explicit</span> SOSRIIntegrator(std::shared_ptr&lt;typename base_type::sde_problem_type&gt; problem,</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                            std::shared_ptr&lt;typename base_type::wiener_process_type&gt; wiener = <span class="keyword">nullptr</span>)</div>

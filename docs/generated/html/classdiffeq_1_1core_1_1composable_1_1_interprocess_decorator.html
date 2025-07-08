@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::InterprocessDecorator&lt; S, T &gt; Class Template Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::InterprocessDecorator&lt; S &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('classdiffeq_1_1core_1_1composable_1_1_interprocess_dec
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::core::composable::InterprocessDecorator&lt; S, T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::core::composable::InterprocessDecorator&lt; S &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -98,56 +98,56 @@ $(function(){initNavTree('classdiffeq_1_1core_1_1composable_1_1_interprocess_dec
 
 <p><code>#include &lt;<a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for diffeq::core::composable::InterprocessDecorator&lt; S, T &gt;:</div>
+Inheritance diagram for diffeq::core::composable::InterprocessDecorator&lt; S &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator__inherit__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_interprocess_decorator_3_01_s_00_01_t_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator__inherit__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_interprocess_decorator_3_01_s_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for diffeq::core::composable::InterprocessDecorator&lt; S, T &gt;:</div>
+Collaboration diagram for diffeq::core::composable::InterprocessDecorator&lt; S &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_interprocess_decorator_3_01_s_00_01_t_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_interprocess_decorator_3_01_s_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab78015cca429713e95ea5775d671836f" id="r_ab78015cca429713e95ea5775d671836f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab78015cca429713e95ea5775d671836f">InterprocessDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt; integrator, <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> <a class="el" href="#aa62b0187fa6c2645fcb8a00ce25e47a5">config</a>={})</td></tr>
-<tr class="memdesc:ab78015cca429713e95ea5775d671836f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct interprocess decorator.  <br /></td></tr>
-<tr class="memitem:a0320bee575e43f6827046476e112705d" id="r_a0320bee575e43f6827046476e112705d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0320bee575e43f6827046476e112705d">~InterprocessDecorator</a> ()</td></tr>
-<tr class="memdesc:a0320bee575e43f6827046476e112705d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor ensures proper cleanup.  <br /></td></tr>
-<tr class="memitem:af3e5a129a40be44a3b0ea2f474837c00" id="r_af3e5a129a40be44a3b0ea2f474837c00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3e5a129a40be44a3b0ea2f474837c00">step</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;state, T dt) override</td></tr>
-<tr class="memdesc:af3e5a129a40be44a3b0ea2f474837c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override step to handle IPC during integration.  <br /></td></tr>
-<tr class="memitem:a37bd5f1fb898f63a5ab723ca35d87b86" id="r_a37bd5f1fb898f63a5ab723ca35d87b86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37bd5f1fb898f63a5ab723ca35d87b86">integrate</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;state, T dt, T end_time) override</td></tr>
-<tr class="memdesc:a37bd5f1fb898f63a5ab723ca35d87b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override integrate to handle IPC during integration.  <br /></td></tr>
-<tr class="memitem:aed9735d999795a68d1abbcb4ce986338" id="r_aed9735d999795a68d1abbcb4ce986338"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed9735d999795a68d1abbcb4ce986338">set_receive_callback</a> (std::function&lt; void(const S &amp;, T)&gt; callback)</td></tr>
-<tr class="memdesc:aed9735d999795a68d1abbcb4ce986338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback for received data.  <br /></td></tr>
-<tr class="memitem:a86dc60829eb0c0d91022ba0c0783eb49" id="r_a86dc60829eb0c0d91022ba0c0783eb49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86dc60829eb0c0d91022ba0c0783eb49">send_state</a> (const S &amp;state, T time)</td></tr>
-<tr class="memdesc:a86dc60829eb0c0d91022ba0c0783eb49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send state data to other processes.  <br /></td></tr>
-<tr class="memitem:ad78425804888c427afbb1fc7714f70d2" id="r_ad78425804888c427afbb1fc7714f70d2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_i_p_c_stats.html">IPCStats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad78425804888c427afbb1fc7714f70d2">get_statistics</a> () const</td></tr>
-<tr class="memdesc:ad78425804888c427afbb1fc7714f70d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current IPC statistics.  <br /></td></tr>
-<tr class="memitem:aa2256d83151c416d4ccd650b64d15149" id="r_aa2256d83151c416d4ccd650b64d15149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2256d83151c416d4ccd650b64d15149">reset_statistics</a> ()</td></tr>
-<tr class="memdesc:aa2256d83151c416d4ccd650b64d15149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset IPC statistics.  <br /></td></tr>
-<tr class="memitem:ad5505790f7ba832baeb8644cf5d26653" id="r_ad5505790f7ba832baeb8644cf5d26653"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5505790f7ba832baeb8644cf5d26653">is_connected</a> () const</td></tr>
-<tr class="memdesc:ad5505790f7ba832baeb8644cf5d26653"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if channel is connected.  <br /></td></tr>
-<tr class="memitem:ac32aefcf77e1a899ab8ae9b0c7621c0c" id="r_ac32aefcf77e1a899ab8ae9b0c7621c0c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac32aefcf77e1a899ab8ae9b0c7621c0c">get_status</a> () const</td></tr>
-<tr class="memdesc:ac32aefcf77e1a899ab8ae9b0c7621c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get channel status.  <br /></td></tr>
-<tr class="memitem:aa62b0187fa6c2645fcb8a00ce25e47a5" id="r_aa62b0187fa6c2645fcb8a00ce25e47a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa62b0187fa6c2645fcb8a00ce25e47a5">config</a> ()</td></tr>
-<tr class="memdesc:aa62b0187fa6c2645fcb8a00ce25e47a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access and modify interprocess configuration.  <br /></td></tr>
-<tr class="memitem:a33b2382e8a5a2e07c6797fe06e34ec98" id="r_a33b2382e8a5a2e07c6797fe06e34ec98"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33b2382e8a5a2e07c6797fe06e34ec98">config</a> () const</td></tr>
-<tr class="inherit_header pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a04b5844ea5ead3d0a5c22dd53be40231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt; integrator)</td></tr>
+<tr class="memitem:a89315829bdc1ad02715a98e820da14ab" id="r_a89315829bdc1ad02715a98e820da14ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89315829bdc1ad02715a98e820da14ab">InterprocessDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt; integrator, <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> <a class="el" href="#a17be3d501a4b5e0953013936f2952605">config</a>={})</td></tr>
+<tr class="memdesc:a89315829bdc1ad02715a98e820da14ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct interprocess decorator.  <br /></td></tr>
+<tr class="memitem:a9cd847829a1ebc9a456082d1fdd8dceb" id="r_a9cd847829a1ebc9a456082d1fdd8dceb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9cd847829a1ebc9a456082d1fdd8dceb">~InterprocessDecorator</a> ()</td></tr>
+<tr class="memdesc:a9cd847829a1ebc9a456082d1fdd8dceb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor ensures proper cleanup.  <br /></td></tr>
+<tr class="memitem:a6843e4d629016d8bc6a13fcf59492353" id="r_a6843e4d629016d8bc6a13fcf59492353"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6843e4d629016d8bc6a13fcf59492353">step</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;state, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type dt) override</td></tr>
+<tr class="memdesc:a6843e4d629016d8bc6a13fcf59492353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override step to handle IPC during integration.  <br /></td></tr>
+<tr class="memitem:aea9d55a6727fec316dee4fab1058561e" id="r_aea9d55a6727fec316dee4fab1058561e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea9d55a6727fec316dee4fab1058561e">integrate</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;state, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type dt, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type end_time) override</td></tr>
+<tr class="memdesc:aea9d55a6727fec316dee4fab1058561e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override integrate to handle IPC during integration.  <br /></td></tr>
+<tr class="memitem:ae3dcd09f36402745d6277678b45cd21f" id="r_ae3dcd09f36402745d6277678b45cd21f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3dcd09f36402745d6277678b45cd21f">set_receive_callback</a> (std::function&lt; void(const S &amp;, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type)&gt; callback)</td></tr>
+<tr class="memdesc:ae3dcd09f36402745d6277678b45cd21f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback for received data.  <br /></td></tr>
+<tr class="memitem:a5b627fee20573f9cdbfb0c91cefa0670" id="r_a5b627fee20573f9cdbfb0c91cefa0670"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b627fee20573f9cdbfb0c91cefa0670">send_state</a> (const S &amp;state, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type time)</td></tr>
+<tr class="memdesc:a5b627fee20573f9cdbfb0c91cefa0670"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send state data to other processes.  <br /></td></tr>
+<tr class="memitem:a69545da30ef591ac9eed9bfef0f21518" id="r_a69545da30ef591ac9eed9bfef0f21518"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_i_p_c_stats.html">IPCStats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69545da30ef591ac9eed9bfef0f21518">get_statistics</a> () const</td></tr>
+<tr class="memdesc:a69545da30ef591ac9eed9bfef0f21518"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current IPC statistics.  <br /></td></tr>
+<tr class="memitem:a2056f7986c810003f4eb49561776557c" id="r_a2056f7986c810003f4eb49561776557c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2056f7986c810003f4eb49561776557c">reset_statistics</a> ()</td></tr>
+<tr class="memdesc:a2056f7986c810003f4eb49561776557c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset IPC statistics.  <br /></td></tr>
+<tr class="memitem:a6d15572092c7272f1bd50bc591ef9a9d" id="r_a6d15572092c7272f1bd50bc591ef9a9d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d15572092c7272f1bd50bc591ef9a9d">is_connected</a> () const</td></tr>
+<tr class="memdesc:a6d15572092c7272f1bd50bc591ef9a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if channel is connected.  <br /></td></tr>
+<tr class="memitem:a0ecd551c8a86af6f2317b539f4b57182" id="r_a0ecd551c8a86af6f2317b539f4b57182"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ecd551c8a86af6f2317b539f4b57182">get_status</a> () const</td></tr>
+<tr class="memdesc:a0ecd551c8a86af6f2317b539f4b57182"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get channel status.  <br /></td></tr>
+<tr class="memitem:a17be3d501a4b5e0953013936f2952605" id="r_a17be3d501a4b5e0953013936f2952605"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17be3d501a4b5e0953013936f2952605">config</a> ()</td></tr>
+<tr class="memdesc:a17be3d501a4b5e0953013936f2952605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access and modify interprocess configuration.  <br /></td></tr>
+<tr class="memitem:a9c1115cd3f2f1a0880ad6c48f0c4571d" id="r_a9c1115cd3f2f1a0880ad6c48f0c4571d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c1115cd3f2f1a0880ad6c48f0c4571d">config</a> () const</td></tr>
+<tr class="inherit_header pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a04b5844ea5ead3d0a5c22dd53be40231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt; integrator)</td></tr>
 <tr class="memdesc:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct decorator wrapping another integrator.  <br /></td></tr>
 <tr class="memitem:a30c7042edc84721a3966659a78c69a50 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a30c7042edc84721a3966659a78c69a50"><td class="memItemLeft" align="right" valign="top">
 virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IntegratorDecorator</b> ()=default</td></tr>
 <tr class="memdesc:a30c7042edc84721a3966659a78c69a50 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor for proper cleanup. <br /></td></tr>
-<tr class="memitem:a15815918bd3b018ad4d2776ff0d829d9 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a15815918bd3b018ad4d2776ff0d829d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a15815918bd3b018ad4d2776ff0d829d9">step</a> (state_type &amp;state, time_type dt) override</td></tr>
-<tr class="memitem:a4172632cd523510dee78bb4bd4900c6a inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a4172632cd523510dee78bb4bd4900c6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a4172632cd523510dee78bb4bd4900c6a">integrate</a> (state_type &amp;state, time_type dt, time_type end_time) override</td></tr>
-<tr class="memitem:a1056104ad90e22a73fdef15574217190 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a1056104ad90e22a73fdef15574217190"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a1056104ad90e22a73fdef15574217190">current_time</a> () const override</td></tr>
-<tr class="memitem:a7e1042f6d239fd0df26de651c39d44ef inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a7e1042f6d239fd0df26de651c39d44ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a7e1042f6d239fd0df26de651c39d44ef">set_time</a> (time_type t) override</td></tr>
-<tr class="memitem:a630d1d6556c6bc39157daa133a1b61ad inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a630d1d6556c6bc39157daa133a1b61ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a630d1d6556c6bc39157daa133a1b61ad">set_system</a> (system_function sys) override</td></tr>
-<tr class="memitem:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a6c1ea268b50ff65e9429ee6aa077d9fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a6c1ea268b50ff65e9429ee6aa077d9fe">wrapped</a> ()</td></tr>
+<tr class="memitem:a15815918bd3b018ad4d2776ff0d829d9 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a15815918bd3b018ad4d2776ff0d829d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a15815918bd3b018ad4d2776ff0d829d9">step</a> (state_type &amp;state, time_type dt) override</td></tr>
+<tr class="memitem:a4172632cd523510dee78bb4bd4900c6a inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a4172632cd523510dee78bb4bd4900c6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a4172632cd523510dee78bb4bd4900c6a">integrate</a> (state_type &amp;state, time_type dt, time_type end_time) override</td></tr>
+<tr class="memitem:a1056104ad90e22a73fdef15574217190 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a1056104ad90e22a73fdef15574217190"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a1056104ad90e22a73fdef15574217190">current_time</a> () const override</td></tr>
+<tr class="memitem:a7e1042f6d239fd0df26de651c39d44ef inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a7e1042f6d239fd0df26de651c39d44ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a7e1042f6d239fd0df26de651c39d44ef">set_time</a> (time_type t) override</td></tr>
+<tr class="memitem:a630d1d6556c6bc39157daa133a1b61ad inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a630d1d6556c6bc39157daa133a1b61ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a630d1d6556c6bc39157daa133a1b61ad">set_system</a> (system_function sys) override</td></tr>
+<tr class="memitem:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a6c1ea268b50ff65e9429ee6aa077d9fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a6c1ea268b50ff65e9429ee6aa077d9fe">wrapped</a> ()</td></tr>
 <tr class="memdesc:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to wrapped integrator for advanced use.  <br /></td></tr>
-<tr class="memitem:add1039eccda7d12c21dab0506984fd5e inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_add1039eccda7d12c21dab0506984fd5e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#add1039eccda7d12c21dab0506984fd5e">wrapped</a> () const</td></tr>
-<tr class="memitem:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_ab3c5041cd7aef8dba3c812770a56e945"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#ab3c5041cd7aef8dba3c812770a56e945">has_wrapped_integrator</a> () const</td></tr>
+<tr class="memitem:add1039eccda7d12c21dab0506984fd5e inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_add1039eccda7d12c21dab0506984fd5e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#add1039eccda7d12c21dab0506984fd5e">wrapped</a> () const</td></tr>
+<tr class="memitem:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_ab3c5041cd7aef8dba3c812770a56e945"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#ab3c5041cd7aef8dba3c812770a56e945">has_wrapped_integrator</a> () const</td></tr>
 <tr class="memdesc:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if wrapped integrator exists.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:a6249475d8952f1d1f1a25f39f6569047 inherit pub_methods_class_abstract_integrator" id="r_a6249475d8952f1d1f1a25f39f6569047"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#a6249475d8952f1d1f1a25f39f6569047">AbstractIntegrator</a> (system_function sys)</td></tr>
@@ -157,11 +157,11 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IntegratorDecorat
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a56aa07bbc317b0f195014ff433d64d75 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a56aa07bbc317b0f195014ff433d64d75"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a56aa07bbc317b0f195014ff433d64d75">base_type</a></td></tr>
-<tr class="memitem:a367284ba34e9632fbcf11686c5bee95c inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a367284ba34e9632fbcf11686c5bee95c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a367284ba34e9632fbcf11686c5bee95c">state_type</a></td></tr>
-<tr class="memitem:a16e0db720d1e33056b12e22444c61955 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a16e0db720d1e33056b12e22444c61955"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a16e0db720d1e33056b12e22444c61955">time_type</a></td></tr>
-<tr class="memitem:a468975224e8d36ddb467ec3ae81d9c90 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a468975224e8d36ddb467ec3ae81d9c90"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a468975224e8d36ddb467ec3ae81d9c90">system_function</a></td></tr>
+<tr class="inherit_header pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a56aa07bbc317b0f195014ff433d64d75 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a56aa07bbc317b0f195014ff433d64d75"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a56aa07bbc317b0f195014ff433d64d75">base_type</a> = <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt;S&gt;</td></tr>
+<tr class="memitem:a367284ba34e9632fbcf11686c5bee95c inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a367284ba34e9632fbcf11686c5bee95c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a367284ba34e9632fbcf11686c5bee95c">state_type</a> = typename base_type::state_type</td></tr>
+<tr class="memitem:a16e0db720d1e33056b12e22444c61955 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a16e0db720d1e33056b12e22444c61955"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a16e0db720d1e33056b12e22444c61955">time_type</a> = typename base_type::time_type</td></tr>
+<tr class="memitem:a468975224e8d36ddb467ec3ae81d9c90 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a468975224e8d36ddb467ec3ae81d9c90"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a468975224e8d36ddb467ec3ae81d9c90">system_function</a> = typename base_type::system_function</td></tr>
 <tr class="inherit_header pub_types_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:ada247cd905dbeb5b5db250a6d18e42b6 inherit pub_types_class_abstract_integrator" id="r_ada247cd905dbeb5b5db250a6d18e42b6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ada247cd905dbeb5b5db250a6d18e42b6">state_type</a> = S</td></tr>
 <tr class="memitem:aa4647f8aa130c44f1a05768d6f71c33c inherit pub_types_class_abstract_integrator" id="r_aa4647f8aa130c44f1a05768d6f71c33c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#aa4647f8aa130c44f1a05768d6f71c33c">time_type</a> = typename S::value_type</td></tr>
@@ -169,15 +169,15 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:ab86e8a5aba69e18b3a90de9add75435f inherit pub_types_class_abstract_integrator" id="r_ab86e8a5aba69e18b3a90de9add75435f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ab86e8a5aba69e18b3a90de9add75435f">system_function</a> = std::function&lt;void(time_type, const state_type&amp;, state_type&amp;)&gt;</td></tr>
 <tr class="inherit_header pro_methods_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:adaeb48b22ac522144547c63fdd71dfcd inherit pro_methods_class_abstract_integrator" id="r_adaeb48b22ac522144547c63fdd71dfcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#adaeb48b22ac522144547c63fdd71dfcd">advance_time</a> (time_type dt)</td></tr>
-<tr class="inherit_header pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a705cdcf548a89681290384b2df198172 inherit pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a705cdcf548a89681290384b2df198172"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a705cdcf548a89681290384b2df198172">wrapped_integrator_</a></td></tr>
+<tr class="inherit_header pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a705cdcf548a89681290384b2df198172 inherit pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a705cdcf548a89681290384b2df198172"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a705cdcf548a89681290384b2df198172">wrapped_integrator_</a></td></tr>
 <tr class="inherit_header pro_attribs_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:ae1565729bb4dd970471f94946eb5763d inherit pro_attribs_class_abstract_integrator" id="r_ae1565729bb4dd970471f94946eb5763d"><td class="memItemLeft" align="right" valign="top">system_function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ae1565729bb4dd970471f94946eb5763d">sys_</a></td></tr>
 <tr class="memitem:a600d2a4194ef4fdd50eadaa4222b4a19 inherit pro_attribs_class_abstract_integrator" id="r_a600d2a4194ef4fdd50eadaa4222b4a19"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#a600d2a4194ef4fdd50eadaa4222b4a19">current_time_</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt;<br />
-class diffeq::core::composable::InterprocessDecorator&lt; S, T &gt;</div><p>Interprocess communication decorator. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt;<br />
+class diffeq::core::composable::InterprocessDecorator&lt; S &gt;</div><p>Interprocess communication decorator. </p>
 <p>This decorator provides comprehensive IPC capabilities with the following features:</p><ul>
 <li>Multiple IPC methods (shared memory, named pipes, sockets)</li>
 <li>Producer/consumer and bidirectional communication</li>
@@ -192,23 +192,23 @@ class diffeq::core::composable::InterprocessDecorator&lt; S, T &gt;</div><p>Inte
 <li>Performance: Optimized for low-latency communication </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00566">566</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00567">567</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab78015cca429713e95ea5775d671836f" name="ab78015cca429713e95ea5775d671836f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab78015cca429713e95ea5775d671836f">&#9670;&#160;</a></span>InterprocessDecorator()</h2>
+<a id="a89315829bdc1ad02715a98e820da14ab" name="a89315829bdc1ad02715a98e820da14ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89315829bdc1ad02715a98e820da14ab">&#9670;&#160;</a></span>InterprocessDecorator()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::InterprocessDecorator </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::InterprocessDecorator </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span>, </td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -238,28 +238,28 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00597">597</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00598">598</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_ab78015cca429713e95ea5775d671836f_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_ab78015cca429713e95ea5775d671836f_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a89315829bdc1ad02715a98e820da14ab_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a89315829bdc1ad02715a98e820da14ab_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="a0320bee575e43f6827046476e112705d" name="a0320bee575e43f6827046476e112705d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0320bee575e43f6827046476e112705d">&#9670;&#160;</a></span>~InterprocessDecorator()</h2>
+<a id="a9cd847829a1ebc9a456082d1fdd8dceb" name="a9cd847829a1ebc9a456082d1fdd8dceb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cd847829a1ebc9a456082d1fdd8dceb">&#9670;&#160;</a></span>~InterprocessDecorator()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::~<a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">InterprocessDecorator</a> </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::~<a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">InterprocessDecorator</a> </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -274,24 +274,24 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Destructor ensures proper cleanup. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00612">612</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00613">613</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="aa62b0187fa6c2645fcb8a00ce25e47a5" name="aa62b0187fa6c2645fcb8a00ce25e47a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa62b0187fa6c2645fcb8a00ce25e47a5">&#9670;&#160;</a></span>config() <span class="overload">[1/2]</span></h2>
+<a id="a17be3d501a4b5e0953013936f2952605" name="a17be3d501a4b5e0953013936f2952605"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17be3d501a4b5e0953013936f2952605">&#9670;&#160;</a></span>config() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::config </td>
+          <td class="memname"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::config </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -306,28 +306,28 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Access and modify interprocess configuration. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00742">742</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00743">743</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_aa62b0187fa6c2645fcb8a00ce25e47a5_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_aa62b0187fa6c2645fcb8a00ce25e47a5_icgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a17be3d501a4b5e0953013936f2952605_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a17be3d501a4b5e0953013936f2952605_icgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="a33b2382e8a5a2e07c6797fe06e34ec98" name="a33b2382e8a5a2e07c6797fe06e34ec98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33b2382e8a5a2e07c6797fe06e34ec98">&#9670;&#160;</a></span>config() <span class="overload">[2/2]</span></h2>
+<a id="a9c1115cd3f2f1a0880ad6c48f0c4571d" name="a9c1115cd3f2f1a0880ad6c48f0c4571d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c1115cd3f2f1a0880ad6c48f0c4571d">&#9670;&#160;</a></span>config() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::config </td>
+          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_interprocess_config.html">InterprocessConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::config </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -340,23 +340,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00743">743</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00744">744</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ad78425804888c427afbb1fc7714f70d2" name="ad78425804888c427afbb1fc7714f70d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad78425804888c427afbb1fc7714f70d2">&#9670;&#160;</a></span>get_statistics()</h2>
+<a id="a69545da30ef591ac9eed9bfef0f21518" name="a69545da30ef591ac9eed9bfef0f21518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69545da30ef591ac9eed9bfef0f21518">&#9670;&#160;</a></span>get_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_i_p_c_stats.html">IPCStats</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::get_statistics </td>
+          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_i_p_c_stats.html">IPCStats</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::get_statistics </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -371,23 +371,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Get current IPC statistics. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00714">714</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00715">715</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ac32aefcf77e1a899ab8ae9b0c7621c0c" name="ac32aefcf77e1a899ab8ae9b0c7621c0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac32aefcf77e1a899ab8ae9b0c7621c0c">&#9670;&#160;</a></span>get_status()</h2>
+<a id="a0ecd551c8a86af6f2317b539f4b57182" name="a0ecd551c8a86af6f2317b539f4b57182"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ecd551c8a86af6f2317b539f4b57182">&#9670;&#160;</a></span>get_status()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::get_status </td>
+          <td class="memname">std::string <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::get_status </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -402,35 +402,35 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Get channel status. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00735">735</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00736">736</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a37bd5f1fb898f63a5ab723ca35d87b86" name="a37bd5f1fb898f63a5ab723ca35d87b86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37bd5f1fb898f63a5ab723ca35d87b86">&#9670;&#160;</a></span>integrate()</h2>
+<a id="aea9d55a6727fec316dee4fab1058561e" name="aea9d55a6727fec316dee4fab1058561e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9d55a6727fec316dee4fab1058561e">&#9670;&#160;</a></span>integrate()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::integrate </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::integrate </td>
           <td>(</td>
-          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -442,28 +442,28 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Override integrate to handle IPC during integration. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00645">645</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00646">646</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a37bd5f1fb898f63a5ab723ca35d87b86_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a37bd5f1fb898f63a5ab723ca35d87b86_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_aea9d55a6727fec316dee4fab1058561e_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_aea9d55a6727fec316dee4fab1058561e_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="ad5505790f7ba832baeb8644cf5d26653" name="ad5505790f7ba832baeb8644cf5d26653"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5505790f7ba832baeb8644cf5d26653">&#9670;&#160;</a></span>is_connected()</h2>
+<a id="a6d15572092c7272f1bd50bc591ef9a9d" name="a6d15572092c7272f1bd50bc591ef9a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d15572092c7272f1bd50bc591ef9a9d">&#9670;&#160;</a></span>is_connected()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::is_connected </td>
+          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::is_connected </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -478,23 +478,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Check if channel is connected. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00728">728</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00729">729</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aa2256d83151c416d4ccd650b64d15149" name="aa2256d83151c416d4ccd650b64d15149"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2256d83151c416d4ccd650b64d15149">&#9670;&#160;</a></span>reset_statistics()</h2>
+<a id="a2056f7986c810003f4eb49561776557c" name="a2056f7986c810003f4eb49561776557c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2056f7986c810003f4eb49561776557c">&#9670;&#160;</a></span>reset_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::reset_statistics </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::reset_statistics </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -509,30 +509,30 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Reset IPC statistics. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00721">721</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00722">722</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a86dc60829eb0c0d91022ba0c0783eb49" name="a86dc60829eb0c0d91022ba0c0783eb49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86dc60829eb0c0d91022ba0c0783eb49">&#9670;&#160;</a></span>send_state()</h2>
+<a id="a5b627fee20573f9cdbfb0c91cefa0670" name="a5b627fee20573f9cdbfb0c91cefa0670"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b627fee20573f9cdbfb0c91cefa0670">&#9670;&#160;</a></span>send_state()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::send_state </td>
+          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::send_state </td>
           <td>(</td>
           <td class="paramtype">const S &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>time</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>time</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -552,30 +552,30 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00674">674</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00675">675</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a86dc60829eb0c0d91022ba0c0783eb49_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a86dc60829eb0c0d91022ba0c0783eb49_icgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a5b627fee20573f9cdbfb0c91cefa0670_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a5b627fee20573f9cdbfb0c91cefa0670_icgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="aed9735d999795a68d1abbcb4ce986338" name="aed9735d999795a68d1abbcb4ce986338"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed9735d999795a68d1abbcb4ce986338">&#9670;&#160;</a></span>set_receive_callback()</h2>
+<a id="ae3dcd09f36402745d6277678b45cd21f" name="ae3dcd09f36402745d6277678b45cd21f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3dcd09f36402745d6277678b45cd21f">&#9670;&#160;</a></span>set_receive_callback()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::set_receive_callback </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::set_receive_callback </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; void(const S &amp;, T)&gt;</td>          <td class="paramname"><span class="paramname"><em>callback</em></span></td><td>)</td>
+          <td class="paramtype">std::function&lt; void(const S &amp;, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type)&gt;</td>          <td class="paramname"><span class="paramname"><em>callback</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -594,30 +594,30 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00664">664</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00665">665</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="af3e5a129a40be44a3b0ea2f474837c00" name="af3e5a129a40be44a3b0ea2f474837c00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3e5a129a40be44a3b0ea2f474837c00">&#9670;&#160;</a></span>step()</h2>
+<a id="a6843e4d629016d8bc6a13fcf59492353" name="a6843e4d629016d8bc6a13fcf59492353"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6843e4d629016d8bc6a13fcf59492353">&#9670;&#160;</a></span>step()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S, T &gt;::step </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator.html">diffeq::core::composable::InterprocessDecorator</a>&lt; S &gt;::step </td>
           <td>(</td>
-          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -629,11 +629,11 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Override step to handle IPC during integration. </p>
 
-<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00622">622</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="interprocess__decorator_8hpp_source.html#l00623">623</a> of file <a class="el" href="interprocess__decorator_8hpp_source.html">interprocess_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_af3e5a129a40be44a3b0ea2f474837c00_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_af3e5a129a40be44a3b0ea2f474837c00_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a6843e4d629016d8bc6a13fcf59492353_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_interprocess_decorator_a6843e4d629016d8bc6a13fcf59492353_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>

@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="diffeq::sde::AbstractSDEIntegrator\l\< StateType \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1sde_1_1_abstract_s_d_e_integrator.html",tooltip="Abstract base class for SDE integrators."];
+  Node0 [id="Node000000",label="diffeq::sde::SDEProblem\l\< StateType \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1sde_1_1_s_d_e_problem.html",tooltip="SDE problem definition."];
 }

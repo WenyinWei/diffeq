@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::IntegratorBuilder&lt; S, T &gt; Class Template Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::IntegratorBuilder&lt; S &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('classdiffeq_1_1_integrator_builder.html','','classdiff
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::IntegratorBuilder&lt; S, T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::IntegratorBuilder&lt; S &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -100,37 +100,35 @@ $(function(){initNavTree('classdiffeq_1_1_integrator_builder.html','','classdiff
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a10b5cb4ef0683dec707627965baeffa1" id="r_a10b5cb4ef0683dec707627965baeffa1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a10b5cb4ef0683dec707627965baeffa1">IntegratorBuilder</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt; integrator)</td></tr>
-<tr class="memdesc:a10b5cb4ef0683dec707627965baeffa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct builder with base integrator.  <br /></td></tr>
-<tr class="memitem:ae60a68f5987ada649fe59906c8516f00" id="r_ae60a68f5987ada649fe59906c8516f00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae60a68f5987ada649fe59906c8516f00">with_timeout</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a> config={})</td></tr>
-<tr class="memdesc:ae60a68f5987ada649fe59906c8516f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add timeout protection facility.  <br /></td></tr>
-<tr class="memitem:a758006162e4870079da0e5b25cf79f1a" id="r_a758006162e4870079da0e5b25cf79f1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a758006162e4870079da0e5b25cf79f1a">with_parallel</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> config={})</td></tr>
-<tr class="memdesc:a758006162e4870079da0e5b25cf79f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add parallel execution facility.  <br /></td></tr>
-<tr class="memitem:ab21cd5536e63d1589fa7fc9f90cd3bc8" id="r_ab21cd5536e63d1589fa7fc9f90cd3bc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab21cd5536e63d1589fa7fc9f90cd3bc8">with_async</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_async_config.html">AsyncConfig</a> config={})</td></tr>
-<tr class="memdesc:ab21cd5536e63d1589fa7fc9f90cd3bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add async execution facility.  <br /></td></tr>
-<tr class="memitem:a3583e8f01fe6ba27947fd1aa3168bc9a" id="r_a3583e8f01fe6ba27947fd1aa3168bc9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3583e8f01fe6ba27947fd1aa3168bc9a">with_output</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_output_config.html">OutputConfig</a> config={}, std::function&lt; void(const S &amp;, T, size_t)&gt; handler=nullptr)</td></tr>
-<tr class="memdesc:a3583e8f01fe6ba27947fd1aa3168bc9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add output handling facility.  <br /></td></tr>
-<tr class="memitem:a0aad0217f02301b2c5eced20bce9a6e1" id="r_a0aad0217f02301b2c5eced20bce9a6e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0aad0217f02301b2c5eced20bce9a6e1">with_signals</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> config={})</td></tr>
-<tr class="memdesc:a0aad0217f02301b2c5eced20bce9a6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add signal processing facility.  <br /></td></tr>
-<tr class="memitem:adeae63e31f3e7db49cdb8d412babd64f" id="r_adeae63e31f3e7db49cdb8d412babd64f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adeae63e31f3e7db49cdb8d412babd64f">with_interpolation</a> (InterpolationConfig config={})</td></tr>
-<tr class="memdesc:adeae63e31f3e7db49cdb8d412babd64f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add interpolation/dense output facility.  <br /></td></tr>
-<tr class="memitem:a70843a1f64afc8159ea2362b88059d89" id="r_a70843a1f64afc8159ea2362b88059d89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70843a1f64afc8159ea2362b88059d89">with_interprocess</a> (InterprocessConfig config={})</td></tr>
-<tr class="memdesc:a70843a1f64afc8159ea2362b88059d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add interprocess communication facility.  <br /></td></tr>
-<tr class="memitem:a6a81f7e4d03f107b1f537c412a2cc381" id="r_a6a81f7e4d03f107b1f537c412a2cc381"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a81f7e4d03f107b1f537c412a2cc381">with_events</a> (EventConfig config={})</td></tr>
-<tr class="memdesc:a6a81f7e4d03f107b1f537c412a2cc381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add event-driven feedback facility.  <br /></td></tr>
-<tr class="memitem:a774c71508eda59fe4a6e07867d180ab5" id="r_a774c71508eda59fe4a6e07867d180ab5"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a774c71508eda59fe4a6e07867d180ab5">build</a> ()</td></tr>
-<tr class="memdesc:a774c71508eda59fe4a6e07867d180ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the final composed integrator.  <br /></td></tr>
-<tr class="memitem:a28a7b7532bc21c2e62fc300d83ba0d80" id="r_a28a7b7532bc21c2e62fc300d83ba0d80"><td class="memTemplParams" colspan="2">template&lt;typename DecoratorType&gt; </td></tr>
-<tr class="memitem:a28a7b7532bc21c2e62fc300d83ba0d80 template"><td class="memItemLeft" align="right" valign="top">DecoratorType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28a7b7532bc21c2e62fc300d83ba0d80">get_as</a> ()</td></tr>
-<tr class="memdesc:a28a7b7532bc21c2e62fc300d83ba0d80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get specific decorator type from the composition chain.  <br /></td></tr>
-<tr class="memitem:a722864e827915edf3f47d127d438d2d9" id="r_a722864e827915edf3f47d127d438d2d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a722864e827915edf3f47d127d438d2d9">is_valid</a> () const</td></tr>
-<tr class="memdesc:a722864e827915edf3f47d127d438d2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the builder has a valid integrator.  <br /></td></tr>
-<tr class="memitem:ac3b113287e3f0f76a7c1e43ccc4df19a" id="r_ac3b113287e3f0f76a7c1e43ccc4df19a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3b113287e3f0f76a7c1e43ccc4df19a">get_composition_info</a> () const</td></tr>
-<tr class="memdesc:ac3b113287e3f0f76a7c1e43ccc4df19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get information about the current composition.  <br /></td></tr>
+<tr class="memitem:a3fd40a02a607b3ec6d55daa60f010a74" id="r_a3fd40a02a607b3ec6d55daa60f010a74"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fd40a02a607b3ec6d55daa60f010a74">IntegratorBuilder</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt; integrator)</td></tr>
+<tr class="memdesc:a3fd40a02a607b3ec6d55daa60f010a74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct builder with base integrator.  <br /></td></tr>
+<tr class="memitem:a620e5a7269353ae178a74ba536ec98d6" id="r_a620e5a7269353ae178a74ba536ec98d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a620e5a7269353ae178a74ba536ec98d6">with_timeout</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a> config={})</td></tr>
+<tr class="memdesc:a620e5a7269353ae178a74ba536ec98d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add timeout protection facility.  <br /></td></tr>
+<tr class="memitem:a5290d4ed80c02249ce6c9848e7f006b5" id="r_a5290d4ed80c02249ce6c9848e7f006b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5290d4ed80c02249ce6c9848e7f006b5">with_parallel</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a> config={})</td></tr>
+<tr class="memdesc:a5290d4ed80c02249ce6c9848e7f006b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add parallel execution facility.  <br /></td></tr>
+<tr class="memitem:a8ab0af3e59922fbd266696c4ce6b630e" id="r_a8ab0af3e59922fbd266696c4ce6b630e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ab0af3e59922fbd266696c4ce6b630e">with_async</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_async_config.html">AsyncConfig</a> config={})</td></tr>
+<tr class="memdesc:a8ab0af3e59922fbd266696c4ce6b630e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add async execution facility.  <br /></td></tr>
+<tr class="memitem:a5fb7ba9791d456e4b4e0d7698cc481b8" id="r_a5fb7ba9791d456e4b4e0d7698cc481b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5fb7ba9791d456e4b4e0d7698cc481b8">with_output</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_output_config.html">OutputConfig</a> config={}, std::function&lt; void(const S &amp;, typename <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt;::time_type, size_t)&gt; handler=nullptr)</td></tr>
+<tr class="memdesc:a5fb7ba9791d456e4b4e0d7698cc481b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add output handling facility.  <br /></td></tr>
+<tr class="memitem:af18155ed0bfbd8d412470f30bbf8cb25" id="r_af18155ed0bfbd8d412470f30bbf8cb25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af18155ed0bfbd8d412470f30bbf8cb25">with_signals</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> config={})</td></tr>
+<tr class="memdesc:af18155ed0bfbd8d412470f30bbf8cb25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add signal processing facility.  <br /></td></tr>
+<tr class="memitem:abc39169820d39d6beb9180844d4e5ca0" id="r_abc39169820d39d6beb9180844d4e5ca0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc39169820d39d6beb9180844d4e5ca0">with_interpolation</a> (InterpolationConfig config={})</td></tr>
+<tr class="memdesc:abc39169820d39d6beb9180844d4e5ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add interpolation facility.  <br /></td></tr>
+<tr class="memitem:a8e91701a1afc63247110681af4e5529c" id="r_a8e91701a1afc63247110681af4e5529c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e91701a1afc63247110681af4e5529c">with_interprocess</a> (InterprocessConfig config={})</td></tr>
+<tr class="memdesc:a8e91701a1afc63247110681af4e5529c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add interprocess facility.  <br /></td></tr>
+<tr class="memitem:ac0e0d0784eab7387c738accd910acd9a" id="r_ac0e0d0784eab7387c738accd910acd9a"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0e0d0784eab7387c738accd910acd9a">build</a> ()</td></tr>
+<tr class="memdesc:ac0e0d0784eab7387c738accd910acd9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the final composed integrator.  <br /></td></tr>
+<tr class="memitem:aa461cad0fbca7a22f18979c52a3e1911" id="r_aa461cad0fbca7a22f18979c52a3e1911"><td class="memTemplParams" colspan="2">template&lt;typename DecoratorType&gt; </td></tr>
+<tr class="memitem:aa461cad0fbca7a22f18979c52a3e1911 template"><td class="memItemLeft" align="right" valign="top">DecoratorType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa461cad0fbca7a22f18979c52a3e1911">get_as</a> ()</td></tr>
+<tr class="memdesc:aa461cad0fbca7a22f18979c52a3e1911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get specific decorator type from the composition chain.  <br /></td></tr>
+<tr class="memitem:a4988ee4f81e850ecd2e847ca63582198" id="r_a4988ee4f81e850ecd2e847ca63582198"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4988ee4f81e850ecd2e847ca63582198">is_valid</a> () const</td></tr>
+<tr class="memdesc:a4988ee4f81e850ecd2e847ca63582198"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the builder has a valid integrator.  <br /></td></tr>
+<tr class="memitem:a96483cd74ec394181552b50d5b9f14a6" id="r_a96483cd74ec394181552b50d5b9f14a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96483cd74ec394181552b50d5b9f14a6">get_composition_info</a> () const</td></tr>
+<tr class="memdesc:a96483cd74ec394181552b50d5b9f14a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get information about the current composition.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt;<br />
-class diffeq::IntegratorBuilder&lt; S, T &gt;</div><p>Builder for composing multiple facilities. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt;<br />
+class diffeq::IntegratorBuilder&lt; S &gt;</div><p>Builder for composing multiple facilities. </p>
 <p>This allows flexible combination of any facilities without exponential class combinations. Uses the decorator pattern to stack facilities in any order.</p>
 <p>Key Design Principles:</p><ul>
 <li>Fluent Interface: Chainable method calls</li>
@@ -139,38 +137,38 @@ class diffeq::IntegratorBuilder&lt; S, T &gt;</div><p>Builder for composing mult
 <li>Type Safety: Compile-time type checking</li>
 <li>Extensibility: Easy to add new facilities without modification</li>
 </ul>
-<p>Example Usage: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> integrator = <a class="code hl_function" href="diffeq_8hpp.html#a8432007280bc5db72e13d28e016953fb">make_builder</a>(base_integrator)</div>
+<p>Example Usage: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> integrator = <a class="code hl_function" href="diffeq_8hpp.html#a0d29f7d69d01c876bcf77b083e9b0b55">make_builder</a>(base_integrator)</div>
 <div class="line">    .with_timeout(<a class="code hl_struct" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a>{.timeout_duration = std::chrono::seconds{30}})</div>
-<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a758006162e4870079da0e5b25cf79f1a">with_parallel</a>(ParallelConfig{.max_threads = 8})</div>
-<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#ab21cd5536e63d1589fa7fc9f90cd3bc8">with_async</a>()</div>
-<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a0aad0217f02301b2c5eced20bce9a6e1">with_signals</a>()</div>
-<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a3583e8f01fe6ba27947fd1aa3168bc9a">with_output</a>(OutputConfig{.mode = OutputMode::HYBRID})</div>
-<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a774c71508eda59fe4a6e07867d180ab5">build</a>();</div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_a0aad0217f02301b2c5eced20bce9a6e1"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a0aad0217f02301b2c5eced20bce9a6e1">diffeq::core::composable::IntegratorBuilder::with_signals</a></div><div class="ttdeci">IntegratorBuilder &amp; with_signals(SignalConfig config={})</div><div class="ttdoc">Add signal processing facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00114">integrator_builder.hpp:114</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_a3583e8f01fe6ba27947fd1aa3168bc9a"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a3583e8f01fe6ba27947fd1aa3168bc9a">diffeq::core::composable::IntegratorBuilder::with_output</a></div><div class="ttdeci">IntegratorBuilder &amp; with_output(OutputConfig config={}, std::function&lt; void(const S &amp;, T, size_t)&gt; handler=nullptr)</div><div class="ttdoc">Add output handling facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00101">integrator_builder.hpp:101</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_a758006162e4870079da0e5b25cf79f1a"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a758006162e4870079da0e5b25cf79f1a">diffeq::core::composable::IntegratorBuilder::with_parallel</a></div><div class="ttdeci">IntegratorBuilder &amp; with_parallel(ParallelConfig config={})</div><div class="ttdoc">Add parallel execution facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00076">integrator_builder.hpp:76</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_a774c71508eda59fe4a6e07867d180ab5"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a774c71508eda59fe4a6e07867d180ab5">diffeq::core::composable::IntegratorBuilder::build</a></div><div class="ttdeci">std::unique_ptr&lt; AbstractIntegrator&lt; S, T &gt; &gt; build()</div><div class="ttdoc">Build the final composed integrator.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00163">integrator_builder.hpp:163</a></div></div>
-<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_ab21cd5536e63d1589fa7fc9f90cd3bc8"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#ab21cd5536e63d1589fa7fc9f90cd3bc8">diffeq::core::composable::IntegratorBuilder::with_async</a></div><div class="ttdeci">IntegratorBuilder &amp; with_async(AsyncConfig config={})</div><div class="ttdoc">Add async execution facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00088">integrator_builder.hpp:88</a></div></div>
-<div class="ttc" id="adiffeq_8hpp_html_a8432007280bc5db72e13d28e016953fb"><div class="ttname"><a href="diffeq_8hpp.html#a8432007280bc5db72e13d28e016953fb">diffeq::make_builder</a></div><div class="ttdeci">auto make_builder(std::unique_ptr&lt; AbstractIntegrator&lt; S, T &gt; &gt; integrator)</div><div class="ttdoc">Create a builder starting with any integrator.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00258">integrator_builder.hpp:258</a></div></div>
+<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a5290d4ed80c02249ce6c9848e7f006b5">with_parallel</a>(ParallelConfig{.max_threads = 8})</div>
+<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a8ab0af3e59922fbd266696c4ce6b630e">with_async</a>()</div>
+<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#af18155ed0bfbd8d412470f30bbf8cb25">with_signals</a>()</div>
+<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a5fb7ba9791d456e4b4e0d7698cc481b8">with_output</a>(OutputConfig{.mode = OutputMode::HYBRID})</div>
+<div class="line">    .<a class="code hl_function" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#ac0e0d0784eab7387c738accd910acd9a">build</a>();</div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_a5290d4ed80c02249ce6c9848e7f006b5"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a5290d4ed80c02249ce6c9848e7f006b5">diffeq::core::composable::IntegratorBuilder::with_parallel</a></div><div class="ttdeci">IntegratorBuilder &amp; with_parallel(ParallelConfig config={})</div><div class="ttdoc">Add parallel execution facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00076">integrator_builder.hpp:76</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_a5fb7ba9791d456e4b4e0d7698cc481b8"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a5fb7ba9791d456e4b4e0d7698cc481b8">diffeq::core::composable::IntegratorBuilder::with_output</a></div><div class="ttdeci">IntegratorBuilder &amp; with_output(OutputConfig config={}, std::function&lt; void(const S &amp;, typename AbstractIntegrator&lt; S &gt;::time_type, size_t)&gt; handler=nullptr)</div><div class="ttdoc">Add output handling facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00101">integrator_builder.hpp:101</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_a8ab0af3e59922fbd266696c4ce6b630e"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a8ab0af3e59922fbd266696c4ce6b630e">diffeq::core::composable::IntegratorBuilder::with_async</a></div><div class="ttdeci">IntegratorBuilder &amp; with_async(AsyncConfig config={})</div><div class="ttdoc">Add async execution facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00088">integrator_builder.hpp:88</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_ac0e0d0784eab7387c738accd910acd9a"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#ac0e0d0784eab7387c738accd910acd9a">diffeq::core::composable::IntegratorBuilder::build</a></div><div class="ttdeci">std::unique_ptr&lt; AbstractIntegrator&lt; S &gt; &gt; build()</div><div class="ttdoc">Build the final composed integrator.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00160">integrator_builder.hpp:160</a></div></div>
+<div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_integrator_builder_html_af18155ed0bfbd8d412470f30bbf8cb25"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#af18155ed0bfbd8d412470f30bbf8cb25">diffeq::core::composable::IntegratorBuilder::with_signals</a></div><div class="ttdeci">IntegratorBuilder &amp; with_signals(SignalConfig config={})</div><div class="ttdoc">Add signal processing facility.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00114">integrator_builder.hpp:114</a></div></div>
+<div class="ttc" id="adiffeq_8hpp_html_a0d29f7d69d01c876bcf77b083e9b0b55"><div class="ttname"><a href="diffeq_8hpp.html#a0d29f7d69d01c876bcf77b083e9b0b55">diffeq::make_builder</a></div><div class="ttdeci">auto make_builder(std::unique_ptr&lt; AbstractIntegrator&lt; S &gt; &gt; integrator)</div><div class="ttdoc">Create a builder starting with any integrator.</div><div class="ttdef"><b>Definition</b> <a href="integrator__builder_8hpp_source.html#l00257">integrator_builder.hpp:257</a></div></div>
 <div class="ttc" id="astructdiffeq_1_1core_1_1composable_1_1_timeout_config_html"><div class="ttname"><a href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">diffeq::core::composable::TimeoutConfig</a></div><div class="ttdoc">Timeout configuration for integration protection.</div><div class="ttdef"><b>Definition</b> <a href="timeout__decorator_8hpp_source.html#l00016">timeout_decorator.hpp:16</a></div></div>
 </div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00041">41</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a10b5cb4ef0683dec707627965baeffa1" name="a10b5cb4ef0683dec707627965baeffa1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10b5cb4ef0683dec707627965baeffa1">&#9670;&#160;</a></span>IntegratorBuilder()</h2>
+<a id="a3fd40a02a607b3ec6d55daa60f010a74" name="a3fd40a02a607b3ec6d55daa60f010a74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fd40a02a607b3ec6d55daa60f010a74">&#9670;&#160;</a></span>IntegratorBuilder()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::IntegratorBuilder </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::IntegratorBuilder </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span></td><td>)</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -194,19 +192,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a774c71508eda59fe4a6e07867d180ab5" name="a774c71508eda59fe4a6e07867d180ab5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a774c71508eda59fe4a6e07867d180ab5">&#9670;&#160;</a></span>build()</h2>
+<a id="ac0e0d0784eab7387c738accd910acd9a" name="ac0e0d0784eab7387c738accd910acd9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e0d0784eab7387c738accd910acd9a">&#9670;&#160;</a></span>build()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::build </td>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::build </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -221,19 +219,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Build the final composed integrator. </p>
 <dl class="section return"><dt>Returns</dt><dd>Unique pointer to the composed integrator</dd></dl>
-<p>Note: After calling <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a774c71508eda59fe4a6e07867d180ab5" title="Build the final composed integrator.">build()</a>, the builder is left in a valid but unspecified state. Do not use the builder after calling <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#a774c71508eda59fe4a6e07867d180ab5" title="Build the final composed integrator.">build()</a>. </p>
+<p>Note: After calling <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#ac0e0d0784eab7387c738accd910acd9a" title="Build the final composed integrator.">build()</a>, the builder is left in a valid but unspecified state. Do not use the builder after calling <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html#ac0e0d0784eab7387c738accd910acd9a" title="Build the final composed integrator.">build()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00163">163</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00160">160</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a28a7b7532bc21c2e62fc300d83ba0d80" name="a28a7b7532bc21c2e62fc300d83ba0d80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28a7b7532bc21c2e62fc300d83ba0d80">&#9670;&#160;</a></span>get_as()</h2>
+<a id="aa461cad0fbca7a22f18979c52a3e1911" name="aa461cad0fbca7a22f18979c52a3e1911"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa461cad0fbca7a22f18979c52a3e1911">&#9670;&#160;</a></span>get_as()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <div class="memtemplate">
 template&lt;typename DecoratorType&gt; </div>
 <table class="mlabels">
@@ -241,7 +239,7 @@ template&lt;typename DecoratorType&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">DecoratorType * <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::get_as </td>
+          <td class="memname">DecoratorType * <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::get_as </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -263,7 +261,7 @@ template&lt;typename DecoratorType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the decorator, or nullptr if not found</dd></dl>
 <p>Note: This performs a dynamic_cast and may be expensive. Use sparingly.</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> builder = <a class="code hl_function" href="diffeq_8hpp.html#a8432007280bc5db72e13d28e016953fb">make_builder</a>(base).with_timeout().with_async();</div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> builder = <a class="code hl_function" href="diffeq_8hpp.html#a0d29f7d69d01c876bcf77b083e9b0b55">make_builder</a>(base).with_timeout().with_async();</div>
 <div class="line"><span class="keyword">auto</span>* timeout_decorator = builder.get_as&lt;<a class="code hl_class" href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html">TimeoutDecorator&lt;S, T&gt;</a>&gt;();</div>
 <div class="line"><span class="keywordflow">if</span> (timeout_decorator) {</div>
 <div class="line">    <span class="comment">// Access timeout-specific functionality</span></div>
@@ -271,23 +269,23 @@ template&lt;typename DecoratorType&gt; </div>
 <div class="line">}</div>
 <div class="ttc" id="aclassdiffeq_1_1core_1_1composable_1_1_timeout_decorator_html"><div class="ttname"><a href="classdiffeq_1_1core_1_1composable_1_1_timeout_decorator.html">diffeq::core::composable::TimeoutDecorator</a></div><div class="ttdoc">Timeout decorator - adds timeout protection to any integrator.</div><div class="ttdef"><b>Definition</b> <a href="timeout__decorator_8hpp_source.html#l00100">timeout_decorator.hpp:100</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00188">188</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00185">185</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ac3b113287e3f0f76a7c1e43ccc4df19a" name="ac3b113287e3f0f76a7c1e43ccc4df19a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3b113287e3f0f76a7c1e43ccc4df19a">&#9670;&#160;</a></span>get_composition_info()</h2>
+<a id="a96483cd74ec394181552b50d5b9f14a6" name="a96483cd74ec394181552b50d5b9f14a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96483cd74ec394181552b50d5b9f14a6">&#9670;&#160;</a></span>get_composition_info()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::get_composition_info </td>
+          <td class="memname">std::string <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::get_composition_info </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -303,23 +301,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 <p>Get information about the current composition. </p>
 <dl class="section return"><dt>Returns</dt><dd>String describing the current decorator stack </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00204">204</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00201">201</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a722864e827915edf3f47d127d438d2d9" name="a722864e827915edf3f47d127d438d2d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a722864e827915edf3f47d127d438d2d9">&#9670;&#160;</a></span>is_valid()</h2>
+<a id="a4988ee4f81e850ecd2e847ca63582198" name="a4988ee4f81e850ecd2e847ca63582198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4988ee4f81e850ecd2e847ca63582198">&#9670;&#160;</a></span>is_valid()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::is_valid </td>
+          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::is_valid </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -335,23 +333,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 <p>Check if the builder has a valid integrator. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the builder can still be used </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00196">196</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00193">193</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ab21cd5536e63d1589fa7fc9f90cd3bc8" name="ab21cd5536e63d1589fa7fc9f90cd3bc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab21cd5536e63d1589fa7fc9f90cd3bc8">&#9670;&#160;</a></span>with_async()</h2>
+<a id="a8ab0af3e59922fbd266696c4ce6b630e" name="a8ab0af3e59922fbd266696c4ce6b630e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ab0af3e59922fbd266696c4ce6b630e">&#9670;&#160;</a></span>with_async()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_async </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::with_async </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_async_config.html">AsyncConfig</a></td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span></td><td>)</td>
           <td></td>
@@ -383,63 +381,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a6a81f7e4d03f107b1f537c412a2cc381" name="a6a81f7e4d03f107b1f537c412a2cc381"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a81f7e4d03f107b1f537c412a2cc381">&#9670;&#160;</a></span>with_events()</h2>
+<a id="abc39169820d39d6beb9180844d4e5ca0" name="abc39169820d39d6beb9180844d4e5ca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc39169820d39d6beb9180844d4e5ca0">&#9670;&#160;</a></span>with_interpolation()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_events </td>
-          <td>(</td>
-          <td class="paramtype">EventConfig</td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Add event-driven feedback facility. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">config</td><td><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_event.html" title="Event data structure.">Event</a> configuration (uses defaults if not specified) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to this builder for chaining </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if config is invalid </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="integrator__builder_8hpp_source.html#l00150">150</a> of file <a class="el" href="integrator__builder_8hpp_source.html">integrator_builder.hpp</a>.</p>
-
-</div>
-</div>
-<a id="adeae63e31f3e7db49cdb8d412babd64f" name="adeae63e31f3e7db49cdb8d412babd64f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adeae63e31f3e7db49cdb8d412babd64f">&#9670;&#160;</a></span>with_interpolation()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_interpolation </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::with_interpolation </td>
           <td>(</td>
           <td class="paramtype">InterpolationConfig</td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span></td><td>)</td>
           <td></td>
@@ -452,7 +406,7 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 </table>
 </div><div class="memdoc">
 
-<p>Add interpolation/dense output facility. </p>
+<p>Add interpolation facility. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">config</td><td>Interpolation configuration (uses defaults if not specified) </td></tr>
@@ -471,19 +425,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a70843a1f64afc8159ea2362b88059d89" name="a70843a1f64afc8159ea2362b88059d89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70843a1f64afc8159ea2362b88059d89">&#9670;&#160;</a></span>with_interprocess()</h2>
+<a id="a8e91701a1afc63247110681af4e5529c" name="a8e91701a1afc63247110681af4e5529c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e91701a1afc63247110681af4e5529c">&#9670;&#160;</a></span>with_interprocess()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_interprocess </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::with_interprocess </td>
           <td>(</td>
           <td class="paramtype">InterprocessConfig</td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span></td><td>)</td>
           <td></td>
@@ -496,7 +450,7 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 </table>
 </div><div class="memdoc">
 
-<p>Add interprocess communication facility. </p>
+<p>Add interprocess facility. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">config</td><td>Interprocess configuration (uses defaults if not specified) </td></tr>
@@ -515,26 +469,26 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a3583e8f01fe6ba27947fd1aa3168bc9a" name="a3583e8f01fe6ba27947fd1aa3168bc9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3583e8f01fe6ba27947fd1aa3168bc9a">&#9670;&#160;</a></span>with_output()</h2>
+<a id="a5fb7ba9791d456e4b4e0d7698cc481b8" name="a5fb7ba9791d456e4b4e0d7698cc481b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fb7ba9791d456e4b4e0d7698cc481b8">&#9670;&#160;</a></span>with_output()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_output </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::with_output </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_output_config.html">OutputConfig</a></td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::function&lt; void(const S &amp;, T, size_t)&gt;</td>          <td class="paramname"><span class="paramname"><em>handler</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
+          <td class="paramtype">std::function&lt; void(const S &amp;, typename <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt;::time_type, size_t)&gt;</td>          <td class="paramname"><span class="paramname"><em>handler</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -564,19 +518,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a758006162e4870079da0e5b25cf79f1a" name="a758006162e4870079da0e5b25cf79f1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a758006162e4870079da0e5b25cf79f1a">&#9670;&#160;</a></span>with_parallel()</h2>
+<a id="a5290d4ed80c02249ce6c9848e7f006b5" name="a5290d4ed80c02249ce6c9848e7f006b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5290d4ed80c02249ce6c9848e7f006b5">&#9670;&#160;</a></span>with_parallel()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_parallel </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::with_parallel </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_parallel_config.html">ParallelConfig</a></td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span></td><td>)</td>
           <td></td>
@@ -608,19 +562,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a0aad0217f02301b2c5eced20bce9a6e1" name="a0aad0217f02301b2c5eced20bce9a6e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0aad0217f02301b2c5eced20bce9a6e1">&#9670;&#160;</a></span>with_signals()</h2>
+<a id="af18155ed0bfbd8d412470f30bbf8cb25" name="af18155ed0bfbd8d412470f30bbf8cb25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af18155ed0bfbd8d412470f30bbf8cb25">&#9670;&#160;</a></span>with_signals()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_signals </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::with_signals </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a></td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span></td><td>)</td>
           <td></td>
@@ -652,19 +606,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="ae60a68f5987ada649fe59906c8516f00" name="ae60a68f5987ada649fe59906c8516f00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae60a68f5987ada649fe59906c8516f00">&#9670;&#160;</a></span>with_timeout()</h2>
+<a id="a620e5a7269353ae178a74ba536ec98d6" name="a620e5a7269353ae178a74ba536ec98d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a620e5a7269353ae178a74ba536ec98d6">&#9670;&#160;</a></span>with_timeout()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S, T &gt;::with_timeout </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">IntegratorBuilder</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_builder.html">diffeq::core::composable::IntegratorBuilder</a>&lt; S &gt;::with_timeout </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_timeout_config.html">TimeoutConfig</a></td>          <td class="paramname"><span class="paramname"><em>config</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span></td><td>)</td>
           <td></td>

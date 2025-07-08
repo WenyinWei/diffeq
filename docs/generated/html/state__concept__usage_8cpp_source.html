@@ -158,16 +158,20 @@ $(function(){initNavTree('state__concept__usage_8cpp_source.html','',''); });
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keyword">auto</span> begin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> data.begin(); }</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keyword">auto</span> end()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> data.end(); }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keyword">const</span> std::string&amp; get_name()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> name; }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    };</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    CustomState custom_state(<span class="stringliteral">&quot;MyState&quot;</span>, 6);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    initialize_state(custom_state, 0.5);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Example 4 - Custom State (name: &quot;</span> &lt;&lt; custom_state.get_name() &lt;&lt; <span class="stringliteral">&quot;):&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    print_state_info(custom_state);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="comment">// Add array indexing access required by system_state concept</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordtype">double</span>&amp; operator[](std::size_t index) { <span class="keywordflow">return</span> data[index]; }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keyword">const</span> <span class="keywordtype">double</span>&amp; operator[](std::size_t index)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> data[index]; }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keyword">const</span> std::string&amp; get_name()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> name; }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    };</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    CustomState custom_state(<span class="stringliteral">&quot;MyState&quot;</span>, 6);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    initialize_state(custom_state, 0.5);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Example 4 - Custom State (name: &quot;</span> &lt;&lt; custom_state.get_name() &lt;&lt; <span class="stringliteral">&quot;):&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    print_state_info(custom_state);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

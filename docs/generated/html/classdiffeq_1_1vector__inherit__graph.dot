@@ -12,51 +12,57 @@ digraph "diffeq::vector&lt; T &gt;"
   Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; state_type &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
   Node3 [id="Node000003",label="std::vector\< state\l_type \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; time_type &gt;</TD></TR>
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::vector&lt; T &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node4 [id="Node000004",label="std::vector\< time_type \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node5 [id="edge4_Node000001_Node000005",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::vector&lt; T &gt; &gt;</TD></TR>
-</TABLE>> ,fontcolor="grey" ];
-  Node5 [id="Node000005",label="std::vector\< std::vector\l\< T \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node6 [id="edge5_Node000001_Node000006",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::vector&lt; typename</TD></TR>
+  Node4 [id="Node000004",label="std::vector\< std::vector\l\< T \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node5 [id="edge4_Node000001_Node000005",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::vector&lt; typename</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; T::value_type &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node6 [id="Node000006",label="std::vector\< std::vector\l\< typename T::value_type \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node7 [id="edge6_Node000001_Node000007",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; uint8_t &gt;</TD></TR>
+  Node5 [id="Node000005",label="std::vector\< std::vector\l\< typename T::value_type \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node6 [id="edge5_Node000001_Node000006",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; uint8_t &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node7 [id="Node000007",label="std::vector\< uint8_t \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node8 [id="edge7_Node000001_Node000008",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; diffeq::core::composable</TD></TR>
+  Node6 [id="Node000006",label="std::vector\< uint8_t \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node7 [id="edge6_Node000001_Node000007",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; diffeq::core::composable</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::Event&lt; S, double &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node8 [id="Node000008",label="std::vector\< diffeq\l::core::composable::\lEvent\< S, double \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node9 [id="edge8_Node000001_Node000009",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; double &gt;</TD></TR>
+  Node7 [id="Node000007",label="std::vector\< diffeq\l::core::composable::\lEvent\< S, double \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node8 [id="edge7_Node000001_Node000008",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; double &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node9 [id="Node000009",label="std::vector\< double \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node10 [id="edge9_Node000001_Node000010",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::function&lt; void</TD></TR>
+  Node8 [id="Node000008",label="std::vector\< double \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node9 [id="edge8_Node000001_Node000009",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::function&lt; void</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;(S &amp;, double)&gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node10 [id="Node000010",label="std::vector\< std::function\l\< void(S &, double)\> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node11 [id="edge10_Node000001_Node000011",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::unique_ptr&lt;</TD></TR>
+  Node9 [id="Node000009",label="std::vector\< std::function\l\< void(S &, double)\> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node10 [id="edge9_Node000001_Node000010",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::unique_ptr&lt;</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; diffeq::core::composable</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::SIMDNoiseGenerator &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node11 [id="Node000011",label="std::vector\< std::unique\l_ptr\< diffeq::core::composable\l::SIMDNoiseGenerator \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node12 [id="edge11_Node000001_Node000012",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::unique_ptr&lt;</TD></TR>
+  Node10 [id="Node000010",label="std::vector\< std::unique\l_ptr\< diffeq::core::composable\l::SIMDNoiseGenerator \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node11 [id="edge10_Node000001_Node000011",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::unique_ptr&lt;</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; diffeq::core::composable</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::LockFreeNoiseQueue&lt; double &gt; &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node12 [id="Node000012",label="std::vector\< std::unique\l_ptr\< diffeq::core::composable\l::LockFreeNoiseQueue\< double \> \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node13 [id="edge12_Node000001_Node000013",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::vector&lt; double &gt; &gt;</TD></TR>
+  Node11 [id="Node000011",label="std::vector\< std::unique\l_ptr\< diffeq::core::composable\l::LockFreeNoiseQueue\< double \> \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node12 [id="edge11_Node000001_Node000012",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::vector&lt; double &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node13 [id="Node000013",label="std::vector\< std::vector\l\< double \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node12 [id="Node000012",label="std::vector\< std::vector\l\< double \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node13 [id="edge12_Node000001_Node000013",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; typename diffeq::</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;core::composable::Integrator</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;Decorator&lt; S &gt;::time_type &gt;</TD></TR>
+</TABLE>> ,fontcolor="grey" ];
+  Node13 [id="Node000013",label="std::vector\< typename\l diffeq::core::composable\l::IntegratorDecorator\< S\l \>::time_type \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
   Node1 -> Node14 [id="edge13_Node000001_Node000014",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::vector&lt; typename</TD></TR>
-<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; double::value_type &gt; &gt;</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; typename diffeq::core</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::composable::IntegratorDecorator</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;&lt; S &gt;::time_type::value_type &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node14 [id="Node000014",label="std::vector\< std::vector\l\< typename double::value\l_type \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node15 [id="edge14_Node000001_Node000015",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::tuple&lt; S, double,</TD></TR>
-<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; size_t &gt; &gt;</TD></TR>
+  Node14 [id="Node000014",label="std::vector\< std::vector\l\< typename typename diffeq\l::core::composable::IntegratorDecorator\l\< S \>::time_type::value_type \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node15 [id="edge14_Node000001_Node000015",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::tuple&lt; S, typename</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; diffeq::core::composable</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::IntegratorDecorator&lt; S</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; &gt;::time_type, size_t &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node15 [id="Node000015",label="std::vector\< std::tuple\l\< S, double, size_t \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node15 [id="Node000015",label="std::vector\< std::tuple\l\< S, typename diffeq::\lcore::composable::IntegratorDecorator\l\< S \>::time_type, size_t \> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
   Node1 -> Node16 [id="edge15_Node000001_Node000016",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; diffeq::core::composable</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::NoiseData&lt; double &gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
@@ -64,19 +70,25 @@ digraph "diffeq::vector&lt; T &gt;"
   Node1 -> Node17 [id="edge16_Node000001_Node000017",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; int &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
   Node17 [id="Node000017",label="std::vector\< int \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node18 [id="edge17_Node000001_Node000018",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; diffeq::interfaces</TD></TR>
+  Node1 -> Node18 [id="edge17_Node000001_Node000018",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::function&lt; void</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;(S &amp;, typename diffeq</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::core::composable::Integrator</TD></TR>
+<TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;Decorator&lt; S &gt;::time_type)&gt; &gt;</TD></TR>
+</TABLE>> ,fontcolor="grey" ];
+  Node18 [id="Node000018",label="std::vector\< std::function\l\< void(S &, typename diffeq\l::core::composable::IntegratorDecorator\l\< S \>::time_type)\> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node19 [id="edge18_Node000001_Node000019",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; diffeq::interfaces</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::IntegrationInterface</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::SignalInfluence &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node18 [id="Node000018",label="std::vector\< diffeq\l::interfaces::IntegrationInterface\l::SignalInfluence \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node19 [id="edge18_Node000001_Node000019",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; diffeq::interfaces</TD></TR>
+  Node19 [id="Node000019",label="std::vector\< diffeq\l::interfaces::IntegrationInterface\l::SignalInfluence \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node20 [id="edge19_Node000001_Node000020",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; diffeq::interfaces</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::IntegrationInterface</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;::OutputStream &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node19 [id="Node000019",label="std::vector\< diffeq\l::interfaces::IntegrationInterface\l::OutputStream \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
-  Node1 -> Node20 [id="edge19_Node000001_Node000020",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::function&lt; void</TD></TR>
+  Node20 [id="Node000020",label="std::vector\< diffeq\l::interfaces::IntegrationInterface\l::OutputStream \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node21 [id="edge20_Node000001_Node000021",dir="back",color="orange",style="dashed",tooltip=" ",label=<<TABLE CELLBORDER="0" BORDER="0"><TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&lt; std::function&lt; void</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp;(time_type, state_type</TD></TR>
 <TR><TD VALIGN="top" ALIGN="LEFT" CELLPADDING="1" CELLSPACING="0">&nbsp;&nbsp; &amp;, state_type &amp;)&gt; &gt;</TD></TR>
 </TABLE>> ,fontcolor="grey" ];
-  Node20 [id="Node000020",label="std::vector\< std::function\l\< void(time_type, state\l_type &, state_type &)\> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
+  Node21 [id="Node000021",label="std::vector\< std::function\l\< void(time_type, state\l_type &, state_type &)\> \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",tooltip=" "];
 }

@@ -7,5 +7,5 @@ digraph "diffeq::core::composable::OutputConfig::validate"
   rankdir="RL";
   Node1 [id="Node000001",label="diffeq::core::composable\l::OutputConfig::validate",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Validate configuration parameters."];
   Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node2 [id="Node000002",label="diffeq::core::composable\l::OutputDecorator::update_config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_output_decorator.html#a193cb4361add13cfa1b5cfe5fd016521",tooltip="Update output configuration with validation."];
+  Node2 [id="Node000002",label="diffeq::core::composable\l::OutputDecorator::update_config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_output_decorator.html#a3426629e2215f0e54daa9bfafb841e4e",tooltip="Update output configuration with validation."];
 }

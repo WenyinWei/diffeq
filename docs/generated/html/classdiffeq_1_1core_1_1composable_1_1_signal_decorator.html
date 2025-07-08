@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::SignalDecorator&lt; S, T &gt; Class Template Reference</title>
+<title>DiffEq - Modern C++ ODE Integration Library: diffeq::core::composable::SignalDecorator&lt; S &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,7 +89,7 @@ $(function(){initNavTree('classdiffeq_1_1core_1_1composable_1_1_signal_decorator
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">diffeq::core::composable::SignalDecorator&lt; S, T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">diffeq::core::composable::SignalDecorator&lt; S &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -98,60 +98,60 @@ $(function(){initNavTree('classdiffeq_1_1core_1_1composable_1_1_signal_decorator
 
 <p><code>#include &lt;<a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for diffeq::core::composable::SignalDecorator&lt; S, T &gt;:</div>
+Inheritance diagram for diffeq::core::composable::SignalDecorator&lt; S &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator__inherit__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_signal_decorator_3_01_s_00_01_t_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator__inherit__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_signal_decorator_3_01_s_01_4_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for diffeq::core::composable::SignalDecorator&lt; S, T &gt;:</div>
+Collaboration diagram for diffeq::core::composable::SignalDecorator&lt; S &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_signal_decorator_3_01_s_00_01_t_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator__coll__graph.png" border="0" usemap="#adiffeq_1_1core_1_1composable_1_1_signal_decorator_3_01_s_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab40246cf12b0882aa14cbda06b380d1f" id="r_ab40246cf12b0882aa14cbda06b380d1f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab40246cf12b0882aa14cbda06b380d1f">SignalDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt; integrator, <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> <a class="el" href="#a505343639db7da4db6abb70b70144290">config</a>={})</td></tr>
-<tr class="memdesc:ab40246cf12b0882aa14cbda06b380d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct signal decorator.  <br /></td></tr>
-<tr class="memitem:af0275faaa48f19486fa90c05f55504d5" id="r_af0275faaa48f19486fa90c05f55504d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0275faaa48f19486fa90c05f55504d5">step</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;state, T dt) override</td></tr>
-<tr class="memdesc:af0275faaa48f19486fa90c05f55504d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override step to add signal processing.  <br /></td></tr>
-<tr class="memitem:a335c5c662f07803fbad34351cd5cc9a7" id="r_a335c5c662f07803fbad34351cd5cc9a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a335c5c662f07803fbad34351cd5cc9a7">integrate</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;state, T dt, T end_time) override</td></tr>
-<tr class="memdesc:a335c5c662f07803fbad34351cd5cc9a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override integrate to handle signal processing during integration.  <br /></td></tr>
-<tr class="memitem:a8c82b673eccff69e426acc4c564a45d4" id="r_a8c82b673eccff69e426acc4c564a45d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c82b673eccff69e426acc4c564a45d4">register_signal_handler</a> (std::function&lt; void(S &amp;, T)&gt; handler, const std::string &amp;signal_id=&quot;&quot;, SignalPriority priority=SignalPriority::NORMAL)</td></tr>
-<tr class="memdesc:a8c82b673eccff69e426acc4c564a45d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a signal handler function.  <br /></td></tr>
-<tr class="memitem:a66d8964cf58034d01326efd78193f805" id="r_a66d8964cf58034d01326efd78193f805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66d8964cf58034d01326efd78193f805">register_signal_handlers</a> (const std::vector&lt; std::function&lt; void(S &amp;, T)&gt; &gt; &amp;handlers)</td></tr>
-<tr class="memdesc:a66d8964cf58034d01326efd78193f805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register multiple signal handlers at once.  <br /></td></tr>
-<tr class="memitem:ace3cbd472ec0f11a1ce54eff532ab97a" id="r_ace3cbd472ec0f11a1ce54eff532ab97a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace3cbd472ec0f11a1ce54eff532ab97a">clear_signal_handlers</a> ()</td></tr>
-<tr class="memdesc:ace3cbd472ec0f11a1ce54eff532ab97a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all signal handlers.  <br /></td></tr>
-<tr class="memitem:a7dfac1329d352715885adf7e9efe1439" id="r_a7dfac1329d352715885adf7e9efe1439"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7dfac1329d352715885adf7e9efe1439">get_signal_handler_count</a> () const</td></tr>
-<tr class="memdesc:a7dfac1329d352715885adf7e9efe1439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of registered signal handlers.  <br /></td></tr>
-<tr class="memitem:a2e16e8b8c2209971d1a882dec4f8f2fb" id="r_a2e16e8b8c2209971d1a882dec4f8f2fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e16e8b8c2209971d1a882dec4f8f2fb">process_signals_now</a> (S &amp;state, T time)</td></tr>
-<tr class="memdesc:a2e16e8b8c2209971d1a882dec4f8f2fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force immediate signal processing.  <br /></td></tr>
-<tr class="memitem:adc199262ef6fcf53d9aaefc7e44ebd01" id="r_adc199262ef6fcf53d9aaefc7e44ebd01"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_stats.html">SignalStats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc199262ef6fcf53d9aaefc7e44ebd01">get_statistics</a> () const</td></tr>
-<tr class="memdesc:adc199262ef6fcf53d9aaefc7e44ebd01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get signal processing statistics.  <br /></td></tr>
-<tr class="memitem:a735639ccb1eab2c8b8a0ae4b9967c35d" id="r_a735639ccb1eab2c8b8a0ae4b9967c35d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a735639ccb1eab2c8b8a0ae4b9967c35d">reset_statistics</a> ()</td></tr>
-<tr class="memdesc:a735639ccb1eab2c8b8a0ae4b9967c35d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset signal processing statistics.  <br /></td></tr>
-<tr class="memitem:a43cc3a2de8aec0055febcf80f98891a8" id="r_a43cc3a2de8aec0055febcf80f98891a8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43cc3a2de8aec0055febcf80f98891a8">is_processing_active</a> () const</td></tr>
-<tr class="memdesc:a43cc3a2de8aec0055febcf80f98891a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if signal processing is currently active.  <br /></td></tr>
-<tr class="memitem:a505343639db7da4db6abb70b70144290" id="r_a505343639db7da4db6abb70b70144290"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a505343639db7da4db6abb70b70144290">config</a> ()</td></tr>
-<tr class="memdesc:a505343639db7da4db6abb70b70144290"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access and modify signal configuration.  <br /></td></tr>
-<tr class="memitem:a0f8b6916ca02e905809e6f2dada895b9" id="r_a0f8b6916ca02e905809e6f2dada895b9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f8b6916ca02e905809e6f2dada895b9">config</a> () const</td></tr>
-<tr class="memitem:a7c5210817a57369de5b770badcaea2fd" id="r_a7c5210817a57369de5b770badcaea2fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c5210817a57369de5b770badcaea2fd">update_config</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> new_config)</td></tr>
-<tr class="memdesc:a7c5210817a57369de5b770badcaea2fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update signal configuration with validation.  <br /></td></tr>
-<tr class="inherit_header pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a04b5844ea5ead3d0a5c22dd53be40231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt; integrator)</td></tr>
+<tr class="memitem:afaa175f2fa1a9b524104c9d5a9b5fc5b" id="r_afaa175f2fa1a9b524104c9d5a9b5fc5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afaa175f2fa1a9b524104c9d5a9b5fc5b">SignalDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt; integrator, <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> <a class="el" href="#a28572631d103a86a27462de23b0637c8">config</a>={})</td></tr>
+<tr class="memdesc:afaa175f2fa1a9b524104c9d5a9b5fc5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct signal decorator.  <br /></td></tr>
+<tr class="memitem:a7bd7cdeed554639d7e2369c2e77d2105" id="r_a7bd7cdeed554639d7e2369c2e77d2105"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bd7cdeed554639d7e2369c2e77d2105">step</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;state, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type dt) override</td></tr>
+<tr class="memdesc:a7bd7cdeed554639d7e2369c2e77d2105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override step to add signal processing.  <br /></td></tr>
+<tr class="memitem:adf19db185e925ac0b49d3b44d1fdccdc" id="r_adf19db185e925ac0b49d3b44d1fdccdc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf19db185e925ac0b49d3b44d1fdccdc">integrate</a> (typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;state, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type dt, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type end_time) override</td></tr>
+<tr class="memdesc:adf19db185e925ac0b49d3b44d1fdccdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override integrate to handle signal processing during integration.  <br /></td></tr>
+<tr class="memitem:a78c315423286ea693739956e861611c3" id="r_a78c315423286ea693739956e861611c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78c315423286ea693739956e861611c3">register_signal_handler</a> (std::function&lt; void(S &amp;, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type)&gt; handler, const std::string &amp;signal_id=&quot;&quot;, SignalPriority priority=SignalPriority::NORMAL)</td></tr>
+<tr class="memdesc:a78c315423286ea693739956e861611c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a signal handler function.  <br /></td></tr>
+<tr class="memitem:ae6a5df98314a1e350b1f994e2825c564" id="r_ae6a5df98314a1e350b1f994e2825c564"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6a5df98314a1e350b1f994e2825c564">register_signal_handlers</a> (const std::vector&lt; std::function&lt; void(S &amp;, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type)&gt; &gt; &amp;handlers)</td></tr>
+<tr class="memdesc:ae6a5df98314a1e350b1f994e2825c564"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register multiple signal handlers at once.  <br /></td></tr>
+<tr class="memitem:aa751d50ba4b7ac8cd5e07689712dd3d8" id="r_aa751d50ba4b7ac8cd5e07689712dd3d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa751d50ba4b7ac8cd5e07689712dd3d8">clear_signal_handlers</a> ()</td></tr>
+<tr class="memdesc:aa751d50ba4b7ac8cd5e07689712dd3d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all signal handlers.  <br /></td></tr>
+<tr class="memitem:adfd1eea23784253d3c9ed59180351d04" id="r_adfd1eea23784253d3c9ed59180351d04"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adfd1eea23784253d3c9ed59180351d04">get_signal_handler_count</a> () const</td></tr>
+<tr class="memdesc:adfd1eea23784253d3c9ed59180351d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of registered signal handlers.  <br /></td></tr>
+<tr class="memitem:a20caa440162906db65bd95e4a13e05b4" id="r_a20caa440162906db65bd95e4a13e05b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20caa440162906db65bd95e4a13e05b4">process_signals_now</a> (S &amp;state, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type time)</td></tr>
+<tr class="memdesc:a20caa440162906db65bd95e4a13e05b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force immediate signal processing.  <br /></td></tr>
+<tr class="memitem:a1c86d78471793b5d21cec4ee266e3576" id="r_a1c86d78471793b5d21cec4ee266e3576"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_stats.html">SignalStats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c86d78471793b5d21cec4ee266e3576">get_statistics</a> () const</td></tr>
+<tr class="memdesc:a1c86d78471793b5d21cec4ee266e3576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get signal processing statistics.  <br /></td></tr>
+<tr class="memitem:a6f7f2c2ee0286bb62f0a7dacbb77901c" id="r_a6f7f2c2ee0286bb62f0a7dacbb77901c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f7f2c2ee0286bb62f0a7dacbb77901c">reset_statistics</a> ()</td></tr>
+<tr class="memdesc:a6f7f2c2ee0286bb62f0a7dacbb77901c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset signal processing statistics.  <br /></td></tr>
+<tr class="memitem:ac64dc983408e6559b75c4a40bd30bcc3" id="r_ac64dc983408e6559b75c4a40bd30bcc3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac64dc983408e6559b75c4a40bd30bcc3">is_processing_active</a> () const</td></tr>
+<tr class="memdesc:ac64dc983408e6559b75c4a40bd30bcc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if signal processing is currently active.  <br /></td></tr>
+<tr class="memitem:a28572631d103a86a27462de23b0637c8" id="r_a28572631d103a86a27462de23b0637c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28572631d103a86a27462de23b0637c8">config</a> ()</td></tr>
+<tr class="memdesc:a28572631d103a86a27462de23b0637c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access and modify signal configuration.  <br /></td></tr>
+<tr class="memitem:ac02b15bb74509c97922442379a25cfe8" id="r_ac02b15bb74509c97922442379a25cfe8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac02b15bb74509c97922442379a25cfe8">config</a> () const</td></tr>
+<tr class="memitem:aabb51ab1376f7c921a1e441e0b4c4f49" id="r_aabb51ab1376f7c921a1e441e0b4c4f49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabb51ab1376f7c921a1e441e0b4c4f49">update_config</a> (<a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> new_config)</td></tr>
+<tr class="memdesc:aabb51ab1376f7c921a1e441e0b4c4f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update signal configuration with validation.  <br /></td></tr>
+<tr class="inherit_header pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a04b5844ea5ead3d0a5c22dd53be40231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a04b5844ea5ead3d0a5c22dd53be40231">IntegratorDecorator</a> (std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt; integrator)</td></tr>
 <tr class="memdesc:a04b5844ea5ead3d0a5c22dd53be40231 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct decorator wrapping another integrator.  <br /></td></tr>
 <tr class="memitem:a30c7042edc84721a3966659a78c69a50 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a30c7042edc84721a3966659a78c69a50"><td class="memItemLeft" align="right" valign="top">
 virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IntegratorDecorator</b> ()=default</td></tr>
 <tr class="memdesc:a30c7042edc84721a3966659a78c69a50 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor for proper cleanup. <br /></td></tr>
-<tr class="memitem:a15815918bd3b018ad4d2776ff0d829d9 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a15815918bd3b018ad4d2776ff0d829d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a15815918bd3b018ad4d2776ff0d829d9">step</a> (state_type &amp;state, time_type dt) override</td></tr>
-<tr class="memitem:a4172632cd523510dee78bb4bd4900c6a inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a4172632cd523510dee78bb4bd4900c6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a4172632cd523510dee78bb4bd4900c6a">integrate</a> (state_type &amp;state, time_type dt, time_type end_time) override</td></tr>
-<tr class="memitem:a1056104ad90e22a73fdef15574217190 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a1056104ad90e22a73fdef15574217190"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a1056104ad90e22a73fdef15574217190">current_time</a> () const override</td></tr>
-<tr class="memitem:a7e1042f6d239fd0df26de651c39d44ef inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a7e1042f6d239fd0df26de651c39d44ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a7e1042f6d239fd0df26de651c39d44ef">set_time</a> (time_type t) override</td></tr>
-<tr class="memitem:a630d1d6556c6bc39157daa133a1b61ad inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a630d1d6556c6bc39157daa133a1b61ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a630d1d6556c6bc39157daa133a1b61ad">set_system</a> (system_function sys) override</td></tr>
-<tr class="memitem:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a6c1ea268b50ff65e9429ee6aa077d9fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a6c1ea268b50ff65e9429ee6aa077d9fe">wrapped</a> ()</td></tr>
+<tr class="memitem:a15815918bd3b018ad4d2776ff0d829d9 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a15815918bd3b018ad4d2776ff0d829d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a15815918bd3b018ad4d2776ff0d829d9">step</a> (state_type &amp;state, time_type dt) override</td></tr>
+<tr class="memitem:a4172632cd523510dee78bb4bd4900c6a inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a4172632cd523510dee78bb4bd4900c6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a4172632cd523510dee78bb4bd4900c6a">integrate</a> (state_type &amp;state, time_type dt, time_type end_time) override</td></tr>
+<tr class="memitem:a1056104ad90e22a73fdef15574217190 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a1056104ad90e22a73fdef15574217190"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a1056104ad90e22a73fdef15574217190">current_time</a> () const override</td></tr>
+<tr class="memitem:a7e1042f6d239fd0df26de651c39d44ef inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a7e1042f6d239fd0df26de651c39d44ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a7e1042f6d239fd0df26de651c39d44ef">set_time</a> (time_type t) override</td></tr>
+<tr class="memitem:a630d1d6556c6bc39157daa133a1b61ad inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a630d1d6556c6bc39157daa133a1b61ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a630d1d6556c6bc39157daa133a1b61ad">set_system</a> (system_function sys) override</td></tr>
+<tr class="memitem:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a6c1ea268b50ff65e9429ee6aa077d9fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a6c1ea268b50ff65e9429ee6aa077d9fe">wrapped</a> ()</td></tr>
 <tr class="memdesc:a6c1ea268b50ff65e9429ee6aa077d9fe inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to wrapped integrator for advanced use.  <br /></td></tr>
-<tr class="memitem:add1039eccda7d12c21dab0506984fd5e inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_add1039eccda7d12c21dab0506984fd5e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#add1039eccda7d12c21dab0506984fd5e">wrapped</a> () const</td></tr>
-<tr class="memitem:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_ab3c5041cd7aef8dba3c812770a56e945"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#ab3c5041cd7aef8dba3c812770a56e945">has_wrapped_integrator</a> () const</td></tr>
+<tr class="memitem:add1039eccda7d12c21dab0506984fd5e inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_add1039eccda7d12c21dab0506984fd5e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_abstract_integrator.html">base_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#add1039eccda7d12c21dab0506984fd5e">wrapped</a> () const</td></tr>
+<tr class="memitem:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_ab3c5041cd7aef8dba3c812770a56e945"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#ab3c5041cd7aef8dba3c812770a56e945">has_wrapped_integrator</a> () const</td></tr>
 <tr class="memdesc:ab3c5041cd7aef8dba3c812770a56e945 inherit pub_methods_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if wrapped integrator exists.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:a6249475d8952f1d1f1a25f39f6569047 inherit pub_methods_class_abstract_integrator" id="r_a6249475d8952f1d1f1a25f39f6569047"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#a6249475d8952f1d1f1a25f39f6569047">AbstractIntegrator</a> (system_function sys)</td></tr>
@@ -161,11 +161,11 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~IntegratorDecorat
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a56aa07bbc317b0f195014ff433d64d75 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a56aa07bbc317b0f195014ff433d64d75"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a56aa07bbc317b0f195014ff433d64d75">base_type</a></td></tr>
-<tr class="memitem:a367284ba34e9632fbcf11686c5bee95c inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a367284ba34e9632fbcf11686c5bee95c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a367284ba34e9632fbcf11686c5bee95c">state_type</a></td></tr>
-<tr class="memitem:a16e0db720d1e33056b12e22444c61955 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a16e0db720d1e33056b12e22444c61955"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a16e0db720d1e33056b12e22444c61955">time_type</a></td></tr>
-<tr class="memitem:a468975224e8d36ddb467ec3ae81d9c90 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a468975224e8d36ddb467ec3ae81d9c90"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a468975224e8d36ddb467ec3ae81d9c90">system_function</a></td></tr>
+<tr class="inherit_header pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a56aa07bbc317b0f195014ff433d64d75 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a56aa07bbc317b0f195014ff433d64d75"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a56aa07bbc317b0f195014ff433d64d75">base_type</a> = <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt;S&gt;</td></tr>
+<tr class="memitem:a367284ba34e9632fbcf11686c5bee95c inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a367284ba34e9632fbcf11686c5bee95c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a367284ba34e9632fbcf11686c5bee95c">state_type</a> = typename base_type::state_type</td></tr>
+<tr class="memitem:a16e0db720d1e33056b12e22444c61955 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a16e0db720d1e33056b12e22444c61955"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a16e0db720d1e33056b12e22444c61955">time_type</a> = typename base_type::time_type</td></tr>
+<tr class="memitem:a468975224e8d36ddb467ec3ae81d9c90 inherit pub_types_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a468975224e8d36ddb467ec3ae81d9c90"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a468975224e8d36ddb467ec3ae81d9c90">system_function</a> = typename base_type::system_function</td></tr>
 <tr class="inherit_header pub_types_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:ada247cd905dbeb5b5db250a6d18e42b6 inherit pub_types_class_abstract_integrator" id="r_ada247cd905dbeb5b5db250a6d18e42b6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ada247cd905dbeb5b5db250a6d18e42b6">state_type</a> = S</td></tr>
 <tr class="memitem:aa4647f8aa130c44f1a05768d6f71c33c inherit pub_types_class_abstract_integrator" id="r_aa4647f8aa130c44f1a05768d6f71c33c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#aa4647f8aa130c44f1a05768d6f71c33c">time_type</a> = typename S::value_type</td></tr>
@@ -173,15 +173,15 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:ab86e8a5aba69e18b3a90de9add75435f inherit pub_types_class_abstract_integrator" id="r_ab86e8a5aba69e18b3a90de9add75435f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ab86e8a5aba69e18b3a90de9add75435f">system_function</a> = std::function&lt;void(time_type, const state_type&amp;, state_type&amp;)&gt;</td></tr>
 <tr class="inherit_header pro_methods_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:adaeb48b22ac522144547c63fdd71dfcd inherit pro_methods_class_abstract_integrator" id="r_adaeb48b22ac522144547c63fdd71dfcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#adaeb48b22ac522144547c63fdd71dfcd">advance_time</a> (time_type dt)</td></tr>
-<tr class="inherit_header pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S, double &gt;</a></td></tr>
-<tr class="memitem:a705cdcf548a89681290384b2df198172 inherit pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a705cdcf548a89681290384b2df198172"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1_integrator_decorator.html#a705cdcf548a89681290384b2df198172">wrapped_integrator_</a></td></tr>
+<tr class="inherit_header pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">diffeq::core::composable::IntegratorDecorator&lt; S &gt;</a></td></tr>
+<tr class="memitem:a705cdcf548a89681290384b2df198172 inherit pro_attribs_classdiffeq_1_1core_1_1composable_1_1_integrator_decorator" id="r_a705cdcf548a89681290384b2df198172"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">base_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html#a705cdcf548a89681290384b2df198172">wrapped_integrator_</a></td></tr>
 <tr class="inherit_header pro_attribs_class_abstract_integrator"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_abstract_integrator')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="class_abstract_integrator.html">AbstractIntegrator&lt; S &gt;</a></td></tr>
 <tr class="memitem:ae1565729bb4dd970471f94946eb5763d inherit pro_attribs_class_abstract_integrator" id="r_ae1565729bb4dd970471f94946eb5763d"><td class="memItemLeft" align="right" valign="top">system_function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#ae1565729bb4dd970471f94946eb5763d">sys_</a></td></tr>
 <tr class="memitem:a600d2a4194ef4fdd50eadaa4222b4a19 inherit pro_attribs_class_abstract_integrator" id="r_a600d2a4194ef4fdd50eadaa4222b4a19"><td class="memItemLeft" align="right" valign="top">time_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_integrator.html#a600d2a4194ef4fdd50eadaa4222b4a19">current_time_</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt;<br />
-class diffeq::core::composable::SignalDecorator&lt; S, T &gt;</div><p>Signal decorator - adds signal processing to any integrator. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt;<br />
+class diffeq::core::composable::SignalDecorator&lt; S &gt;</div><p>Signal decorator - adds signal processing to any integrator. </p>
 <p>This decorator provides comprehensive signal processing with the following features:</p><ul>
 <li>Multiple processing modes (sync, async, batch)</li>
 <li>Signal priority handling</li>
@@ -197,21 +197,21 @@ class diffeq::core::composable::SignalDecorator&lt; S, T &gt;</div><p>Signal dec
 
 <p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00128">128</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab40246cf12b0882aa14cbda06b380d1f" name="ab40246cf12b0882aa14cbda06b380d1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab40246cf12b0882aa14cbda06b380d1f">&#9670;&#160;</a></span>SignalDecorator()</h2>
+<a id="afaa175f2fa1a9b524104c9d5a9b5fc5b" name="afaa175f2fa1a9b524104c9d5a9b5fc5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaa175f2fa1a9b524104c9d5a9b5fc5b">&#9670;&#160;</a></span>SignalDecorator()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::SignalDecorator </td>
+          <td class="memname"><a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::SignalDecorator </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S, T &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span>, </td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_abstract_integrator.html">AbstractIntegrator</a>&lt; S &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>integrator</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -245,25 +245,25 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator_ab40246cf12b0882aa14cbda06b380d1f_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_signal_decorator_ab40246cf12b0882aa14cbda06b380d1f_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator_afaa175f2fa1a9b524104c9d5a9b5fc5b_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_signal_decorator_afaa175f2fa1a9b524104c9d5a9b5fc5b_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="ace3cbd472ec0f11a1ce54eff532ab97a" name="ace3cbd472ec0f11a1ce54eff532ab97a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace3cbd472ec0f11a1ce54eff532ab97a">&#9670;&#160;</a></span>clear_signal_handlers()</h2>
+<a id="aa751d50ba4b7ac8cd5e07689712dd3d8" name="aa751d50ba4b7ac8cd5e07689712dd3d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa751d50ba4b7ac8cd5e07689712dd3d8">&#9670;&#160;</a></span>clear_signal_handlers()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::clear_signal_handlers </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::clear_signal_handlers </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -278,23 +278,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Clear all signal handlers. </p>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00231">231</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00232">232</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a505343639db7da4db6abb70b70144290" name="a505343639db7da4db6abb70b70144290"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a505343639db7da4db6abb70b70144290">&#9670;&#160;</a></span>config() <span class="overload">[1/2]</span></h2>
+<a id="a28572631d103a86a27462de23b0637c8" name="a28572631d103a86a27462de23b0637c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28572631d103a86a27462de23b0637c8">&#9670;&#160;</a></span>config() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::config </td>
+          <td class="memname"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::config </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -309,28 +309,28 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Access and modify signal configuration. </p>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00282">282</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00283">283</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator_a505343639db7da4db6abb70b70144290_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_signal_decorator_a505343639db7da4db6abb70b70144290_icgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator_a28572631d103a86a27462de23b0637c8_icgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_signal_decorator_a28572631d103a86a27462de23b0637c8_icgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>
 </div>
-<a id="a0f8b6916ca02e905809e6f2dada895b9" name="a0f8b6916ca02e905809e6f2dada895b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f8b6916ca02e905809e6f2dada895b9">&#9670;&#160;</a></span>config() <span class="overload">[2/2]</span></h2>
+<a id="ac02b15bb74509c97922442379a25cfe8" name="ac02b15bb74509c97922442379a25cfe8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac02b15bb74509c97922442379a25cfe8">&#9670;&#160;</a></span>config() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::config </td>
+          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::config </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -343,23 +343,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00283">283</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00284">284</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a7dfac1329d352715885adf7e9efe1439" name="a7dfac1329d352715885adf7e9efe1439"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7dfac1329d352715885adf7e9efe1439">&#9670;&#160;</a></span>get_signal_handler_count()</h2>
+<a id="adfd1eea23784253d3c9ed59180351d04" name="adfd1eea23784253d3c9ed59180351d04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfd1eea23784253d3c9ed59180351d04">&#9670;&#160;</a></span>get_signal_handler_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::get_signal_handler_count </td>
+          <td class="memname">size_t <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::get_signal_handler_count </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -374,23 +374,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Get number of registered signal handlers. </p>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00244">244</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00245">245</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="adc199262ef6fcf53d9aaefc7e44ebd01" name="adc199262ef6fcf53d9aaefc7e44ebd01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc199262ef6fcf53d9aaefc7e44ebd01">&#9670;&#160;</a></span>get_statistics()</h2>
+<a id="a1c86d78471793b5d21cec4ee266e3576" name="a1c86d78471793b5d21cec4ee266e3576"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c86d78471793b5d21cec4ee266e3576">&#9670;&#160;</a></span>get_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_stats.html">SignalStats</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::get_statistics </td>
+          <td class="memname">const <a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_stats.html">SignalStats</a> &amp; <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::get_statistics </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -405,35 +405,35 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Get signal processing statistics. </p>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00261">261</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00262">262</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a335c5c662f07803fbad34351cd5cc9a7" name="a335c5c662f07803fbad34351cd5cc9a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a335c5c662f07803fbad34351cd5cc9a7">&#9670;&#160;</a></span>integrate()</h2>
+<a id="adf19db185e925ac0b49d3b44d1fdccdc" name="adf19db185e925ac0b49d3b44d1fdccdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf19db185e925ac0b49d3b44d1fdccdc">&#9670;&#160;</a></span>integrate()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::integrate </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::integrate </td>
           <td>(</td>
-          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>end_time</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -449,19 +449,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a43cc3a2de8aec0055febcf80f98891a8" name="a43cc3a2de8aec0055febcf80f98891a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43cc3a2de8aec0055febcf80f98891a8">&#9670;&#160;</a></span>is_processing_active()</h2>
+<a id="ac64dc983408e6559b75c4a40bd30bcc3" name="ac64dc983408e6559b75c4a40bd30bcc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac64dc983408e6559b75c4a40bd30bcc3">&#9670;&#160;</a></span>is_processing_active()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::is_processing_active </td>
+          <td class="memname">bool <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::is_processing_active </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -476,30 +476,30 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Check if signal processing is currently active. </p>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00275">275</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00276">276</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a2e16e8b8c2209971d1a882dec4f8f2fb" name="a2e16e8b8c2209971d1a882dec4f8f2fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e16e8b8c2209971d1a882dec4f8f2fb">&#9670;&#160;</a></span>process_signals_now()</h2>
+<a id="a20caa440162906db65bd95e4a13e05b4" name="a20caa440162906db65bd95e4a13e05b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20caa440162906db65bd95e4a13e05b4">&#9670;&#160;</a></span>process_signals_now()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::process_signals_now </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::process_signals_now </td>
           <td>(</td>
           <td class="paramtype">S &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>time</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>time</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -518,25 +518,25 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00254">254</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00255">255</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a8c82b673eccff69e426acc4c564a45d4" name="a8c82b673eccff69e426acc4c564a45d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c82b673eccff69e426acc4c564a45d4">&#9670;&#160;</a></span>register_signal_handler()</h2>
+<a id="a78c315423286ea693739956e861611c3" name="a78c315423286ea693739956e861611c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78c315423286ea693739956e861611c3">&#9670;&#160;</a></span>register_signal_handler()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::register_signal_handler </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::register_signal_handler </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; void(S &amp;, T)&gt;</td>          <td class="paramname"><span class="paramname"><em>handler</em></span>, </td>
+          <td class="paramtype">std::function&lt; void(S &amp;, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type)&gt;</td>          <td class="paramname"><span class="paramname"><em>handler</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -566,26 +566,30 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00193">193</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00194">194</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a66d8964cf58034d01326efd78193f805" name="a66d8964cf58034d01326efd78193f805"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66d8964cf58034d01326efd78193f805">&#9670;&#160;</a></span>register_signal_handlers()</h2>
+<a id="ae6a5df98314a1e350b1f994e2825c564" name="ae6a5df98314a1e350b1f994e2825c564"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6a5df98314a1e350b1f994e2825c564">&#9670;&#160;</a></span>register_signal_handlers()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::register_signal_handlers </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::register_signal_handlers </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; std::function&lt; void(S &amp;, T)&gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>handlers</em></span></td><td>)</td>
+          <td class="paramtype">const std::vector&lt; std::function&lt; void(S &amp;, typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type)&gt;</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&amp;</td>          <td class="paramname"><span class="paramname"><em>handlers</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -603,23 +607,23 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00219">219</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00220">220</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a735639ccb1eab2c8b8a0ae4b9967c35d" name="a735639ccb1eab2c8b8a0ae4b9967c35d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a735639ccb1eab2c8b8a0ae4b9967c35d">&#9670;&#160;</a></span>reset_statistics()</h2>
+<a id="a6f7f2c2ee0286bb62f0a7dacbb77901c" name="a6f7f2c2ee0286bb62f0a7dacbb77901c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f7f2c2ee0286bb62f0a7dacbb77901c">&#9670;&#160;</a></span>reset_statistics()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::reset_statistics </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::reset_statistics </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -634,30 +638,30 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 <p>Reset signal processing statistics. </p>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00268">268</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00269">269</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 
 </div>
 </div>
-<a id="af0275faaa48f19486fa90c05f55504d5" name="af0275faaa48f19486fa90c05f55504d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0275faaa48f19486fa90c05f55504d5">&#9670;&#160;</a></span>step()</h2>
+<a id="a7bd7cdeed554639d7e2369c2e77d2105" name="a7bd7cdeed554639d7e2369c2e77d2105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bd7cdeed554639d7e2369c2e77d2105">&#9670;&#160;</a></span>step()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::step </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::step </td>
           <td>(</td>
-          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S, T &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::state_type &amp;</td>          <td class="paramname"><span class="paramname"><em>state</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>&#160;)</td>
+          <td class="paramtype">typename <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_integrator_decorator.html">IntegratorDecorator</a>&lt; S &gt;::time_type</td>          <td class="paramname"><span class="paramname"><em>dt</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -673,19 +677,19 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
 
 </div>
 </div>
-<a id="a7c5210817a57369de5b770badcaea2fd" name="a7c5210817a57369de5b770badcaea2fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c5210817a57369de5b770badcaea2fd">&#9670;&#160;</a></span>update_config()</h2>
+<a id="aabb51ab1376f7c921a1e441e0b4c4f49" name="aabb51ab1376f7c921a1e441e0b4c4f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabb51ab1376f7c921a1e441e0b4c4f49">&#9670;&#160;</a></span>update_config()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <a class="el" href="conceptcan__be__time.html">can_be_time</a> T = double&gt; </div>
+template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S, T &gt;::update_config </td>
+          <td class="memname">void <a class="el" href="classdiffeq_1_1core_1_1composable_1_1_signal_decorator.html">diffeq::core::composable::SignalDecorator</a>&lt; S &gt;::update_config </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdiffeq_1_1core_1_1composable_1_1_signal_config.html">SignalConfig</a></td>          <td class="paramname"><span class="paramname"><em>new_config</em></span></td><td>)</td>
           <td></td>
@@ -712,11 +716,11 @@ template&lt;<a class="el" href="conceptsystem__state.html">system_state</a> S, <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00290">290</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="signal__decorator_8hpp_source.html#l00291">291</a> of file <a class="el" href="signal__decorator_8hpp_source.html">signal_decorator.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator_a7c5210817a57369de5b770badcaea2fd_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_signal_decorator_a7c5210817a57369de5b770badcaea2fd_cgraph" loading="lazy" alt=""/></div>
+<div class="center"><img src="classdiffeq_1_1core_1_1composable_1_1_signal_decorator_aabb51ab1376f7c921a1e441e0b4c4f49_cgraph.png" border="0" usemap="#aclassdiffeq_1_1core_1_1composable_1_1_signal_decorator_aabb51ab1376f7c921a1e441e0b4c4f49_cgraph" loading="lazy" alt=""/></div>
 </div>
 
 </div>

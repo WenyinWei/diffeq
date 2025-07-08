@@ -7,5 +7,5 @@ digraph "diffeq::core::composable::ParallelConfig::validate"
   rankdir="RL";
   Node1 [id="Node000001",label="diffeq::core::composable\l::ParallelConfig::validate",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Validate configuration parameters."];
   Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node2 [id="Node000002",label="diffeq::core::composable\l::ParallelDecorator::update_config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html#a9fd6fd41ddfa00f183f0ab42f29b0f6c",tooltip="Update parallel configuration with validation."];
+  Node2 [id="Node000002",label="diffeq::core::composable\l::ParallelDecorator::update_config",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classdiffeq_1_1core_1_1composable_1_1_parallel_decorator.html#a2a1e5a083c3ba2498d570d5ff2b61281",tooltip="Update parallel configuration with validation."];
 }
