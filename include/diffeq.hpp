@@ -14,8 +14,7 @@
 #include <integrators/ode/rk23.hpp>            // RK23 (adaptive, Bogacki-Shampine)
 #include <integrators/ode/rk45.hpp>            // RK45 (adaptive, Dormand-Prince)
 #include <integrators/ode/dop853.hpp>          // DOP853 (8th order, high accuracy)
-#include <integrators/ode/bdf.hpp>             // BDF (multistep, stiff systems)
-#include <integrators/ode/bdf_scipy.hpp>       // SciPy-compatible BDF implementation
+#include <integrators/ode/bdf.hpp>             // BDF (multistep, stiff systems) - SciPy-compatible
 #include <integrators/ode/lsoda.hpp>           // LSODA (automatic stiff/non-stiff switching)
 
 // SDE (Stochastic Differential Equation) integrators (organized by method type)
@@ -282,10 +281,6 @@
  */
 
 namespace diffeq {
-    // Re-export commonly used types for convenience
-    using std::vector;
-    using std::array;
-    
     // Re-export core functionality
     using core::TimeoutIntegrator;
     using core::IntegrationResult;
