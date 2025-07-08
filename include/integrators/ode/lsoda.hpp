@@ -17,9 +17,9 @@ namespace diffeq {
  * based on stiffness detection. This is a simplified version inspired by the original LSODA algorithm.
  */
 template<system_state S>
-class LSODAIntegrator : public AdaptiveIntegrator<S> {
+class LSODAIntegrator : public core::AdaptiveIntegrator<S> {
 public:
-    using base_type = AdaptiveIntegrator<S>;
+    using base_type = core::AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

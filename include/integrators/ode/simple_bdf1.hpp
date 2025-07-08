@@ -17,9 +17,9 @@ namespace diffeq {
  * BDF1 equation: y_{n+1} = y_n + h * f(t_{n+1}, y_{n+1})
  */
 template<typename S>
-class SimpleBDF1Integrator : public AdaptiveIntegrator<S> {
+class SimpleBDF1Integrator : public core::AdaptiveIntegrator<S> {
 public:
-    using base_type = AdaptiveIntegrator<S>;
+    using base_type = core::AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

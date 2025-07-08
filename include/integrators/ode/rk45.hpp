@@ -17,9 +17,9 @@ namespace diffeq {
  * Usage: General-purpose adaptive ODE integration
  */
 template<system_state S>
-class RK45Integrator : public AdaptiveIntegrator<S> {
+class RK45Integrator : public core::AdaptiveIntegrator<S> {
 public:
-    using base_type = AdaptiveIntegrator<S>;
+    using base_type = core::AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

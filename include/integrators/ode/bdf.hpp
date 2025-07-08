@@ -32,9 +32,9 @@ constexpr double MAX_FACTOR = 10.0;
  * Stiff: Excellent
  */
 template<typename S>
-class BDFIntegrator : public AdaptiveIntegrator<S> {
+class BDFIntegrator : public core::AdaptiveIntegrator<S> {
 public:
-    using base_type = AdaptiveIntegrator<S>;
+    using base_type = core::AdaptiveIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
