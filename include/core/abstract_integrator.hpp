@@ -4,6 +4,8 @@
 #include <type_traits>
 #include "concepts.hpp"
 
+namespace diffeq::core {
+
 // Abstract integrator base class
 template<system_state S>
 class AbstractIntegrator {
@@ -43,3 +45,5 @@ protected:
     // Helper function for derived classes to update time
     void advance_time(time_type dt) { current_time_ += dt; }
 };
+
+} // namespace diffeq::core

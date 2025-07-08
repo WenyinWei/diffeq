@@ -12,6 +12,8 @@
 #include <core/abstract_integrator.hpp>
 #include <core/state_creator.hpp>
 
+namespace diffeq::core {
+
 // Abstract adaptive integrator with error control
 template<system_state S>
 class AdaptiveIntegrator : public AbstractIntegrator<S> {
@@ -122,3 +124,5 @@ protected:
         return std::max(dt_min_, std::min(dt_max_, current_dt * factor));
     }
 };
+
+} // namespace diffeq::core

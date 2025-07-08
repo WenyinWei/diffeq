@@ -16,9 +16,9 @@ namespace diffeq {
  * Usage: General-purpose ODE integration
  */
 template<system_state S>
-class RK4Integrator : public AbstractIntegrator<S> {
+class RK4Integrator : public core::AbstractIntegrator<S> {
 public:
-    using base_type = AbstractIntegrator<S>;
+    using base_type = core::AbstractIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;

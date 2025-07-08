@@ -15,9 +15,9 @@ namespace diffeq {
  * Usage: Educational purposes, simple problems
  */
 template<system_state S>
-class EulerIntegrator : public AbstractIntegrator<S> {
+class EulerIntegrator : public core::AbstractIntegrator<S> {
 public:
-    using base_type = AbstractIntegrator<S>;
+    using base_type = core::AbstractIntegrator<S>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
