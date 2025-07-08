@@ -56,6 +56,14 @@ target("debug_bdf_order")
     set_rundir("$(projectdir)")
     set_group("debug")
 
+-- BDF integrator test
+target("test_bdf_integrator")
+    set_kind("binary")
+    add_files("test_bdf_integrator.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
 -- Test BDF coefficients
 target("test_bdf_coefficients")
     set_kind("binary")
@@ -221,20 +229,7 @@ target("quick_test")
     set_rundir("$(projectdir)")
     set_group("examples")
 
--- BDF comparison test
-target("test_bdf_comparison")
-    set_kind("binary")
-    add_files("test_bdf_comparison.cpp")
-    add_deps("diffeq")
-    set_rundir("$(projectdir)")
-    set_group("examples")
 
--- Simple BDF1 test
-target("test_simple_bdf1")
-    set_kind("binary")
-    add_files("test_simple_bdf1.cpp")
-    set_rundir("$(projectdir)")
-    set_group("examples")
 
 -- DOP853 example
 target("test_dop853_example")
