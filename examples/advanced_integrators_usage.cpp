@@ -57,7 +57,10 @@ double time_integrator(Integrator& integrator, std::vector<double>& y,
     auto start = std::chrono::high_resolution_clock::now();
     
     integrator.set_time(t_start);
-    integrator.integrate(y, dt, t_end);
+    
+    // Use timeout protection to prevent hanging
+    const std::chrono::seconds TIMEOUT{30};  // 30 second timeout for more complex integrators
+    bool completed = diffeq::integrate_with_timeout(integrator, y, dt, t_end, TIMEOUT);
     
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
@@ -67,7 +70,12 @@ double time_integrator(Integrator& integrator, std::vector<double>& y,
         std::cout << std::setw(12) << std::scientific << std::setprecision(4) << y[i];
         if (i < y.size() - 1) std::cout << ", ";
     }
-    std::cout << "] (Time: " << duration.count() << " μs)" << std::endl;
+    std::cout << "] (Time: " << duration.count() << " μs)";
+    
+    if (!completed) {
+        std::cout << " [TIMEOUT]";
+    }
+    std::cout << std::endl;
     
     return static_cast<double>(duration.count());
 }
@@ -181,7 +189,7 @@ void demonstrate_lorenz_system() {
     std::cout << "σ = 10, ρ = 28, β = 8/3" << std::endl;
     std::cout << "Initial conditions: x(0) = 1, y(0) = 1, z(0) = 1" << std::endl << std::endl;
     
-    double t_start = 0.0, t_end = 5.0, dt = 0.01;
+    double t_start = 0.0, t_end = 0.5, dt = 0.01;  // Reduced from 5.0 to 0.5 for faster execution
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
@@ -191,19 +199,19 @@ void demonstrate_lorenz_system() {
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        diffeq::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::RK45Integrator<std::vector<double>> integrator(lorenz_system, 1e-6, 1e-9);  // Relaxed tolerances
         time_integrator(integrator, y, t_start, dt, t_end, "RK45");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        diffeq::DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-3, 1e-6);
+        diffeq::DOP853Integrator<std::vector<double>> integrator(lorenz_system, 1e-6, 1e-9);  // Relaxed tolerances
         time_integrator(integrator, y, t_start, dt, t_end, "DOP853");
     }
     
     {
         std::vector<double> y = {1.0, 1.0, 1.0};
-        diffeq::LSODAIntegrator<std::vector<double>> integrator(lorenz_system, 1e-8, 1e-12);
+        diffeq::LSODAIntegrator<std::vector<double>> integrator(lorenz_system, 1e-6, 1e-9);  // Relaxed tolerances
         time_integrator(integrator, y, t_start, dt, t_end, "LSODA");
     }
 }
@@ -259,8 +267,7 @@ void demonstrate_adaptive_features() {
     std::vector<std::pair<double, double>> tolerances = {
         {1e-3, 1e-6},
         {1e-6, 1e-9}, 
-        {1e-9, 1e-12},
-        {1e-12, 1e-15}
+        {1e-8, 1e-11}  // Removed extremely tight tolerances to prevent timeout
     };
     
     for (auto [rtol, atol] : tolerances) {

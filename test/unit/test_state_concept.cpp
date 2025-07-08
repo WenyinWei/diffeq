@@ -88,7 +88,6 @@ bool test_time_type_concept() {
 
 bool test_state_concept() {
     std::cout << "\n=== Testing system_state Concept ===" << std::endl;
-    std::cout << "=== Testing system_state Concept ===" << std::endl;
     
     // Valid state types
     TEST_ASSERT(system_state<ValidState>, "ValidState should satisfy system_state");

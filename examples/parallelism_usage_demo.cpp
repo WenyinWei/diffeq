@@ -255,7 +255,7 @@ struct ExponentialDecay {
 void benchmark_hardware_targets() {
     std::cout << "\n=== Hardware Performance Benchmarking ===" << std::endl;
     
-    const int num_integrations = 10000;
+    const int num_integrations = 1000;  // Reduced from 10000 to 1000 for faster execution
     const double dt = 0.01;
     const double t_final = 1.0;
     
