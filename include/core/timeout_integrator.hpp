@@ -261,11 +261,26 @@ bool integrate_with_timeout(Integrator& integrator, State& state,
                            typename Integrator::time_type dt, 
                            typename Integrator::time_type end_time,
                            std::chrono::milliseconds timeout = std::chrono::milliseconds{5000}) {
-    auto future = std::async(std::launch::async, [&integrator, &state, dt, end_time]() {
-        integrator.integrate(state, dt, end_time);
+    // Create a copy of the state to avoid race conditions
+    State state_copy = state;
+    
+    auto future = std::async(std::launch::async, [&integrator, &state_copy, dt, end_time]() {
+        integrator.integrate(state_copy, dt, end_time);
     });
     
-    return future.wait_for(timeout) == std::future_status::ready;
+    auto status = future.wait_for(timeout);
+    
+    if (status == std::future_status::ready) {
+        try {
+            future.get(); // Check for exceptions
+            state = state_copy; // Update original state only if successful
+            return true;
+        } catch (...) {
+            return false;
+        }
+    } else {
+        return false; // Timed out
+    }
 }
 
 } // namespace diffeq::core

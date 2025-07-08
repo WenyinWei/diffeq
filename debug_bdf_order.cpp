@@ -2,7 +2,7 @@
 #include <vector>
 #include <iomanip>
 #include <cmath>
-#include <integrators/ode/bdf_scipy.hpp>
+#include <diffeq.hpp>
 
 // Simple exponential decay: dy/dt = -y
 void exponential_decay(double t, const std::vector<double>& y, std::vector<double>& dydt) {
@@ -19,7 +19,7 @@ int main() {
     double t_end = 1.0;
     double dt = 0.1;
 
-    auto integrator = diffeq::ScipyBDFIntegrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+    auto integrator = diffeq::BDFIntegrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
     integrator.set_time(t_start);
 
     std::cout << "Integration steps:" << std::endl;
