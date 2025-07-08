@@ -65,7 +65,7 @@ int main() {
     try {
         std::cout << "BDF (stiff):           ";
         auto y = y0;
-        auto integrator = diffeq::ScipyBDFIntegrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
+        auto integrator = diffeq::BDFIntegrator<std::vector<double>>(exponential_decay, 1e-3, 1e-6);
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << std::endl;
