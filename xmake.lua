@@ -40,6 +40,37 @@ target("diffeq")
 -- UNIT TESTS
 -- ============================================================================
 
+-- Debug SciPy BDF
+target("debug_scipy_bdf")
+    set_kind("binary")
+    add_files("debug_scipy_bdf.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- Debug BDF Order
+target("debug_bdf_order")
+    set_kind("binary")
+    add_files("debug_bdf_order.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- Test BDF coefficients
+target("test_bdf_coefficients")
+    set_kind("binary")
+    add_files("test_bdf_coefficients.cpp")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
+-- Detailed BDF debug
+target("debug_detailed_bdf")
+    set_kind("binary")
+    add_files("debug_detailed_bdf.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("debug")
+
 -- State concept tests
 target("test_state_concept")
     set_kind("binary")
