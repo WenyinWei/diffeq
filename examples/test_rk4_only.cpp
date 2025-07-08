@@ -15,9 +15,9 @@ int main() {
         integrator.set_time(0.0);
         integrator.integrate(y, 0.1, 1.0);
         std::cout << "RK4 result: " << y[0] << " (expected: " << std::exp(-1.0) << ")" << std::endl;
-        std::cout << "✓ RK4 test passed!" << std::endl;
-    } catch (const std::exception& e) {
-        std::cout << "✗ RK4 test failed: " << e.what() << std::endl;
+            std::cout << "[PASS] RK4 test passed!" << std::endl;
+} catch (const std::exception& e) {
+    std::cout << "[FAIL] RK4 test failed: " << e.what() << std::endl;
         return 1;
     }
     

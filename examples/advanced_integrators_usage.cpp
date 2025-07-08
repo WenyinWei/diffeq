@@ -14,14 +14,14 @@ void exponential_decay(double t, const std::vector<double>& y, std::vector<doubl
     dydt[0] = -y[0];
 }
 
-// 2. Van der Pol oscillator: d²x/dt² - μ(1-x²)dx/dt + x = 0
+// 2. Van der Pol oscillator: d^2x/dt^2 - mu*(1-x^2)*dx/dt + x = 0
 class VanderPolOscillator {
 public:
     explicit VanderPolOscillator(double mu) : mu_(mu) {}
     
     void operator()(double t, const std::vector<double>& y, std::vector<double>& dydt) {
         dydt[0] = y[1];                                    // dx/dt = v
-        dydt[1] = mu_ * (1 - y[0]*y[0]) * y[1] - y[0];    // dv/dt = μ(1-x²)v - x
+        dydt[1] = mu_ * (1 - y[0]*y[0]) * y[1] - y[0];    // dv/dt = mu*(1-x^2)*v - x
     }
     
 private:
@@ -34,9 +34,9 @@ void lorenz_system(double t, const std::vector<double>& y, std::vector<double>& 
     const double rho = 28.0;
     const double beta = 8.0/3.0;
     
-    dydt[0] = sigma * (y[1] - y[0]);           // dx/dt = σ(y - x)
-    dydt[1] = y[0] * (rho - y[2]) - y[1];      // dy/dt = x(ρ - z) - y
-    dydt[2] = y[0] * y[1] - beta * y[2];       // dz/dt = xy - βz
+    dydt[0] = sigma * (y[1] - y[0]);           // dx/dt = sigma*(y - x)
+    dydt[1] = y[0] * (rho - y[2]) - y[1];      // dy/dt = x*(rho - z) - y
+    dydt[2] = y[0] * y[1] - beta * y[2];       // dz/dt = xy - beta*z
 }
 
 // 4. Stiff test problem: Robertson chemical kinetics
@@ -70,7 +70,7 @@ double time_integrator(Integrator& integrator, std::vector<double>& y,
         std::cout << std::setw(12) << std::scientific << std::setprecision(4) << y[i];
         if (i < y.size() - 1) std::cout << ", ";
     }
-    std::cout << "] (Time: " << duration.count() << " μs)";
+    std::cout << "] (Time: " << duration.count() << " us)";
     
     if (!completed) {
         std::cout << " [TIMEOUT]";
@@ -126,8 +126,8 @@ void demonstrate_exponential_decay() {
 }
 
 void demonstrate_van_der_pol() {
-    std::cout << "\n=== Van der Pol Oscillator: μ = 5 (moderately stiff) ===" << std::endl;
-    std::cout << "x''(t) - μ(1-x²)x'(t) + x(t) = 0" << std::endl;
+    std::cout << "\n=== Van der Pol Oscillator: mu = 5 (moderately stiff) ===" << std::endl;
+    std::cout << "x''(t) - mu*(1-x^2)*x'(t) + x(t) = 0" << std::endl;
     std::cout << "Initial conditions: x(0) = 1, x'(0) = 0" << std::endl << std::endl;
     
     VanderPolOscillator vdp(5.0);
@@ -185,8 +185,8 @@ void demonstrate_van_der_pol() {
 
 void demonstrate_lorenz_system() {
     std::cout << "\n=== Lorenz System (Chaotic) ===" << std::endl;
-    std::cout << "dx/dt = σ(y - x), dy/dt = x(ρ - z) - y, dz/dt = xy - βz" << std::endl;
-    std::cout << "σ = 10, ρ = 28, β = 8/3" << std::endl;
+    std::cout << "dx/dt = sigma*(y - x), dy/dt = x*(rho - z) - y, dz/dt = xy - beta*z" << std::endl;
+    std::cout << "sigma = 10, rho = 28, beta = 8/3" << std::endl;
     std::cout << "Initial conditions: x(0) = 1, y(0) = 1, z(0) = 1" << std::endl << std::endl;
     
     double t_start = 0.0, t_end = 0.5, dt = 0.01;  // Reduced from 5.0 to 0.5 for faster execution
@@ -295,13 +295,13 @@ int main() {
         demonstrate_adaptive_features();
         
         std::cout << "\n=== Summary ===" << std::endl;
-        std::cout << "✓ RK4: Simple, fixed-step 4th order method" << std::endl;
-        std::cout << "✓ RK23: Adaptive 3rd order with embedded error estimation" << std::endl;
-        std::cout << "✓ RK45: Adaptive 5th order Dormand-Prince (scipy default)" << std::endl;
-        std::cout << "✓ DOP853: High-accuracy 8th order for demanding problems" << std::endl;
-        std::cout << "• Radau: Implicit 5th order for stiff systems (not yet implemented)" << std::endl;
-        std::cout << "✓ BDF: Variable-order implicit multistep for stiff systems" << std::endl;
-        std::cout << "✓ LSODA: Automatic method switching (Adams ↔ BDF)" << std::endl;
+        std::cout << "[OK] RK4: Simple, fixed-step 4th order method" << std::endl;
+        std::cout << "[OK] RK23: Adaptive 3rd order with embedded error estimation" << std::endl;
+        std::cout << "[OK] RK45: Adaptive 5th order Dormand-Prince (scipy default)" << std::endl;
+        std::cout << "[OK] DOP853: High-accuracy 8th order for demanding problems" << std::endl;
+        std::cout << "- Radau: Implicit 5th order for stiff systems (not yet implemented)" << std::endl;
+        std::cout << "[OK] BDF: Variable-order implicit multistep for stiff systems" << std::endl;
+        std::cout << "[OK] LSODA: Automatic method switching (Adams <-> BDF)" << std::endl;
         
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

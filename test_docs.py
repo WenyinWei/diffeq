@@ -28,10 +28,10 @@ def test_documentation_structure():
             missing_files.append(file_path)
     
     if missing_files:
-        print(f"❌ Missing required files: {missing_files}")
+        print(f"[FAIL] Missing required files: {missing_files}")
         return False
     else:
-        print("✅ All required documentation files exist")
+        print("[PASS] All required documentation files exist")
         return True
 
 def test_doxygen_config():
@@ -56,14 +56,14 @@ def test_doxygen_config():
                 missing_settings.append(setting)
         
         if missing_settings:
-            print(f"❌ Missing Doxygen settings: {missing_settings}")
+            print(f"[FAIL] Missing Doxygen settings: {missing_settings}")
             return False
         else:
-            print("✅ Doxygen configuration appears valid")
+            print("[PASS] Doxygen configuration appears valid")
             return True
             
     except Exception as e:
-        print(f"❌ Error reading Doxyfile: {e}")
+        print(f"[FAIL] Error reading Doxyfile: {e}")
         return False
 
 def test_build_scripts():
@@ -76,13 +76,13 @@ def test_build_scripts():
             bash_content = f.read()
         
         if "#!/bin/bash" in bash_content and "generate_doxygen" in bash_content:
-            print("✅ Bash build script is properly formatted")
+            print("[PASS] Bash build script is properly formatted")
         else:
-            print("❌ Bash build script appears incomplete")
+            print("[FAIL] Bash build script appears incomplete")
             return False
             
     except Exception as e:
-        print(f"❌ Error reading bash script: {e}")
+        print(f"[FAIL] Error reading bash script: {e}")
         return False
     
     # Test batch script
@@ -91,13 +91,13 @@ def test_build_scripts():
             batch_content = f.read()
         
         if "generate_doxygen" in batch_content:
-            print("✅ Batch build script is properly formatted")
+            print("[PASS] Batch build script is properly formatted")
         else:
-            print("❌ Batch build script appears incomplete")
+            print("[FAIL] Batch build script appears incomplete")
             return False
             
     except Exception as e:
-        print(f"❌ Error reading batch script: {e}")
+        print(f"[FAIL] Error reading batch script: {e}")
         return False
     
     return True
@@ -125,14 +125,14 @@ def test_github_actions():
                 missing_elements.append(element)
         
         if missing_elements:
-            print(f"❌ Missing workflow elements: {missing_elements}")
+            print(f"[FAIL] Missing workflow elements: {missing_elements}")
             return False
         else:
-            print("✅ GitHub Actions workflow is properly configured")
+            print("[PASS] GitHub Actions workflow is properly configured")
             return True
             
     except Exception as e:
-        print(f"❌ Error reading GitHub Actions workflow: {e}")
+        print(f"[FAIL] Error reading GitHub Actions workflow: {e}")
         return False
 
 def test_xmake_integration():
@@ -156,14 +156,14 @@ def test_xmake_integration():
                 missing_tasks.append(task)
         
         if missing_tasks:
-            print(f"❌ Missing xmake tasks: {missing_tasks}")
+            print(f"[FAIL] Missing xmake tasks: {missing_tasks}")
             return False
         else:
-            print("✅ xmake integration is properly configured")
+            print("[PASS] xmake integration is properly configured")
             return True
             
     except Exception as e:
-        print(f"❌ Error reading xmake.lua: {e}")
+        print(f"[FAIL] Error reading xmake.lua: {e}")
         return False
 
 def create_sample_documentation():
@@ -277,7 +277,7 @@ xmake run benchmark_parallel
     with open("docs/performance/README.md", "w") as f:
         f.write(performance_content)
     
-    print("✅ Sample documentation created")
+    print("[PASS] Sample documentation created")
 
 def main():
     """Run all documentation tests."""
@@ -300,12 +300,12 @@ def main():
                 passed += 1
             print()
         except Exception as e:
-            print(f"❌ Test failed with exception: {e}\n")
+            print(f"[FAIL] Test failed with exception: {e}\n")
     
     print(f"=== Test Results: {passed}/{total} tests passed ===")
     
     if passed == total:
-        print("🎉 All documentation tests passed!")
+        print("[SUCCESS] All documentation tests passed!")
         print("\nCreating sample documentation...")
         create_sample_documentation()
         print("\nDocumentation system is ready to use!")
@@ -315,7 +315,7 @@ def main():
         print("3. Run: xmake docs")
         print("4. View documentation at: docs/generated/html/index.html")
     else:
-        print("❌ Some tests failed. Please fix the issues above.")
+        print("[FAIL] Some tests failed. Please fix the issues above.")
         return 1
     
     return 0

@@ -26,7 +26,7 @@ int main() {
         integrator.set_time(t_start);
         integrator.integrate(y, dt, t_end);
         std::cout << std::setprecision(6) << y[0] << std::endl;
-        std::cout << "✓ Basic RK4 test successful!" << std::endl;
+        std::cout << "[PASS] Basic RK4 test successful!" << std::endl;
     } catch (const std::exception& e) {
         std::cout << "Failed: " << e.what() << std::endl;
         return 1;

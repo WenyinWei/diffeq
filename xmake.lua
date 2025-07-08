@@ -155,7 +155,7 @@ task("test-all")
         -- Anti-recursion protection
         if os.getenv("XMAKE_TEST_ALL_RUNNING") then
             print("[3] Recursion detected, exiting test-all task")
-            print("❌ ERROR: test-all task is already running! Possible infinite recursion detected.")
+            print("[ERROR] test-all task is already running! Possible infinite recursion detected.")
             print("   This can happen if test-all calls itself or is called from build-test-all.")
             print("   Please use 'xmake test-all' directly, not from other tasks.")
             os.exit(1)
@@ -169,7 +169,7 @@ task("test-all")
         local timeout = tonumber(option.get("timeout")) or 300
         print("[5] Parsed options: verbose=" .. tostring(verbose) .. ", parallel=" .. tostring(parallel) .. ", timeout=" .. tostring(timeout))
         print("[6] About to print test suite start message")
-        print("🧪 Running comprehensive test suite...")
+        print("[TEST] Running comprehensive test suite...")
         
         local test_targets = {
             "test_state_concept",
@@ -185,7 +185,7 @@ task("test-all")
         for i, test_name in ipairs(test_targets) do
             print("[9] Running test " .. i .. ": " .. test_name)
             if verbose then
-                print("  🔄 Running " .. test_name .. "...")
+                print("  [RUN] Running " .. test_name .. "...")
             end
             local success = true
             local start_time = os.time()
@@ -209,22 +209,22 @@ task("test-all")
             -- But we need to check if the program actually ran successfully
             if success ~= false then  -- Changed from 'if success then' to handle nil/true cases
                 if verbose then
-                    print("  ✅ " .. test_name .. " passed (" .. duration .. "s)")
+                    print("  [PASS] " .. test_name .. " passed (" .. duration .. "s)")
                 end
                 table.insert(passed_tests, test_name)
             else
-                print("  ❌ " .. test_name .. " failed (" .. duration .. "s)")
+                print("  [FAIL] " .. test_name .. " failed (" .. duration .. "s)")
                 table.insert(failed_tests, test_name)
             end
             if duration > timeout then
-                print("  ⚠️  " .. test_name .. " exceeded timeout (" .. timeout .. "s)")
+                print("  [WARN] " .. test_name .. " exceeded timeout (" .. timeout .. "s)")
             end
         end
         print("[15] Test loop finished, printing summary")
         -- Summary
-        print("\n📊 Test Summary:")
-        print("  ✅ Passed: " .. #passed_tests .. "/" .. #test_targets)
-        print("  ❌ Failed: " .. #failed_tests)
+        print("\n[SUMMARY] Test Summary:")
+        print("  [PASS] Passed: " .. #passed_tests .. "/" .. #test_targets)
+        print("  [FAIL] Failed: " .. #failed_tests)
         if #failed_tests > 0 then
             print("  Failed tests:")
             for _, test_name in ipairs(failed_tests) do
@@ -233,7 +233,7 @@ task("test-all")
             print("[16] Exiting with failure")
             os.exit(1)
         else
-            print("  🎉 All tests passed!")
+            print("  [SUCCESS] All tests passed!")
             print("[17] Exiting with success")
         end
     end)
@@ -255,7 +255,7 @@ task("examples-all")
         local verbose = option.get("verbose")
         local skip_long = option.get("skip-long")
         
-        print("🚀 Running all examples...")
+        print("[RUN] Running all examples...")
         
         local example_targets = {
             "state_concept_usage",
@@ -283,25 +283,25 @@ task("examples-all")
                 end
                 if is_long then
                     if verbose then
-                        print("  ⏭️  Skipping long example: " .. example_name)
+                        print("  [SKIP] Skipping long example: " .. example_name)
                     end
                     goto continue
                 end
             end
             
             if verbose then
-                print("  🔄 Running " .. example_name .. "...")
+                print("  [RUN] Running " .. example_name .. "...")
             end
             
             local success = task.run("run", {}, example_name)
             
             if success ~= false then  -- Changed from 'if success then' to handle nil/true cases
                 if verbose then
-                    print("  ✅ " .. example_name .. " completed")
+                    print("  [PASS] " .. example_name .. " completed")
                 end
                 table.insert(passed_examples, example_name)
             else
-                print("  ❌ " .. example_name .. " failed")
+                print("  [FAIL] " .. example_name .. " failed")
                 table.insert(failed_examples, example_name)
             end
             
@@ -309,9 +309,9 @@ task("examples-all")
         end
         
         -- Summary
-        print("\n📊 Example Summary:")
-        print("  ✅ Completed: " .. #passed_examples)
-        print("  ❌ Failed: " .. #failed_examples)
+        print("\n[SUMMARY] Example Summary:")
+        print("  [PASS] Completed: " .. #passed_examples)
+        print("  [FAIL] Failed: " .. #failed_examples)
         
         if #failed_examples > 0 then
             print("  Failed examples:")
@@ -319,7 +319,7 @@ task("examples-all")
                 print("    - " .. example_name)
             end
         else
-            print("  🎉 All examples completed successfully!")
+            print("  [SUCCESS] All examples completed successfully!")
         end
     end)
 
@@ -333,7 +333,7 @@ task("quick-test")
     on_run(function ()
         import("core.base.task")
         
-        print("⚡ Running quick tests...")
+        print("[QUICK] Running quick tests...")
         
         local quick_tests = {
             "test_state_concept",
@@ -341,11 +341,11 @@ task("quick-test")
         }
         
         for _, test_name in ipairs(quick_tests) do
-            print("  🔄 Running " .. test_name .. "...")
+            print("  [RUN] Running " .. test_name .. "...")
             task.run("run", {}, test_name)
         end
         
-        print("✅ Quick tests completed!")
+        print("[PASS] Quick tests completed!")
     end)
 
 -- Build and test everything
@@ -365,17 +365,17 @@ task("build-test-all")
         local clean = option.get("clean")
         local verbose = option.get("verbose")
         
-        print("🔨 Building and testing everything...")
+        print("[BUILD] Building and testing everything...")
         
         if clean then
             print("  🧹 Cleaning...")
             os.exec("xmake clean")
         end
         
-        print("  🔨 Building all targets...")
+        print("  [BUILD] Building all targets...")
         os.exec("xmake build")
         
-        print("  🧪 Running all tests...")
+        print("  [TEST] Running all tests...")
         -- Don't call test-all task to avoid recursion, run tests directly
         local test_targets = {
             "test_state_concept",
@@ -386,15 +386,15 @@ task("build-test-all")
         
         for _, test_name in ipairs(test_targets) do
             if verbose then
-                print("    🔄 Running " .. test_name .. "...")
+                print("    [RUN] Running " .. test_name .. "...")
             end
             task.run("run", {}, test_name)
             if verbose then
-                print("    ✅ " .. test_name .. " completed")
+                print("    [PASS] " .. test_name .. " completed")
             end
         end
         
-        print("  🚀 Running all examples...")
+        print("  [RUN] Running all examples...")
         -- Don't call examples-all task to avoid potential recursion, run examples directly
         local example_targets = {
             "state_concept_usage",
@@ -405,15 +405,15 @@ task("build-test-all")
         
         for _, example_name in ipairs(example_targets) do
             if verbose then
-                print("    🔄 Running " .. example_name .. "...")
+                print("    [RUN] Running " .. example_name .. "...")
             end
             task.run("run", {}, example_name)
             if verbose then
-                print("    ✅ " .. example_name .. " completed")
+                print("    [PASS] " .. example_name .. " completed")
             end
         end
         
-        print("🎉 Build and test completed successfully!")
+        print("[SUCCESS] Build and test completed successfully!")
     end)
 
 -- Documentation generation
@@ -469,7 +469,7 @@ task("docs")
             build_target = "serve"
         end
         
-        print("📚 Generating documentation: " .. build_target)
+        print("[DOCS] Generating documentation: " .. build_target)
         
         if os.host() == "windows" then
             os.exec(script_path .. " " .. build_target)
@@ -487,7 +487,7 @@ task("test")
     on_run(function ()
         -- Anti-recursion protection
         if os.getenv("XMAKE_TEST_ALL_RUNNING") then
-            print("❌ ERROR: test-all task is already running! Possible infinite recursion detected.")
+            print("[ERROR] test-all task is already running! Possible infinite recursion detected.")
             print("   This can happen if test-all calls itself or is called from other tasks.")
             print("   Please use 'xmake test-all' directly, not from other tasks.")
             os.exit(1)
@@ -504,15 +504,15 @@ task("test")
             "test_standard_parallelism"
         }
         
-        print("🧪 Running comprehensive test suite (via test alias)...")
+        print("[TEST] Running comprehensive test suite (via test alias)...")
         
         for _, test_name in ipairs(test_targets) do
-            print("  🔄 Running " .. test_name .. "...")
+            print("  [RUN] Running " .. test_name .. "...")
             task.run("run", {}, test_name)
-            print("  ✅ " .. test_name .. " completed")
+            print("  [PASS] " .. test_name .. " completed")
         end
         
-        print("🎉 All tests completed successfully!")
+        print("[SUCCESS] All tests completed successfully!")
     end)
 
 task("example")
@@ -531,7 +531,7 @@ task("demo")
     }
     on_run(function ()
         import("core.base.task")
-        print("🎯 Running advanced integrators demonstration...")
+        print("[DEMO] Running advanced integrators demonstration...")
         task.run("run", {}, "advanced_integrators_usage")
     end)
 
@@ -542,9 +542,9 @@ task("test-dop853")
     }
     on_run(function ()
         import("core.base.task")
-        print("🔬 Running DOP853 comprehensive tests...")
+        print("[TEST] Running DOP853 comprehensive tests...")
         task.run("run", {}, "test_dop853")
-        print("🎯 Running DOP853 example...")
+        print("[DEMO] Running DOP853 example...")
         task.run("run", {}, "test_dop853_example")
     end)
 
@@ -555,7 +555,7 @@ task("new-examples")
     }
     on_run(function ()
         import("core.base.task")
-        print("🆕 Running new examples...")
+        print("[NEW] Running new examples...")
         
         local new_examples = {
             "interface_usage_demo",
@@ -566,7 +566,7 @@ task("new-examples")
         }
         
         for _, example_name in ipairs(new_examples) do
-            print("  🔄 Running " .. example_name .. "...")
+            print("  [RUN] Running " .. example_name .. "...")
             task.run("run", {}, example_name)
         end
     end)

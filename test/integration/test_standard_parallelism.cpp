@@ -93,7 +93,7 @@ void test_std_execution_multiple_conditions() {
     double tolerance = 0.1;
     assert(std::abs(states[0][0] - expected) < tolerance);
     
-    std::cout << "✓ std::execution multiple conditions test passed\n";
+    std::cout << "[PASS] std::execution multiple conditions test passed\n";
 }
 
 void test_parameter_sweep() {
@@ -151,7 +151,7 @@ void test_parameter_sweep() {
     assert(results[1][0] > results[2][0]);
     assert(results[2][0] > results[3][0]);
     
-    std::cout << "✓ Parameter sweep test passed (flexibility beyond initial conditions)\n";
+    std::cout << "[PASS] Parameter sweep test passed (flexibility beyond initial conditions)\n";
 }
 
 void test_different_integrators() {
@@ -236,7 +236,7 @@ void test_different_integrators() {
     assert(euler_results[0][0] > 0.1 && euler_results[0][0] < 1.0);
     assert(rk2_results[0][0] > 0.1 && rk2_results[0][0] < 1.0);
     
-    std::cout << "✓ Different integrators test passed\n";
+    std::cout << "[PASS] Different integrators test passed\n";
 }
 
 #ifdef _OPENMP
@@ -274,7 +274,7 @@ void test_openmp() {
     double tolerance = 0.1;
     assert(std::abs(states[0][0] - expected) < tolerance);
     
-    std::cout << "✓ OpenMP integration test passed\n";
+    std::cout << "[PASS] OpenMP integration test passed\n";
 }
 #endif
 
@@ -298,8 +298,8 @@ void test_hardware_detection() {
     #endif
     
     std::cout << "Hardware/Library Detection (using standard functions):\n";
-    std::cout << "- std::execution: " << (std_execution_available ? "✓" : "✗") << "\n";
-    std::cout << "- OpenMP: " << (openmp_available ? "✓" : "✗");
+    std::cout << "- std::execution: " << (std_execution_available ? "[OK]" : "[FAIL]") << "\n";
+    std::cout << "- OpenMP: " << (openmp_available ? "[OK]" : "[FAIL]");
     if (openmp_available) {
         std::cout << " (" << num_threads << " threads)";
     }
@@ -309,7 +309,7 @@ void test_hardware_detection() {
     std::cout << "- GPU: Use cudaGetDeviceCount() for CUDA detection\n";
     std::cout << "- TBB: Use tbb::task_scheduler_init() for TBB detection\n";
     
-    std::cout << "✓ Hardware detection test passed (using standard library functions)\n";
+    std::cout << "[PASS] Hardware detection test passed (using standard library functions)\n";
 }
 
 int main() {
@@ -317,10 +317,10 @@ int main() {
     std::cout << "Testing Standard Library Parallelism Integration\n";
     std::cout << "=================================================================\n";
     std::cout << "This demonstrates the approach requested:\n";
-    std::cout << "• Use standard libraries instead of custom parallel classes\n";
-    std::cout << "• Show flexibility beyond just initial conditions\n";
-    std::cout << "• No custom 'facade' classes needed\n";
-    std::cout << "• Standard library hardware detection\n\n";
+    std::cout << "- Use standard libraries instead of custom parallel classes\n";
+    std::cout << "- Show flexibility beyond just initial conditions\n";
+    std::cout << "- No custom 'facade' classes needed\n";
+    std::cout << "- Standard library hardware detection\n\n";
     
     try {
         test_hardware_detection();
@@ -340,18 +340,18 @@ int main() {
         std::cout << "\n";
         #endif
         
-        std::cout << "✅ All standard library parallelism tests passed!\n";
+        std::cout << "[PASS] All standard library parallelism tests passed!\n";
         std::cout << "\nKey Benefits Demonstrated:\n";
-        std::cout << "• ✓ No custom 'facade' classes - use proven standard libraries\n";
-        std::cout << "• ✓ std::execution::par for simple parallel loops\n";
-        std::cout << "• ✓ OpenMP for CPU-intensive computation\n";
-        std::cout << "• ✓ Flexibility: vary parameters, integrators, callbacks\n";
-        std::cout << "• ✓ Standard library hardware detection\n";
-        std::cout << "• ✓ Choose the right tool for each specific use case\n";
-        std::cout << "• ✓ GPU support via Thrust (no custom kernels needed)\n";
+        std::cout << "- [OK] No custom 'facade' classes - use proven standard libraries\n";
+        std::cout << "- [OK] std::execution::par for simple parallel loops\n";
+        std::cout << "- [OK] OpenMP for CPU-intensive computation\n";
+        std::cout << "- [OK] Flexibility: vary parameters, integrators, callbacks\n";
+        std::cout << "- [OK] Standard library hardware detection\n";
+        std::cout << "- [OK] Choose the right tool for each specific use case\n";
+        std::cout << "- [OK] GPU support via Thrust (no custom kernels needed)\n";
         
     } catch (const std::exception& e) {
-        std::cerr << "❌ Test failed: " << e.what() << std::endl;
+        std::cerr << "[FAIL] Test failed: " << e.what() << std::endl;
         return 1;
     }
     

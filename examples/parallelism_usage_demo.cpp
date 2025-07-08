@@ -45,7 +45,7 @@ void modern_parallel_integration_example() {
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
     
-    std::cout << "✓ Parallel integration completed in " << duration.count() << " μs!" << std::endl;
+    std::cout << "[PASS] Parallel integration completed in " << duration.count() << " us!" << std::endl;
     std::cout << "Result for initial condition 10: [" << initial_conditions[10][0] 
               << ", " << initial_conditions[10][1] << "]" << std::endl;
 }
@@ -103,8 +103,8 @@ void demonstrate_realtime_control() {
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
     
-    std::cout << "Parallel control completed in " << duration.count() << " μs" << std::endl;
-    std::cout << "Average per joint: " << duration.count() / joint_states.size() << " μs" << std::endl;
+    std::cout << "Parallel control completed in " << duration.count() << " us" << std::endl;
+    std::cout << "Average per joint: " << duration.count() / joint_states.size() << " us" << std::endl;
     
     // Advanced async approach using diffeq async capabilities
     std::cout << "\n--- Advanced Async Approach ---" << std::endl;

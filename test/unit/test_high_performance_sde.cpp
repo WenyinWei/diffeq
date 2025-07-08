@@ -391,7 +391,7 @@ TEST_CASE("Convenience factory functions", "[sde_multithreading]") {
         auto latency = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
         
         REQUIRE(noise.increments.size() == 1);
-        REQUIRE(latency.count() < 100000);  // Should be sub-100μs
+        REQUIRE(latency.count() < 100000);  // Should be sub-100us
     }
     
     SECTION("create_numa_system") {

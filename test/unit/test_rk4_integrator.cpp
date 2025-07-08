@@ -33,13 +33,13 @@ void exponential_decay_float(float t, const std::vector<float>& y, std::vector<f
     dydt[0] = -y[0];
 }
 
-// Harmonic oscillator: d²x/dt² = -ω²x
+// Harmonic oscillator: d^2x/dt^2 = -omega^2*x
 // State vector: [x, dx/dt]
-// dy/dt = [y[1], -ω²*y[0]]
+// dy/dt = [y[1], -omega^2*y[0]]
 void harmonic_oscillator(double t, const std::vector<double>& y, std::vector<double>& dydt) {
-    const double omega_squared = 1.0; // ω² = 1
+    const double omega_squared = 1.0; // omega^2 = 1
     dydt[0] = y[1];           // dx/dt = v
-    dydt[1] = -omega_squared * y[0];  // dv/dt = -ω²x
+    dydt[1] = -omega_squared * y[0];  // dv/dt = -omega^2*x
 }
 
 bool test_rk4_double() {
@@ -163,17 +163,17 @@ int main() {
         
         std::cout << "\n=== Test Results ===" << std::endl;
         if (all_passed) {
-            std::cout << "🎉 All tests PASSED!" << std::endl;
+            std::cout << "[PASS] All tests PASSED!" << std::endl;
             return 0;
         } else {
-            std::cout << "❌ Some tests FAILED!" << std::endl;
+            std::cout << "[FAIL] Some tests FAILED!" << std::endl;
             return 1;
         }
     } catch (const std::exception& e) {
-        std::cerr << "❌ Test execution failed with exception: " << e.what() << std::endl;
+        std::cerr << "[FAIL] Test execution failed with exception: " << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cerr << "❌ Test execution failed with unknown exception" << std::endl;
+        std::cerr << "[FAIL] Test execution failed with unknown exception" << std::endl;
         return 1;
     }
 }

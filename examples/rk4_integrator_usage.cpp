@@ -13,9 +13,9 @@ void exponential_decay(double t, const std::vector<double>& y, std::vector<doubl
 }
 
 // Example 2: Lorenz attractor (simplified)
-// dx/dt = σ(y - x)
-// dy/dt = x(ρ - z) - y  
-// dz/dt = xy - βz
+// dx/dt = sigma*(y - x)
+// dy/dt = x*(rho - z) - y  
+// dz/dt = xy - beta*z
 void lorenz_system(double t, const std::vector<double>& state, std::vector<double>& dydt) {
     const double sigma = 10.0;
     const double rho = 28.0;
@@ -31,14 +31,14 @@ void lorenz_system(double t, const std::vector<double>& state, std::vector<doubl
 }
 
 // Example 3: Damped harmonic oscillator
-// d²x/dt² + 2γ(dx/dt) + ω²x = 0
+// d^2x/dt^2 + 2*gamma*(dx/dt) + omega^2*x = 0
 // State: [x, dx/dt]
 void damped_oscillator(float t, const std::array<float, 2>& state, std::array<float, 2>& dydt) {
     const float gamma = 0.1f; // damping coefficient
-    const float omega_sq = 4.0f; // ω² = 4
+    const float omega_sq = 4.0f; // omega^2 = 4
     
     dydt[0] = state[1]; // dx/dt = v
-    dydt[1] = -2.0f * gamma * state[1] - omega_sq * state[0]; // dv/dt = -2γv - ω²x
+    dydt[1] = -2.0f * gamma * state[1] - omega_sq * state[0]; // dv/dt = -2*gamma*v - omega^2*x
 }
 
 int main() {

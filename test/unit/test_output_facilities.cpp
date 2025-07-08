@@ -59,11 +59,11 @@ bool test_interpolation_decorator() {
         assert(times.size() == 11);
         assert(states.size() == 11);
         
-        std::cout << "✓ PASSED\n";
+        std::cout << "[PASS] PASSED\n";
         return true;
         
     } catch (const std::exception& e) {
-        std::cout << "✗ FAILED: " << e.what() << "\n";
+        std::cout << "[FAIL] FAILED: " << e.what() << "\n";
         return false;
     }
 }
@@ -113,11 +113,11 @@ bool test_event_decorator() {
         assert(stats.total_events > 0);
         assert(stats.sensor_events > 0);
         
-        std::cout << "✓ PASSED (events: " << stats.total_events << ")\n";
+        std::cout << "[PASS] PASSED (events: " << stats.total_events << ")\n";
         return true;
         
     } catch (const std::exception& e) {
-        std::cout << "✗ FAILED: " << e.what() << "\n";
+        std::cout << "[FAIL] FAILED: " << e.what() << "\n";
         return false;
     }
 }
@@ -148,17 +148,17 @@ bool test_interprocess_decorator() {
             assert(ipc_decorator->config().direction == IPCDirection::PRODUCER);
             assert(ipc_decorator->config().buffer_size == 1024);
             
-            std::cout << "✓ PASSED (IPC created)\n";
+            std::cout << "[PASS] PASSED (IPC created)\n";
             return true;
             
         } catch (const std::runtime_error& e) {
             // IPC setup failed - this is expected in many test environments
-            std::cout << "✓ PASSED (IPC unavailable, but decorator created)\n";
+            std::cout << "[PASS] PASSED (IPC unavailable, but decorator created)\n";
             return true;
         }
         
     } catch (const std::exception& e) {
-        std::cout << "✗ FAILED: " << e.what() << "\n";
+        std::cout << "[FAIL] FAILED: " << e.what() << "\n";
         return false;
     }
 }
@@ -203,11 +203,11 @@ bool test_sde_synchronization() {
         auto stats = synchronizer.get_statistics();
         assert(stats.noise_requests > 0);
         
-        std::cout << "✓ PASSED\n";
+        std::cout << "[PASS] PASSED\n";
         return true;
         
     } catch (const std::exception& e) {
-        std::cout << "✗ FAILED: " << e.what() << "\n";
+        std::cout << "[FAIL] FAILED: " << e.what() << "\n";
         return false;
     }
 }
@@ -301,11 +301,11 @@ bool test_configuration_validation() {
             assert(caught_exception);
         }
         
-        std::cout << "✓ PASSED\n";
+        std::cout << "[PASS] PASSED\n";
         return true;
         
     } catch (const std::exception& e) {
-        std::cout << "✗ FAILED: " << e.what() << "\n";
+        std::cout << "[FAIL] FAILED: " << e.what() << "\n";
         return false;
     }
 }
@@ -341,10 +341,10 @@ int main() {
     std::cout << "Test Results: " << passed << "/" << total << " passed\n";
     
     if (passed == total) {
-        std::cout << "🎉 All tests passed!\n";
+        std::cout << "[PASS] All tests passed!\n";
         return 0;
     } else {
-        std::cout << "❌ Some tests failed.\n";
+        std::cout << "[FAIL] Some tests failed.\n";
         return 1;
     }
 } 

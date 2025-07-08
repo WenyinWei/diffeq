@@ -201,17 +201,17 @@ int main() {
         
         std::cout << "\n=== Test Results ===" << std::endl;
         if (all_passed) {
-            std::cout << "✅ All tests PASSED!" << std::endl;
+            std::cout << "[PASS] All tests PASSED!" << std::endl;
             return 0;
         } else {
-            std::cout << "❌ Some tests FAILED!" << std::endl;
+            std::cout << "[FAIL] Some tests FAILED!" << std::endl;
             return 1;
         }
     } catch (const std::exception& e) {
-        std::cerr << "❌ Test execution failed with exception: " << e.what() << std::endl;
+        std::cerr << "[FAIL] Test execution failed with exception: " << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cerr << "❌ Test execution failed with unknown exception" << std::endl;
+        std::cerr << "[FAIL] Test execution failed with unknown exception" << std::endl;
         return 1;
     }
 }
