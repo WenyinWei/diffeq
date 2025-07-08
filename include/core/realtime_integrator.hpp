@@ -180,9 +180,9 @@ private:
  * - Safety mechanisms and emergency stops
  */
 template<system_state S, can_be_time T = double>
-class RealtimeIntegrator : public AbstractIntegrator<S, T> {
+class RealtimeIntegrator : public core::AbstractIntegrator<S, T> {
 public:
-    using base_type = AbstractIntegrator<S, T>;
+    using base_type = core::AbstractIntegrator<S, T>;
     using state_type = typename base_type::state_type;
     using time_type = typename base_type::time_type;
     using value_type = typename base_type::value_type;
@@ -212,7 +212,7 @@ public:
     };
     
     explicit RealtimeIntegrator(
-        std::unique_ptr<AbstractIntegrator<S, T>> base_integrator,
+        std::unique_ptr<core::AbstractIntegrator<S, T>> base_integrator,
         RealtimeConfig config = {}
     ) : base_type(std::move(base_integrator->sys_))
       , base_integrator_(std::move(base_integrator))
@@ -438,7 +438,7 @@ public:
     }
     
 private:
-    std::unique_ptr<AbstractIntegrator<S, T>> base_integrator_;
+    std::unique_ptr<core::AbstractIntegrator<S, T>> base_integrator_;
     RealtimeConfig config_;
     std::unique_ptr<communication::EventBus> event_bus_;
     std::unique_ptr<CustomExecutor> executor_;
@@ -612,7 +612,7 @@ namespace factory {
 
 template<system_state S, can_be_time T = double>
 auto make_realtime_rk45(
-    typename AbstractIntegrator<S, T>::system_function sys,
+    typename core::AbstractIntegrator<S, T>::system_function sys,
     typename RealtimeIntegrator<S, T>::RealtimeConfig config = {},
     T rtol = static_cast<T>(1e-6),
     T atol = static_cast<T>(1e-9)
@@ -623,7 +623,7 @@ auto make_realtime_rk45(
 
 template<system_state S, can_be_time T = double>
 auto make_realtime_dop853(
-    typename AbstractIntegrator<S, T>::system_function sys,
+    typename core::AbstractIntegrator<S, T>::system_function sys,
     typename RealtimeIntegrator<S, T>::RealtimeConfig config = {},
     T rtol = static_cast<T>(1e-10),
     T atol = static_cast<T>(1e-15)

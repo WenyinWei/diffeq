@@ -148,7 +148,7 @@ struct Event {
 template<system_state S>
 class AsyncIntegrator {
 public:
-    using base_integrator_type = AbstractIntegrator<S>;
+    using base_integrator_type = core::AbstractIntegrator<S>;
     using state_type = typename base_integrator_type::state_type;
     using time_type = typename base_integrator_type::time_type;
     using value_type = typename base_integrator_type::value_type;
@@ -392,7 +392,7 @@ namespace factory {
 
 template<system_state S>
 auto make_async_rk45(
-    typename AbstractIntegrator<S>::system_function sys,
+    typename core::AbstractIntegrator<S>::system_function sys,
     typename AsyncIntegrator<S>::Config config = {},
     typename S::value_type rtol = static_cast<typename S::value_type>(1e-6),
     typename S::value_type atol = static_cast<typename S::value_type>(1e-9)
@@ -403,7 +403,7 @@ auto make_async_rk45(
 
 template<system_state S>
 auto make_async_dop853(
-    typename AbstractIntegrator<S>::system_function sys,
+    typename core::AbstractIntegrator<S>::system_function sys,
     typename AsyncIntegrator<S>::Config config = {},
     typename S::value_type rtol = static_cast<typename S::value_type>(1e-10),
     typename S::value_type atol = static_cast<typename S::value_type>(1e-15)
@@ -414,7 +414,7 @@ auto make_async_dop853(
 
 template<system_state S>
 auto make_async_bdf(
-    typename AbstractIntegrator<S>::system_function sys,
+    typename core::AbstractIntegrator<S>::system_function sys,
     typename AsyncIntegrator<S>::Config config = {},
     typename S::value_type rtol = static_cast<typename S::value_type>(1e-6),
     typename S::value_type atol = static_cast<typename S::value_type>(1e-9)
