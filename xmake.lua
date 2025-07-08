@@ -20,6 +20,7 @@ end
 -- Dependencies
 add_requires("eigen 3.4.0")
 add_requires("gtest", {optional = true})
+add_requires("boost", {optional = true})
 
 -- Global include directories
 add_includedirs("include")
@@ -116,6 +117,32 @@ target("advanced_integrators_usage")
 target("parallelism_usage_demo")
     set_kind("binary")
     add_files("examples/parallelism_usage_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Asio integration demo
+target("asio_integration_demo")
+    set_kind("binary")
+    add_files("examples/asio_integration_demo.cpp")
+    add_deps("diffeq")
+    add_packages("boost")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Advanced asio integration demo
+target("advanced_asio_integration")
+    set_kind("binary")
+    add_files("examples/advanced_asio_integration.cpp")
+    add_deps("diffeq")
+    add_packages("boost")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+
+-- Standard library async integration demo
+target("std_async_integration_demo")
+    set_kind("binary")
+    add_files("examples/std_async_integration_demo.cpp")
     add_deps("diffeq")
     set_rundir("$(projectdir)")
     set_group("examples")
@@ -261,7 +288,10 @@ task("examples-all")
             "state_concept_usage",
             "rk4_integrator_usage",
             "advanced_integrators_usage",
-            "parallelism_usage_demo"
+            "parallelism_usage_demo",
+            "asio_integration_demo",
+            "advanced_asio_integration",
+            "std_async_integration_demo"
         }
         
         local long_examples = {
