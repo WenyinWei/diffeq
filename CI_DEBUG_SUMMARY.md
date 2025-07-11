@@ -16,17 +16,12 @@ The CI workflows are failing due to template parameter issues in the composable 
 - **Fix**: Removed the `T` template parameter and updated all method signatures
 - **Status**: ✅ COMPLETED
 
-### 3. AsyncDecorator
-- **File**: `include/core/composable/async_decorator.hpp`
-- **Fix**: Removed the `T` template parameter and updated all method signatures
-- **Status**: ✅ COMPLETED
-
-### 4. OutputDecorator
+### 3. OutputDecorator
 - **File**: `include/core/composable/output_decorator.hpp`
 - **Fix**: Removed the `T` template parameter and updated all method signatures
 - **Status**: ✅ COMPLETED
 
-### 5. SignalDecorator
+### 4. SignalDecorator
 - **File**: `include/core/composable/signal_decorator.hpp`
 - **Fix**: Removed the `T` template parameter and updated all method signatures, including the SignalInfo struct
 - **Status**: ✅ COMPLETED

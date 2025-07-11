@@ -3,7 +3,6 @@
 #include "integrator_decorator.hpp"
 #include "timeout_decorator.hpp"
 #include "parallel_decorator.hpp"
-#include "async_decorator.hpp"
 #include "output_decorator.hpp"
 #include "signal_decorator.hpp"
 #include "interpolation_decorator.hpp"  // Fixed template parameter issues
@@ -31,7 +30,6 @@ namespace diffeq::core::composable {
  * auto integrator = make_builder(base_integrator)
  *     .with_timeout(TimeoutConfig{.timeout_duration = std::chrono::seconds{30}})
  *     .with_parallel(ParallelConfig{.max_threads = 8})
- *     .with_async()
  *     .with_signals()
  *     .with_output(OutputConfig{.mode = OutputMode::HYBRID})
  *     .build();
@@ -75,18 +73,6 @@ public:
      */
     IntegratorBuilder& with_parallel(ParallelConfig config = {}) {
         integrator_ = std::make_unique<ParallelDecorator<S>>(
-            std::move(integrator_), std::move(config));
-        return *this;
-    }
-
-    /**
-     * @brief Add async execution facility
-     * @param config Async configuration (uses defaults if not specified)
-     * @return Reference to this builder for chaining
-     * @throws std::invalid_argument if config is invalid
-     */
-    IntegratorBuilder& with_async(AsyncConfig config = {}) {
-        integrator_ = std::make_unique<AsyncDecorator<S>>(
             std::move(integrator_), std::move(config));
         return *this;
     }
@@ -215,9 +201,6 @@ public:
         if (dynamic_cast<ParallelDecorator<S>*>(integrator_.get())) {
             info += "Parallel -> ";
         }
-        if (dynamic_cast<AsyncDecorator<S>*>(integrator_.get())) {
-            info += "Async -> ";
-        }
         if (dynamic_cast<OutputDecorator<S>*>(integrator_.get())) {
             info += "Output -> ";
         }
@@ -301,19 +284,6 @@ auto with_parallel_only(std::unique_ptr<AbstractIntegrator<S>> integrator,
 }
 
 /**
- * @brief Create integrator with only async execution
- * @tparam S State type
- * @param integrator Base integrator
- * @param config Async configuration
- * @return Async-enabled integrator
- */
-template<system_state S>
-auto with_async_only(std::unique_ptr<AbstractIntegrator<S>> integrator,
-                     AsyncConfig config = {}) {
-    return make_builder(std::move(integrator)).with_async(std::move(config)).build();
-}
-
-/**
  * @brief Create integrator with only interpolation
  * @tparam S State type
  * @param integrator Base integrator
@@ -386,14 +356,13 @@ auto with_signals_only(std::unique_ptr<AbstractIntegrator<S>> integrator,
  * @tparam S State type
  * @param integrator Base integrator
  * @param timeout_ms Timeout in milliseconds
- * @return Integrator with timeout + async + signals
+ * @return Integrator with timeout + signals
  */
 template<system_state S>
 auto for_realtime(std::unique_ptr<AbstractIntegrator<S>> integrator,
                   std::chrono::milliseconds timeout_ms = std::chrono::milliseconds{100}) {
     return make_builder(std::move(integrator))
         .with_timeout(TimeoutConfig{.timeout_duration = timeout_ms})
-        .with_async()
         .with_signals()
         .build();
 }

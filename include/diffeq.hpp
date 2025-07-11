@@ -295,18 +295,15 @@ namespace diffeq {
     using core::composable::IntegratorDecorator;
     using core::composable::TimeoutDecorator;
     using core::composable::ParallelDecorator;
-    using core::composable::AsyncDecorator;
     using core::composable::OutputDecorator;
     using core::composable::SignalDecorator;
     using core::composable::IntegratorBuilder;
     using core::composable::make_builder;
     using core::composable::with_timeout_only;
     using core::composable::with_parallel_only;
-    using core::composable::with_async_only;
     using core::composable::TimeoutConfig;
     using core::composable::TimeoutResult;
     using core::composable::ParallelConfig;
-    using core::composable::AsyncConfig;
     using core::composable::OutputConfig;
     using core::composable::OutputMode;
     using core::composable::SignalConfig;

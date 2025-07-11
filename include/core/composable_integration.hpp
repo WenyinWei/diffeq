@@ -19,7 +19,6 @@
  * auto integrator = make_builder(base_integrator)
  *     .with_timeout()
  *     .with_parallel()
- *     .with_async()
  *     .with_signals()
  *     .with_output()
  *     .build();
@@ -30,7 +29,6 @@
 #include "composable/integrator_decorator.hpp"
 #include "composable/timeout_decorator.hpp"
 #include "composable/parallel_decorator.hpp"
-#include "composable/async_decorator.hpp"
 #include "composable/output_decorator.hpp"
 #include "composable/signal_decorator.hpp"
 #include "composable/interpolation_decorator.hpp"  // Fixed template parameter issues
@@ -55,7 +53,6 @@ namespace diffeq::core::composable {
  * 2. **Individual Facilities (one file each)**
  *    - TimeoutDecorator: Timeout protection
  *    - ParallelDecorator: Batch processing and Monte Carlo
- *    - AsyncDecorator: Asynchronous execution
  *    - OutputDecorator: Online/offline/hybrid output
  *    - SignalDecorator: Real-time signal processing
  *    - InterpolationDecorator: Dense output and interpolation

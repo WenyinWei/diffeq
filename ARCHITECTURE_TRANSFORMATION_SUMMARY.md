@@ -44,7 +44,7 @@ Each facility focuses on **exactly one concern**:
 // ✅ GOOD: Each decorator has single responsibility
 class TimeoutDecorator     { /* ONLY timeout protection */ };
 class ParallelDecorator    { /* ONLY parallel execution */ };
-class AsyncDecorator       { /* ONLY async capabilities */ };
+
 class OutputDecorator      { /* ONLY output handling */ };
 class SignalDecorator      { /* ONLY signal processing */ };
 ```
@@ -57,7 +57,6 @@ Facilities combine **without dependencies**:
 auto integrator = make_builder(base)
     .with_timeout()     // Independent
     .with_parallel()    // Independent  
-    .with_async()       // Independent
     .with_signals()     // Independent
     .with_output()      // Independent
     .build();
@@ -79,7 +78,6 @@ public:
 #### 2. Independent Facilities
 - `TimeoutDecorator`: Timeout protection only
 - `ParallelDecorator`: Batch processing and Monte Carlo only
-- `AsyncDecorator`: Async execution only
 - `OutputDecorator`: Online/offline/hybrid output only
 - `SignalDecorator`: Signal processing only
 
@@ -89,7 +87,6 @@ class IntegratorBuilder {
 public:
     IntegratorBuilder& with_timeout(TimeoutConfig = {});
     IntegratorBuilder& with_parallel(ParallelConfig = {});
-    IntegratorBuilder& with_async(AsyncConfig = {});
     IntegratorBuilder& with_output(OutputConfig = {});
     IntegratorBuilder& with_signals(SignalConfig = {});
     std::unique_ptr<AbstractIntegrator<S, T>> build();
@@ -107,19 +104,19 @@ public:
 ```cpp
 // Any combination works
 auto research = make_builder(base).with_timeout().with_parallel().build();
-auto realtime = make_builder(base).with_async().with_signals().build();
+auto realtime = make_builder(base).with_timeout().with_signals().build();
 auto server = make_builder(base).with_timeout().with_output().build();
 auto ultimate = make_builder(base).with_timeout().with_parallel()
-                                  .with_async().with_signals()
+                                  .with_signals()
                                   .with_output().build();
 ```
 
 ### 3. Order Independence
 ```cpp
 // These are identical:
-.with_timeout().with_async().with_output()
-.with_output().with_timeout().with_async()
-.with_async().with_output().with_timeout()
+.with_timeout().with_parallel().with_output()
+.with_output().with_timeout().with_parallel()
+.with_parallel().with_output().with_timeout()
 ```
 
 ### 4. Unlimited Extensibility
@@ -149,7 +146,6 @@ auto research_integrator = make_builder(base_integrator)
 ```cpp
 auto control_integrator = make_builder(base_integrator)
     .with_timeout(TimeoutConfig{.timeout_duration = std::chrono::milliseconds{10}})
-    .with_async()
     .with_signals()
     .build();
 ```
@@ -172,7 +168,7 @@ auto interactive_integrator = make_builder(base_integrator)
             return !user_cancelled();
         }
     })
-    .with_async().with_signals().with_output()
+    .with_signals().with_output()
     .build();
 ```
 
@@ -264,7 +260,6 @@ auto integrator = make_builder(base).with_timeout().build();
 auto integrator = make_builder(base)
     .with_timeout(TimeoutConfig{...})
     .with_parallel(ParallelConfig{...})
-    .with_async(AsyncConfig{...})
     .with_signals(SignalConfig{...})
     .with_output(OutputConfig{...}, custom_handler)
     .build();

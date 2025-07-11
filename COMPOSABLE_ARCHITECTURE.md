@@ -45,7 +45,6 @@ Instead, we use independent decorators that can be composed:
 auto integrator = make_builder(base_integrator)
     .with_timeout()
     .with_parallel()
-    .with_async()
     .with_signals()
     .with_output()
     .build();
@@ -89,15 +88,6 @@ class ParallelDecorator : public IntegratorDecorator<S, T> {
 };
 ```
 
-#### Async Facility
-```cpp
-class AsyncDecorator : public IntegratorDecorator<S, T> {
-    // ONLY handles async execution
-    std::future<void> integrate_async(state& s, T dt, T end);
-    std::future<void> step_async(state& s, T dt);
-};
-```
-
 #### Output Facility
 ```cpp
 class OutputDecorator : public IntegratorDecorator<S, T> {
@@ -124,7 +114,6 @@ class IntegratorBuilder {
 public:
     IntegratorBuilder& with_timeout(TimeoutConfig config = {});
     IntegratorBuilder& with_parallel(ParallelConfig config = {});
-    IntegratorBuilder& with_async(AsyncConfig config = {});
     IntegratorBuilder& with_output(OutputConfig config = {});
     IntegratorBuilder& with_signals(SignalConfig config = {});
     
@@ -142,9 +131,9 @@ auto timeout_integrator = make_builder(base_integrator)
     .with_timeout(TimeoutConfig{.timeout_duration = std::chrono::seconds{30}})
     .build();
 
-// Async + signals
+// Timeout + signals
 auto realtime_integrator = make_builder(base_integrator)
-    .with_async()
+    .with_timeout()
     .with_signals()
     .build();
 ```
@@ -159,7 +148,6 @@ auto ultimate_integrator = make_builder(base_integrator)
         .enable_progress_callback = true
     })
     .with_parallel(ParallelConfig{.max_threads = 8})
-    .with_async(AsyncConfig{.thread_pool_size = 4})
     .with_signals(SignalConfig{.enable_real_time_processing = true})
     .with_output(OutputConfig{
         .mode = OutputMode::HYBRID,
@@ -177,13 +165,13 @@ The decorator pattern ensures composition order doesn't matter:
 ```cpp
 // These are equivalent:
 auto integrator1 = make_builder(base)
-    .with_timeout().with_async().with_output().build();
+    .with_timeout().with_parallel().with_output().build();
 
 auto integrator2 = make_builder(base)
-    .with_output().with_timeout().with_async().build();
+    .with_output().with_timeout().with_parallel().build();
 
 auto integrator3 = make_builder(base)
-    .with_async().with_output().with_timeout().build();
+    .with_parallel().with_output().with_timeout().build();
 ```
 
 ## Benefits
@@ -247,7 +235,6 @@ auto research_integrator = make_builder(base)
 ```cpp
 auto control_integrator = make_builder(base)
     .with_timeout(TimeoutConfig{.timeout_duration = std::chrono::milliseconds{10}})
-    .with_async()
     .with_signals()
     .build();
 ```
@@ -273,7 +260,6 @@ auto interactive_integrator = make_builder(base)
             return !user_cancelled();
         }
     })
-    .with_async()
     .with_signals()
     .with_output()
     .build();

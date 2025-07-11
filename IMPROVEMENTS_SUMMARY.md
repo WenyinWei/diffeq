@@ -26,7 +26,6 @@ class ParallelTimeoutAsyncSignalIntegrator { ... };
 auto integrator = make_builder(base_integrator)
     .with_timeout()     // Independent facility
     .with_parallel()    // Independent facility  
-    .with_async()       // Independent facility
     .with_signals()     // Independent facility
     .with_output()      // Independent facility
     .build();           // N classes for N facilities
@@ -43,7 +42,6 @@ include/core/composable/
 ├── integrator_decorator.hpp      # Base decorator pattern
 ├── timeout_decorator.hpp         # Timeout protection only
 ├── parallel_decorator.hpp        # Parallel execution only
-├── async_decorator.hpp          # Async execution only
 ├── output_decorator.hpp         # Output handling only
 ├── signal_decorator.hpp         # Signal processing only
 └── integrator_builder.hpp       # Composition builder
@@ -66,19 +64,13 @@ include/core/composable/
 - **Hardware Detection**: Automatic thread count detection
 - **Graceful Fallback**: Falls back to sequential on errors
 
-### 3. AsyncDecorator Capabilities
-- **Operation Tracking**: Active operation counting and monitoring
-- **Cancellation Support**: Cooperative cancellation mechanism
-- **Progress Monitoring**: Optional progress monitoring with callbacks
-- **Resource Management**: RAII scope guards for proper cleanup
-
-### 4. OutputDecorator Features
+### 3. OutputDecorator Features
 - **Multiple Modes**: Online, offline, and hybrid output
 - **File Output**: Optional file output with compression support
 - **Statistics**: Detailed performance monitoring and statistics
 - **Buffer Management**: Configurable buffering with overflow handling
 
-### 5. SignalDecorator Enhancements
+### 4. SignalDecorator Enhancements
 - **Multiple Processing Modes**: Synchronous, asynchronous, and batch
 - **Priority System**: Signal priority handling with queues
 - **Thread Safety**: Mutex protection for concurrent signal access
@@ -150,7 +142,6 @@ auto research_integrator = make_builder(base_integrator)
 ```cpp
 auto control_integrator = make_builder(base_integrator)
     .with_timeout(TimeoutConfig{.timeout_duration = std::chrono::milliseconds{10}})
-    .with_async()
     .with_signals()
     .build();
 ```
@@ -173,7 +164,7 @@ auto interactive_integrator = make_builder(base_integrator)
             return !user_cancelled();  // Allow cancellation
         }
     })
-    .with_async().with_signals().with_output()
+    .with_signals().with_output()
     .build();
 ```
 
@@ -225,7 +216,6 @@ auto ultimate_integrator = make_builder(base)
     .with_gpu()        // New facility
     .with_network()    // New facility  
     .with_compression() // New facility
-    .with_async()
     .with_signals()
     .with_output()
     .build();
