@@ -10,6 +10,7 @@ This directory contains comprehensive examples demonstrating how to use the diff
 - **`rk4_integrator_usage.cpp`** - Basic RK4 integrator usage with various ODE systems
 - **`advanced_integrators_usage.cpp`** - Advanced integrator features and configurations
 - **`state_concept_usage.cpp`** - Shows how to use different state types (vectors, arrays, custom types)
+- **`std_async_integration_demo.cpp`** - Direct use of C++ standard library async facilities without unnecessary abstractions
 - **`timeout_integration_demo.cpp`** - Timeout-protected integration for robust applications
 - **`seamless_parallel_timeout_demo.cpp`** - Seamless integration of timeout + async + parallel execution
 
