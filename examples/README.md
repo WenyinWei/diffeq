@@ -11,6 +11,7 @@ This directory contains comprehensive examples demonstrating how to use the diff
 - **`advanced_integrators_usage.cpp`** - Advanced integrator features and configurations
 - **`state_concept_usage.cpp`** - Shows how to use different state types (vectors, arrays, custom types)
 - **`std_async_integration_demo.cpp`** - Direct use of C++ standard library async facilities without unnecessary abstractions
+- **`coroutine_integration_demo.cpp`** - C++20 coroutines integration for fine-grained execution control and cooperative multitasking
 - **`timeout_integration_demo.cpp`** - Timeout-protected integration for robust applications
 - **`seamless_parallel_timeout_demo.cpp`** - Seamless integration of timeout + async + parallel execution
 
@@ -42,6 +43,12 @@ This directory contains comprehensive examples demonstrating how to use the diff
   - Heston stochastic volatility
   - Noisy oscillator control systems
   - Stochastic Lotka-Volterra ecosystem models
+- **`coroutine_integration_demo.cpp`** - C++20 Coroutines integration:
+  - Fine-grained execution control with pause/resume
+  - Cooperative multitasking for multiple integrations
+  - Zero-overhead state preservation between yields
+  - Progress monitoring with minimal overhead
+  - Interruptible long-running computations
 - **`advanced_gpu_async_demo.cpp`** - GPU acceleration with async processing
 - **`realtime_signal_processing.cpp`** - Real-time signal processing integration
 - **`composable_facilities_demo.cpp`** 🎯 **NEW: Solves Combinatorial Explosion** - Composable architecture demonstration:
@@ -112,7 +119,12 @@ For complex applications:
 - `sde_usage_demo.cpp` - Stochastic differential equations
 - `advanced_gpu_async_demo.cpp` - GPU acceleration
 
-### 4. Domain-Specific Examples
+### 4. Modern C++ Features
+- **C++20 Coroutines**: Fine-grained control and cooperative multitasking in `coroutine_integration_demo.cpp`
+- **Standard Library Async**: Direct use of std::async without abstractions in `std_async_integration_demo.cpp`
+- **Parallel Execution**: Hardware-optimized parallel processing in `parallelism_usage_demo.cpp`
+
+### 5. Domain-Specific Examples
 - **Finance**: Black-Scholes, Heston models in `sde_usage_demo.cpp`
 - **Robotics**: Control systems in `parallelism_usage_demo.cpp`
 - **Scientific**: Chemical reactions, ecosystem models in `sde_usage_demo.cpp`
@@ -124,6 +136,14 @@ For complex applications:
 - **SDE Solvers**: Euler-Maruyama, Milstein, SRA1, SOSRA, SRIW1, SOSRI
 - **Adaptive Methods**: Automatic step size control
 - **Stiff Systems**: BDF and LSODA for stiff problems
+
+### Modern C++ Features
+- **C++20 Coroutines**: 
+  - Pausable/resumable integration with `co_yield`
+  - Fine-grained CPU control for real-time systems
+  - Zero-overhead state preservation
+  - Cooperative multitasking between multiple integrations
+  - Progress monitoring without blocking the main thread
 
 ### Parallelism
 - **CPU Parallelism**: std::execution, OpenMP, Intel TBB

@@ -68,6 +68,22 @@ target("test_advanced_integrators")
     set_rundir("$(projectdir)")
     set_group("tests")
 
+-- Integrator accuracy tests
+target("test_integrator_accuracy")
+    set_kind("binary")
+    add_files("test/unit/test_integrator_accuracy.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("tests")
+
+-- Simple accuracy test
+target("test_simple_accuracy")
+    set_kind("binary")
+    add_files("test_simple_accuracy.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("tests")
+
 -- ============================================================================
 -- INTEGRATION TESTS
 -- ============================================================================
@@ -147,6 +163,14 @@ target("std_async_integration_demo")
     set_rundir("$(projectdir)")
     set_group("examples")
 
+target("coroutine_integration_demo")
+    set_kind("binary")
+    add_files("examples/coroutine_integration_demo.cpp")
+    add_deps("diffeq")
+    set_rundir("$(projectdir)")
+    set_group("examples")
+    set_languages("c++20")  -- 确保启用 C++20 协程支持
+
 -- SDE usage demo (temporarily disabled due to API issues)
 -- target("sde_usage_demo")
 --     set_kind("binary")
@@ -202,6 +226,7 @@ task("test-all")
             "test_state_concept",
             "test_rk4_integrator", 
             "test_advanced_integrators",
+            "test_integrator_accuracy",
             "test_standard_parallelism"
         }
         print("[7] Test targets table created")
@@ -291,7 +316,8 @@ task("examples-all")
             "parallelism_usage_demo",
             "asio_integration_demo",
             "advanced_asio_integration",
-            "std_async_integration_demo"
+            "std_async_integration_demo",
+            "coroutine_integration_demo"
         }
         
         local long_examples = {
@@ -411,6 +437,7 @@ task("build-test-all")
             "test_state_concept",
             "test_rk4_integrator", 
             "test_advanced_integrators",
+            "test_integrator_accuracy",
             "test_standard_parallelism"
         }
         
@@ -531,6 +558,7 @@ task("test")
             "test_state_concept",
             "test_rk4_integrator", 
             "test_advanced_integrators",
+            "test_integrator_accuracy",
             "test_standard_parallelism"
         }
         
@@ -598,5 +626,43 @@ task("new-examples")
         for _, example_name in ipairs(new_examples) do
             print("  [RUN] Running " .. example_name .. "...")
             task.run("run", {}, example_name)
+        end
+    end)
+
+-- Test integrator accuracy
+task("test-accuracy")
+    set_menu {
+        usage = "xmake test-accuracy",
+        description = "Run comprehensive integrator accuracy tests",
+        options = {
+            {"v", "verbose", "kv", nil, "Verbose output"},
+            {"q", "quick", "kv", nil, "Quick test with fewer iterations"}
+        }
+    }
+    on_run(function (target, opt)
+        import("core.base.task")
+        import("core.base.option")
+        
+        local verbose = option.get("verbose")
+        local quick = option.get("quick")
+        
+        print("[ACCURACY] Running integrator accuracy tests...")
+        print("This may take several minutes to complete.")
+        
+        if quick then
+            print("[QUICK] Running in quick mode with reduced iterations.")
+        end
+        
+        -- Build the test if needed
+        os.exec("xmake build test_integrator_accuracy")
+        
+        -- Run the accuracy test
+        local success = task.run("run", {}, "test_integrator_accuracy")
+        
+        if success ~= false then
+            print("[SUCCESS] Integrator accuracy tests completed successfully!")
+        else
+            print("[FAIL] Integrator accuracy tests failed!")
+            os.exit(1)
         end
     end)
